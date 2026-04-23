@@ -1,10 +1,24 @@
-const TOKEN_KEY = 'neomud_platform_token';
+// Same key the platform marketplace writes (web/src/api/client.ts), so
+// a user signed in at stage.neomud.app is already signed in at
+// stage.neomud.app/maker — no token handoff needed.
+const TOKEN_KEY = 'neomud_access_token';
 
 // Absolute path the maker uses for API calls. Defaults to /api so the
 // Vite middleware dev setup keeps working untouched. Staging builds set
 // VITE_API_BASE=/maker-api so requests go through Caddy, which rewrites
 // /maker-api/* back to /api/* before forwarding to this same server.
 const API_BASE = (import.meta.env.VITE_API_BASE ?? '/api').replace(/\/$/, '');
+
+/**
+ * Called when the server rejects a request with 401. Clears the local
+ * token so future requests don't reuse a stale one, then sends the
+ * browser to the platform root so the user can sign in again.
+ * Exported so tests can replace or spy.
+ */
+export function onUnauthorized() {
+  localStorage.removeItem(TOKEN_KEY);
+  window.location.assign('/');
+}
 
 /** Current project scope — when set, API calls are prefixed with /projects/{name} */
 let currentProject: string | null = null;
@@ -66,6 +80,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   }
   const res = await fetch(resolveUrl(path), opts);
   if (!res.ok) {
+    if (res.status === 401) onUnauthorized();
     const text = await res.text().catch(() => res.statusText);
     const err = new Error(extractErrorMessage(text, res.status));
     (err as any).status = res.status;
@@ -92,6 +107,7 @@ async function uploadRequest<T>(path: string, file: File, fields?: Record<string
     body: formData,
   });
   if (!res.ok) {
+    if (res.status === 401) onUnauthorized();
     const text = await res.text().catch(() => res.statusText);
     const err = new Error(extractErrorMessage(text, res.status));
     (err as any).status = res.status;

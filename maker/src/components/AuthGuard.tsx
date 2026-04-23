@@ -73,8 +73,8 @@ interface AuthGuardProps {
 
 /**
  * Wraps the app and checks for a Platform JWT in localStorage.
- * Shows a login prompt if not authenticated.
- * In development, allows pasting a token directly.
+ * Shows a sign-in prompt if not authenticated, with a link back to the
+ * platform root. In dev builds, also renders a paste-in token field.
  */
 export default function AuthGuard({ children }: AuthGuardProps) {
   if (api.isAuthenticated()) {
@@ -94,26 +94,28 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       <div style={styles.card}>
         <h1 style={styles.title}>NeoMUD Maker</h1>
         <p style={styles.message}>
-          Sign in to the NeoMud Platform to start building worlds.
+          You must sign in on the NeoMud Platform to build worlds.
         </p>
-        <a style={styles.link} href="/" onClick={(e) => e.preventDefault()}>
+        <a style={styles.link} href="/">
           Sign in with NeoMud Platform
         </a>
-        <div style={styles.devInput}>
-          <p style={{ fontSize: 12, color: '#999', marginBottom: 8 }}>
-            Development: paste a JWT token
-          </p>
-          <input
-            id="dev-token"
-            style={styles.tokenInput}
-            type="text"
-            placeholder="Paste Platform JWT..."
-            onKeyDown={(e) => e.key === 'Enter' && handleDevToken()}
-          />
-          <button style={styles.devButton} onClick={handleDevToken}>
-            Set Token
-          </button>
-        </div>
+        {import.meta.env.DEV && (
+          <div style={styles.devInput} data-testid="dev-token-input">
+            <p style={{ fontSize: 12, color: '#999', marginBottom: 8 }}>
+              Development: paste a JWT token
+            </p>
+            <input
+              id="dev-token"
+              style={styles.tokenInput}
+              type="text"
+              placeholder="Paste Platform JWT..."
+              onKeyDown={(e) => e.key === 'Enter' && handleDevToken()}
+            />
+            <button style={styles.devButton} onClick={handleDevToken}>
+              Set Token
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
