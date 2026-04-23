@@ -56,7 +56,7 @@ class InventoryPanelTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u2715").performClick()
+        onNodeWithTag("close_button").performClick()
         assertTrue(closed)
     }
 

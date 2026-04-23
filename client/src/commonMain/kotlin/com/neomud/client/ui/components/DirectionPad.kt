@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
@@ -226,6 +227,7 @@ private fun StoneDPadButton(
             .drawBehind {
                 drawStoneDPad(gradientTop, gradientBot, bevelHighlight, enabled || isLook)
             }
+            .then(if (isLook) Modifier.testTag("look_button") else Modifier)
             .then(if (enabled || isLook) Modifier.clickable(onClick = onClick) else Modifier)
     ) {
         if (icon != null) {

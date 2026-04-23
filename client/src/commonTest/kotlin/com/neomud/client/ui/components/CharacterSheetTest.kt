@@ -206,7 +206,7 @@ class CharacterSheetTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u2715").performClick() // ✕ close button
+        onNodeWithTag("close_button").performClick()
         assertTrue(closed)
     }
 }

@@ -137,7 +137,7 @@ class DirectionPadTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u2726").performClick() // Look ✦
+        onNodeWithTag("look_button").performClick()
         assertTrue(looked)
     }
 
