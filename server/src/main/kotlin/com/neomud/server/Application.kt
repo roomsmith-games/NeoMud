@@ -248,7 +248,7 @@ fun main(args: Array<String>) {
     server.start(wait = true)
 }
 
-fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: String = "build/worlds/default-world.nmd", adminUsernamesOverride: Set<String>? = null) {
+fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: String = "build/worlds/default-world.nmd", adminUsernamesOverride: Set<String>? = null, platformVerifierOverride: com.neomud.server.auth.PlatformTokenVerifier? = null) {
     // Initialize database
     DatabaseFactory.init(jdbcUrl)
 
@@ -309,7 +309,7 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
         logger.info("Admin usernames: $adminUsernames")
     }
 
-    val platformVerifier = com.neomud.server.auth.PlatformTokenVerifier(
+    val platformVerifier = platformVerifierOverride ?: com.neomud.server.auth.PlatformTokenVerifier(
         jwksUrl = System.getenv("PLATFORM_JWKS_URL"),
         devSecret = System.getenv("PLATFORM_JWT_SECRET")
     )
