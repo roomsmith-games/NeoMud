@@ -2,6 +2,7 @@ package com.neomud.client.testutil
 
 import com.neomud.client.network.ConnectionState
 import com.neomud.client.network.GameConnection
+import com.neomud.client.network.ReconnectStatus
 import com.neomud.shared.protocol.ClientMessage
 import com.neomud.shared.protocol.ServerMessage
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +25,9 @@ class FakeGameConnection : GameConnection {
     private val _connectionError = MutableStateFlow<String?>(null)
     override val connectionError: StateFlow<String?> = _connectionError
 
+    private val _reconnectStatus = MutableStateFlow<ReconnectStatus>(ReconnectStatus.Idle)
+    override val reconnectStatus: StateFlow<ReconnectStatus> = _reconnectStatus
+
     // ─── Call recording ──────────────────────────────────
 
     data class ConnectCall(val host: String, val port: Int, val useTls: Boolean, val path: String = "/game")
@@ -31,6 +35,8 @@ class FakeGameConnection : GameConnection {
     val connectCalls = mutableListOf<ConnectCall>()
     val sentMessages = mutableListOf<ClientMessage>()
     var disconnectCount = 0
+        private set
+    var retryReconnectCount = 0
         private set
 
     /** Controls what send() returns. */
@@ -53,6 +59,11 @@ class FakeGameConnection : GameConnection {
         _connectionState.value = ConnectionState.DISCONNECTED
     }
 
+    override fun retryReconnect() {
+        retryReconnectCount++
+        _reconnectStatus.value = ReconnectStatus.Reconnecting(1, 1)
+    }
+
     // ─── Test helpers ────────────────────────────────────
 
     /** Simulate a server message arriving. */
@@ -68,5 +79,10 @@ class FakeGameConnection : GameConnection {
     /** Set a connection error. */
     fun setConnectionError(error: String?) {
         _connectionError.value = error
+    }
+
+    /** Push a reconnect status change (for UI tests). */
+    fun setReconnectStatus(status: ReconnectStatus) {
+        _reconnectStatus.value = status
     }
 }

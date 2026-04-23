@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neomud.client.ui.theme.MudColors
 import com.neomud.client.ui.theme.StoneTheme
+import com.neomud.client.ui.components.ReconnectOverlay
 import com.neomud.client.ui.components.StoneButton
 import com.neomud.client.ui.components.StoneDivider
 import com.neomud.client.ui.components.ThemedFrame
@@ -378,6 +379,15 @@ fun GameScreen(
                 onDismiss = { gameViewModel.dismissCoachMark() }
             )
         }
+
+        // Reconnect overlay — shown while the WebSocket is reconnecting
+        // after an unexpected close (e.g. Maker "Reload Playtest" cycles
+        // the container out from under us). Renders nothing when idle.
+        val reconnectStatus by gameViewModel.reconnectStatus.collectAsState()
+        ReconnectOverlay(
+            status = reconnectStatus,
+            onRetry = { gameViewModel.retryReconnect() },
+        )
     }
     } // CompositionLocalProvider
 }

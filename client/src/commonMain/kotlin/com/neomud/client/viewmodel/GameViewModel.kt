@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.neomud.client.platform.PlatformAudioManager
 import com.neomud.client.platform.PlatformLogger
 import com.neomud.client.network.GameConnection
+import com.neomud.client.network.ReconnectStatus
 import com.neomud.client.ui.theme.MudColors
 import com.neomud.shared.model.*
 import com.neomud.shared.protocol.ClientMessage
@@ -18,6 +19,13 @@ class GameViewModel(
     var serverBaseUrl: String = "",
     private val audioManager: PlatformAudioManager? = null
 ) : ViewModel() {
+
+    /** Forwarded from the underlying connection so the game screen can render
+     *  the "World is reloading…" overlay during Maker-driven restarts. */
+    val reconnectStatus: StateFlow<ReconnectStatus> = wsClient.reconnectStatus
+
+    /** Manual Retry button target after all auto-reconnect attempts fail. */
+    fun retryReconnect() { wsClient.retryReconnect() }
 
     private val _roomInfo = MutableStateFlow<ServerMessage.RoomInfo?>(null)
     val roomInfo: StateFlow<ServerMessage.RoomInfo?> = _roomInfo
