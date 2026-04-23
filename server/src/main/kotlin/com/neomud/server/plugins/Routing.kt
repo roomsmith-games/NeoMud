@@ -94,6 +94,17 @@ fun Application.configureRouting(
             call.respondText("OK", ContentType.Text.Plain)
         }
 
+        // Internal status for the platform's idle reaper. Reports active
+        // session count and last-activity timestamp. Deliberately no auth —
+        // this endpoint is only reachable over the internal Docker network
+        // (production) or localhost (dev), and leaks nothing secret.
+        get("/internal/status") {
+            val activeConnections = sessionManager.activeSessionCount()
+            val lastActivityAt = sessionManager.getLastActivityAt().toString()
+            val json = """{"activeConnections":$activeConnections,"lastActivityAt":${quoteJson(lastActivityAt)}}"""
+            call.respondText(json, ContentType.Application.Json)
+        }
+
         get("/api/character") {
             // Auth: verify shared secret from Platform
             val secret = call.request.headers["X-Platform-Secret"]
@@ -150,6 +161,7 @@ fun Application.configureRouting(
 
                 for (frame in incoming) {
                     if (frame is Frame.Text) {
+                        sessionManager.touchActivity()
                         val text = frame.readText()
                         try {
                             val message = MessageSerializer.decodeClientMessage(text)
