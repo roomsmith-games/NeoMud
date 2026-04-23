@@ -266,8 +266,8 @@ class MessageSerializerTest {
     fun testMoveMessageJsonFormat() {
         val msg = ClientMessage.Move(Direction.NORTH)
         val json = MessageSerializer.encodeClientMessage(msg)
-        assert(json.contains("\"type\":\"move\"")) { "Expected type discriminator in JSON: $json" }
-        assert(json.contains("\"direction\":\"NORTH\"")) { "Expected direction in JSON: $json" }
+        assertTrue(json.contains("\"type\":\"move\""), "Expected type discriminator in JSON: $json")
+        assertTrue(json.contains("\"direction\":\"NORTH\""), "Expected direction in JSON: $json")
     }
 
     @Test
