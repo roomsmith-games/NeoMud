@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api';
 import ValidationModal from './ValidationModal';
+import PublishModal, { type PublishSuccess, type PublishUpsell } from './PublishModal';
+import UpsellModal from './UpsellModal';
+import PublishSuccessModal from './PublishSuccessModal';
 import type { CSSProperties } from 'react';
 
 type PlaytestStatus = 'idle' | 'starting' | 'active' | 'reloading' | 'error';
@@ -61,6 +64,16 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: 3,
     fontWeight: 600,
   },
+  btnPublish: {
+    background: 'linear-gradient(180deg, #6b4c8a, #4a2e66)',
+    border: '1px solid #8a6bab',
+    color: '#f0e0ff',
+    fontSize: 12,
+    padding: '4px 12px',
+    cursor: 'pointer',
+    borderRadius: 3,
+    fontWeight: 600,
+  },
   btnDisabled: {
     opacity: 0.5,
     cursor: 'default',
@@ -86,6 +99,9 @@ function MenuBar() {
   const [playtestError, setPlaytestError] = useState<string | null>(null);
   const [activePlaytest, setActivePlaytest] = useState<ActivePlaytest | null>(null);
   const lastActiveRef = useRef<ActivePlaytest | null>(null);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState<PublishSuccess | null>(null);
+  const [publishUpsell, setPublishUpsell] = useState<PublishUpsell | null>(null);
 
   // Load current playtest state for this user on mount and whenever the
   // current project changes (the entry is user-scoped on the server so
@@ -298,6 +314,14 @@ function MenuBar() {
             Running
           </span>
         )}
+        <div style={styles.separator} />
+        <button
+          style={styles.btnPublish}
+          onClick={() => setPublishOpen(true)}
+          data-testid="publish-btn"
+        >
+          Publish
+        </button>
         <div style={styles.spacer} />
         <button style={{ ...styles.btn, color: '#ff6b6b' }} onClick={handleQuit} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
           Quit Server
@@ -310,6 +334,34 @@ function MenuBar() {
           onClose={() => setValidation(null)}
           actionLabel={validation.actionLabel}
           onAction={validation.onAction}
+        />
+      )}
+      {publishOpen && name && (
+        <PublishModal
+          projectName={name}
+          onClose={() => setPublishOpen(false)}
+          onSuccess={(result) => {
+            setPublishOpen(false);
+            setPublishSuccess(result);
+          }}
+          onUpsell={(info) => {
+            setPublishOpen(false);
+            setPublishUpsell(info);
+          }}
+        />
+      )}
+      {publishSuccess && (
+        <PublishSuccessModal
+          slug={publishSuccess.slug}
+          publicUrl={publishSuccess.publicUrl}
+          onClose={() => setPublishSuccess(null)}
+        />
+      )}
+      {publishUpsell && (
+        <UpsellModal
+          plan={publishUpsell.plan}
+          upgradeUrl={publishUpsell.upgradeUrl}
+          onClose={() => setPublishUpsell(null)}
         />
       )}
     </>

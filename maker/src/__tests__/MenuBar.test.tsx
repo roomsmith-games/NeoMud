@@ -195,3 +195,98 @@ describe('MenuBar — Playtest / Reload buttons', () => {
     expect(fetchSpy).not.toHaveBeenCalled()
   })
 })
+
+describe('MenuBar — Publish button and modals', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockApi.get.mockResolvedValue({ playtest: null })
+    mockApi.getToken.mockReturnValue('test-bearer-token')
+  })
+
+  it('renders the Publish button', async () => {
+    renderAt('my-world')
+    await waitFor(() => {
+      expect(screen.getByTestId('publish-btn')).toHaveTextContent(/Publish/i)
+    })
+  })
+
+  it('opens the publish modal on click with pre-filled version', async () => {
+    renderAt('my-world')
+    await waitFor(() => expect(screen.getByTestId('publish-btn')).toBeInTheDocument())
+    await userEvent.click(screen.getByTestId('publish-btn'))
+
+    expect(screen.getByText(/Publish "my-world" to Marketplace/)).toBeInTheDocument()
+    expect(screen.getByLabelText('Version')).toHaveValue('1.0.0')
+    // Submit is disabled until changelog is filled in
+    expect(screen.getByTestId('publish-submit-btn')).toBeDisabled()
+  })
+
+  it('enables submit once changelog is non-empty', async () => {
+    renderAt('my-world')
+    await waitFor(() => expect(screen.getByTestId('publish-btn')).toBeInTheDocument())
+    await userEvent.click(screen.getByTestId('publish-btn'))
+
+    await userEvent.type(screen.getByLabelText('Changelog'), 'first release')
+    expect(screen.getByTestId('publish-submit-btn')).not.toBeDisabled()
+  })
+
+  it('on success: shows the success modal with the marketplace link', async () => {
+    mockApi.post.mockResolvedValueOnce({
+      slug: 'my-world',
+      publicUrl: '/worlds/my-world',
+    })
+    renderAt('my-world')
+    await waitFor(() => expect(screen.getByTestId('publish-btn')).toBeInTheDocument())
+    await userEvent.click(screen.getByTestId('publish-btn'))
+    await userEvent.type(screen.getByLabelText('Changelog'), 'first release')
+    await userEvent.click(screen.getByTestId('publish-submit-btn'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Published!')).toBeInTheDocument()
+      expect(screen.getByText('/worlds/my-world')).toBeInTheDocument()
+      expect(screen.getByTestId('publish-view-btn')).toHaveAttribute('href', '/worlds/my-world')
+    })
+    expect(mockApi.post).toHaveBeenCalledWith(
+      '/projects/my-world/publish',
+      expect.objectContaining({ version: '1.0.0', changelog: 'first release' }),
+    )
+  })
+
+  it('on 402: shows the upsell modal with the upgrade link', async () => {
+    const err = new Error('Subscription required') as Error & { status?: number; body?: unknown }
+    err.status = 402
+    err.body = { plan: 'FREE', upgradeUrl: '/account#subscription' }
+    mockApi.post.mockRejectedValueOnce(err)
+
+    renderAt('my-world')
+    await waitFor(() => expect(screen.getByTestId('publish-btn')).toBeInTheDocument())
+    await userEvent.click(screen.getByTestId('publish-btn'))
+    await userEvent.type(screen.getByLabelText('Changelog'), 'first release')
+    await userEvent.click(screen.getByTestId('publish-submit-btn'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/needs a creator subscription/i)).toBeInTheDocument()
+      const link = screen.getByRole('link', { name: /Go to Account/i })
+      expect(link).toHaveAttribute('href', '/account#subscription')
+    })
+  })
+
+  it('on 409: shows inline error without closing the publish modal', async () => {
+    const err = new Error('Version 1.0.0 already exists') as Error & { status?: number; body?: unknown }
+    err.status = 409
+    err.body = { error: 'Version 1.0.0 already exists for this world. Bump the version number.' }
+    mockApi.post.mockRejectedValueOnce(err)
+
+    renderAt('my-world')
+    await waitFor(() => expect(screen.getByTestId('publish-btn')).toBeInTheDocument())
+    await userEvent.click(screen.getByTestId('publish-btn'))
+    await userEvent.type(screen.getByLabelText('Changelog'), 'first release')
+    await userEvent.click(screen.getByTestId('publish-submit-btn'))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('publish-error')).toHaveTextContent(/already exists/i)
+    })
+    // Modal is still open for retry
+    expect(screen.getByText(/Publish "my-world" to Marketplace/)).toBeInTheDocument()
+  })
+})

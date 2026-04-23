@@ -67,6 +67,15 @@ function extractErrorMessage(text: string, status: number): string {
   return text || `Request failed (${status})`;
 }
 
+function parseJsonBody(text: string): Record<string, unknown> | null {
+  try {
+    const parsed = JSON.parse(text);
+    return typeof parsed === 'object' && parsed !== null ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const opts: RequestInit = {
     method,
@@ -84,6 +93,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     const text = await res.text().catch(() => res.statusText);
     const err = new Error(extractErrorMessage(text, res.status));
     (err as any).status = res.status;
+    (err as any).body = parseJsonBody(text);
     throw err;
   }
   const contentType = res.headers.get('content-type');
@@ -111,6 +121,7 @@ async function uploadRequest<T>(path: string, file: File, fields?: Record<string
     const text = await res.text().catch(() => res.statusText);
     const err = new Error(extractErrorMessage(text, res.status));
     (err as any).status = res.status;
+    (err as any).body = parseJsonBody(text);
     throw err;
   }
   const contentType = res.headers.get('content-type');
