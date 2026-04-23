@@ -190,7 +190,7 @@ function AudioPreview({ entityType, entityId, bgm, bgmPrompt, bgmDuration, defau
     });
   };
 
-  const audioUrl = assetPath ? `/api/assets/${assetPath}${cacheBust ? `?t=${cacheBust}` : ''}` : '';
+  const audioUrl = assetPath ? api.assetUrl(`/assets/${assetPath}${cacheBust ? `?t=${cacheBust}` : ''}`) : '';
 
   const effectivePrompt = localPrompt || defaultBgmPrompt || '';
   const effectiveDuration = localDuration || defaultBgmDuration || 120;

@@ -378,7 +378,7 @@ function PcSpriteEditor() {
               onClick={() => setSelectedId(sprite.id)}
             >
               <img
-                src={`/api/assets/images/players/${sprite.id}.webp`}
+                src={api.assetUrl(`/assets/images/players/${sprite.id}.webp`)}
                 alt={sprite.id}
                 style={styles.listThumb as any}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -400,7 +400,7 @@ function PcSpriteEditor() {
               {/* Large sprite image */}
               <div style={styles.imageCol}>
                 <img
-                  src={`/api/assets/images/players/${selected.id}.webp`}
+                  src={api.assetUrl(`/assets/images/players/${selected.id}.webp`)}
                   alt={selected.id}
                   style={styles.largeImage}
                   onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2'; }}

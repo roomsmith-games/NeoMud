@@ -187,7 +187,7 @@ function resolveAssetPath(entityType: string, entityId: string, assetPath?: stri
 
 function getImageUrl(assetPath: string, cacheBust: number): string {
   if (!assetPath) return '';
-  return `/api/assets/${assetPath}${cacheBust ? `?t=${cacheBust}` : ''}`;
+  return api.assetUrl(`/assets/${assetPath}${cacheBust ? `?t=${cacheBust}` : ''}`);
 }
 
 function defaultDimensions(entityType: string): { w: number; h: number } {

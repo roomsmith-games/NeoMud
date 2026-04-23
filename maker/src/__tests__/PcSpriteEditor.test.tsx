@@ -10,6 +10,7 @@ vi.mock('../api', () => {
       post: vi.fn().mockResolvedValue({}),
       put: vi.fn().mockResolvedValue({}),
       del: vi.fn().mockResolvedValue({}),
+      assetUrl: vi.fn((path: string) => path),
     },
   }
 })

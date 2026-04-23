@@ -14,10 +14,12 @@ import PcSpriteEditor from './pages/PcSpriteEditor';
 import DefaultSfxEditor from './pages/DefaultSfxEditor';
 import SettingsEditor from './pages/SettingsEditor';
 
+const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, '') || undefined;
+
 function App() {
   return (
     <AuthGuard>
-    <BrowserRouter>
+    <BrowserRouter basename={ROUTER_BASENAME}>
       <Routes>
         <Route path="/" element={<ProjectList />} />
         <Route path="/project/:name" element={<Dashboard />}>

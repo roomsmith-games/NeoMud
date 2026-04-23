@@ -77,13 +77,13 @@ function MenuBar() {
 
   const handleExportNmd = () => {
     const a = document.createElement('a');
-    a.href = '/api/export/nmd';
+    a.href = api.assetUrl('/export/nmd');
     a.click();
   };
 
   const doPackageDownload = () => {
     const a = document.createElement('a');
-    a.href = '/api/export/package';
+    a.href = api.assetUrl('/export/package');
     a.click();
   };
 

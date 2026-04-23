@@ -1520,7 +1520,7 @@ function ZoneEditor() {
                 disabled={!roomForm.departSound}
                 onClick={() => {
                   if (roomForm.departSound) {
-                    const audio = new Audio(`/api/assets/audio/rooms/${roomForm.departSound}.mp3`);
+                    const audio = new Audio(api.assetUrl(`/assets/audio/rooms/${roomForm.departSound}.mp3`));
                     audio.play().catch(() => {});
                   }
                 }}

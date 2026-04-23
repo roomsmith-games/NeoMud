@@ -134,7 +134,7 @@ function SfxPreview({ soundId, onSoundIdChange, entityLabel, audioCategory = 'ge
 
   const handlePlay = () => {
     if (!assetPath) return;
-    const audio = new Audio(`/api/assets/${assetPath}`);
+    const audio = new Audio(api.assetUrl(`/assets/${assetPath}`));
     audio.play().catch(() => {});
   };
 

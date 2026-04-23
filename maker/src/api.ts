@@ -1,5 +1,11 @@
 const TOKEN_KEY = 'neomud_platform_token';
 
+// Absolute path the maker uses for API calls. Defaults to /api so the
+// Vite middleware dev setup keeps working untouched. Staging builds set
+// VITE_API_BASE=/maker-api so requests go through Caddy, which rewrites
+// /maker-api/* back to /api/* before forwarding to this same server.
+const API_BASE = (import.meta.env.VITE_API_BASE ?? '/api').replace(/\/$/, '');
+
 /** Current project scope — when set, API calls are prefixed with /projects/{name} */
 let currentProject: string | null = null;
 
@@ -20,12 +26,21 @@ function getAuthHeaders(): Record<string, string> {
   return headers;
 }
 
-function resolveUrl(path: string): string {
+export function resolveUrl(path: string): string {
   // Project-scoped paths: prefix with /projects/{name}
   if (currentProject && !path.startsWith('/projects')) {
-    return `/api/projects/${encodeURIComponent(currentProject)}${path}`;
+    return `${API_BASE}/projects/${encodeURIComponent(currentProject)}${path}`;
   }
-  return `/api${path}`;
+  return `${API_BASE}${path}`;
+}
+
+/**
+ * Absolute URL to a resource served by the maker API, for non-fetch
+ * consumers (Audio/Image src, anchor hrefs). Pass a server-relative path
+ * starting with a slash, e.g. "/assets/images/npc.webp".
+ */
+export function assetUrl(path: string): string {
+  return `${API_BASE}${path}`;
 }
 
 function extractErrorMessage(text: string, status: number): string {
@@ -90,6 +105,9 @@ async function uploadRequest<T>(path: string, file: File, fields?: Record<string
 }
 
 const api = {
+  assetUrl(path: string): string {
+    return assetUrl(path);
+  },
   get<T = any>(path: string): Promise<T> {
     return request<T>('GET', path);
   },
