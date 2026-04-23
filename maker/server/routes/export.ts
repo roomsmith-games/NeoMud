@@ -35,9 +35,23 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
     else if (row.value === 'false') manifest[row.key] = false
     else manifest[row.key] = row.value
   }
-  // Stamp engine version at export time
+  // Stamp defaults for every field the platform's bundleManifestSchema
+  // requires. Most of these are populated by the user via the settings
+  // editor; for un-configured projects (including freshly-created ones
+  // used for playtest) we fall back to sensible placeholders so the
+  // bundle still validates downstream.
   if (!manifest.engineVersion) manifest.engineVersion = NEOMUD_ENGINE_VERSION
   if (!manifest.engineVersionMin) manifest.engineVersionMin = NEOMUD_ENGINE_VERSION
+  if (!manifest.formatVersion) manifest.formatVersion = 1
+  if (!manifest.name || typeof manifest.name !== 'string' || manifest.name.length === 0) {
+    manifest.name = 'Untitled World'
+  }
+  if (!manifest.author || typeof manifest.author !== 'string' || manifest.author.length === 0) {
+    manifest.author = 'Unknown'
+  }
+  if (!manifest.version || typeof manifest.version !== 'string' || manifest.version.length === 0) {
+    manifest.version = '0.0.1'
+  }
   manifest.createdWithMaker = true
   zip.addFile('manifest.json', Buffer.from(JSON.stringify(manifest, null, 2)))
 
