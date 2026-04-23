@@ -16,6 +16,7 @@ import { pcSpritesRouter } from './routes/pcSprites.js'
 import { defaultSfxRouter } from './routes/defaultSfx.js'
 import { generateRouter } from './routes/generate.js'
 import { assetMgmtRouter } from './routes/assets.js'
+import { playtestRouter } from './routes/playtest.js'
 import { deleteProject } from './db.js'
 import { importNmd } from './import.js'
 
@@ -89,6 +90,7 @@ projectRouter.use('/pc-sprites', pcSpritesRouter)
 projectRouter.use('/default-sfx', defaultSfxRouter)
 projectRouter.use('/generate', generateLimiter, generateRouter)
 projectRouter.use('/asset-mgmt', assetMgmtRouter)
+projectRouter.use('/playtest', playtestRouter)
 
 // Serve assets from the project's assets directory
 projectRouter.use('/assets', (req, res, next) => {
