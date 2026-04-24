@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { buildNmdBundle } from './export.js'
 import { slugifyProjectName } from './playtest.js'
 import { logger } from '../lib/logger.js'
+import { platformGetSubscription } from '../services/platformClient.js'
 
 export const publishRouter = Router({ mergeParams: true })
 
@@ -10,24 +11,6 @@ const PLATFORM_API_URL = process.env.PLATFORM_API_URL || 'http://localhost:3000'
 function forwardAuth(req: import('express').Request): string | null {
   const authHeader = req.headers.authorization
   return authHeader?.startsWith('Bearer ') ? authHeader : null
-}
-
-interface SubscriptionResponse {
-  plan: string
-  status: string
-  canPublish: boolean
-  bypassReason?: string
-}
-
-async function platformGetSubscription(authHeader: string): Promise<SubscriptionResponse> {
-  const res = await fetch(`${PLATFORM_API_URL}/api/v1/users/me/subscription`, {
-    headers: { Authorization: authHeader },
-  })
-  if (!res.ok) {
-    const text = await res.text().catch(() => res.statusText)
-    throw new Error(`subscription lookup failed (${res.status}): ${text}`)
-  }
-  return (await res.json()) as SubscriptionResponse
 }
 
 async function platformUpsertDraft(
