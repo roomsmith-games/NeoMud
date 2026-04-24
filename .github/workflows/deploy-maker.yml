@@ -57,21 +57,27 @@ jobs:
             cd ~/neomud-staging
             # Idempotent env upsert: replace existing key or append. Skips
             # on empty value so unset secrets don't clobber .env content.
+            # Any write failure (permission, sed, append) returns non-zero
+            # so callers can exit — silent skips here produced a green-looking
+            # deploy with stale env during 6.pre rollout.
             upsert_env() {
               local file=$1 key=$2 value=$3
               if [ -z "$value" ]; then
                 echo "upsert_env: skipping $key (empty/unset)"
                 return 0
               fi
-              touch "$file"
+              if ! touch "$file" 2>/dev/null; then
+                echo "✗ upsert_env: cannot write to $file (permission?)" >&2
+                return 1
+              fi
               if grep -q "^${key}=" "$file"; then
-                sed -i "s|^${key}=.*|${key}=${value}|" "$file"
+                sed -i "s|^${key}=.*|${key}=${value}|" "$file" || { echo "✗ upsert_env: sed failed for $key in $file" >&2; return 1; }
               else
-                echo "${key}=${value}" >> "$file"
+                echo "${key}=${value}" >> "$file" || { echo "✗ upsert_env: append failed for $key in $file" >&2; return 1; }
               fi
             }
-            upsert_env maker.env BETTER_STACK_TOKEN "$BETTER_STACK_MAKER_TOKEN"
-            upsert_env maker.env BETTER_STACK_HOST "$BETTER_STACK_MAKER_HOST"
+            upsert_env maker.env BETTER_STACK_TOKEN "$BETTER_STACK_MAKER_TOKEN" || exit 1
+            upsert_env maker.env BETTER_STACK_HOST "$BETTER_STACK_MAKER_HOST" || exit 1
             docker compose up -d --force-recreate --no-deps maker-stg
             echo "[3/5] ✓ Maker container recreated"
 
