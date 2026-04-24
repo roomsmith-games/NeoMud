@@ -5,6 +5,10 @@ on:
     branches: [master]
     paths:
       - 'maker/**'
+  # Manual dispatch — see NeoMud-Platform/.github/workflows/deploy.yml
+  # comment for rationale. Needed here too since the path filter above
+  # blocks push-triggers that don't touch maker/ (e.g. workflow-only edits).
+  workflow_dispatch:
 
 permissions:
   contents: read
