@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import type { CSSProperties } from 'react';
-import api from '../api';
+import api, { resolveUrl } from '../api';
 
 interface SfxPreviewProps {
   soundId: string;
@@ -132,9 +132,13 @@ function SfxPreview({ soundId, onSoundIdChange, entityLabel, audioCategory = 'ge
       .catch(() => setUndoDepth(0));
   }, [assetPath]);
 
-  const handlePlay = () => {
+  const handlePlay = async () => {
     if (!assetPath) return;
-    const audio = new Audio(api.assetUrl(`/assets/${assetPath}`));
+    const apiPath = resolveUrl(`/assets/${assetPath}`);
+    const urls = await api.signAssetUrls([apiPath]).catch(() => ({} as Record<string, string>));
+    const src = urls[apiPath];
+    if (!src) return;
+    const audio = new Audio(src);
     audio.play().catch(() => {});
   };
 

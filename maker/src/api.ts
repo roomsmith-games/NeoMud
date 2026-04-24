@@ -146,9 +146,39 @@ async function uploadRequest<T>(path: string, file: File, fields?: Record<string
   return res.json() as Promise<T>;
 }
 
+/**
+ * Bulk-sign asset paths for use in `<img src>`/`<audio src>` or any
+ * context that can't send an Authorization header. Unlike `request()`,
+ * these hit the global (non-project-scoped) /sign-urls endpoint directly
+ * — the paths themselves already encode the project.
+ *
+ * Returns a map `{ [inputPath]: signedUrl }`. Paths that didn't match
+ * the server's allow-list are omitted (i.e. missing from the result).
+ */
+async function signAssetUrlsRaw(paths: string[]): Promise<Record<string, string>> {
+  if (paths.length === 0) return {};
+  const res = await fetch(`${API_BASE}/sign-urls`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({ paths }),
+  });
+  if (!res.ok) {
+    if (res.status === 401) onUnauthorized();
+    throw new Error(`sign-urls failed: ${res.status}`);
+  }
+  const data = await res.json() as { urls: Record<string, string> };
+  return data.urls || {};
+}
+
 const api = {
   assetUrl(path: string): string {
     return assetUrl(path);
+  },
+  signAssetUrls(paths: string[]): Promise<Record<string, string>> {
+    return signAssetUrlsRaw(paths);
   },
   get<T = any>(path: string): Promise<T> {
     return request<T>('GET', path);

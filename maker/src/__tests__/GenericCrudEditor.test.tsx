@@ -13,7 +13,10 @@ vi.mock('../api', () => {
       put: vi.fn().mockResolvedValue({}),
       del: vi.fn().mockResolvedValue({}),
       assetUrl: vi.fn((path: string) => path),
+      signAssetUrls: vi.fn().mockResolvedValue({}),
     },
+    resolveUrl: vi.fn((path: string) => `/api${path}`),
+    assetUrl: vi.fn((path: string) => `/api${path}`),
   }
 })
 

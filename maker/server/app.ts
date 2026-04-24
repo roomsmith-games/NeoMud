@@ -19,6 +19,7 @@ import { generateRouter } from './routes/generate.js'
 import { assetMgmtRouter } from './routes/assets.js'
 import { playtestRouter } from './routes/playtest.js'
 import { publishRouter } from './routes/publish.js'
+import { signUrlsRouter } from './routes/signUrls.js'
 import { deleteProject } from './db.js'
 import { importNmd } from './import.js'
 
@@ -83,6 +84,7 @@ app.use('/api', authenticate)
 // Apply import limiter before the projects router handles /import
 app.use('/api/projects/import', importLimiter)
 app.use('/api/projects', projectsRouter)
+app.use('/api/sign-urls', signUrlsRouter)
 
 // ─── Project-scoped routes (project context resolves DB per request) ─
 const projectRouter = express.Router({ mergeParams: true })

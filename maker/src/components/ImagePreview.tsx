@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import type { CSSProperties } from 'react';
-import api from '../api';
+import api, { resolveUrl } from '../api';
+import { useSignedAssetUrl } from '../hooks/useSignedAssetUrl';
 
 interface ImagePreviewProps {
   entityType: string;     // "room" | "npc" | "item"
@@ -185,9 +186,13 @@ function resolveAssetPath(entityType: string, entityId: string, assetPath?: stri
   return `images/${entityType}s/${filename}.webp`;
 }
 
-function getImageUrl(assetPath: string, cacheBust: number): string {
+/**
+ * Build the project-scoped API path (including /projects/{name}) for an
+ * asset. Used as the input to `useSignedAssetUrl` below.
+ */
+function getAssetApiPath(assetPath: string): string {
   if (!assetPath) return '';
-  return api.assetUrl(`/assets/${assetPath}${cacheBust ? `?t=${cacheBust}` : ''}`);
+  return resolveUrl(`/assets/${assetPath}`);
 }
 
 function defaultDimensions(entityType: string): { w: number; h: number } {
@@ -213,7 +218,8 @@ function ImagePreview({ entityType, entityId, description, assetPath, imagePromp
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resolved = resolveAssetPath(entityType, entityId, assetPath);
-  const imageUrl = getImageUrl(resolved, cacheBust);
+  const assetApiPath = getAssetApiPath(resolved);
+  const imageUrl = useSignedAssetUrl(assetApiPath, cacheBust);
 
   useEffect(() => {
     setLocalPrompt(imagePrompt || '');

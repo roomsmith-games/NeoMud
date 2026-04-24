@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import api from '../api';
+import api, { resolveUrl } from '../api';
 import MapCanvas, { inferDirection } from '../components/MapCanvas';
 import ImagePreview from '../components/ImagePreview';
 import AudioPreview from '../components/AudioPreview';
@@ -1543,11 +1543,14 @@ function ZoneEditor() {
               <button
                 style={{ padding: '4px 8px', fontSize: 11, fontWeight: 600, backgroundColor: '#fff', color: '#1a1a2e', border: '1px solid #ccc', borderRadius: 3, cursor: 'pointer', whiteSpace: 'nowrap' }}
                 disabled={!roomForm.departSound}
-                onClick={() => {
-                  if (roomForm.departSound) {
-                    const audio = new Audio(api.assetUrl(`/assets/audio/rooms/${roomForm.departSound}.mp3`));
-                    audio.play().catch(() => {});
-                  }
+                onClick={async () => {
+                  if (!roomForm.departSound) return;
+                  const apiPath = resolveUrl(`/assets/audio/rooms/${roomForm.departSound}.mp3`);
+                  const urls = await api.signAssetUrls([apiPath]).catch(() => ({} as Record<string, string>));
+                  const src = urls[apiPath];
+                  if (!src) return;
+                  const audio = new Audio(src);
+                  audio.play().catch(() => {});
                 }}
               >
                 Play

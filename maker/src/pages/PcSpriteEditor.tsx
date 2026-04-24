@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import api from '../api';
+import { useEffect, useMemo, useState } from 'react';
+import api, { resolveUrl } from '../api';
+import { useSignedAssetUrls } from '../hooks/useSignedAssetUrl';
 import ImagePreview from '../components/ImagePreview';
 import type { CSSProperties } from 'react';
 
@@ -322,6 +323,15 @@ function PcSpriteEditor() {
   const selectedClass = selected ? classes.find((c) => c.id === selected.characterClass) : null;
   const selectedRace = selected ? races.find((r) => r.id === selected.race) : null;
 
+  // Bulk-sign all sprite thumbnails + the large preview in one request.
+  // Include the selected sprite's path too so the detail pane isn't
+  // subject to a second round-trip.
+  const spriteApiPaths = useMemo(
+    () => sprites.map((s) => resolveUrl(`/assets/images/players/${s.id}.webp`)),
+    [sprites],
+  );
+  const signedSpriteUrls = useSignedAssetUrls(spriteApiPaths);
+
   const handleUpdate = (fields: { imagePrompt: string; imageStyle: string; imageNegativePrompt: string; imageWidth: number; imageHeight: number }) => {
     if (!selectedId) return;
     api.put<PcSprite>(`/pc-sprites/${selectedId}`, fields).then((updated) => {
@@ -385,7 +395,7 @@ function PcSpriteEditor() {
               onClick={() => setSelectedId(sprite.id)}
             >
               <img
-                src={api.assetUrl(`/assets/images/players/${sprite.id}.webp`)}
+                src={signedSpriteUrls[resolveUrl(`/assets/images/players/${sprite.id}.webp`)] || ''}
                 alt={sprite.id}
                 style={styles.listThumb as any}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -407,7 +417,7 @@ function PcSpriteEditor() {
               {/* Large sprite image */}
               <div style={styles.imageCol}>
                 <img
-                  src={api.assetUrl(`/assets/images/players/${selected.id}.webp`)}
+                  src={signedSpriteUrls[resolveUrl(`/assets/images/players/${selected.id}.webp`)] || ''}
                   alt={selected.id}
                   style={styles.largeImage}
                   onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2'; }}

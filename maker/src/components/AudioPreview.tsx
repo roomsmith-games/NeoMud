@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import type { CSSProperties } from 'react';
-import api from '../api';
+import api, { resolveUrl } from '../api';
+import { useSignedAssetUrl } from '../hooks/useSignedAssetUrl';
 
 interface AudioPreviewProps {
   entityType: string;          // "zone" | "room"
@@ -190,7 +191,8 @@ function AudioPreview({ entityType, entityId, bgm, bgmPrompt, bgmDuration, defau
     });
   };
 
-  const audioUrl = assetPath ? api.assetUrl(`/assets/${assetPath}${cacheBust ? `?t=${cacheBust}` : ''}`) : '';
+  const audioApiPath = assetPath ? resolveUrl(`/assets/${assetPath}`) : '';
+  const audioUrl = useSignedAssetUrl(audioApiPath, cacheBust);
 
   const effectivePrompt = localPrompt || defaultBgmPrompt || '';
   const effectiveDuration = localDuration || defaultBgmDuration || 120;
