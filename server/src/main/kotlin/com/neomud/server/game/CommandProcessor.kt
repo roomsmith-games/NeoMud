@@ -173,7 +173,8 @@ class CommandProcessor(
                         session.send(ServerMessage.PlatformAuthOk(
                             characterName = existingPlayer?.name,
                             platformUserId = claims.userId,
-                            needsCharacterCreation = existingPlayer == null
+                            needsCharacterCreation = existingPlayer == null,
+                            role = claims.role
                         ))
                         logger.info("Platform auth verified for userId=${claims.userId}, character=${existingPlayer?.name ?: "(new)"}")
                     } else {
@@ -590,6 +591,15 @@ class CommandProcessor(
         val platformUserId = session.platformUserId
         if (platformUserId == null) {
             session.send(ServerMessage.AuthError("No platform session — use standard registration"))
+            return
+        }
+
+        // Anonymous platform sessions (role=GUEST) can't own persistent
+        // characters — they have no Platform DB record to attach to. Force
+        // these to the ephemeral GuestLogin path so they get a character
+        // that exists for the session and disappears on disconnect.
+        if (session.platformRole == "GUEST") {
+            session.send(ServerMessage.AuthError("Guest sessions can't save characters — use the guest character flow."))
             return
         }
 

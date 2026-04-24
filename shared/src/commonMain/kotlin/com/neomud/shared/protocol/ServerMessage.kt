@@ -24,7 +24,18 @@ sealed class ServerMessage {
     data class PlatformAuthOk(
         val characterName: String? = null,
         val platformUserId: String,
-        val needsCharacterCreation: Boolean
+        val needsCharacterCreation: Boolean,
+        /**
+         * Platform role from the verified JWT. "GUEST" means the user is on
+         * an anonymous session (Platform's /api/v1/auth/anonymous endpoint
+         * mints these for marketplace visitors who haven't signed in). The
+         * client should route GUEST sessions to the ephemeral guestRegister
+         * flow instead of the persistent platform-register flow — anon
+         * platform users have no Platform DB record and can't own a saved
+         * character. Default null preserves backward compat with old
+         * clients/servers that didn't send this field.
+         */
+        val role: String? = null
     ) : ServerMessage()
 
     @Serializable

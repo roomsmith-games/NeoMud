@@ -182,6 +182,13 @@ class AuthViewModel(
                             val charName = message.characterName
                             if (!message.needsCharacterCreation && charName != null) {
                                 _authState.value = AuthState.PlatformReady(charName, message.platformUserId)
+                            } else if (message.role == "GUEST") {
+                                // Anonymous platform session — route to the ephemeral
+                                // guest character flow instead of platform-register.
+                                // Anon platform users have no Platform DB record so
+                                // they can't own a persistent character; the server
+                                // also rejects PlatformRegister from this role.
+                                _authState.value = AuthState.GuestCharacterCreation
                             } else {
                                 _authState.value = AuthState.PlatformNeedsCharacter(message.platformUserId)
                             }
