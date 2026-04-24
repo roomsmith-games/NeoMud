@@ -99,3 +99,61 @@ describe('401 handling', () => {
     expect(assignSpy).not.toHaveBeenCalled()
   })
 })
+
+describe('error body attachment', () => {
+  // Regression: PublishModal's 402 upsell path depends on err.body.upgradeUrl
+  // being accessible on thrown errors. Prior to Phase 5E, api.ts attached
+  // only .status; dropping .body would silently kill the upsell flow without
+  // a UI-visible failure (PublishModal would just show "Something went
+  // wrong" instead of the upgrade modal). This test locks that in.
+  it('attaches parsed JSON body to thrown errors for non-2xx responses', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 402,
+      statusText: 'Payment Required',
+      headers: new Headers(),
+      text: async () => JSON.stringify({
+        error: 'Publishing requires a subscription.',
+        plan: 'FREE',
+        upgradeUrl: '/account#subscription',
+      }),
+    }))
+
+    let captured: unknown
+    try {
+      await api.post('/projects/x/publish', {})
+    } catch (e) {
+      captured = e
+    }
+
+    const err = captured as Error & { status?: number; body?: Record<string, unknown> }
+    expect(err).toBeInstanceOf(Error)
+    expect(err.status).toBe(402)
+    expect(err.body).toEqual({
+      error: 'Publishing requires a subscription.',
+      plan: 'FREE',
+      upgradeUrl: '/account#subscription',
+    })
+  })
+
+  it('attaches null body when response is not JSON', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: 'Internal Server Error',
+      headers: new Headers(),
+      text: async () => '<html>500 error page</html>',
+    }))
+
+    let captured: unknown
+    try {
+      await api.get('/projects')
+    } catch (e) {
+      captured = e
+    }
+
+    const err = captured as Error & { status?: number; body?: unknown }
+    expect(err.status).toBe(500)
+    expect(err.body).toBeNull()
+  })
+})
