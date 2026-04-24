@@ -35,14 +35,39 @@ jobs:
 
       - name: "[3/5] Deploy to staging"
         uses: appleboy/ssh-action@v1
+        env:
+          # GH Actions secrets → SSH session env → upserted into maker.env
+          # on the VPS. Source of truth is GitHub; the VPS file is derived.
+          # Empty values skip the upsert so absent secrets don't write
+          # placeholder lines.
+          BETTER_STACK_MAKER_TOKEN: ${{ secrets.BETTER_STACK_MAKER_TOKEN }}
+          BETTER_STACK_MAKER_HOST: ${{ secrets.BETTER_STACK_MAKER_HOST }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY_STAGING }}
+          envs: BETTER_STACK_MAKER_TOKEN,BETTER_STACK_MAKER_HOST
           script: |
             echo "[3/5] Pulling and recreating maker..."
             docker pull ghcr.io/${{ github.repository_owner }}/neomud-maker:latest
             cd ~/neomud-staging
+            # Idempotent env upsert: replace existing key or append. Skips
+            # on empty value so unset secrets don't clobber .env content.
+            upsert_env() {
+              local file=$1 key=$2 value=$3
+              if [ -z "$value" ]; then
+                echo "upsert_env: skipping $key (empty/unset)"
+                return 0
+              fi
+              touch "$file"
+              if grep -q "^${key}=" "$file"; then
+                sed -i "s|^${key}=.*|${key}=${value}|" "$file"
+              else
+                echo "${key}=${value}" >> "$file"
+              fi
+            }
+            upsert_env maker.env BETTER_STACK_TOKEN "$BETTER_STACK_MAKER_TOKEN"
+            upsert_env maker.env BETTER_STACK_HOST "$BETTER_STACK_MAKER_HOST"
             docker compose up -d --force-recreate --no-deps maker-stg
             echo "[3/5] ✓ Maker container recreated"
 
