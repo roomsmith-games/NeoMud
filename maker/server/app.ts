@@ -6,6 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { authenticate } from './middleware/auth.js'
+import { requestMetrics } from './middleware/requestMetrics.js'
 import { projectMiddleware, getProjectsDir } from './projectContext.js'
 import { projectsRouter } from './routes/projects.js'
 import { zonesRouter } from './routes/zones.js'
@@ -71,6 +72,9 @@ const generateLimiter = rateLimit({
 })
 
 app.use(express.json({ limit: '1mb' }))
+
+// ─── Request metrics (fire-and-forget, emits on response finish) ──
+app.use(requestMetrics)
 
 // ─── Auth on all API routes ─────────────────────────────
 app.use('/api', authenticate)

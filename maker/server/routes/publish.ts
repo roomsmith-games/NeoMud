@@ -177,6 +177,9 @@ publishRouter.post('/', async (req, res, next) => {
     } catch (err) {
       const status = (err as { status?: number }).status
       if (status === 409) {
+        logger.metric('maker_publish_ms', Date.now() - startTime, {
+          outcome: 'version_conflict',
+        })
         res.status(409).json({
           error: `Version ${version} already exists for this world. Bump the version number.`,
         })
@@ -192,6 +195,9 @@ publishRouter.post('/', async (req, res, next) => {
     )
 
     if (publish.status === 402 || publish.status === 409 || publish.status === 400) {
+      logger.metric('maker_publish_ms', Date.now() - startTime, {
+        outcome: publish.status === 402 ? 'denied' : `platform_${publish.status}`,
+      })
       res.status(publish.status).json(publish.body)
       return
     }
