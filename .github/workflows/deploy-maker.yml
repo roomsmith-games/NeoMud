@@ -71,7 +71,13 @@ jobs:
                 return 1
               fi
               if grep -q "^${key}=" "$file"; then
-                sed -i "s|^${key}=.*|${key}=${value}|" "$file" || { echo "✗ upsert_env: sed failed for $key in $file" >&2; return 1; }
+                # Delete-and-append instead of sed with a delimiter: secrets
+                # (especially base64 tokens) can contain any sed delimiter
+                # char. Two-step is bullet-proof regardless of value content.
+                grep -v "^${key}=" "$file" > "$file.tmp" \
+                  && printf '%s=%s\n' "$key" "$value" >> "$file.tmp" \
+                  && mv "$file.tmp" "$file" \
+                  || { echo "✗ upsert_env: replace failed for $key in $file" >&2; rm -f "$file.tmp"; return 1; }
               else
                 echo "${key}=${value}" >> "$file" || { echo "✗ upsert_env: append failed for $key in $file" >&2; return 1; }
               fi
