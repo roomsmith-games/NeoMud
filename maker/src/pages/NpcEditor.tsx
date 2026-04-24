@@ -224,10 +224,11 @@ function NpcEditor() {
 
   // Load zones, NPCs, and items
   useEffect(() => {
-    api.get<Zone[]>('/zones').then(setZones).catch(() => {});
-    api.get<NpcRecord[]>('/npcs').then(setNpcs).catch(() => {});
-    api.get<ItemRecord[]>('/items').then(setItems).catch(() => {});
-    api.get<RecipeRecord[]>('/recipes').then(setRecipes).catch(() => {});
+    // Array-coerce at the setter boundary — see src/api.ts for rationale.
+    api.get<Zone[]>('/zones').then((d) => setZones(Array.isArray(d) ? d : [])).catch(() => {});
+    api.get<NpcRecord[]>('/npcs').then((d) => setNpcs(Array.isArray(d) ? d : [])).catch(() => {});
+    api.get<ItemRecord[]>('/items').then((d) => setItems(Array.isArray(d) ? d : [])).catch(() => {});
+    api.get<RecipeRecord[]>('/recipes').then((d) => setRecipes(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   // Load all zone rooms for the map (cached per zone)

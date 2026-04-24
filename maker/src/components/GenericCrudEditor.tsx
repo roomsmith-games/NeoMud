@@ -240,7 +240,13 @@ function GenericCrudEditor({ entityName, apiPath, fields, idField = 'id', imageP
   const [search, setSearch] = useState('');
 
   const loadList = () => {
-    api.get<any[]>(apiPath).then(setItems).catch(() => {});
+    // Defense-in-depth: coerce to array at the setter boundary even
+    // though api.ts now guarantees JSON-or-throw. A future regression
+    // in either layer can't re-poison state with undefined.
+    api
+      .get<any[]>(apiPath)
+      .then((data) => setItems(Array.isArray(data) ? data : []))
+      .catch(() => {});
   };
 
   useEffect(() => {

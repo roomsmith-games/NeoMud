@@ -158,7 +158,10 @@ function DefaultSfxEditor() {
 
   const fetchEntries = () => {
     const qs = filterCategory ? `?category=${filterCategory}` : '';
-    api.get<DefaultSfx[]>(`/default-sfx${qs}`).then(setEntries).catch(console.error);
+    // Array-coerce at the setter boundary — see src/api.ts for rationale.
+    api.get<DefaultSfx[]>(`/default-sfx${qs}`)
+      .then((d) => setEntries(Array.isArray(d) ? d : []))
+      .catch(console.error);
   };
 
   useEffect(() => { fetchEntries(); }, [filterCategory]);

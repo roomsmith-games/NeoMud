@@ -498,19 +498,23 @@ function ZoneEditor() {
   // Load zones list + all rooms for exit picker
   useEffect(() => {
     api.get<Zone[]>('/zones').then((zoneList) => {
-      setZones(zoneList);
+      const safeZones = Array.isArray(zoneList) ? zoneList : [];
+      setZones(safeZones);
       // Load all rooms across all zones (with coordinates and exits for world map)
-      const promises = zoneList.map((z) =>
+      const promises = safeZones.map((z) =>
         api.get<ZoneWithRooms>(`/zones/${z.id}`).then((data) => ({
           zoneId: z.id,
           zoneName: z.name,
-          rooms: (data.rooms || []).map((r) => ({ id: r.id, name: r.name, x: r.x, y: r.y, exits: r.exits || [] })),
+          rooms: (data?.rooms || []).map((r) => ({ id: r.id, name: r.name, x: r.x, y: r.y, exits: r.exits || [] })),
         }))
       );
-      Promise.all(promises).then(setAllRooms).catch(() => {});
+      Promise.all(promises)
+        .then((groups) => setAllRooms(Array.isArray(groups) ? groups : []))
+        .catch(() => {});
     }).catch(() => {});
     api.get<{ id: string; label: string }[]>('/default-sfx?category=movement')
-      .then(setMovementSfx).catch(() => {});
+      .then((sfx) => setMovementSfx(Array.isArray(sfx) ? sfx : []))
+      .catch(() => {});
   }, []);
 
   // Load zone detail when selected
@@ -1116,14 +1120,17 @@ function ZoneEditor() {
       setNewExitTarget('');
       // Refresh all rooms list too
       const zoneList = await api.get<Zone[]>('/zones');
-      const promises = zoneList.map((z) =>
+      const safeZones = Array.isArray(zoneList) ? zoneList : [];
+      const promises = safeZones.map((z) =>
         api.get<ZoneWithRooms>(`/zones/${z.id}`).then((data) => ({
           zoneId: z.id,
           zoneName: z.name,
-          rooms: (data.rooms || []).map((r) => ({ id: r.id, name: r.name, x: r.x, y: r.y, exits: r.exits || [] })),
+          rooms: (data?.rooms || []).map((r) => ({ id: r.id, name: r.name, x: r.x, y: r.y, exits: r.exits || [] })),
         }))
       );
-      Promise.all(promises).then(setAllRooms).catch(() => {});
+      Promise.all(promises)
+        .then((groups) => setAllRooms(Array.isArray(groups) ? groups : []))
+        .catch(() => {});
     } catch {}
   };
 
@@ -1462,14 +1469,17 @@ function ZoneEditor() {
                         }
                         // Refresh allRooms across all zones (fire-and-forget)
                         api.get<Zone[]>('/zones').then((zoneList) => {
-                          const promises = zoneList.map((z) =>
+                          const safeZones = Array.isArray(zoneList) ? zoneList : [];
+                          const promises = safeZones.map((z) =>
                             api.get<ZoneWithRooms>(`/zones/${z.id}`).then((data) => ({
                               zoneId: z.id,
                               zoneName: z.name,
-                              rooms: (data.rooms || []).map((r) => ({ id: r.id, name: r.name, x: r.x, y: r.y, exits: r.exits || [] })),
+                              rooms: (data?.rooms || []).map((r) => ({ id: r.id, name: r.name, x: r.x, y: r.y, exits: r.exits || [] })),
                             }))
                           );
-                          Promise.all(promises).then(setAllRooms).catch(() => {});
+                          Promise.all(promises)
+                            .then((groups) => setAllRooms(Array.isArray(groups) ? groups : []))
+                            .catch(() => {});
                         }).catch(() => {});
                       } catch (err: any) {
                         alert(err?.message || 'Rename failed');

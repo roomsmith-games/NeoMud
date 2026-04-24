@@ -96,11 +96,21 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     (err as any).body = parseJsonBody(text);
     throw err;
   }
-  const contentType = res.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    return res.json() as Promise<T>;
+  // All maker API endpoints return JSON on success. If we got a 2xx
+  // without a JSON content-type, that's a server bug or an intermediary
+  // stripping the header — surface as an error so callers stay at their
+  // initial state (via .catch) rather than silently getting `undefined
+  // as unknown as T` stuffed into a typed slot. This poisoning-by-cast
+  // was the 6E/6E-bis crash root cause across every editor.
+  const contentType = res.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    const err = new Error(
+      `API non-JSON response from ${method} ${path} (status ${res.status}, content-type "${contentType || 'none'}")`,
+    );
+    (err as any).status = res.status;
+    throw err;
   }
-  return undefined as unknown as T;
+  return res.json() as Promise<T>;
 }
 
 async function uploadRequest<T>(path: string, file: File, fields?: Record<string, string>): Promise<T> {
@@ -124,11 +134,16 @@ async function uploadRequest<T>(path: string, file: File, fields?: Record<string
     (err as any).body = parseJsonBody(text);
     throw err;
   }
-  const contentType = res.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    return res.json() as Promise<T>;
+  // See request(): same contract — JSON or throw.
+  const contentType = res.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    const err = new Error(
+      `API non-JSON response from upload ${path} (status ${res.status}, content-type "${contentType || 'none'}")`,
+    );
+    (err as any).status = res.status;
+    throw err;
   }
-  return undefined as unknown as T;
+  return res.json() as Promise<T>;
 }
 
 const api = {

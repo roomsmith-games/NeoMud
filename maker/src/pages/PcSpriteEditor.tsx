@@ -301,14 +301,21 @@ function PcSpriteEditor() {
     if (filterGender) params.set('gender', filterGender);
     if (filterClass) params.set('class', filterClass);
     const qs = params.toString();
-    api.get<PcSprite[]>(`/pc-sprites${qs ? `?${qs}` : ''}`).then(setSprites).catch(console.error);
+    // Array-coerce at the setter boundary — see src/api.ts for rationale.
+    api.get<PcSprite[]>(`/pc-sprites${qs ? `?${qs}` : ''}`)
+      .then((d) => setSprites(Array.isArray(d) ? d : []))
+      .catch(console.error);
   };
 
   useEffect(() => { fetchSprites(); }, [filterRace, filterGender, filterClass]);
 
   useEffect(() => {
-    api.get<CharacterClass[]>('/character-classes').then(setClasses).catch(() => {});
-    api.get<Race[]>('/races').then(setRaces).catch(() => {});
+    api.get<CharacterClass[]>('/character-classes')
+      .then((d) => setClasses(Array.isArray(d) ? d : []))
+      .catch(() => {});
+    api.get<Race[]>('/races')
+      .then((d) => setRaces(Array.isArray(d) ? d : []))
+      .catch(() => {});
   }, []);
 
   const selected = sprites.find((s) => s.id === selectedId) || null;
