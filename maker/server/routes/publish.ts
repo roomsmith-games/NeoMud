@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { buildNmdBundle } from './export.js'
 import { slugifyProjectName } from './playtest.js'
+import { logger } from '../lib/logger.js'
 
 export const publishRouter = Router({ mergeParams: true })
 
@@ -111,11 +112,14 @@ async function platformPublish(
 // publishers don't need to have playtested first), uploads it as a
 // proper semver WorldVersion, then flips status.
 publishRouter.post('/', async (req, res, next) => {
+  const startTime = Date.now()
   try {
     const userId = req.user!.userId
     const projectName = req.projectName!
     const prisma = req.db!
     const assetsDir = req.projectDir!
+
+    logger.info('maker_publish_attempt', { userId, projectName })
 
     const authHeader = forwardAuth(req)
     if (!authHeader) {
@@ -148,6 +152,12 @@ publishRouter.post('/', async (req, res, next) => {
 
     const subscription = await platformGetSubscription(authHeader)
     if (!subscription.canPublish) {
+      logger.info('maker_publish_denied', {
+        userId,
+        projectName,
+        plan: subscription.plan,
+        status: subscription.status,
+      })
       res.status(402).json({
         error: 'Publishing requires a CREATOR or PRO subscription.',
         plan: subscription.plan,
@@ -191,6 +201,14 @@ publishRouter.post('/', async (req, res, next) => {
     }
 
     const result = publish.body as PublishResult
+    logger.info('maker_publish_success', {
+      userId,
+      projectName,
+      worldId: result.id,
+      slug: result.slug,
+      version,
+      durationMs: Date.now() - startTime,
+    })
     res.status(200).json({
       worldId: result.id,
       slug: result.slug,
@@ -199,6 +217,12 @@ publishRouter.post('/', async (req, res, next) => {
       publicUrl: result.publicUrl,
     })
   } catch (err) {
+    logger.error('maker_publish_error', {
+      userId: req.user?.userId,
+      projectName: req.projectName,
+      durationMs: Date.now() - startTime,
+      message: err instanceof Error ? err.message : String(err),
+    })
     next(err)
   }
 })
