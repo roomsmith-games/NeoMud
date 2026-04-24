@@ -144,6 +144,30 @@ describe('GenericCrudEditor', () => {
     })
   })
 
+  it('omits fields whose visibleWhen is false on save', async () => {
+    const user = userEvent.setup()
+    const items = [{ id: 'sword', type: 'a', extra: 'hidden-value' }]
+    mockApi.get.mockResolvedValue(items)
+    mockApi.put.mockResolvedValue({ id: 'sword', type: 'a' })
+
+    const fields: FieldConfig[] = [
+      textField,
+      selectField, // {a, b}
+      { key: 'extra', label: 'Extra', type: 'text', visibleWhen: (f) => f.type === 'b' },
+    ]
+    render(<GenericCrudEditor entityName="Item" apiPath="/items" fields={fields} />)
+    await waitFor(() => expect(screen.getByText('sword')).toBeInTheDocument())
+    await user.click(screen.getByText('sword'))
+    await user.click(screen.getByText('Save'))
+
+    await waitFor(() => {
+      expect(mockApi.put).toHaveBeenCalled()
+      const payload = mockApi.put.mock.calls[0][1] as Record<string, any>
+      expect(payload).not.toHaveProperty('extra')
+      expect(payload).toHaveProperty('type', 'a')
+    })
+  })
+
   it('save calls api.put for existing item', async () => {
     const user = userEvent.setup()
     const items = [{ id: 'sword', name: 'Iron Sword' }]

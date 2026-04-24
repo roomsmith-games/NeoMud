@@ -309,9 +309,17 @@ function GenericCrudEditor({ entityName, apiPath, fields, idField = 'id', imageP
         }
       }
     }
-    // Validate JSON fields
+    // Validate JSON fields. Drop fields whose `visibleWhen` currently
+    // evaluates false — those inputs are hidden and their state is stale
+    // placeholder from the initial form template (e.g. `maxStack: 0` on
+    // a weapon). Sending them would stomp on server-side validation.
     const newJsonErrors: Record<string, string> = {};
-    const submitData: Record<string, any> = { ...form };
+    const submitData: Record<string, any> = {};
+    for (const [key, value] of Object.entries(form)) {
+      const field = fields.find((f) => f.key === key);
+      if (field?.visibleWhen && !field.visibleWhen(form)) continue;
+      submitData[key] = value;
+    }
     for (const field of fields) {
       if (field.type === 'json') {
         const val = submitData[field.key];
