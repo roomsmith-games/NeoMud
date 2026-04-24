@@ -50,13 +50,16 @@ describe('POST /api/sign-urls', () => {
     expect(r.body.urls['/api/projects/uat/assets/images/items/foo.webp']).toMatch(/\?t=[\w-]+$/)
   })
 
-  it('signed token round-trips via verifyAssetToken', async () => {
+  it('signed token round-trips via verifyAssetToken on the canonical path', async () => {
     const app = buildApp()
     const path = '/api/projects/uat/assets/images/items/foo.webp'
+    const canonical = '/projects/uat/assets/images/items/foo.webp'
     const r = await request(app).post('/api/sign-urls').send({ paths: [path] })
     const url: string = r.body.urls[path]
     const token = url.split('?t=')[1]
-    expect(verifyAssetToken(token, path)).toMatchObject({ userId: USER_ID })
+    // Token binds to the canonical (prefix-stripped) form.
+    expect(verifyAssetToken(token, canonical)).toMatchObject({ userId: USER_ID })
+    expect(verifyAssetToken(token, path)).toBeNull()
   })
 
   it('ignores paths that don\'t match the project-scoped prefix', async () => {
@@ -117,6 +120,29 @@ describe('authenticate accepting ?t=… signed tokens', () => {
     const r = await request(app).get(`${path}?t=${token}`)
     expect(r.status).toBe(200)
     expect(r.body.userId).toBe(USER_ID)
+  })
+
+  it('signs client-visible /maker-api path; verifies against rewritten /api path (stg Caddy)', async () => {
+    const app = buildApp()
+    // Client sees this path (what their browser and the POST body carry):
+    const clientPath = '/maker-api/projects/uat/assets/x.webp'
+    // Caddy rewrites /maker-api -> /api before the request hits the server:
+    const rewrittenPath = '/api/projects/uat/assets/x.webp'
+    app.get('/api/projects/:name/assets/:filename', (_req, res) => res.json({ ok: true }))
+
+    const signed = await request(app).post('/api/sign-urls').send({ paths: [clientPath] })
+    expect(signed.status).toBe(200)
+    const url: string = signed.body.urls[clientPath]
+    expect(url).toBeDefined()
+    // Returned URL still uses the client-visible prefix
+    expect(url).toMatch(/^\/maker-api\/.*\?t=/)
+
+    // Extract the token and hit the REWRITTEN path as the real server
+    // would see it after Caddy. The token must still verify.
+    const token = url.split('?t=')[1]
+    delete process.env.MAKER_DEV_USER_ID
+    const r = await request(app).get(`${rewrittenPath}?t=${token}`)
+    expect(r.status).toBe(200)
   })
 
   it('preserves a non-t cache-bust query param through HMAC binding', async () => {

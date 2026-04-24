@@ -1,10 +1,13 @@
 import { Router } from 'express'
-import { signAssetToken } from '../lib/assetSigning.js'
+import { signAssetToken, canonicalizeAssetPath } from '../lib/assetSigning.js'
 
 export const signUrlsRouter = Router()
 
 const MAX_PATHS_PER_REQUEST = 500
-const ALLOWED_PATH_PREFIX = /^\/(api\/)?projects\/[A-Za-z0-9_-]+\//
+// The HMAC binds to the canonical form (no API-base prefix), so the
+// allowlist runs against that canonical path. `canonicalizeAssetPath`
+// strips `/api` or `/maker-api`; anything else is treated as-is.
+const ALLOWED_PATH_PREFIX = /^\/projects\/[A-Za-z0-9_-]+\//
 
 /**
  * Bulk-sign a list of asset paths for the authenticated user. Each
@@ -41,8 +44,9 @@ signUrlsRouter.post('/', (req, res) => {
     // Only sign paths we'd actually serve — must look like a
     // project-scoped path. Keeps the endpoint from being a generic
     // HMAC oracle for arbitrary strings.
-    if (!ALLOWED_PATH_PREFIX.test(path)) continue
-    const { token } = signAssetToken(userId, path)
+    const canonical = canonicalizeAssetPath(path)
+    if (!ALLOWED_PATH_PREFIX.test(canonical)) continue
+    const { token } = signAssetToken(userId, canonical)
     urls[path] = `${path}${path.includes('?') ? '&' : '?'}t=${token}`
   }
   res.json({ urls })

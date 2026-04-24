@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { verifyAssetToken } from '../lib/assetSigning.js'
+import { verifyAssetToken, canonicalizeAssetPath } from '../lib/assetSigning.js'
 
 // Fail fast at module load if the dangerous dev bypass is enabled in prod.
 if (process.env.NODE_ENV === 'production' && process.env.MAKER_DEV_USER_ID) {
@@ -87,13 +87,14 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
   if (!authHeader) {
     const tokenParam = req.query.t
     if (typeof tokenParam === 'string' && tokenParam.length > 0) {
-      // Bind against the request URL minus the `t` param. We can't use
-      // `req.path` — it's relative to the middleware mount point and
-      // omits the `/api` prefix that was part of the signed path. We also
-      // can't strip the entire query string, because clients may sign
-      // paths that include a cache-bust param (e.g. `?v=...`) which must
-      // remain part of the HMAC binding.
-      const pathForVerify = stripTokenParam(req.originalUrl)
+      // Bind against the canonical path minus the `t` param. `req.path`
+      // is relative to the middleware mount and drops the `/api` prefix
+      // entirely; `req.originalUrl` includes it. Canonicalization then
+      // strips any `/api` or `/maker-api` prefix so the HMAC binding is
+      // topology-independent — Caddy rewrites `/maker-api/*` → `/api/*`
+      // in stg, so the client-visible path differs from what the server
+      // sees. Preserve any non-`t` query params (e.g. cache-bust `v=`).
+      const pathForVerify = canonicalizeAssetPath(stripTokenParam(req.originalUrl))
       const verified = verifyAssetToken(tokenParam, pathForVerify)
       if (verified) {
         req.user = { userId: verified.userId, role: 'CREATOR' }

@@ -17,6 +17,18 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 
 const DEFAULT_TTL_SECONDS = 15 * 60
 
+/**
+ * Canonicalize an asset path by stripping API-base prefixes so the HMAC
+ * binding is topology-independent. The staging stack has Caddy rewriting
+ * `/maker-api/*` → `/api/*` before requests reach this server, so the
+ * client signs `/maker-api/projects/foo/...` while the server later sees
+ * `/api/projects/foo/...` when the browser fetches the asset. Normalize
+ * both sides to `/projects/foo/...` so the HMAC matches regardless.
+ */
+export function canonicalizeAssetPath(path: string): string {
+  return path.replace(/^\/(?:api|maker-api)(?=\/)/, '')
+}
+
 function getSigningKey(): Buffer {
   const secret =
     process.env.JWT_SECRET ||
