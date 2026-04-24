@@ -11,7 +11,20 @@ interface AudioPreviewProps {
   bgmDuration?: number;
   defaultBgmPrompt?: string;   // zone fallback shown as placeholder
   defaultBgmDuration?: number;
-  onUpdate?: (fields: { bgmPrompt: string; bgmDuration: number }) => void;
+  // `bgm` is populated by Generate/Upload when the caller hasn't named
+  // a track yet — we auto-derive one from entityId and push it up so
+  // the parent form reflects the new value.
+  onUpdate?: (fields: { bgmPrompt?: string; bgmDuration?: number; bgm?: string }) => void;
+}
+
+/**
+ * Derive a safe BGM track ID from an arbitrary entity ID. Zones/rooms
+ * use lowercase identifiers already, but strip anything exotic to keep
+ * the asset path legal.
+ */
+function deriveBgmId(entityId: string): string {
+  const cleaned = entityId.toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '');
+  return cleaned || 'bgm';
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -198,14 +211,17 @@ function AudioPreview({ entityType, entityId, bgm, bgmPrompt, bgmDuration, defau
   const effectiveDuration = localDuration || defaultBgmDuration || 120;
 
   const handleGenerate = async () => {
-    if (!assetPath || !effectivePrompt || generating) return;
+    if (!effectivePrompt || generating) return;
+    const effectiveBgm = bgm || deriveBgmId(entityId);
+    const targetPath = `audio/bgm/${effectiveBgm}.mp3`;
     setGenerating(true);
     try {
       await api.post('/generate/sound', {
         prompt: effectivePrompt,
         duration: effectiveDuration,
-        assetPath,
+        assetPath: targetPath,
       });
+      if (!bgm) onUpdate?.({ bgm: effectiveBgm });
       setCacheBust(Date.now());
     } catch (err: any) {
       alert(`Sound generation failed: ${err.message}`);
@@ -216,9 +232,12 @@ function AudioPreview({ entityType, entityId, bgm, bgmPrompt, bgmDuration, defau
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !assetPath) return;
+    if (!file) return;
+    const effectiveBgm = bgm || deriveBgmId(entityId);
+    const targetPath = `audio/bgm/${effectiveBgm}.mp3`;
     try {
-      await api.upload('/asset-mgmt/upload', file, { assetPath });
+      await api.upload('/asset-mgmt/upload', file, { assetPath: targetPath });
+      if (!bgm) onUpdate?.({ bgm: effectiveBgm });
       setCacheBust(Date.now());
     } catch (err: any) {
       alert(`Upload failed: ${err.message}`);
@@ -294,10 +313,10 @@ function AudioPreview({ entityType, entityId, bgm, bgmPrompt, bgmDuration, defau
       {/* Toolbar */}
       <div style={styles.toolbar}>
         <button
-          style={{ ...styles.toolBtnPrimary, opacity: generating || !assetPath || !effectivePrompt ? 0.5 : 1 }}
+          style={{ ...styles.toolBtnPrimary, opacity: generating || !effectivePrompt ? 0.5 : 1 }}
           onClick={handleGenerate}
-          disabled={generating || !assetPath || !effectivePrompt}
-          title="Generate audio with AI"
+          disabled={generating || !effectivePrompt}
+          title={bgm ? 'Generate audio with AI' : `Generate — auto-names track "${deriveBgmId(entityId)}"`}
         >
           <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
             <path d="M8 0l1.5 4.5L14 6l-4.5 1.5L8 12l-1.5-4.5L2 6l4.5-1.5z" />
@@ -306,10 +325,9 @@ function AudioPreview({ entityType, entityId, bgm, bgmPrompt, bgmDuration, defau
           Generate
         </button>
         <button
-          style={{ ...styles.toolBtn, opacity: assetPath ? 1 : 0.4 }}
+          style={styles.toolBtn}
           onClick={() => fileInputRef.current?.click()}
-          disabled={!assetPath}
-          title="Upload audio file"
+          title={bgm ? 'Upload audio file' : `Upload — auto-names track "${deriveBgmId(entityId)}"`}
         >
           Upload
         </button>

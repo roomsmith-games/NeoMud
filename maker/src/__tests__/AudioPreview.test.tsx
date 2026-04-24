@@ -64,6 +64,36 @@ describe('AudioPreview', () => {
     expect(screen.getByDisplayValue('120')).toBeInTheDocument()
   })
 
+  it('Generate is enabled and auto-derives track ID when bgm is empty', async () => {
+    const user = userEvent.setup()
+    const onUpdate = vi.fn()
+    const api = (await import('../api')).default as any
+
+    render(
+      <AudioPreview
+        entityType="zone"
+        entityId="Green-Hollow Fields!"
+        bgmPrompt="sweeping pastoral"
+        bgmDuration={45}
+        onUpdate={onUpdate}
+      />
+    )
+
+    const generateBtn = screen.getByRole('button', { name: /generate/i })
+    expect(generateBtn).not.toBeDisabled()
+    await user.click(generateBtn)
+
+    await waitFor(() => {
+      expect(api.post).toHaveBeenCalledWith('/generate/sound', expect.objectContaining({
+        assetPath: 'audio/bgm/green_hollow_fields.mp3',
+        prompt: 'sweeping pastoral',
+        duration: 45,
+      }))
+    })
+    // And parent form learns about the newly-named track
+    expect(onUpdate).toHaveBeenCalledWith({ bgm: 'green_hollow_fields' })
+  })
+
   it('fires onUpdate when prompt changes', async () => {
     const user = userEvent.setup()
     const onUpdate = vi.fn()
