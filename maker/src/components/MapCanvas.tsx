@@ -107,8 +107,8 @@ function inferDirection(dx: number, dy: number): string | null {
 }
 
 function MapCanvas({
-  rooms,
-  exits,
+  rooms: roomsProp,
+  exits: exitsProp,
   selectedRoomId,
   onSelectRoom,
   onCreateRoom,
@@ -122,6 +122,13 @@ function MapCanvas({
   zoneLabels = [],
   roomZoneColors,
 }: MapCanvasProps) {
+  // Defend against undefined array props at the boundary. The TS
+  // interface marks these required but a 6E bug shipped an `undefined`
+  // through (empty-project Zones view crash: Cannot read properties of
+  // undefined (reading 'find')). Normalising here keeps every `.find`
+  // / `.filter` / `.flatMap` below safe regardless of caller discipline.
+  const rooms = roomsProp ?? []
+  const exits = exitsProp ?? []
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
