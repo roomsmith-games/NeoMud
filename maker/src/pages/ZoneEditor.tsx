@@ -1127,8 +1127,23 @@ function ZoneEditor() {
     } catch {}
   };
 
-  const selectedZone = zones.find((z) => z.id === selectedZoneId);
-  const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
+  // 6E-bis: Render-time crash "Cannot read properties of undefined
+  // (reading 'find')" trips here when either state is unexpectedly
+  // undefined. useState<T[]>([]) should guarantee arrays, but a prod
+  // crash was reliably reproducible on stg. Optional chain keeps the
+  // render alive; the warn surfaces which state flipped for future
+  // root-causing.
+  if (!Array.isArray(zones) || !Array.isArray(rooms)) {
+    // eslint-disable-next-line no-console
+    console.warn('[ZoneEditor] unexpected non-array state', {
+      zonesIsArray: Array.isArray(zones),
+      roomsIsArray: Array.isArray(rooms),
+      zonesType: typeof zones,
+      roomsType: typeof rooms,
+    })
+  }
+  const selectedZone = zones?.find?.((z) => z.id === selectedZoneId);
+  const selectedRoom = rooms?.find?.((r) => r.id === selectedRoomId);
 
   return (
     <div style={styles.container}>
