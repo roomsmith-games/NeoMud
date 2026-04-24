@@ -39,6 +39,12 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server ./server
 COPY --from=build /app/prisma ./prisma
+# Prisma 7.7+ requires prisma.config.ts at runtime for `db push` (used by
+# createProject to initialize new per-user SQLite DBs). Without it the CLI
+# errors "The datasource.url property is required in your Prisma config
+# file when using prisma db push." The config reads DATABASE_URL from
+# process.env, which createProject sets via execSync env.
+COPY --from=build /app/prisma.config.ts ./
 
 # Create directories for persistent data
 RUN mkdir -p /app/projects /app/seed && chown -R node:node /app
