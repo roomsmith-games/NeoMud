@@ -32,8 +32,8 @@ describe('Import ZIP bomb protection', () => {
     // Instead, test the compression ratio check which is more interesting.
   })
 
-  it('rejects compressed file exceeding 100MB limit', async () => {
-    // We can't create a 100MB file in a unit test, but we can verify
+  it('rejects compressed file exceeding 200MB limit', async () => {
+    // We can't create a 200MB file in a unit test, but we can verify
     // the statSync check exists by testing a valid small file works
     const zip = new AdmZip()
     zip.addFile('manifest.json', Buffer.from('{"name":"test","version":"1.0.0"}'))

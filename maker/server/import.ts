@@ -8,7 +8,10 @@ import { getProjectsDir } from './projectContext.js'
 
 const MAX_ZIP_ENTRIES = 10_000
 const MAX_ZIP_DECOMPRESSED_SIZE = 500 * 1024 * 1024 // 500MB
-const MAX_COMPRESSED_SIZE = 100 * 1024 * 1024 // 100MB on disk
+// 200MB. Raised from 100MB on 2026-04-24 (Phase 6F) to accommodate the
+// official seed world bundle (113MB). Temporary headroom; the real fix
+// is slimming the seed — tracked as roomsmith-games/NeoMud#296.
+const MAX_COMPRESSED_SIZE = 200 * 1024 * 1024 // 200MB on disk
 const MAX_COMPRESSION_RATIO = 100 // reject suspiciously high ratios (ZIP bomb indicator)
 
 /**
