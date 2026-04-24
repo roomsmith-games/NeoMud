@@ -258,4 +258,92 @@ class PlatformAuthTest {
             assertIs<ServerMessage.AuthError>(err)
         }
     }
+
+    // ─── Anonymous (guest) platform sessions — regression for #32 ──────
+    //
+    // Platform mints role=GUEST JWTs from /api/v1/auth/anonymous. Game
+    // server must propagate that role in PlatformAuthOk (so the WASM
+    // client knows to route to guestRegister, not platform-register) and
+    // refuse PlatformRegister for that role (so anon users can't create
+    // persistent characters tied to the throwaway anon: userId).
+
+    @Test
+    fun testPlatformAuthOkPropagatesRole() = testApplication {
+        application { module(jdbcUrl = testDbUrl(), platformVerifierOverride = testVerifier()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+
+            val token = makeToken("anon:abc123", role = "GUEST")
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+
+            val authOk = receiveServerMessage()
+            assertIs<ServerMessage.PlatformAuthOk>(authOk)
+            assertEquals("anon:abc123", authOk.platformUserId)
+            assertEquals("GUEST", authOk.role)
+            assertTrue(authOk.needsCharacterCreation)
+        }
+    }
+
+    @Test
+    fun testRoleStillPropagatedForRegularUser() = testApplication {
+        // Backward-compat: a plain USER token must still work and report role=USER.
+        application { module(jdbcUrl = testDbUrl(), platformVerifierOverride = testVerifier()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+
+            val token = makeToken("user-regular", role = "USER")
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+
+            val authOk = receiveServerMessage()
+            assertIs<ServerMessage.PlatformAuthOk>(authOk)
+            assertEquals("USER", authOk.role)
+        }
+    }
+
+    @Test
+    fun testGuestRolePlatformRegisterRejected() = testApplication {
+        // Defense-in-depth: even if a misbehaving client tries to call
+        // PlatformRegister with an anon JWT, the server must refuse and
+        // direct them to the guest character flow.
+        application { module(jdbcUrl = testDbUrl(), platformVerifierOverride = testVerifier()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+
+            val token = makeToken("anon:def456", role = "GUEST")
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+            val authOk = receiveServerMessage()
+            assertIs<ServerMessage.PlatformAuthOk>(authOk)
+            assertEquals("GUEST", authOk.role)
+
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.PlatformRegister(
+                    characterName = "Sneaky",
+                    characterClass = "WARRIOR",
+                    race = "HUMAN",
+                    gender = "male",
+                    allocatedStats = warriorStats
+                )
+            )))
+
+            val err = receiveServerMessage()
+            assertIs<ServerMessage.AuthError>(err)
+            assertTrue(
+                err.reason.contains("Guest", ignoreCase = true) ||
+                    err.reason.contains("guest character", ignoreCase = true),
+                "Expected error to mention guest, got: ${err.reason}"
+            )
+        }
+    }
 }
