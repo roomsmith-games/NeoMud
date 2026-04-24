@@ -100,13 +100,29 @@ function Layout() {
   const { name } = useParams<{ name: string }>();
   const [readOnly, setReadOnly] = useState(false);
 
-  // Set the project scope so all API calls are prefixed with /projects/{name}
+  // Set the project scope SYNCHRONOUSLY during render so child editor
+  // components see the correct scope on their very first useEffect.
+  //
+  // Previously this was inside a useEffect, which meant the child's
+  // first data-fetching useEffect fired BEFORE the scope was set (React
+  // runs child effects before parent effects on mount). The child's
+  // api.get('/zones') would resolve to /maker-api/zones (unscoped),
+  // which the Express server matches to the SPA catch-all route and
+  // returns as text/html — the original-api.ts contract silently cast
+  // that to `undefined as Zone[]`, poisoning state and crashing render
+  // on the next `.find`/`.filter`/`.map`. api.ts now throws on non-JSON,
+  // but the real fix is making the scope available before children
+  // fetch — which is right here.
+  //
+  // setProjectScope is idempotent with the same name, so running it on
+  // every render is fine. Cleanup on unmount handled in useEffect below.
+  if (name) {
+    setProjectScope(name);
+  }
+
   useEffect(() => {
-    if (name) {
-      setProjectScope(name);
-    }
     return () => setProjectScope(null);
-  }, [name]);
+  }, []);
 
   return (
     <div style={styles.wrapper}>
