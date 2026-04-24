@@ -14,6 +14,14 @@
 # guess-the-duration ScheduleWakeup loops.
 set -euo pipefail
 
+# Operate on the repo the script lives in, regardless of the caller's cwd.
+# Without this, invoking /path/to/NeoMud-platform/scripts/wait-for-deploy.sh
+# from inside NeoMud's dir would resolve `git rev-parse HEAD` and
+# `gh run list` against the wrong repo.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
+
 WORKFLOW="${1:-}"
 HEAD_SHA=$(git rev-parse HEAD)
 
