@@ -108,6 +108,23 @@ export const logger = {
     emit('error', message, extras)
   },
 
+  /**
+   * Emit a metric data point as a structured log event. Better Stack
+   * treats logs+metrics as the same stream; queries filter on `metric`
+   * and aggregate on `value` + label fields.
+   *
+   * For counters: pass value=1 and label dimensions in `labels`.
+   * For gauges: pass the current value with labels.
+   * For histograms: emit one event per observation with value=observed.
+   *
+   * Example:
+   *   logger.metric('publish_attempts', 1, { outcome: 'allowed', plan: 'FREE' })
+   *   logger.metric('api_request_ms', 42, { route: '/worlds/:id/publish', status: 200 })
+   */
+  metric(name: string, value: number, labels: LogEventPayload = {}) {
+    emit('info', `metric:${name}`, { metric: name, value, ...labels })
+  },
+
   /** Exposed for tests — do not use in production code. */
   _isIngestionEnabled(): boolean {
     return getIngestionConfig() !== null

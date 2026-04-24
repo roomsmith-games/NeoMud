@@ -201,13 +201,17 @@ publishRouter.post('/', async (req, res, next) => {
     }
 
     const result = publish.body as PublishResult
+    const durationMs = Date.now() - startTime
     logger.info('maker_publish_success', {
       userId,
       projectName,
       worldId: result.id,
       slug: result.slug,
       version,
-      durationMs: Date.now() - startTime,
+      durationMs,
+    })
+    logger.metric('maker_publish_ms', durationMs, {
+      outcome: 'success',
     })
     res.status(200).json({
       worldId: result.id,
@@ -217,11 +221,15 @@ publishRouter.post('/', async (req, res, next) => {
       publicUrl: result.publicUrl,
     })
   } catch (err) {
+    const durationMs = Date.now() - startTime
     logger.error('maker_publish_error', {
       userId: req.user?.userId,
       projectName: req.projectName,
-      durationMs: Date.now() - startTime,
+      durationMs,
       message: err instanceof Error ? err.message : String(err),
+    })
+    logger.metric('maker_publish_ms', durationMs, {
+      outcome: 'error',
     })
     next(err)
   }

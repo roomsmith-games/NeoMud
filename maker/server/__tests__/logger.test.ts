@@ -142,3 +142,46 @@ describe('logger — Better Stack ingestion', () => {
     )).toBe(true)
   })
 })
+
+describe('logger.metric', () => {
+  it('emits a structured event with metric, value, and label fields', () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    logger.metric('publish_attempts', 1, { outcome: 'allowed', plan: 'FREE' })
+    expect(logSpy).toHaveBeenCalledTimes(1)
+    const parsed = JSON.parse(logSpy.mock.calls[0][0] as string)
+    expect(parsed).toMatchObject({
+      level: 'info',
+      message: 'metric:publish_attempts',
+      metric: 'publish_attempts',
+      value: 1,
+      outcome: 'allowed',
+      plan: 'FREE',
+    })
+  })
+
+  it('handles numeric values for histograms/gauges', () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    logger.metric('api_request_ms', 237, { route: '/worlds', status: 200 })
+    const parsed = JSON.parse(logSpy.mock.calls[0][0] as string)
+    expect(parsed.value).toBe(237)
+    expect(parsed.route).toBe('/worlds')
+    expect(parsed.status).toBe(200)
+  })
+
+  it('ships metrics through the same Better Stack pipeline as log events', async () => {
+    setIngestionEnv('tok', 'ingest.example.com')
+    const fetchSpy = vi.fn().mockResolvedValue(new Response('', { status: 202 }))
+    vi.stubGlobal('fetch', fetchSpy)
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+
+    logger.metric('draft_worlds_active', 3, {})
+    await new Promise((resolve) => setImmediate(resolve))
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1)
+    const body = JSON.parse(fetchSpy.mock.calls[0][1].body)
+    expect(body).toMatchObject({
+      metric: 'draft_worlds_active',
+      value: 3,
+    })
+  })
+})
