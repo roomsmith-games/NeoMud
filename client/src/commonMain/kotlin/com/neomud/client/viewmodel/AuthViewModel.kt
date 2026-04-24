@@ -17,6 +17,7 @@ import com.neomud.shared.model.SpellDef
 import com.neomud.shared.model.Stats
 import com.neomud.shared.protocol.ClientMessage
 import com.neomud.shared.protocol.ServerMessage
+import io.ktor.http.encodeURLQueryComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -204,8 +205,21 @@ class AuthViewModel(
         _serverHost = host
         _serverPort = port
         _useTls = useTls
-        _serverPath = path
-        wsClient.connect(host, port, useTls, viewModelScope, path)
+        // Append the platform JWT to the WS URL when present. The Platform's
+        // gameProxy gateway requires a `?token=<jwt>` query param on the
+        // upgrade request and rejects with 401 otherwise — without this the
+        // marketplace-launched session never opens a socket. Logged-in users
+        // get a real JWT; anonymous visitors get a guest JWT minted by
+        // Play.tsx via /api/v1/auth/anonymous. Empty token → don't append
+        // (preserves the legacy direct-connect path used by Android dev).
+        val pathWithToken = if (serverConfig.platformToken.isNotEmpty()) {
+            val sep = if (path.contains('?')) "&" else "?"
+            "$path${sep}token=${serverConfig.platformToken.encodeURLQueryComponent()}"
+        } else {
+            path
+        }
+        _serverPath = pathWithToken
+        wsClient.connect(host, port, useTls, viewModelScope, pathWithToken)
     }
 
     fun login(username: String, password: String) {
