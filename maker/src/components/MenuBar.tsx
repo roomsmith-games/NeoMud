@@ -171,6 +171,22 @@ function MenuBar() {
       setPlaytestStatus('active');
       window.open(body.playPath, '_blank', 'noopener,noreferrer');
     } catch (err) {
+      // Preflight validation failures from the server arrive as 400 with
+      // body.validation = { errors, warnings }. Surface them via the same
+      // modal Validate / Package use, so the user sees the structured list
+      // instead of just an inline status badge they have to mentally re-run
+      // Validate to interpret.
+      const body = err && typeof err === 'object' ? (err as { body?: unknown }).body : null;
+      if (
+        body && typeof body === 'object' && 'validation' in body
+        && body.validation && typeof body.validation === 'object'
+        && 'errors' in body.validation && Array.isArray(body.validation.errors)
+      ) {
+        const v = body.validation as { errors: string[]; warnings: string[] };
+        setValidation({ errors: v.errors, warnings: v.warnings ?? [] });
+        setPlaytestStatus('idle');
+        return;
+      }
       setPlaytestError(err instanceof Error ? err.message : 'Playtest failed');
       setPlaytestStatus('error');
     }

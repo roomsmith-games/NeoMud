@@ -1,5 +1,8 @@
 import { Router } from 'express'
+import fs from 'fs'
+import path from 'path'
 import { buildNmdBundle } from './export.js'
+import { validateProject } from '../validate.js'
 import {
   getActivePlaytest,
   setActivePlaytest,
@@ -115,6 +118,23 @@ playtestRouter.post('/', async (req, res, next) => {
     const authHeader = forwardAuth(req)
     if (!authHeader) {
       res.status(401).json({ error: 'Authentication required' })
+      return
+    }
+
+    // Preflight validation — refuse to spawn a container that's destined
+    // to crash. The game-server's WorldLoader hard-throws on common bundle
+    // gaps (no spawnRoom, no character classes, etc.), and the orchestrator
+    // then takes a 40-second health-check timeout before the user sees a
+    // useless 500. validateProject already runs the same checks for the
+    // Validate button — invoke it here and return 400 with structured
+    // errors so the client can surface them.
+    const assetExists = (p: string) => fs.existsSync(path.join(assetsDir, p))
+    const validation = await validateProject(prisma, assetExists)
+    if (validation.errors.length > 0) {
+      res.status(400).json({
+        error: 'Cannot start playtest — fix the following before retrying',
+        validation,
+      })
       return
     }
 

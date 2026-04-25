@@ -6,6 +6,15 @@ import { playtestRouter } from '../routes/playtest.js'
 import { _resetAllActivePlaytests, setActivePlaytest, getActivePlaytest } from '../playtestState.js'
 import { slugifyProjectName } from '../routes/playtest.js'
 
+// Default-pass the playtest-preflight validation. The pre-#298-trio tests
+// here exercise the platform-call flow on top of an empty test project,
+// which would otherwise fail validation (no spawnRoom). Specific tests
+// that exercise the validation branch override this with mockResolvedValueOnce.
+vi.mock('../validate.js', () => ({
+  validateProject: vi.fn().mockResolvedValue({ errors: [], warnings: [] }),
+}))
+import { validateProject } from '../validate.js'
+
 /**
  * Mount the playtest router on top of a standard test-app. The helper
  * already injects a test user and project context onto each request,
@@ -144,6 +153,35 @@ describe('POST /api/projects/:name/playtest', () => {
     const startCall = fetchCalls.find((c) => c.url.endsWith('/start'))
     expect((upsertCall!.init!.headers as Record<string, string>).Authorization).toBe(BEARER)
     expect((startCall!.init!.headers as Record<string, string>).Authorization).toBe(BEARER)
+  })
+
+  it('rejects with 400 + structured validation when the project would crash the game-server', async () => {
+    // Simulates the uat-dungeon failure: no zone has a spawnRoom set.
+    // Without preflight, this used to upsert + spawn a container that
+    // hard-throws inside WorldLoader and ate a 40-second health-check
+    // timeout. We expect to short-circuit at the maker before any platform
+    // call happens.
+    vi.mocked(validateProject).mockResolvedValueOnce({
+      errors: ['No zone defines a spawnRoom. At least one zone must specify a spawnRoom.'],
+      warnings: [],
+    })
+
+    mockFetch(() => new Response('should not be called', { status: 500 }))
+
+    const res = await request(app)
+      .post(`/api/projects/${projectName}/playtest`)
+      .set('Authorization', BEARER)
+      .send({})
+
+    expect(res.status).toBe(400)
+    expect(res.body.error).toMatch(/fix the following/i)
+    expect(res.body.validation.errors).toContain(
+      'No zone defines a spawnRoom. At least one zone must specify a spawnRoom.'
+    )
+    // No platform calls should have been made.
+    expect(fetchCalls.length).toBe(0)
+    // No active playtest should have been recorded.
+    expect(getActivePlaytest(TEST_USER_ID)).toBeUndefined()
   })
 
   it('stops a prior playtest for a different project before starting the new one', async () => {
