@@ -852,7 +852,6 @@ function ZoneEditor() {
       if (globalOccupied) return;
       const roomSlug = `${selectedZoneId}_room_${x}_${y}`;
       const roomName = `New Room (${x},${y})`;
-      if (!window.confirm(`Create new room at grid (${x}, ${y})?`)) return;
       try {
         const room = await api.post<Room>(`/zones/${selectedZoneId}/rooms`, {
           id: roomSlug,

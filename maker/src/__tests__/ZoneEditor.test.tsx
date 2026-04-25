@@ -175,8 +175,8 @@ describe('ZoneEditor', () => {
 
     await user.click(screen.getByTestId('create-room'))
 
-    // confirm dialog should have been called
-    expect(window.confirm).toHaveBeenCalledWith(expect.stringContaining('(3, 4)'))
+    // #299: clicking an empty cell creates a room directly — no native confirm
+    expect(window.confirm).not.toHaveBeenCalled()
 
     await waitFor(() => {
       expect(mockApi.post).toHaveBeenCalledWith(
@@ -184,20 +184,6 @@ describe('ZoneEditor', () => {
         expect.objectContaining({ x: 3, y: 4, name: 'New Room (3,4)' })
       )
     })
-  })
-
-  it('handleCreateRoom rejects occupied cells', async () => {
-    const user = userEvent.setup()
-    render(<ZoneEditor />)
-    await selectZone(user)
-
-    // Mock MapCanvas triggers createRoom at (0, 0) which is already occupied by town:square
-    // We need a custom mock for this specific test
-    // The default mock creates at (3, 4) which is unoccupied, so let's verify
-    // the confirmation still triggers for unoccupied
-    await user.click(screen.getByTestId('create-room'))
-
-    expect(window.confirm).toHaveBeenCalled()
   })
 
   it('handleCreateExit calls api.post with direction', async () => {
