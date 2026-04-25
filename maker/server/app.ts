@@ -6,6 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { authenticate } from './middleware/auth.js'
+import { errorHandler } from './middleware/errorHandler.js'
 import { requestMetrics } from './middleware/requestMetrics.js'
 import { projectMiddleware, getProjectsDir } from './projectContext.js'
 import { projectsRouter } from './routes/projects.js'
@@ -110,6 +111,12 @@ projectRouter.use('/assets', (req, res, next) => {
 })
 
 app.use('/api/projects/:name', projectRouter)
+
+// ─── JSON error handler (must follow API routes) ─────────
+// Without this, any route that calls next(err) falls through to Express's
+// default HTML error page, which the SPA can't parse and surfaces as a
+// generic "Something went wrong". See errorHandler.ts header for context.
+app.use('/api', errorHandler)
 
 // ─── Production: serve React static build ────────────────
 if (process.env.NODE_ENV === 'production') {
