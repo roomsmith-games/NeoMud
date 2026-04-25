@@ -260,8 +260,18 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
     logger.info("Loading world from bundle: $worldFile")
     val dataSource: WorldDataSource = NmdBundleDataSource(ZipFile(file))
 
-    // Load world
-    val loadResult = WorldLoader.load(dataSource)
+    // Load world. WorldLoader hard-throws on common bundle gaps (no
+    // spawnRoom, malformed zone JSON, etc.). When this happens inside the
+    // Ktor application module, the exception is swallowed by Ktor's
+    // startup machinery — the only visible log is the JVM shutdown hook
+    // firing "Shutdown signal received". That's useless for diagnosing a
+    // bad bundle. Catch, log with stack, rethrow so Ktor still aborts.
+    val loadResult = try {
+        WorldLoader.load(dataSource)
+    } catch (e: Throwable) {
+        logger.error("World load failed for bundle $worldFile: ${e.message}", e)
+        throw e
+    }
     val worldGraph = loadResult.worldGraph
     val classCatalog = loadResult.classCatalog
     val itemCatalog = loadResult.itemCatalog
