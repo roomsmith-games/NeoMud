@@ -44,4 +44,42 @@ if [ -z "$RUN_ID" ]; then
 fi
 
 echo "Watching run $RUN_ID..."
-exec gh run watch "$RUN_ID" --exit-status
+
+# `gh run watch` opens a long-lived API stream; transient TCP resets
+# (network blip, GitHub edge-side close) make it exit non-zero even when
+# the run is still progressing or has actually succeeded. Without this
+# retry loop, the caller sees a deploy "failure" that's really just a
+# socket hiccup. Loop: run watch, then check the actual conclusion via
+# `gh run view`. Retry if the run is still in progress; report the real
+# status if the run has finished.
+MAX_ATTEMPTS=5
+attempt=1
+while [ $attempt -le $MAX_ATTEMPTS ]; do
+  set +e
+  gh run watch "$RUN_ID" --exit-status
+  watch_exit=$?
+  set -e
+
+  state=$(gh run view "$RUN_ID" --json status,conclusion --jq '.status + ":" + (.conclusion // "")' 2>/dev/null || echo "unknown:")
+  status="${state%:*}"
+  conclusion="${state#*:}"
+
+  case "$status" in
+    completed)
+      case "$conclusion" in
+        success) echo "Deploy succeeded"; exit 0 ;;
+        failure|cancelled|timed_out|action_required) echo "Deploy $conclusion (run $RUN_ID)"; exit 1 ;;
+        *) echo "Deploy completed with unknown conclusion: $conclusion"; exit 1 ;;
+      esac ;;
+    in_progress|queued|requested|waiting|pending)
+      echo "Watch exited ($watch_exit) but run is still $status — retrying ($attempt/$MAX_ATTEMPTS)"
+      sleep 5
+      attempt=$((attempt + 1)) ;;
+    *)
+      echo "Could not determine run state (status=$status); giving up"
+      exit "$watch_exit" ;;
+  esac
+done
+
+echo "Exhausted $MAX_ATTEMPTS retries while run was still in progress"
+exit 3
