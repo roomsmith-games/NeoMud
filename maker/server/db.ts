@@ -54,21 +54,15 @@ export async function listProjects(userId: string): Promise<ProjectInfo[]> {
     }
   }
 
-  // Shared templates (e.g., _default_world)
-  const sharedDir = path.join(getProjectsDir(), '_shared')
-  if (fs.existsSync(sharedDir)) {
-    const sharedNames = fs
-      .readdirSync(sharedDir)
-      .filter((f) => f.endsWith('.db'))
-      .map((f) => f.replace('.db', ''))
-
-    for (const name of sharedNames) {
-      // Don't duplicate if user already has a project with the same name
-      if (!results.some((r) => r.name === name)) {
-        results.push({ name, readOnly: true })
-      }
-    }
-  }
+  // Shared templates (`_shared/`, e.g. `_default_world`) are intentionally
+  // NOT surfaced here. They were an artifact of the pre-Platform design
+  // when the maker also hosted the demo world. Demos now live in the
+  // marketplace; the maker is for user-created worlds. The on-disk
+  // `_shared/` directory and the auto-import on startup are left intact
+  // (harmless when not listed) so that fork-from-template remains an
+  // option for the future tutorial work, but no current UI surfaces it.
+  // See issue #298. forkProject and POST /:name/fork are dormant for the
+  // same reason — listed only via direct project name.
 
   return results
 }
