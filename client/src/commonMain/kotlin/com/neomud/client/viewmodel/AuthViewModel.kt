@@ -212,10 +212,14 @@ class AuthViewModel(
         _serverHost = host
         _serverPort = port
         _useTls = useTls
-        // Append the platform JWT to the WS URL when present. The Platform's
-        // gameProxy gateway requires a `?token=<jwt>` query param on the
-        // upgrade request and rejects with 401 otherwise — without this the
-        // marketplace-launched session never opens a socket. Logged-in users
+        // _serverPath stores the BARE path (no query string) — `serverBaseUrl`
+        // strips the trailing `/game` from it to compose asset URLs, and any
+        // query string here would defeat that strip and pollute every asset
+        // URL with the JWT (issue #297). The token-augmented path is what
+        // wsClient.connect needs (gameProxy gateway requires ?token=<jwt> on
+        // the upgrade or returns 401), but it must NOT leak into _serverPath.
+        _serverPath = path
+        // Append the platform JWT to the WS URL when present. Logged-in users
         // get a real JWT; anonymous visitors get a guest JWT minted by
         // Play.tsx via /api/v1/auth/anonymous. Empty token → don't append
         // (preserves the legacy direct-connect path used by Android dev).
@@ -225,7 +229,6 @@ class AuthViewModel(
         } else {
             path
         }
-        _serverPath = pathWithToken
         wsClient.connect(host, port, useTls, viewModelScope, pathWithToken)
     }
 
