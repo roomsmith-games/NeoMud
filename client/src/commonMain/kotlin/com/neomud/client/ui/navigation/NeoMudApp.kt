@@ -239,8 +239,18 @@ fun NeoMudApp(
                     authViewModel.guestLogin(characterName, characterClass, race, gender, allocatedStats)
                 },
                 onBack = {
+                    // Auto-guest from the marketplace pops `login` inclusively when it
+                    // navigates to `guestRegister`, so the back stack is empty here —
+                    // `popBackStack()` returns false and strands the user (NeoMud#300).
+                    // Mirror the logout-from-game behavior: bounce back to the
+                    // marketplace SPA. The non-skipMarketplace path (worldBrowser →
+                    // login → guestRegister) still has frames to pop.
                     authViewModel.clearError()
-                    navController.popBackStack()
+                    if (serverConfig.skipMarketplace) {
+                        returnToMarketplace()
+                    } else {
+                        navController.popBackStack()
+                    }
                 },
                 onClearError = { authViewModel.clearError() }
             )
