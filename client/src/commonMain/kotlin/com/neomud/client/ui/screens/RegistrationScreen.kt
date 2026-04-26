@@ -29,6 +29,10 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -1160,11 +1164,20 @@ private fun StatAllocationStep(
                 fontWeight = FontWeight.Bold,
                 color = TorchAmber
             )
+            // Explicit semantics + LiveRegion so the WASM accessibility bridge
+            // re-emits the CP counter every time it recomposes (NeoMud#271).
+            // Compose's auto-derived semantics aren't reliably picked up by the
+            // WASM a11y tree when the source Text lives inside a scrollable
+            // ancestor; declaring contentDescription here forces the update.
             Text(
                 "CP Used: $cpUsed / ${StatAllocator.CP_POOL}",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (cpRemaining == 0) VerdantUpgrade else BurnishedGold
+                color = if (cpRemaining == 0) VerdantUpgrade else BurnishedGold,
+                modifier = Modifier.semantics {
+                    contentDescription = "CP used $cpUsed of ${StatAllocator.CP_POOL}"
+                    liveRegion = LiveRegionMode.Polite
+                }
             )
         }
 
@@ -1194,12 +1207,17 @@ private fun StatAllocationStep(
         )
 
         Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())) {
+            // key(...) gives each row a stable composition identity so Compose
+            // doesn't re-key positionally on stat changes — keeps the WASM
+            // a11y tree pointing at the right node when values mutate (#271).
             statEntries.forEach { entry ->
-                StatAllocationRow(
-                    entry = entry,
-                    cpRemaining = cpRemaining,
-                    onStatsChanged = onStatsChanged
-                )
+                key(entry.name) {
+                    StatAllocationRow(
+                        entry = entry,
+                        cpRemaining = cpRemaining,
+                        onStatsChanged = onStatsChanged
+                    )
+                }
             }
         }
 
@@ -1563,9 +1581,19 @@ private fun StatAllocationRow(
 
         Spacer(modifier = Modifier.weight(1f))
 
+        // Stat value gets explicit semantics + LiveRegion. Without this, the
+        // WASM accessibility tree never re-emits when `entry.current` changes
+        // (NeoMud#271 — values update on canvas but a11y stays stale). The
+        // contentDescription includes the stat name so a screen reader hears
+        // "Strength value 21" rather than just "21" stripped of context.
         Text(
             text = "${entry.current}",
-            modifier = Modifier.width(40.dp),
+            modifier = Modifier
+                .width(40.dp)
+                .semantics {
+                    contentDescription = "${entry.name} value ${entry.current}"
+                    liveRegion = LiveRegionMode.Polite
+                },
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = BurnishedGold,
