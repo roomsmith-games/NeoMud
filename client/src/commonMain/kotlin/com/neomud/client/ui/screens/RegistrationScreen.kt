@@ -1166,9 +1166,14 @@ private fun StatAllocationStep(
             )
             // Explicit semantics + LiveRegion so the WASM accessibility bridge
             // re-emits the CP counter every time it recomposes (NeoMud#271).
-            // Compose's auto-derived semantics aren't reliably picked up by the
-            // WASM a11y tree when the source Text lives inside a scrollable
-            // ancestor; declaring contentDescription here forces the update.
+            // Compose's auto-derived semantics aren't reliably refreshed by the
+            // WASM a11y bridge after recomposition; declaring contentDescription
+            // here forces the update. We keep liveRegion=Polite on this single
+            // header — it's the canonical "something changed" signal for the
+            // whole step, so a screen reader gets one audible confirmation per
+            // tap. The individual stat rows deliberately do NOT set liveRegion
+            // (would announce all 6 rows on every change — chatty), relying on
+            // their contentDescription alone for the stale-tree fix.
             Text(
                 "CP Used: $cpUsed / ${StatAllocator.CP_POOL}",
                 fontSize = 14.sp,
@@ -1581,18 +1586,22 @@ private fun StatAllocationRow(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Stat value gets explicit semantics + LiveRegion. Without this, the
-        // WASM accessibility tree never re-emits when `entry.current` changes
+        // Stat value gets explicit semantics. Without this, the WASM
+        // accessibility tree never re-emits when `entry.current` changes
         // (NeoMud#271 — values update on canvas but a11y stays stale). The
         // contentDescription includes the stat name so a screen reader hears
         // "Strength value 21" rather than just "21" stripped of context.
+        // Deliberately NO liveRegion here — all 6 rows recompose on any +/-,
+        // so liveRegion=Polite would queue 6 announcements per tap. The CP
+        // Used header up in StatAllocationStep is the single live region for
+        // the whole step; per-row updates are reachable on demand via the a11y
+        // tree but don't auto-announce.
         Text(
             text = "${entry.current}",
             modifier = Modifier
                 .width(40.dp)
                 .semantics {
                     contentDescription = "${entry.name} value ${entry.current}"
-                    liveRegion = LiveRegionMode.Polite
                 },
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
