@@ -253,7 +253,9 @@ async function processAudio(file) {
     return;
   }
 
-  const tmpFile = file + '.slim.tmp.mp3';
+  // Tmp suffix has no .mp3 extension so a partial file from a crashed ffmpeg
+  // run won't be re-globbed as a BGM track on the next invocation.
+  const tmpFile = file + '.slim.tmp';
   const channels = args.mono ? '1' : '2';
   try {
     execFileSync('ffmpeg', [

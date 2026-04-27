@@ -268,6 +268,8 @@ Image generation prompts are stored in the data files:
 
 `scripts/` holds standalone Node scripts with their own deps in `scripts/package.json` (separate from maker/server runtime). Run from repo root with `node scripts/<name>.mjs`.
 
+**Prerequisites** (one-time setup): `cd scripts && npm install` for `sharp`, plus `brew install ffmpeg` for the audio re-encode path of `slim-assets.mjs`. The `scripts/node_modules/` directory is gitignored.
+
 - **`slim-assets.mjs`** — resize/re-encode `default_world_src/assets/` files to spec dimensions (per the Asset Image Pipeline table) and BGM to 96kbps stereo. Idempotent: skips files already at-or-below target dims. Atomic writes via tmp-then-rename. Flags: `--category {coins|items|rooms|npcs|players|audio|all}`, `--dry-run`, `--verbose`, `--update-zones` (rooms only — rewrites `.jpg` zone JSON refs to `.webp`), `--mono` (audio only — downmix to mono 96kbps). Always `--dry-run` first to preview byte deltas. Run any time the bundle grows unexpectedly.
 - **`remove-bg.mjs`** — strip backgrounds from generated sprite WebPs via rembg (ML segmentation) or `--white` flood-fill mode for solid-white backgrounds.
 - **`doctor.sh`** — environment health check (PATH, MCP servers, JAVA_HOME). Run when anything looks off; never spelunk through `~/.claude/` or `~/.mcp.json` directly.
