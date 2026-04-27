@@ -30,7 +30,8 @@ class MoveCommand(
     private val skillCatalog: SkillCatalog,
     private val classCatalog: ClassCatalog,
     private val movementTrailManager: com.neomud.server.game.MovementTrailManager? = null,
-    private val tutorialService: com.neomud.server.game.TutorialService? = null
+    private val tutorialService: com.neomud.server.game.TutorialService? = null,
+    private val trapManager: com.neomud.server.game.trap.TrapManager? = null
 ) {
     var departureRecorder: ((String, String, Direction) -> Unit)? = null
     suspend fun execute(session: PlayerSession, direction: Direction) {
@@ -229,6 +230,10 @@ class MoveCommand(
         val groundItems = roomItemManager.getGroundItems(targetRoomId)
         val groundCoins = roomItemManager.getGroundCoins(targetRoomId)
         session.send(ServerMessage.RoomItemsUpdate(groundItems, groundCoins))
+
+        // Resolve passive ON_ENTER traps. Fires perception checks and damage; player
+        // already has the room rendered so the damage feedback lands in context.
+        trapManager?.onPlayerEntered(session, targetRoomId)
 
         // Auto-detect trainer in room
         if (npcManager.getTrainerInRoom(targetRoomId) != null) {

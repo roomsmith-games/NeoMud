@@ -100,6 +100,7 @@ class InteractCommand(
             "MONSTER_SPAWN" -> executeMonsterSpawn(session, roomId, feat.actionData)
             "ROOM_EFFECT" -> executeRoomEffect(session, feat.actionData)
             "TELEPORT" -> executeTeleport(session, roomId, feat.actionData)
+            "DAMAGE_TRAP" -> executeDamageTrap(session, feat)
             else -> {
                 session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
                 false
@@ -236,6 +237,65 @@ class InteractCommand(
             }
         }
 
+        return true
+    }
+
+    /**
+     * Player-triggered DAMAGE_TRAP — e.g. a chest that hurts when opened.
+     * Shares damage/save math with TrapManager via TrapResolver. Does NOT
+     * mark `trippedTraps` (that's an ON_ENTER concept); the existing
+     * `markInteractableUsed` flow handles cooldown/reset for player-triggered
+     * traps.
+     */
+    private suspend fun executeDamageTrap(
+        session: com.neomud.server.session.PlayerSession,
+        feat: com.neomud.shared.model.RoomInteractable
+    ): Boolean {
+        val player = session.player ?: return false
+        val data = feat.actionData
+
+        val baseDamage = data["damage"]?.toIntOrNull() ?: 0
+        val saveStat = data["saveStat"] ?: ""
+        val saveDC = data["saveDC"]?.toIntOrNull() ?: 0
+        val saveType = when (data["saveType"]?.uppercase()) {
+            "DODGE" -> com.neomud.server.game.trap.TrapResolver.SaveType.DODGE
+            "RESIST" -> com.neomud.server.game.trap.TrapResolver.SaveType.RESIST
+            else -> com.neomud.server.game.trap.TrapResolver.SaveType.NONE
+        }
+
+        val outcome = com.neomud.server.game.trap.TrapResolver.resolveSave(
+            stats = session.effectiveStats(),
+            level = player.level,
+            saveStat = saveStat,
+            saveDC = saveDC,
+            saveType = saveType
+        )
+        val damage = com.neomud.server.game.trap.TrapResolver.computeDamage(baseDamage, outcome)
+
+        val flavor = when (outcome) {
+            com.neomud.server.game.trap.TrapResolver.SaveOutcome.AVOID ->
+                data["dodgeMessage"] ?: "You narrowly avoid the ${feat.label}!"
+            com.neomud.server.game.trap.TrapResolver.SaveOutcome.HALF ->
+                data["resistMessage"] ?: "You partially resist the ${feat.label}. (-$damage HP)"
+            com.neomud.server.game.trap.TrapResolver.SaveOutcome.FAIL ->
+                data["damageMessage"] ?: "${feat.label} hits you! (-$damage HP)"
+        }
+
+        if (damage > 0) {
+            val effect = EffectApplicator.applyEffect(
+                type = "DAMAGE",
+                magnitude = damage,
+                customMessage = flavor,
+                player = player,
+                effectiveMaxHp = session.effectiveMaxHp()
+            )
+            if (effect != null) {
+                session.player = player.copy(currentHp = effect.newHp)
+                session.send(ServerMessage.EffectTick("DAMAGE", effect.message, effect.newHp, newMp = effect.newMp))
+            }
+        } else {
+            session.send(ServerMessage.SystemMessage(flavor))
+        }
         return true
     }
 

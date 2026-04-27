@@ -74,7 +74,8 @@ class CommandProcessor(
     private val movementTrailManager: MovementTrailManager? = null,
     private val pcSpriteCatalog: PcSpriteCatalog? = null,
     private val tutorialService: TutorialService? = null,
-    private val platformTokenVerifier: PlatformTokenVerifier? = null
+    private val platformTokenVerifier: PlatformTokenVerifier? = null,
+    private val trapManager: com.neomud.server.game.trap.TrapManager? = null
 ) {
     private val logger = LoggerFactory.getLogger(CommandProcessor::class.java)
 
@@ -114,7 +115,7 @@ class CommandProcessor(
         moveCommand.departureRecorder = loop::recordDeparture
     }
 
-    private val moveCommand = MoveCommand(worldGraph, sessionManager, npcManager, playerRepository, roomItemManager, skillCatalog, classCatalog, movementTrailManager, tutorialService)
+    private val moveCommand = MoveCommand(worldGraph, sessionManager, npcManager, playerRepository, roomItemManager, skillCatalog, classCatalog, movementTrailManager, tutorialService, trapManager)
     private val lookCommand = LookCommand(worldGraph, sessionManager, npcManager, roomItemManager, skillCatalog, classCatalog, tutorialService)
     private val sayCommand = SayCommand(sessionManager, adminCommand)
     private val attackCommand = AttackCommand(npcManager, worldGraph)

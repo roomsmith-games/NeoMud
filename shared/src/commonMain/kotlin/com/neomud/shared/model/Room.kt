@@ -26,7 +26,13 @@ data class RoomInteractable(
     val perceptionDC: Int = 0,
     val cooldownTicks: Int = 0,
     val resetTicks: Int = 0,
-    val sound: String = ""
+    val sound: String = "",
+    /**
+     * When this interactable fires. Defaults to `ON_ACTION` (player must
+     * explicitly interact). `ON_ENTER` is a passive trap fired by
+     * TrapManager on room entry. Future: `ON_TICK`, `ON_ROOM_ACTION`.
+     */
+    val triggerType: String = "ON_ACTION"
 )
 
 @Serializable

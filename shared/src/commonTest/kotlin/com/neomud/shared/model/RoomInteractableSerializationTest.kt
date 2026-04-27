@@ -136,4 +136,57 @@ class RoomInteractableSerializationTest {
         assertTrue(encoded.contains("\"difficultyCheck\":\"AGILITY\""))
         assertTrue(encoded.contains("\"failureMessage\":\"fail\""))
     }
+
+    @Test
+    fun testLegacyJsonParsesWithoutTriggerType() {
+        // Existing zone JSONs were authored before triggerType existed.
+        // They must continue to deserialize cleanly with the ON_ACTION default.
+        val legacyJson = """{"id":"old_lever","label":"Old Lever","description":"It works.","actionType":"EXIT_OPEN","actionData":{"direction":"NORTH"}}"""
+        val decoded = json.decodeFromString(RoomInteractable.serializer(), legacyJson)
+        assertEquals("ON_ACTION", decoded.triggerType)
+    }
+
+    @Test
+    fun testOnEnterTriggerTypeRoundTrip() {
+        val original = RoomInteractable(
+            id = "trap_dart_1",
+            label = "Hidden Dart Trap",
+            description = "A dart whistles out of the wall!",
+            actionType = "DAMAGE_TRAP",
+            actionData = mapOf("damage" to "8", "damageType" to "physical"),
+            perceptionDC = 12,
+            triggerType = "ON_ENTER"
+        )
+        val encoded = json.encodeToString(RoomInteractable.serializer(), original)
+        val decoded = json.decodeFromString(RoomInteractable.serializer(), encoded)
+        assertEquals(original, decoded)
+        assertEquals("ON_ENTER", decoded.triggerType)
+        assertTrue(encoded.contains("\"triggerType\":\"ON_ENTER\""))
+    }
+
+    @Test
+    fun testDamageTrapWithSaveActionDataRoundTrip() {
+        val original = RoomInteractable(
+            id = "trap_glyph_fire",
+            label = "Fire Glyph",
+            description = "Flames erupt from the floor!",
+            actionType = "DAMAGE_TRAP",
+            actionData = mapOf(
+                "damage" to "15",
+                "damageType" to "fire",
+                "saveStat" to "AGILITY",
+                "saveDC" to "14",
+                "saveType" to "DODGE",
+                "damageMessage" to "You are scorched!",
+                "dodgeMessage" to "You leap back just in time!"
+            ),
+            perceptionDC = 16,
+            triggerType = "ON_ENTER"
+        )
+        val encoded = json.encodeToString(RoomInteractable.serializer(), original)
+        val decoded = json.decodeFromString(RoomInteractable.serializer(), encoded)
+        assertEquals(original, decoded)
+        assertEquals("AGILITY", decoded.actionData["saveStat"])
+        assertEquals("DODGE", decoded.actionData["saveType"])
+    }
 }

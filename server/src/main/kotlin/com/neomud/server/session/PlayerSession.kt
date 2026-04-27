@@ -62,6 +62,11 @@ class PlayerSession(
     val discoveredInteractables: MutableSet<String> = mutableSetOf()  // "roomId::featureId"
     val interactableCooldowns: MutableMap<String, Int> = mutableMapOf() // "roomId::featureId" -> ticks
 
+    // Trap state — once a passive trap has fired against this character, don't
+    // re-fire on subsequent room entries until something resets it. In-memory
+    // for MVP; persists for the session only.
+    val trippedTraps: MutableSet<String> = mutableSetOf()  // "roomId::featureId"
+
     fun hasDiscoveredExit(roomId: RoomId, direction: Direction): Boolean =
         "$roomId:$direction" in discoveredHiddenExits
 
@@ -85,6 +90,13 @@ class PlayerSession(
 
     fun discoverInteractable(roomId: RoomId, featureId: String) {
         discoveredInteractables.add("$roomId::$featureId")
+    }
+
+    fun hasTrippedTrap(roomId: RoomId, featureId: String): Boolean =
+        "$roomId::$featureId" in trippedTraps
+
+    fun markTrapTripped(roomId: RoomId, featureId: String) {
+        trippedTraps.add("$roomId::$featureId")
     }
 
     // Rate limiting (token bucket)
