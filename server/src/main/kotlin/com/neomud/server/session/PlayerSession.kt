@@ -1,6 +1,7 @@
 package com.neomud.server.session
 
 import com.neomud.server.game.GameConfig
+import com.neomud.server.game.progression.Perception
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.shared.model.*
 import com.neomud.shared.protocol.MessageSerializer
@@ -122,6 +123,9 @@ class PlayerSession(
         }
         return p.stats.copy(strength = str, agility = agi, intellect = int, willpower = wil)
     }
+
+    /** Derived perception from effective stats — picks up INT/AGI buffs automatically. */
+    fun effectivePerception(): Int = Perception.compute(effectiveStats())
 
     /** Sum of BUFF_DAMAGE magnitudes from active effects. */
     fun effectiveDamageBonus(): Int =
