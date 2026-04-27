@@ -130,7 +130,7 @@
           "sound": ""
         }
       ],
-      "backgroundImage": "/assets/images/rooms/town_cellar.jpg",
+      "backgroundImage": "/assets/images/rooms/town_cellar.webp",
       "departSound": "footstep_wood",
       "imagePrompt": "First-person view standing in a dim stone cellar beneath a tavern. Flat flagstone floor filling the lower third. Wooden barrels and crates line both walls receding into shadow. A single sputtering torch on the left wall. Cobwebs in corners. A wooden ladder leads up through a trapdoor in the ceiling. A rusty iron lever on the stone wall near the ladder. No people or creatures.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
@@ -148,7 +148,7 @@
         "WEST": "town:market",
         "EAST": "town:forge"
       },
-      "backgroundImage": "/assets/images/rooms/town_magic_shop.jpg",
+      "backgroundImage": "/assets/images/rooms/town_magic_shop.webp",
       "bgm": "magic_shop_arcane",
       "departSound": "footstep_wood",
       "imagePrompt": "First-person view standing inside a narrow arcane magic shop. Flat dark wooden floor filling the lower third. Shelves overflowing with scrolls, potions, and crystal orbs lining both walls. Floating crystals casting prismatic light near the ceiling. A glass display case ahead with glowing rings and amulets. Runes glowing on the doorframe. No people or creatures.",

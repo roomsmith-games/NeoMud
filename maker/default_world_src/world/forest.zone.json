@@ -114,7 +114,7 @@
       "exits": {
         "EAST": "forest:deep"
       },
-      "backgroundImage": "/assets/images/rooms/forest_cave.jpg",
+      "backgroundImage": "/assets/images/rooms/forest_cave.webp",
       "departSound": "footstep_stone",
       "imagePrompt": "First-person view standing inside a small natural cave. Rough stone floor filling the lower third. Low ceiling with water droplets. Bioluminescent moss on walls casting blue-green glow. Narrow entrance visible behind with vines. Damp and mysterious atmosphere. No people or creatures.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
@@ -149,7 +149,7 @@
         "SOUTH": "forest:deep",
         "NORTH": "marsh:edge"
       },
-      "backgroundImage": "/assets/images/rooms/forest_ruins.jpg",
+      "backgroundImage": "/assets/images/rooms/forest_ruins.webp",
       "departSound": "footstep_dirt",
       "imagePrompt": "First-person view standing among ancient overgrown stone ruins in a forest. Flat earth and broken flagstones filling the lower third. Crumbling moss-covered walls rise on both sides, vines creeping over faded stone carvings. Dim green light filters through dense canopy overhead. Mysterious and solemn atmosphere. No people or creatures.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
