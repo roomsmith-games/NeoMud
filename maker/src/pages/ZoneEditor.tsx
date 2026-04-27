@@ -77,6 +77,7 @@ interface Interactable {
   cooldownTicks: number;
   resetTicks: number;
   sound: string;
+  triggerType: string;  // ON_ACTION (default, player must interact) | ON_ENTER (passive trap)
 }
 
 interface ZoneWithRooms extends Zone {
@@ -250,11 +251,20 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
         base = `${feat.actionData?.effectType || 'Effect'}: ${feat.actionData?.value || 0}${(parseInt(feat.actionData?.durationTicks) || 0) > 0 ? ` (${feat.actionData.durationTicks}t)` : ''}`; break;
       case 'TELEPORT':
         base = `Teleport: ${feat.actionData?.targetRoomId || '(none)'}`; break;
+      case 'DAMAGE_TRAP': {
+        const dmg = feat.actionData?.damage || '0';
+        const dmgType = feat.actionData?.damageType || '';
+        const save = feat.actionData?.saveStat ? ` [save ${feat.actionData.saveStat} DC ${feat.actionData.saveDC || '?'}]` : '';
+        base = `Damage Trap: ${dmg}${dmgType ? ` ${dmgType}` : ''}${save}`; break;
+      }
       default:
         base = feat.actionType;
     }
     if (feat.difficultyCheck && feat.difficulty > 0) {
       base += ` [${feat.difficultyCheck} DC ${feat.difficulty}]`;
+    }
+    if (feat.triggerType && feat.triggerType !== 'ON_ACTION') {
+      base += ` (${feat.triggerType})`;
     }
     return base;
   };
@@ -320,6 +330,14 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 <option value="MONSTER_SPAWN">Spawn Monster</option>
                 <option value="ROOM_EFFECT">Room Effect</option>
                 <option value="TELEPORT">Teleport</option>
+                <option value="DAMAGE_TRAP">Damage Trap</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ color: '#666' }}>Trigger</label>
+              <select style={{ ...styles.input, fontSize: 11 }} value={feat.triggerType || 'ON_ACTION'} onChange={(e) => set(i, { triggerType: e.target.value })}>
+                <option value="ON_ACTION">On Action (player interacts)</option>
+                <option value="ON_ENTER">On Enter (passive trap)</option>
               </select>
             </div>
             <div>
@@ -400,6 +418,56 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
               <input style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.message || ''} onChange={(e) => setData(i, { message: e.target.value })} />
             </div>
           )}
+          {feat.actionType === 'DAMAGE_TRAP' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, marginTop: 4, fontSize: 10 }}>
+              <div>
+                <label style={{ color: '#666' }}>Damage</label>
+                <input type="number" style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.damage || '0'} min={0} onChange={(e) => setData(i, { damage: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Damage Type</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.damageType || ''} onChange={(e) => setData(i, { damageType: e.target.value })}>
+                  <option value="">--</option>
+                  <option value="physical">Physical</option>
+                  <option value="fire">Fire</option>
+                  <option value="poison">Poison</option>
+                  <option value="arcane">Arcane</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Save Stat (optional)</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.saveStat || ''} onChange={(e) => setData(i, { saveStat: e.target.value })}>
+                  <option value="">No save (full damage)</option>
+                  <option value="AGILITY">Agility (dodge)</option>
+                  <option value="TOUGHNESS">Toughness — (STR+WIL)/2 (resist)</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Save Type</label>
+                <select style={{ ...styles.input, fontSize: 11, opacity: feat.actionData?.saveStat ? 1 : 0.4 }} value={feat.actionData?.saveType || ''} disabled={!feat.actionData?.saveStat} onChange={(e) => setData(i, { saveType: e.target.value })}>
+                  <option value="">--</option>
+                  <option value="DODGE">Dodge (full avoid on success)</option>
+                  <option value="RESIST">Resist (half damage on success)</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Save DC</label>
+                <input type="number" style={{ ...styles.input, fontSize: 11, opacity: feat.actionData?.saveStat ? 1 : 0.4 }} value={feat.actionData?.saveDC || '0'} min={0} disabled={!feat.actionData?.saveStat} onChange={(e) => setData(i, { saveDC: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Hit Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. A dart pierces you!" value={feat.actionData?.damageMessage || ''} onChange={(e) => setData(i, { damageMessage: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Dodge Message</label>
+                <input style={{ ...styles.input, fontSize: 11, opacity: feat.actionData?.saveType === 'DODGE' ? 1 : 0.4 }} placeholder="e.g. You leap aside!" value={feat.actionData?.dodgeMessage || ''} disabled={feat.actionData?.saveType !== 'DODGE'} onChange={(e) => setData(i, { dodgeMessage: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Resist Message</label>
+                <input style={{ ...styles.input, fontSize: 11, opacity: feat.actionData?.saveType === 'RESIST' ? 1 : 0.4 }} placeholder="e.g. You brace against the blast." value={feat.actionData?.resistMessage || ''} disabled={feat.actionData?.saveType !== 'RESIST'} onChange={(e) => setData(i, { resistMessage: e.target.value })} />
+              </div>
+            </div>
+          )}
           <div style={{ marginTop: 4, fontSize: 10 }}>
             <label style={{ color: '#666' }}>Icon (emoji, blank=default)</label>
             <input style={{ ...styles.input, fontSize: 11, width: 60 }} value={feat.icon} onChange={(e) => set(i, { icon: e.target.value })} />
@@ -408,7 +476,7 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
       ))}
       <button
         style={{ ...styles.btnSmall, width: '100%' }}
-        onClick={() => update([...interactList, { id: `feat_${interactList.length + 1}`, label: 'New Feature', description: '', failureMessage: '', icon: '', actionType: 'EXIT_OPEN', actionData: {}, difficulty: 0, difficultyCheck: '', perceptionDC: 0, cooldownTicks: 0, resetTicks: 0, sound: '' }])}
+        onClick={() => update([...interactList, { id: `feat_${interactList.length + 1}`, label: 'New Feature', description: '', failureMessage: '', icon: '', actionType: 'EXIT_OPEN', actionData: {}, difficulty: 0, difficultyCheck: '', perceptionDC: 0, cooldownTicks: 0, resetTicks: 0, sound: '', triggerType: 'ON_ACTION' }])}
       >+ Add Interactable</button>
     </>
   );

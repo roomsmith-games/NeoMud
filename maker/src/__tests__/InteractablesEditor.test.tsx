@@ -33,6 +33,7 @@ interface Interactable {
   cooldownTicks: number
   resetTicks: number
   sound: string
+  triggerType?: string
 }
 
 /** Mirrors the actionSummary function from ZoneEditor InteractablesEditor */
@@ -53,11 +54,20 @@ function actionSummary(feat: Interactable, hiddenMap: Record<string, unknown> = 
       base = `${feat.actionData?.effectType || 'Effect'}: ${feat.actionData?.value || 0}${(parseInt(feat.actionData?.durationTicks) || 0) > 0 ? ` (${feat.actionData.durationTicks}t)` : ''}`; break
     case 'TELEPORT':
       base = `Teleport: ${feat.actionData?.targetRoomId || '(none)'}`; break
+    case 'DAMAGE_TRAP': {
+      const dmg = feat.actionData?.damage || '0'
+      const dmgType = feat.actionData?.damageType || ''
+      const save = feat.actionData?.saveStat ? ` [save ${feat.actionData.saveStat} DC ${feat.actionData.saveDC || '?'}]` : ''
+      base = `Damage Trap: ${dmg}${dmgType ? ` ${dmgType}` : ''}${save}`; break
+    }
     default:
       base = feat.actionType
   }
   if (feat.difficultyCheck && feat.difficulty > 0) {
     base += ` [${feat.difficultyCheck} DC ${feat.difficulty}]`
+  }
+  if (feat.triggerType && feat.triggerType !== 'ON_ACTION') {
+    base += ` (${feat.triggerType})`
   }
   return base
 }
@@ -174,6 +184,36 @@ describe('actionSummary', () => {
 
   it('no difficulty badge when check is empty', () => {
     const feat = { ...baseInteractable, actionData: { direction: 'NORTH' }, difficulty: 25, difficultyCheck: '' }
+    expect(actionSummary(feat)).toBe('Opens: NORTH')
+  })
+
+  it('DAMAGE_TRAP with damage and type', () => {
+    const feat = { ...baseInteractable, actionType: 'DAMAGE_TRAP', actionData: { damage: '10', damageType: 'fire' } }
+    expect(actionSummary(feat)).toBe('Damage Trap: 10 fire')
+  })
+
+  it('DAMAGE_TRAP with save info', () => {
+    const feat = { ...baseInteractable, actionType: 'DAMAGE_TRAP', actionData: { damage: '15', damageType: 'physical', saveStat: 'AGILITY', saveDC: '14' } }
+    expect(actionSummary(feat)).toBe('Damage Trap: 15 physical [save AGILITY DC 14]')
+  })
+
+  it('DAMAGE_TRAP without damage type', () => {
+    const feat = { ...baseInteractable, actionType: 'DAMAGE_TRAP', actionData: { damage: '5' } }
+    expect(actionSummary(feat)).toBe('Damage Trap: 5')
+  })
+
+  it('appends ON_ENTER trigger marker', () => {
+    const feat = { ...baseInteractable, actionType: 'DAMAGE_TRAP', actionData: { damage: '8' }, triggerType: 'ON_ENTER' }
+    expect(actionSummary(feat)).toBe('Damage Trap: 8 (ON_ENTER)')
+  })
+
+  it('omits trigger marker for default ON_ACTION', () => {
+    const feat = { ...baseInteractable, actionData: { direction: 'NORTH' }, triggerType: 'ON_ACTION' }
+    expect(actionSummary(feat)).toBe('Opens: NORTH')
+  })
+
+  it('omits trigger marker when triggerType is undefined (legacy data)', () => {
+    const feat = { ...baseInteractable, actionData: { direction: 'NORTH' } }
     expect(actionSummary(feat)).toBe('Opens: NORTH')
   })
 
