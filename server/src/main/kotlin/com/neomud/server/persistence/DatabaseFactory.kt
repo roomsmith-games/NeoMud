@@ -3,6 +3,7 @@ package com.neomud.server.persistence
 import com.neomud.server.persistence.tables.InventoryTable
 import com.neomud.server.persistence.tables.PlayerCoinsTable
 import com.neomud.server.persistence.tables.PlayerDiscoveryTable
+import com.neomud.server.persistence.tables.PlayerFlagsTable
 import com.neomud.server.persistence.tables.PlayersTable
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
@@ -32,10 +33,10 @@ object DatabaseFactory {
 
             if (needsFreshStart) {
                 logger.warn("Outdated schema detected — dropping all tables for fresh start")
-                SchemaUtils.drop(PlayersTable, InventoryTable, PlayerCoinsTable, PlayerDiscoveryTable)
+                SchemaUtils.drop(PlayersTable, InventoryTable, PlayerCoinsTable, PlayerDiscoveryTable, PlayerFlagsTable)
             }
 
-            SchemaUtils.create(PlayersTable, InventoryTable, PlayerCoinsTable, PlayerDiscoveryTable)
+            SchemaUtils.create(PlayersTable, InventoryTable, PlayerCoinsTable, PlayerDiscoveryTable, PlayerFlagsTable)
 
             // Incremental migration: add is_admin if missing
             try {
