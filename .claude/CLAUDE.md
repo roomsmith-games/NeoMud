@@ -180,11 +180,12 @@ Everything is JSON-defined, loaded into catalogs at startup:
 
 ### Pipeline Steps (mandatory for every sprite generation)
 
-1. **Generate** via nano-banana MCP (`generate_image`), using the `imagePrompt` + `imageStyle` + `imageNegativePrompt` from the relevant JSON data file
+1. **Generate** via nano-banana MCP (`generate_image`), using the `imagePrompt` + `imageStyle` + `imageNegativePrompt` from the relevant JSON data file. nano-banana renders at 1024×1024 regardless of any size hint — do NOT skip the resize step in #4.
 2. **Convert** from PNG to WebP: `npx sharp-cli -i input.png -o output.webp --format webp`
 3. **Remove background**: `node scripts/remove-bg.mjs output.webp`
-4. **Verify** the result visually — check that the subject is intact
-5. **Clean up** intermediate PNGs and the `nanobanana-output/` directory
+4. **Resize to spec dimensions** (see table below) — `node scripts/slim-assets.mjs --category <coins|items|...|all>` resizes any oversized files in place. Skipping this step regenerates the bloat that Phase 7Q-H eliminated (default-world.nmd grew to 113MB largely because the resize step was historically missing).
+5. **Verify** the result visually — check that the subject is intact
+6. **Clean up** intermediate PNGs and the `nanobanana-output/` directory
 
 ### Batch background removal
 ```bash
@@ -235,6 +236,7 @@ Image generation prompts are stored in the data files:
 ### SFX Conventions
 
 - **Format**: MP3 (`.mp3`), 0.5–3 seconds for SFX, 30–120 seconds for BGM
+- **BGM bitrate**: 96kbps stereo (44.1kHz). ElevenLabs ships at 128kbps; `scripts/slim-assets.mjs --category audio` re-encodes to 96k stereo. Don't go below 96k or below stereo without checking with the user — spatial cues in tracks like `gorge_danger` and `town_peaceful` matter.
 - **Directory structure**:
   ```
   maker/default_world_src/assets/audio/
@@ -261,6 +263,14 @@ Image generation prompts are stored in the data files:
 ### After generation
 - Run `cd maker && npm run rebuild-world` if the Vite server isn't running
 - Run `./gradlew packageWorld` to rebuild the `.nmd` bundle
+
+## Maintenance Scripts
+
+`scripts/` holds standalone Node scripts with their own deps in `scripts/package.json` (separate from maker/server runtime). Run from repo root with `node scripts/<name>.mjs`.
+
+- **`slim-assets.mjs`** — resize/re-encode `default_world_src/assets/` files to spec dimensions (per the Asset Image Pipeline table) and BGM to 96kbps stereo. Idempotent: skips files already at-or-below target dims. Atomic writes via tmp-then-rename. Flags: `--category {coins|items|rooms|npcs|players|audio|all}`, `--dry-run`, `--verbose`, `--update-zones` (rooms only — rewrites `.jpg` zone JSON refs to `.webp`), `--mono` (audio only — downmix to mono 96kbps). Always `--dry-run` first to preview byte deltas. Run any time the bundle grows unexpectedly.
+- **`remove-bg.mjs`** — strip backgrounds from generated sprite WebPs via rembg (ML segmentation) or `--white` flood-fill mode for solid-white backgrounds.
+- **`doctor.sh`** — environment health check (PATH, MCP servers, JAVA_HOME). Run when anything looks off; never spelunk through `~/.claude/` or `~/.mcp.json` directly.
 
 ## Maker Dev Server Gotchas
 
