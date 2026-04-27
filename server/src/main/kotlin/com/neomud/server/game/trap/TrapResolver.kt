@@ -1,5 +1,6 @@
 package com.neomud.server.game.trap
 
+import com.neomud.server.game.GameConfig
 import com.neomud.server.game.progression.Perception
 import com.neomud.shared.model.Stats
 
@@ -27,10 +28,10 @@ object TrapResolver {
     fun resolveDetection(perceptionRoll: Int, perceptionDC: Int): Boolean =
         perceptionDC > 0 && perceptionRoll >= perceptionDC
 
-    /** Save stat → integer value. TOUGHNESS = (STR + WIL) / 2, no native stat. */
+    /** Save stat → integer value. TOUGHNESS = (STR + WIL) / DIVISOR, no native stat. */
     fun saveStatValue(stats: Stats, saveStat: String): Int = when (saveStat.uppercase()) {
         "AGILITY" -> stats.agility
-        "TOUGHNESS" -> (stats.strength + stats.willpower) / 2
+        "TOUGHNESS" -> (stats.strength + stats.willpower) / GameConfig.Trap.TOUGHNESS_DIVISOR
         else -> 0
     }
 
@@ -45,12 +46,12 @@ object TrapResolver {
         saveStat: String,
         saveDC: Int,
         saveType: SaveType,
-        random: () -> Int = { (1..20).random() }
+        random: () -> Int = { (1..GameConfig.Trap.DICE_SIZE).random() }
     ): SaveOutcome {
         if (saveStat.isBlank() || saveType == SaveType.NONE || saveDC <= 0) return SaveOutcome.FAIL
         val statValue = saveStatValue(stats, saveStat)
         if (statValue == 0) return SaveOutcome.FAIL
-        val roll = statValue + level / 2 + random()
+        val roll = statValue + level / GameConfig.Trap.LEVEL_DIVISOR + random()
         if (roll < saveDC) return SaveOutcome.FAIL
         return when (saveType) {
             SaveType.DODGE -> SaveOutcome.AVOID
@@ -59,10 +60,10 @@ object TrapResolver {
         }
     }
 
-    /** Apply save outcome to base damage. Half-damage floors to 1 to avoid 0-damage hits feeling like nothing. */
+    /** Apply save outcome to base damage. Half-damage floors to HALF_DAMAGE_FLOOR to avoid 0-damage hits feeling like nothing. */
     fun computeDamage(baseDamage: Int, outcome: SaveOutcome): Int = when (outcome) {
         SaveOutcome.AVOID -> 0
-        SaveOutcome.HALF -> maxOf(1, baseDamage / 2)
+        SaveOutcome.HALF -> maxOf(GameConfig.Trap.HALF_DAMAGE_FLOOR, baseDamage / GameConfig.Trap.HALF_DAMAGE_DIVISOR)
         SaveOutcome.FAIL -> baseDamage
     }
 

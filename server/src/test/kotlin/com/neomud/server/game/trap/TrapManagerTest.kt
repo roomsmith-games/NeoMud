@@ -267,23 +267,90 @@ class TrapManagerTest {
     }
 
     @Test
-    fun `previously discovered trap fires without re-rolling detection`() = runBlocking {
-        // If player already saw the trap (from a prior detection roll, maybe with buffs since dropped),
-        // they should still be able to walk past — discovery is sticky. They have to opt-in via interact
-        // to trigger the trap, which is the ON_ACTION model. So a discovered ON_ENTER trap... hmm.
-        // Current TrapManager logic: skips detection re-roll if discovered, but still fires the trap.
-        // This is intentional — ON_ENTER means "fires on enter unless detected and avoided"; once detected
-        // the player CAN avoid by not entering, but if they enter anyway, it fires.
+    fun `previously discovered trap does not fire — player steps around it`() = runBlocking {
+        // Per Phase 8 plan §5: "If detected, the trap description appears in
+        // room text and the player can choose to step around it." Once a player
+        // has discovered an ON_ENTER trap, they recognize it and don't trip it
+        // again on subsequent entries. They can still trigger it deliberately
+        // via /interact (the ON_ACTION path).
         val trap = damageTrap(damage = 10, perceptionDC = 12)
         val graph = roomWith(trap)
-        val tm = TrapManager(graph) { 20 }
+        val tm = TrapManager(graph) { 1 }  // any roll is fine; we shouldn't reach detection logic
 
         val session = stubSession(hp = 100)
         session.discoverInteractable(testRoomId, trap.id)
 
         val result = tm.onPlayerEntered(session, testRoomId)
 
-        assertTrue(result.first() is TrapManager.TrapOutcome.Triggered)
-        assertEquals(90, session.player!!.currentHp)
+        assertEquals(1, result.size)
+        assertTrue(result.first() is TrapManager.TrapOutcome.Detected)
+        assertEquals(100, session.player!!.currentHp) // no damage
+        assertFalse(session.hasTrippedTrap(testRoomId, trap.id))
+    }
+
+    @Test
+    fun `clean dodge does NOT arm global cooldown — next player can still trip it`() = runBlocking {
+        // A perfect AGI/DODGE should ONLY clear the trap for the dodging character
+        // (per-character trippedTraps). The global cooldown should NOT engage —
+        // otherwise a single dodger disarms the trap for every other player in the room.
+        val trap = damageTrap(damage = 50, perceptionDC = 0,
+            saveStat = "AGILITY", saveDC = 30, saveType = "DODGE")
+        val graph = roomWith(trap)
+        val tm = TrapManager(graph) { 20 }
+
+        val dodger = stubSession(stats = Stats(agility = 80), hp = 100)
+        val first = tm.onPlayerEntered(dodger, testRoomId)
+        val triggered = first.first() as TrapManager.TrapOutcome.Triggered
+        assertEquals(TrapResolver.SaveOutcome.AVOID, triggered.saveOutcome)
+        assertEquals(100, dodger.player!!.currentHp)
+
+        // The global "used" flag must NOT be set, because the trap didn't actually
+        // fire damage at anyone.
+        assertFalse(graph.isInteractableUsed(testRoomId, trap.id))
+
+        // Per-character: dodger has tripped it (so they don't re-roll on re-entry).
+        assertTrue(dodger.hasTrippedTrap(testRoomId, trap.id))
+
+        // A second player walks in → should encounter the trap fresh.
+        val victim = stubSession(stats = Stats(agility = 0), hp = 100)
+        val tmVictim = TrapManager(graph) { 1 }
+        val second = tmVictim.onPlayerEntered(victim, testRoomId)
+        val victimTriggered = second.first() as TrapManager.TrapOutcome.Triggered
+        assertEquals(TrapResolver.SaveOutcome.FAIL, victimTriggered.saveOutcome)
+        assertEquals(50, victim.player!!.currentHp)  // took full damage
+    }
+
+    @Test
+    fun `failed save (FAIL) arms global cooldown like normal trigger`() = runBlocking {
+        // Sanity check the inverse: when the trap actually deals damage, the
+        // global cooldown DOES engage as before.
+        val trap = damageTrap(damage = 20, perceptionDC = 0,
+            saveStat = "AGILITY", saveDC = 99, saveType = "DODGE")  // unmakeable save
+        val graph = roomWith(trap)
+        val tm = TrapManager(graph) { 1 }
+
+        val session = stubSession(hp = 100)
+        tm.onPlayerEntered(session, testRoomId)
+
+        assertTrue(graph.isInteractableUsed(testRoomId, trap.id))  // global cooldown set
+    }
+
+    @Test
+    fun `RESIST half-damage save still arms global cooldown`() = runBlocking {
+        // HALF outcome means the trap DID fire damage (just less). Global cooldown
+        // should still arm — otherwise a tanky character resisting full damage
+        // would also keep the trap primed indefinitely for everyone.
+        val trap = damageTrap(damage = 30, perceptionDC = 0,
+            saveStat = "TOUGHNESS", saveDC = 30, saveType = "RESIST")
+        val graph = roomWith(trap)
+        val tm = TrapManager(graph) { 18 }
+
+        val session = stubSession(stats = Stats(strength = 80, willpower = 60), hp = 100)
+        val result = tm.onPlayerEntered(session, testRoomId)
+
+        val triggered = result.first() as TrapManager.TrapOutcome.Triggered
+        assertEquals(TrapResolver.SaveOutcome.HALF, triggered.saveOutcome)
+        assertEquals(15, triggered.damage)
+        assertTrue(graph.isInteractableUsed(testRoomId, trap.id))  // global cooldown set
     }
 }

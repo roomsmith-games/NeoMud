@@ -55,8 +55,19 @@ class TrapManager(
             // Skip if this character has already tripped this specific trap.
             if (session.hasTrippedTrap(roomId, trap.id)) continue
 
-            // Detection roll: only if trap has a perception DC AND the player hasn't already detected it.
-            if (trap.perceptionDC > 0 && !session.hasDiscoveredInteractable(roomId, trap.id)) {
+            // If the player has previously detected this trap, treat it as
+            // ON_ACTION-only — they know it's there and step around it. They can
+            // still trigger it intentionally via /interact (the existing ON_ACTION
+            // path) or fail to detect a trap on first entry. Per Phase 8 plan §5:
+            // "If detected, the trap description appears in room text and the
+            // player can choose to step around it."
+            if (trap.perceptionDC > 0 && session.hasDiscoveredInteractable(roomId, trap.id)) {
+                outcomes.add(TrapOutcome.Detected(trap.id, trap.label))
+                continue
+            }
+
+            // Detection roll: only if trap has a perception DC.
+            if (trap.perceptionDC > 0) {
                 val perceptionRoll = TrapResolver.rollDetection(effectiveStats, player.level, random)
                 if (TrapResolver.resolveDetection(perceptionRoll, trap.perceptionDC)) {
                     session.discoverInteractable(roomId, trap.id)
@@ -133,8 +144,13 @@ class TrapManager(
 
         // Mark the trap as tripped for THIS character so it doesn't re-fire on every entry.
         session.markTrapTripped(roomId, trap.id)
-        // Mark globally used so the worldGraph reset timer can re-arm it for everyone after `resetTicks`.
-        worldGraph.markInteractableUsed(roomId, trap.id, trap.resetTicks)
+        // Mark globally used ONLY if the trap actually fired damage. A clean
+        // dodge (AVOID) means the trap is still primed for the next victim;
+        // it would be perverse for a single dodger to disarm the trap for the
+        // whole party.
+        if (outcome != TrapResolver.SaveOutcome.AVOID) {
+            worldGraph.markInteractableUsed(roomId, trap.id, trap.resetTicks)
+        }
 
         return TrapOutcome.Triggered(trap.id, trap.label, damage, outcome)
     }

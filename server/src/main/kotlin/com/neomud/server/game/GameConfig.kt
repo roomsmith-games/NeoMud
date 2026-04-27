@@ -127,6 +127,27 @@ object GameConfig {
         const val PERCEPTION_SKILL_BONUS = 3
         const val SNEAK_DIFFICULTY = 15
     }
+    object Perception {
+        // Derived stat: (INT + AGI) / DIVISOR. Same shape as Stealth.PERCEPTION_INT_DIVISOR
+        // but kept separate because Perception is the player-facing trap-detection stat
+        // and its tuning lever should be independently adjustable from the stealth subsystem.
+        const val STAT_DIVISOR = 2
+        const val LEVEL_DIVISOR = 2
+        const val DICE_SIZE = 20
+    }
+    object Trap {
+        // Save roll: stat + level/DIVISOR + d(DICE_SIZE), matching the InteractCommand
+        // difficulty-check convention so trap DCs and interactable DCs are intuitively
+        // comparable.
+        const val LEVEL_DIVISOR = 2
+        const val DICE_SIZE = 20
+        // Derived TOUGHNESS save stat = (STR + WIL) / DIVISOR. Independent knob from
+        // Perception so the two derived stats can be tuned separately.
+        const val TOUGHNESS_DIVISOR = 2
+        // Successful RESIST save halves damage; floor at 1 to keep hits non-zero.
+        const val HALF_DAMAGE_DIVISOR = 2
+        const val HALF_DAMAGE_FLOOR = 1
+    }
     object Meditation {
         const val WIL_DIVISOR = 10
         const val RESTORE_BASE = 2
