@@ -1,0 +1,10 @@
+{
+  "name": "neomud-scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone Node deps for maintenance scripts (slim-assets.mjs, remove-bg.mjs, etc.). Not part of the maker or server runtime.",
+  "dependencies": {
+    "sharp": "^0.34.4"
+  }
+}
