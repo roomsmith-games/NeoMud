@@ -73,6 +73,11 @@ class GuestLoginTest {
             assertEquals("WARRIOR", loginOk.player.characterClass)
             assertTrue(loginOk.player.isGuest, "Player should be flagged as guest")
 
+            // World intro tutorial first (#272 — fires before welcome when manifest has introScript)
+            val intro = receiveServerMessage()
+            assertIs<ServerMessage.Tutorial>(intro)
+            assertEquals("tut_world_intro", intro.key)
+
             // Should receive welcome tutorial
             val tutorial = receiveServerMessage()
             assertIs<ServerMessage.Tutorial>(tutorial)
@@ -116,7 +121,8 @@ class GuestLoginTest {
             assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
             assertIs<ServerMessage.LoginOk>(receiveServerMessage())
             // Consume remaining post-login messages
-            receiveServerMessage() // tutorial
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
+            receiveServerMessage() // welcome tutorial
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
             receiveServerMessage() // InventoryUpdate

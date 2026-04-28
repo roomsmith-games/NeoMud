@@ -918,6 +918,19 @@
       "imagePrompt": "A single rolled parchment scroll with fiery orange runes glowing, sealed with a flame wax stamp, protective fire magic scroll. Isolated object centered, no surface.",
       "imageStyle": "fantasy item sprite, game icon, clean edges, solid white background, detailed",
       "imageNegativePrompt": "background, surface, table, hands, person, multiple items, modern, sci-fi"
+    },
+    {
+      "id": "item:warden_token",
+      "name": "Warden's Token",
+      "description": "A heavy bronze coin etched with a sealed eye, its rim worn smooth by a thousand years of restless hands. Old Wren pressed it into your palm and would not say what it was for. It feels heavier than it should.",
+      "type": "crafting",
+      "value": 0,
+      "weight": 1,
+      "stackable": false,
+      "maxStack": 1,
+      "imagePrompt": "A single weathered bronze coin, large and heavy, etched with a sealed eye sigil at the center surrounded by ancient warding runes, edges worn smooth, faint patina of age. Centered, isolated object, no surface, no hands.",
+      "imageStyle": "fantasy item sprite, game icon, clean edges, solid white background, detailed, ancient relic, dark bronze and verdigris",
+      "imageNegativePrompt": "background, surface, table, hands, person, multiple items, modern, sci-fi, gold, gemstone, jewelry chain"
     }
   ]
 }

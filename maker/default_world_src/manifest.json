@@ -1,14 +1,15 @@
 {
   "formatVersion": 1,
-  "name": "NeoMud Default World",
+  "name": "Warden's Reckoning",
   "author": "NeoMud Team",
-  "version": "0.1.0",
-  "description": "The default NeoMud world with town and forest zones.",
+  "version": "0.2.0",
+  "description": "A world where ancient seals are weakening and the line between guardian and destroyer must be chosen.",
   "createdAt": "2026-02-15",
   "engineVersion": "0.1.0.0",
   "engineVersionMin": "0.1.0.0",
   "worldId": "00000000-0000-0000-0000-000000000001",
   "createdWithMaker": true,
   "coverImage": "assets/images/rooms/town_square.webp",
-  "loadingBgm": "assets/audio/bgm/intro_theme.mp3"
+  "loadingBgm": "assets/audio/bgm/intro_theme.mp3",
+  "introScript": "A thousand years ago, the world cracked.\n\nThe Wardens sealed what crawled out, and paid for it with their bloodline.\n\nThe seals are weakening. The world has forgotten why they matter.\n\nYou are the last who can choose what the silence remembers."
 }

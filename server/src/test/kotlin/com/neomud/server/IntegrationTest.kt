@@ -89,6 +89,14 @@ class IntegrationTest {
             assertEquals("WARRIOR", loginResponse.player.characterClass)
             assertEquals("town:temple", loginResponse.player.currentRoomId)
 
+            // Should receive per-world intro tutorial first (#272 — fires before welcome when
+            // the loaded world manifest has a non-empty introScript). Default world ships with one
+            // for the Warden's Reckoning lore.
+            val intro = receiveServerMessage()
+            assertIs<ServerMessage.Tutorial>(intro)
+            assertEquals("tut_world_intro", intro.key)
+            assertTrue(intro.blocking)
+
             // Should receive first-login welcome tutorial
             val welcome = receiveServerMessage()
             assertIs<ServerMessage.Tutorial>(welcome)
@@ -140,6 +148,7 @@ class IntegrationTest {
                 ClientMessage.Login("starter_mage", "pass1234")
             )))
             receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -187,6 +196,7 @@ class IntegrationTest {
                 ClientMessage.Login("starter_warrior", "pass1234")
             )))
             receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -224,6 +234,7 @@ class IntegrationTest {
                 ClientMessage.Login("mover", "pass1234")
             )))
             receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -274,6 +285,7 @@ class IntegrationTest {
                 ClientMessage.Login("stuck", "pass1234")
             )))
             receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -375,6 +387,7 @@ class IntegrationTest {
                         ClientMessage.Login("player_a", "pass1234")
                     )))
                     receiveServerMessage() // LoginOk
+                    receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
                     receiveServerMessage() // Welcome SystemMessage
                     receiveServerMessage() // RoomInfo
                     receiveServerMessage() // MapData
@@ -395,6 +408,7 @@ class IntegrationTest {
                         ClientMessage.Login("player_b", "pass1234")
                     )))
                     receiveServerMessage() // LoginOk
+                    receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
                     receiveServerMessage() // Welcome SystemMessage
                     val roomInfo = receiveServerMessage()
                     assertIs<ServerMessage.RoomInfo>(roomInfo)
@@ -447,6 +461,7 @@ class IntegrationTest {
                         ClientMessage.Login("spriteuser", "pass1234")
                     )))
                     receiveServerMessage() // LoginOk
+                    receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
                     receiveServerMessage() // Welcome SystemMessage
                     receiveServerMessage() // RoomInfo
                     receiveServerMessage() // MapData
@@ -466,6 +481,7 @@ class IntegrationTest {
                         ClientMessage.Login("spriteuser2", "pass1234")
                     )))
                     receiveServerMessage() // LoginOk
+                    receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
                     receiveServerMessage() // Welcome SystemMessage
                     val roomInfo = receiveServerMessage()
                     assertIs<ServerMessage.RoomInfo>(roomInfo)
@@ -509,6 +525,7 @@ class IntegrationTest {
             assertEquals(player.currentMp, player.maxMp, "New character should start at full MP")
             assertTrue(player.maxMp > 0, "Mystic should have MP")
 
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -549,6 +566,7 @@ class IntegrationTest {
                 ClientMessage.Login("explorer", "pass1234")
             )))
             receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage (first login)
             receiveServerMessage() // RoomInfo
             val initialMap = receiveServerMessage()
@@ -607,6 +625,7 @@ class IntegrationTest {
                 ClientMessage.Login("coin_test", "pass1234")
             )))
             receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -647,6 +666,7 @@ class IntegrationTest {
             )))
             val loginOk = receiveServerMessage()
             assertIs<ServerMessage.LoginOk>(loginOk)
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -694,6 +714,7 @@ class IntegrationTest {
             assertEquals(player.currentHp, player.maxHp, "New character should start at full HP")
             assertTrue(player.maxHp > 0, "Warrior should have HP")
 
+            receiveServerMessage() // World intro Tutorial (#272 — fires before welcome)
             receiveServerMessage() // Welcome SystemMessage
             receiveServerMessage() // RoomInfo
             receiveServerMessage() // MapData
@@ -735,6 +756,12 @@ class IntegrationTest {
             )))
             val loginOk = receiveServerMessage()
             assertIs<ServerMessage.LoginOk>(loginOk)
+
+            // Per-world intro tutorial (#272) fires before welcome on first login when the
+            // loaded manifest has a non-empty introScript.
+            val intro = receiveServerMessage()
+            assertIs<ServerMessage.Tutorial>(intro)
+            assertEquals("tut_world_intro", intro.key)
 
             val welcome = receiveServerMessage()
             assertIs<ServerMessage.Tutorial>(welcome)
