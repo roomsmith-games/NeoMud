@@ -200,6 +200,20 @@ sealed class ServerMessage {
         val content: String
     ) : ServerMessage()
 
+    /**
+     * Server tells the client to open an item-placement dialog for a Phase 8 puzzle
+     * interactable. Client filters inventory to [acceptedItems] and lets the player
+     * pick one, replying with [com.neomud.shared.protocol.ClientMessage.PlaceItem].
+     */
+    @Serializable
+    @SerialName("place_item_prompt")
+    data class PlaceItemPrompt(
+        @SerialName("feature_id") val featureId: String,
+        val label: String,
+        val prompt: String,
+        @SerialName("accepted_items") val acceptedItems: List<String>
+    ) : ServerMessage()
+
     @Serializable
     @SerialName("pong")
     data object Pong : ServerMessage()

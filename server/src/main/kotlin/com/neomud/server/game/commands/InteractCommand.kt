@@ -10,6 +10,8 @@ import com.neomud.server.game.StealthUtils
 import com.neomud.server.game.inventory.LootService
 import com.neomud.server.game.inventory.RoomItemManager
 import com.neomud.server.game.npc.NpcManager
+import com.neomud.server.persistence.repository.InventoryRepository
+import com.neomud.server.persistence.repository.PlayerFlagsRepository
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
@@ -29,7 +31,10 @@ class InteractCommand(
     private val roomItemManager: RoomItemManager,
     private val lootService: LootService,
     private val lootTableCatalog: LootTableCatalog,
-    private val playerRepository: PlayerRepository? = null
+    private val playerRepository: PlayerRepository? = null,
+    private val inventoryRepository: InventoryRepository? = null,
+    private val inventoryCommand: InventoryCommand? = null,
+    private val playerFlagsRepository: PlayerFlagsRepository? = null
 ) {
     private val logger = LoggerFactory.getLogger(InteractCommand::class.java)
 
@@ -101,6 +106,8 @@ class InteractCommand(
             "ROOM_EFFECT" -> executeRoomEffect(session, feat.actionData)
             "TELEPORT" -> executeTeleport(session, roomId, feat.actionData)
             "DAMAGE_TRAP" -> executeDamageTrap(session, feat)
+            "PLACE_ITEM" -> { sendPlaceItemPrompt(session, feat); return }
+            "PUZZLE_STEP" -> executePuzzleStep(session, roomId, feat)
             else -> {
                 session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
                 false
@@ -388,4 +395,128 @@ class InteractCommand(
             } catch (_: Exception) { }
         }
     }
+
+    // ─── PLACE_ITEM ─────────────────────────────────────────────────
+    // Two-phase: tap interactable → server sends PlaceItemPrompt;
+    // client picks an item → ClientMessage.PlaceItem → handlePlaceItem.
+
+    private suspend fun sendPlaceItemPrompt(session: PlayerSession, feat: com.neomud.shared.model.RoomInteractable) {
+        val accepted = (feat.actionData["acceptedItems"] ?: "").split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        val prompt = feat.actionData["promptText"]?.takeIf { it.isNotBlank() } ?: "Place an item here."
+        session.send(ServerMessage.PlaceItemPrompt(
+            featureId = feat.id,
+            label = feat.label,
+            prompt = prompt,
+            acceptedItems = accepted
+        ))
+    }
+
+    /**
+     * Handles [com.neomud.shared.protocol.ClientMessage.PlaceItem] — the player's response
+     * to a PlaceItemPrompt. Validates the item is accepted, validates the player owns it,
+     * optionally consumes it, and fires the puzzle's success exit-open.
+     */
+    suspend fun handlePlaceItem(session: PlayerSession, featureId: String, itemId: String) {
+        val roomId = session.currentRoomId ?: return
+        val playerName = session.playerName ?: return
+        val feat = worldGraph.getInteractableDefs(roomId).find { it.id == featureId }
+        if (feat == null || feat.actionType != "PLACE_ITEM") {
+            session.send(ServerMessage.SystemMessage("There is nowhere to place that here."))
+            return
+        }
+        // Visibility + cooldown checks.
+        if (worldGraph.isInteractableUsed(roomId, featureId)) {
+            session.send(ServerMessage.InteractResult(false, feat.label, "It doesn't seem to do anything more."))
+            return
+        }
+        val accepted = (feat.actionData["acceptedItems"] ?: "").split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        if (itemId !in accepted) {
+            val msg = feat.actionData["failureMessage"]?.takeIf { it.isNotBlank() }
+                ?: "Nothing happens — that's not what fits here."
+            session.send(ServerMessage.InteractResult(false, feat.label, msg))
+            return
+        }
+        // Player must actually have the item.
+        val inv = inventoryRepository ?: run {
+            session.send(ServerMessage.InteractResult(false, feat.label, "You can't place anything here right now."))
+            return
+        }
+        val owned = inv.getInventory(playerName).any { it.itemId == itemId && !it.equipped }
+        if (!owned) {
+            session.send(ServerMessage.InteractResult(false, feat.label, "You don't have that on you."))
+            return
+        }
+        // Optional consume.
+        val consume = (feat.actionData["consumeItem"] ?: "true").equals("true", ignoreCase = true)
+        if (consume) {
+            try { inv.removeItem(playerName, itemId, 1) } catch (e: Exception) {
+                logger.warn("PLACE_ITEM consume failed for $playerName / $itemId: ${e.message}")
+            }
+            inventoryCommand?.sendInventoryUpdate(session)
+        }
+        // Fire success: open the configured exit, broadcast room refresh.
+        val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "It fits. Something shifts."
+        val openedExit = openSuccessExit(session, roomId, feat.actionData)
+        worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
+        session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))
+        if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
+    }
+
+    // ─── PUZZLE_STEP ────────────────────────────────────────────────
+    // Player progresses through a sequence of interactables. State per character
+    // in PlayerFlagsTable (flagKey="puzzle:{groupId}:step", value="N"). Wrong order
+    // resets to 0 and (optionally) fires a punishment message.
+
+    private suspend fun executePuzzleStep(session: PlayerSession, roomId: String, feat: com.neomud.shared.model.RoomInteractable): Boolean {
+        val playerName = session.playerName ?: return false
+        val flags = playerFlagsRepository ?: run {
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return false
+        }
+        val groupId = feat.actionData["puzzleGroupId"]?.takeIf { it.isNotBlank() } ?: run {
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return false
+        }
+        val expectedIndex = feat.actionData["puzzleStepIndex"]?.toIntOrNull() ?: return false
+        val totalSteps = feat.actionData["puzzleTotalSteps"]?.toIntOrNull() ?: return false
+
+        val flagKey = "puzzle:$groupId:step"
+        val currentStep = flags.getFlag(playerName, flagKey)?.toIntOrNull() ?: 0
+
+        return if (currentStep == expectedIndex) {
+            val nextStep = currentStep + 1
+            if (nextStep >= totalSteps) {
+                // Puzzle solved!
+                val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "The puzzle yields. Something opens."
+                val openedExit = openSuccessExit(session, roomId, feat.actionData)
+                session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
+                if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
+                // Note: we don't reset the puzzle flag — solved-once-per-character semantics.
+                true
+            } else {
+                flags.setFlag(playerName, flagKey, nextStep.toString())
+                val msg = feat.actionData["advanceMessage"]?.takeIf { it.isNotBlank() } ?: "Something gives. You're on the right track."
+                session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
+                false  // don't fire the global cooldown / mark-used path; player can revisit other steps
+            }
+        } else {
+            flags.setFlag(playerName, flagKey, "0")
+            val msg = feat.actionData["resetMessage"]?.takeIf { it.isNotBlank() } ?: "The mechanism resets with a low click. The sequence has been broken."
+            session.send(ServerMessage.InteractResult(false, feat.label, msg, feat.sound))
+            false
+        }
+    }
+
+    /**
+     * Shared success-action helper for PLACE_ITEM and PUZZLE_STEP. Reads
+     * `successDirection` from actionData and unlocks that exit if present.
+     * Returns true if an exit was opened (caller should refresh room info).
+     */
+    private fun openSuccessExit(session: PlayerSession, roomId: String, actionData: Map<String, String>): Boolean {
+        val dirStr = actionData["successDirection"]?.takeIf { it.isNotBlank() } ?: return false
+        val direction = try { Direction.valueOf(dirStr) } catch (_: IllegalArgumentException) { return false }
+        worldGraph.unlockExit(roomId, direction)
+        return true
+    }
+
 }

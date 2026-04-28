@@ -147,6 +147,17 @@ sealed class ClientMessage {
     @SerialName("interact_npc")
     data class InteractNpc(@SerialName("npc_id") val npcId: String) : ClientMessage()
 
+    /**
+     * Player's response to a [ServerMessage.PlaceItemPrompt] — names which inventory item
+     * they're placing into the prompt's interactable. Phase 8 puzzle infra.
+     */
+    @Serializable
+    @SerialName("place_item")
+    data class PlaceItem(
+        @SerialName("feature_id") val featureId: String,
+        @SerialName("item_id") val itemId: String
+    ) : ClientMessage()
+
     @Serializable
     @SerialName("craft_item")
     data class CraftItem(val recipeId: String) : ClientMessage()

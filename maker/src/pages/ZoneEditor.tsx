@@ -331,6 +331,8 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 <option value="ROOM_EFFECT">Room Effect</option>
                 <option value="TELEPORT">Teleport</option>
                 <option value="DAMAGE_TRAP">Damage Trap</option>
+                <option value="PLACE_ITEM">Place Item (puzzle)</option>
+                <option value="PUZZLE_STEP">Puzzle Step (sequence)</option>
               </select>
             </div>
             <div>
@@ -465,6 +467,75 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
               <div>
                 <label style={{ color: '#666' }}>Resist Message</label>
                 <input style={{ ...styles.input, fontSize: 11, opacity: feat.actionData?.saveType === 'RESIST' ? 1 : 0.4 }} placeholder="e.g. You brace against the blast." value={feat.actionData?.resistMessage || ''} disabled={feat.actionData?.saveType !== 'RESIST'} onChange={(e) => setData(i, { resistMessage: e.target.value })} />
+              </div>
+            </div>
+          )}
+          {feat.actionType === 'PLACE_ITEM' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, marginTop: 4, fontSize: 10 }}>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Accepted Items (comma-separated item IDs, e.g. item:warden_token,item:bronze_key)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="item:foo,item:bar" value={feat.actionData?.acceptedItems || ''} onChange={(e) => setData(i, { acceptedItems: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Consume Item?</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.consumeItem || 'true'} onChange={(e) => setData(i, { consumeItem: e.target.value })}>
+                  <option value="true">Yes (item destroyed)</option>
+                  <option value="false">No (item kept)</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Success Direction (exit to open)</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.successDirection || ''} onChange={(e) => setData(i, { successDirection: e.target.value })}>
+                  <option value="">--</option>
+                  {['NORTH','SOUTH','EAST','WEST','UP','DOWN'].map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Prompt Text (shown in dialog)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. Place an offering on the altar." value={feat.actionData?.promptText || ''} onChange={(e) => setData(i, { promptText: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Success Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The seal opens with a grinding sigh." value={feat.actionData?.successMessage || ''} onChange={(e) => setData(i, { successMessage: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Failure Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. Nothing — that's not what fits." value={feat.actionData?.failureMessage || ''} onChange={(e) => setData(i, { failureMessage: e.target.value })} />
+              </div>
+            </div>
+          )}
+          {feat.actionType === 'PUZZLE_STEP' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4, marginTop: 4, fontSize: 10 }}>
+              <div style={{ gridColumn: '1 / 4' }}>
+                <label style={{ color: '#666' }}>Puzzle Group ID (shared across all steps in this puzzle)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. ancient_seq" value={feat.actionData?.puzzleGroupId || ''} onChange={(e) => setData(i, { puzzleGroupId: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Step Index (0-based)</label>
+                <input type="number" style={{ ...styles.input, fontSize: 11 }} min={0} value={feat.actionData?.puzzleStepIndex || '0'} onChange={(e) => setData(i, { puzzleStepIndex: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Total Steps</label>
+                <input type="number" style={{ ...styles.input, fontSize: 11 }} min={1} value={feat.actionData?.puzzleTotalSteps || '2'} onChange={(e) => setData(i, { puzzleTotalSteps: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Success Direction (final-step exit)</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.successDirection || ''} onChange={(e) => setData(i, { successDirection: e.target.value })}>
+                  <option value="">--</option>
+                  {['NORTH','SOUTH','EAST','WEST','UP','DOWN'].map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div style={{ gridColumn: '1 / 4' }}>
+                <label style={{ color: '#666' }}>Advance Message (intermediate step)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. Pillar A hums." value={feat.actionData?.advanceMessage || ''} onChange={(e) => setData(i, { advanceMessage: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 4' }}>
+                <label style={{ color: '#666' }}>Success Message (puzzle complete)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The pillars sing in harmony — the door opens." value={feat.actionData?.successMessage || ''} onChange={(e) => setData(i, { successMessage: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 4' }}>
+                <label style={{ color: '#666' }}>Reset Message (wrong step)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The pillars dim. The sequence is lost." value={feat.actionData?.resetMessage || ''} onChange={(e) => setData(i, { resetMessage: e.target.value })} />
               </div>
             </div>
           )}

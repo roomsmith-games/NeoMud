@@ -129,7 +129,12 @@ class CommandProcessor(
     private val trackCommand = TrackCommand()
     private val pickLockCommand = PickLockCommand(worldGraph, sessionManager, npcManager)
     private val dropCommand = DropCommand(roomItemManager, inventoryRepository, coinRepository, itemCatalog, sessionManager)
-    private val interactCommand = InteractCommand(worldGraph, sessionManager, npcManager, roomItemManager, lootService, lootTableCatalog, playerRepository)
+    private val interactCommand = InteractCommand(
+        worldGraph, sessionManager, npcManager, roomItemManager, lootService, lootTableCatalog, playerRepository,
+        inventoryRepository = inventoryRepository,
+        inventoryCommand = inventoryCommand,
+        playerFlagsRepository = com.neomud.server.persistence.repository.PlayerFlagsRepository()
+    )
 
     suspend fun sendCatalogSync(session: PlayerSession) {
         session.send(ServerMessage.ClassCatalogSync(classCatalog.getAllClasses()))
@@ -293,6 +298,9 @@ class CommandProcessor(
             }
             is ClientMessage.InteractFeature -> {
                 requireAuth(session) { interactCommand.execute(session, message.featureId) }
+            }
+            is ClientMessage.PlaceItem -> {
+                requireAuth(session) { interactCommand.handlePlaceItem(session, message.featureId, message.itemId) }
             }
             is ClientMessage.ReadySpell -> {
                 requireAuth(session) { handleReadySpell(session, message) }
