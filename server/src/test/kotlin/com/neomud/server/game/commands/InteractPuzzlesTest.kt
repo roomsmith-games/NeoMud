@@ -315,6 +315,38 @@ class InteractPuzzlesTest {
     }
 
     @Test
+    fun puzzle_completedPuzzleStaysSolvedOnReentry() = runBlocking {
+        // After completion, the flag is set to totalSteps. Re-tapping any step should
+        // be idempotent (no re-fire of success message, no accidental reset).
+        val flags = FakePlayerFlagsRepository()
+        flags.setFlag(testPlayerName, "puzzle:ancient_seq:step", "2")  // already solved
+        val finalStep = RoomInteractable(
+            id = "pillar_b", label = "pillar B", description = "Pillar.",
+            actionType = "PUZZLE_STEP",
+            actionData = mapOf("puzzleGroupId" to "ancient_seq", "puzzleStepIndex" to "1", "puzzleTotalSteps" to "2",
+                "successMessage" to "Pillars sing.",
+                "alreadySolvedMessage" to "The pillars are still." )
+        )
+        val wg = WorldGraph()
+        wg.addRoom(roomWithLockedNorth(target = "test:beyond"))
+        wg.addRoom(Room(id = "test:beyond", name = "B", description = "", exits = emptyMap(), zoneId = "test", x = 0, y = 1))
+        wg.storeInteractableDefs(testRoom, listOf(finalStep))
+        val cmd = buildCommand(wg, flags = flags)
+        val session = newSession()
+
+        cmd.execute(session, "pillar_b")
+
+        // Flag should remain at totalSteps (still "2"), NOT reset.
+        assertEquals("2", flags.getFlag(testPlayerName, "puzzle:ancient_seq:step"),
+            "Re-tap on completed puzzle must NOT reset the flag")
+        // Should see the already-solved message, not the success message.
+        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        assertNotNull(res)
+        assertTrue(res.message.contains("still"),
+            "Expected alreadySolvedMessage; got: ${res.message}")
+    }
+
+    @Test
     fun puzzle_wrongStepResetsProgress() = runBlocking {
         val flags = FakePlayerFlagsRepository()
         flags.setFlag(testPlayerName, "puzzle:ancient_seq:step", "2")  // already on step 2

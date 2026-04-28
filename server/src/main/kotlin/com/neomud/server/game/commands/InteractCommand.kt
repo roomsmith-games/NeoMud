@@ -409,6 +409,10 @@ class InteractCommand(
             prompt = prompt,
             acceptedItems = accepted
         ))
+        // Brief per-player cooldown so rapid taps don't flood the client with prompts.
+        // The "real" success cooldown is set in handlePlaceItem after the player picks.
+        val roomId = session.currentRoomId ?: return
+        session.interactableCooldowns["$roomId::${feat.id}"] = 1
     }
 
     /**
@@ -474,30 +478,50 @@ class InteractCommand(
             return false
         }
         val groupId = feat.actionData["puzzleGroupId"]?.takeIf { it.isNotBlank() } ?: run {
+            logger.warn("PUZZLE_STEP missing puzzleGroupId on ${feat.id}")
             session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
             return false
         }
-        val expectedIndex = feat.actionData["puzzleStepIndex"]?.toIntOrNull() ?: return false
-        val totalSteps = feat.actionData["puzzleTotalSteps"]?.toIntOrNull() ?: return false
+        val expectedIndex = feat.actionData["puzzleStepIndex"]?.toIntOrNull() ?: run {
+            logger.warn("PUZZLE_STEP missing/invalid puzzleStepIndex on ${feat.id}")
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return false
+        }
+        val totalSteps = feat.actionData["puzzleTotalSteps"]?.toIntOrNull() ?: run {
+            logger.warn("PUZZLE_STEP missing/invalid puzzleTotalSteps on ${feat.id}")
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return false
+        }
 
         val flagKey = "puzzle:$groupId:step"
         val currentStep = flags.getFlag(playerName, flagKey)?.toIntOrNull() ?: 0
 
+        // Already-solved guard: once the puzzle is complete the flag holds totalSteps.
+        // Re-tapping any step in the group should be an idempotent no-op (no message
+        // spam, no accidental reset).
+        if (currentStep >= totalSteps) {
+            val msg = feat.actionData["alreadySolvedMessage"]?.takeIf { it.isNotBlank() }
+                ?: "You've already solved this."
+            session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
+            return false  // skip global mark-used; the puzzle is done per-character
+        }
+
         return if (currentStep == expectedIndex) {
             val nextStep = currentStep + 1
             if (nextStep >= totalSteps) {
-                // Puzzle solved!
+                // Puzzle solved! Mark the flag at totalSteps so future taps see the
+                // already-solved guard above and stay idempotent.
+                flags.setFlag(playerName, flagKey, totalSteps.toString())
                 val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "The puzzle yields. Something opens."
                 val openedExit = openSuccessExit(session, roomId, feat.actionData)
                 session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
                 if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
-                // Note: we don't reset the puzzle flag — solved-once-per-character semantics.
-                true
+                false  // don't fire the global mark-used; per-character flag is the source of truth
             } else {
                 flags.setFlag(playerName, flagKey, nextStep.toString())
                 val msg = feat.actionData["advanceMessage"]?.takeIf { it.isNotBlank() } ?: "Something gives. You're on the right track."
                 session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
-                false  // don't fire the global cooldown / mark-used path; player can revisit other steps
+                false  // intermediate step; player can still tap other steps
             }
         } else {
             flags.setFlag(playerName, flagKey, "0")
