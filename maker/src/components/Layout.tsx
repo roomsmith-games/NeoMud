@@ -15,6 +15,7 @@ const navItems = [
   { label: 'Spells', path: 'spells' },
   { label: 'Default Players', path: 'default-players' },
   { label: 'Default SFX', path: 'default-sfx' },
+  { label: 'World', path: 'world' },
 ];
 
 const styles: Record<string, CSSProperties> = {

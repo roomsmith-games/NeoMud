@@ -509,3 +509,43 @@ entitiesRouter.delete('/recipes/:id', rejectIfReadOnly, async (req, res) => {
   }
 })
 
+// ─── World metadata (manifest fields stored as ProjectMeta rows) ──────
+// Authoring surface for fields like `introScript` (#272). Stored as
+// key-value pairs to keep the schema flexible — the export route
+// reconstructs `manifest.json` from these rows on bundle export.
+
+entitiesRouter.get('/world-meta', async (req, res) => {
+  try {
+    const rows = await req.db!.projectMeta.findMany()
+    const meta: Record<string, string> = {}
+    for (const row of rows) {
+      if (row.key === 'readOnly') continue
+      meta[row.key] = row.value
+    }
+    res.json(meta)
+  } catch (err: any) {
+    handlePrismaError(err, 'world-meta', res)
+  }
+})
+
+entitiesRouter.put('/world-meta', rejectIfReadOnly, async (req, res) => {
+  try {
+    const incoming = req.body as Record<string, unknown>
+    if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) {
+      res.status(400).json({ error: 'Body must be an object of key-value pairs' })
+      return
+    }
+    for (const [key, value] of Object.entries(incoming)) {
+      if (key === 'readOnly') continue
+      await req.db!.projectMeta.upsert({
+        where: { key },
+        create: { key, value: String(value ?? '') },
+        update: { value: String(value ?? '') },
+      })
+    }
+    res.json({ ok: true })
+  } catch (err: any) {
+    handlePrismaError(err, 'world-meta', res)
+  }
+})
+
