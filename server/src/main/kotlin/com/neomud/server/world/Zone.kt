@@ -65,6 +65,15 @@ data class RoomData(
 )
 
 @Serializable
+data class TrainerConfig(
+    val tier: Int = 1,
+    val maxLevel: Int,
+    val maxStatValue: Int,
+    val nextTierTrainerName: String? = null,
+    val nextTierLocationHint: String? = null
+)
+
+@Serializable
 data class NpcData(
     val id: String,
     val name: String,
@@ -92,6 +101,7 @@ data class NpcData(
     val coinDrop: CoinDrop? = null,
     val spawnPoints: List<RoomId> = emptyList(),
     val crafterRecipes: List<String> = emptyList(),
+    val trainerConfig: TrainerConfig? = null,
     val imagePrompt: String = "",
     val imageStyle: String = "",
     val imageNegativePrompt: String = "",

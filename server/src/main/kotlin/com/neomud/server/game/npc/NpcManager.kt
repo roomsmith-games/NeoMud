@@ -11,6 +11,7 @@ import com.neomud.server.game.npc.behavior.WanderBehavior
 import com.neomud.server.session.SessionManager
 import com.neomud.server.world.NpcData
 import com.neomud.server.world.SpawnConfig
+import com.neomud.server.world.TrainerConfig
 import com.neomud.server.world.WorldGraph
 import com.neomud.shared.model.ActiveEffect
 import com.neomud.shared.model.Direction
@@ -44,7 +45,8 @@ data class NpcState(
     val missSound: String = "",
     val deathSound: String = "",
     val interactSound: String = "",
-    val exitSound: String = ""
+    val exitSound: String = "",
+    val trainerConfig: TrainerConfig? = null
 ) {
     /** Active spell effects on this NPC (DoT, HoT, etc.). */
     val activeEffects: MutableList<ActiveEffect> = mutableListOf()
@@ -142,7 +144,8 @@ class NpcManager(
             missSound = data.missSound,
             deathSound = data.deathSound,
             interactSound = data.interactSound,
-            exitSound = data.exitSound
+            exitSound = data.exitSound,
+            trainerConfig = data.trainerConfig
         )
     }
 

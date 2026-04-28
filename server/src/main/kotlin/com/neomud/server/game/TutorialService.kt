@@ -146,6 +146,13 @@ class TutorialService(
             title = "Hidden Passage Found",
             content = "Sharp eyes! The Perception skill helps reveal concealed routes. Not every secret is found on the first visit.",
             blocking = false
+        ),
+        "tut_trainer_cap" to TutorialDef(
+            key = "tut_trainer_cap",
+            title = "Trainer Limit Reached",
+            content = "This trainer has taught you all they can. Higher-tier trainers wait in distant lands — each one farther afield, " +
+                "each one demanding more of you to reach. Travel further to unlock greater levels and stats.",
+            blocking = false
         )
     )
 

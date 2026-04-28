@@ -13,6 +13,7 @@ import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
 import com.neomud.server.world.ClassCatalog
 import com.neomud.server.world.RaceCatalog
+import com.neomud.server.world.TrainerConfig
 import com.neomud.shared.model.Stats
 import com.neomud.shared.protocol.ServerMessage
 
@@ -74,6 +75,14 @@ class TrainerCommand(
 
         if (player.level >= GameConfig.Progression.MAX_LEVEL) {
             session.send(ServerMessage.SystemMessage("You have reached the maximum level."))
+            return
+        }
+
+        // Per-trainer tier cap (null trainerConfig = no cap, treats as global MAX_LEVEL).
+        val cap = trainer.trainerConfig
+        if (cap != null && player.level >= cap.maxLevel) {
+            session.send(ServerMessage.SystemMessage(buildLevelCapMessage(trainer.name, cap)))
+            tutorialService?.trySend(session, "tut_trainer_cap")
             return
         }
 
@@ -163,7 +172,20 @@ class TrainerCommand(
             }
         }
 
-        val result = CpAllocator.allocate(currentValue, baseValue, player.unspentCp, clampedPoints)
+        // Per-trainer stat cap. Block the allocation if the resulting value would exceed the cap.
+        val cap = trainer.trainerConfig
+        if (cap != null && currentValue >= cap.maxStatValue) {
+            session.send(ServerMessage.SystemMessage(buildStatCapMessage(stat, trainer.name, cap)))
+            tutorialService?.trySend(session, "tut_trainer_cap")
+            return
+        }
+        val effectivePoints = if (cap != null) {
+            (cap.maxStatValue - currentValue).coerceAtMost(clampedPoints)
+        } else {
+            clampedPoints
+        }
+
+        val result = CpAllocator.allocate(currentValue, baseValue, player.unspentCp, effectivePoints)
         if (result == null) {
             session.send(ServerMessage.SystemMessage("Not enough CP to train $stat."))
             return
@@ -235,6 +257,24 @@ class TrainerCommand(
             return
         }
 
+        // Per-trainer stat cap applies uniformly to every stat.
+        val cap = trainer.trainerConfig
+        if (cap != null) {
+            val cappedStat = listOf(
+                "strength" to newStats.strength,
+                "agility" to newStats.agility,
+                "intellect" to newStats.intellect,
+                "willpower" to newStats.willpower,
+                "health" to newStats.health,
+                "charm" to newStats.charm
+            ).firstOrNull { it.second > cap.maxStatValue }
+            if (cappedStat != null) {
+                session.send(ServerMessage.SystemMessage(buildStatCapMessage(cappedStat.first, trainer.name, cap)))
+                tutorialService?.trySend(session, "tut_trainer_cap")
+                return
+            }
+        }
+
         val cpUsed = CpAllocator.totalCpUsed(newStats, baseStats)
         if (cpUsed > player.totalCpEarned) {
             session.send(ServerMessage.SystemMessage("Not enough CP for that allocation."))
@@ -272,5 +312,26 @@ class TrainerCommand(
             interactSound = trainer.interactSound,
             exitSound = trainer.exitSound
         ))
+    }
+
+    private fun buildLevelCapMessage(trainerName: String, cap: TrainerConfig): String {
+        val base = "$trainerName can only train you to level ${cap.maxLevel}."
+        return base + nextTierHint(cap)
+    }
+
+    private fun buildStatCapMessage(stat: String, trainerName: String, cap: TrainerConfig): String {
+        val base = "$trainerName cannot train your $stat past ${cap.maxStatValue}."
+        return base + nextTierHint(cap)
+    }
+
+    private fun nextTierHint(cap: TrainerConfig): String {
+        val name = cap.nextTierTrainerName
+        val hint = cap.nextTierLocationHint
+        return when {
+            name != null && hint != null -> " Seek $name in $hint to train further."
+            name != null -> " Seek $name to train further."
+            hint != null -> " Seek a higher-tier trainer in $hint."
+            else -> ""
+        }
     }
 }
