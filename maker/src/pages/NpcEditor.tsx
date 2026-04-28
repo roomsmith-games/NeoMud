@@ -45,6 +45,7 @@ interface NpcRecord {
   agility: number;
   vendorItems: string;
   crafterRecipes: string;
+  trainerConfig: string;
   spawnPoints: string;
   lootItems: string;
   coinDrop: string;
@@ -207,6 +208,14 @@ function parseCoinDrop(val: string): Record<string, number> {
   } catch { return {}; }
 }
 
+function parseObject(val: string): Record<string, any> {
+  if (!val) return {};
+  try {
+    const parsed = JSON.parse(val);
+    return typeof parsed === 'object' && !Array.isArray(parsed) && parsed !== null ? parsed : {};
+  } catch { return {}; }
+}
+
 function NpcEditor() {
   // Data state
   const [zones, setZones] = useState<Zone[]>([]);
@@ -290,6 +299,7 @@ function NpcEditor() {
       ...npc,
       vendorItems: prettyJson(npc.vendorItems),
       crafterRecipes: prettyJson(npc.crafterRecipes),
+      trainerConfig: prettyJson(npc.trainerConfig),
       lootItems: prettyJson(npc.lootItems),
       coinDrop: prettyJson(npc.coinDrop),
     });
@@ -304,7 +314,7 @@ function NpcEditor() {
       id: '', name: '', description: '', zoneId: zones[0]?.id || '', startRoomId: '',
       behaviorType: 'idle', hostile: false, level: 1, maxHp: 10, damage: 1,
       accuracy: 0, defense: 0, evasion: 0, agility: 10, perception: 0, xpReward: 0,
-      patrolRoute: '', vendorItems: '', crafterRecipes: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
+      patrolRoute: '', vendorItems: '', crafterRecipes: '', trainerConfig: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
       attackSound: '', missSound: '', deathSound: '', interactSound: '', exitSound: '',
       imagePrompt: '', imageStyle: '', imageNegativePrompt: '', imageWidth: 384, imageHeight: 512,
     });
@@ -321,7 +331,7 @@ function NpcEditor() {
     if (!form.zoneId) { setError('Zone is required'); return; }
 
     // Validate JSON fields
-    for (const key of ['vendorItems', 'crafterRecipes', 'lootItems', 'coinDrop']) {
+    for (const key of ['vendorItems', 'crafterRecipes', 'trainerConfig', 'lootItems', 'coinDrop']) {
       const val = form[key];
       if (val && val.trim()) {
         try { JSON.parse(val); } catch { setError(`Invalid JSON in ${key}`); return; }
@@ -338,6 +348,7 @@ function NpcEditor() {
           ...created,
           vendorItems: prettyJson(created.vendorItems),
           crafterRecipes: prettyJson(created.crafterRecipes),
+          trainerConfig: prettyJson(created.trainerConfig),
           lootItems: prettyJson(created.lootItems),
           coinDrop: prettyJson(created.coinDrop),
         });
@@ -349,6 +360,7 @@ function NpcEditor() {
           ...updated,
           vendorItems: prettyJson(updated.vendorItems),
           crafterRecipes: prettyJson(updated.crafterRecipes),
+          trainerConfig: prettyJson(updated.trainerConfig),
           lootItems: prettyJson(updated.lootItems),
           coinDrop: prettyJson(updated.coinDrop),
         });
@@ -943,6 +955,64 @@ function NpcEditor() {
                       }}
                     >Add</button>
                   </div>
+                </>
+              );
+            })()}
+
+            {/* Trainer Config (only for trainer NPCs) */}
+            {form.behaviorType === 'trainer' && (() => {
+              const tc = parseObject(form.trainerConfig);
+              const setTcField = (key: string, value: any) => {
+                const next = { ...tc, [key]: value };
+                // Strip empty/null values to keep JSON minimal.
+                for (const k of Object.keys(next)) {
+                  if (next[k] === '' || next[k] === null || next[k] === undefined) delete next[k];
+                }
+                handleChange('trainerConfig', Object.keys(next).length > 0 ? JSON.stringify(next, null, 2) : '');
+              };
+              return (
+                <>
+                  <div style={styles.sectionTitle}>Trainer Tier (Phase 8)</div>
+                  <div style={{ fontSize: 11, color: '#666', marginBottom: 6 }}>
+                    Caps how high this trainer can take a player. Leave blank for "no caps" (legacy behavior).
+                  </div>
+                  <label style={styles.label}>Tier (1–5)</label>
+                  <input
+                    type="number"
+                    style={styles.input}
+                    value={tc.tier ?? ''}
+                    onChange={(e) => setTcField('tier', e.target.value === '' ? '' : (parseInt(e.target.value) || 0))}
+                  />
+                  <label style={styles.label}>Max Level</label>
+                  <input
+                    type="number"
+                    style={styles.input}
+                    value={tc.maxLevel ?? ''}
+                    onChange={(e) => setTcField('maxLevel', e.target.value === '' ? '' : (parseInt(e.target.value) || 0))}
+                  />
+                  <label style={styles.label}>Max Stat Value</label>
+                  <input
+                    type="number"
+                    style={styles.input}
+                    value={tc.maxStatValue ?? ''}
+                    onChange={(e) => setTcField('maxStatValue', e.target.value === '' ? '' : (parseInt(e.target.value) || 0))}
+                  />
+                  <label style={styles.label}>Next-Tier Trainer Name (optional)</label>
+                  <input
+                    type="text"
+                    style={styles.input}
+                    value={tc.nextTierTrainerName ?? ''}
+                    onChange={(e) => setTcField('nextTierTrainerName', e.target.value)}
+                    placeholder="e.g. Master Aldric"
+                  />
+                  <label style={styles.label}>Next-Tier Location Hint (optional)</label>
+                  <input
+                    type="text"
+                    style={styles.input}
+                    value={tc.nextTierLocationHint ?? ''}
+                    onChange={(e) => setTcField('nextTierLocationHint', e.target.value)}
+                    placeholder="e.g. the Foothill Pass"
+                  />
                 </>
               );
             })()}

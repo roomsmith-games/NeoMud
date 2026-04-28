@@ -111,6 +111,7 @@ model Npc {
   agility      Int     @default(10)
   vendorItems     String  @default("")
   crafterRecipes  String  @default("")
+  trainerConfig   String  @default("")
   spawnPoints     String  @default("[]")
   attackSound  String  @default("")
   missSound    String  @default("")

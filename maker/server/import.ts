@@ -420,6 +420,7 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           agility: npc.agility ?? 10,
           vendorItems: JSON.stringify(npc.vendorItems ?? []),
           crafterRecipes: JSON.stringify(npc.crafterRecipes ?? []),
+          trainerConfig: npc.trainerConfig ? JSON.stringify(npc.trainerConfig) : '',
           spawnPoints: JSON.stringify(npc.spawnPoints ?? []),
           attackSound: npc.attackSound ?? '',
           missSound: npc.missSound ?? '',

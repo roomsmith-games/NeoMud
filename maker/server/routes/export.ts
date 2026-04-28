@@ -153,6 +153,7 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
         ...((() => { const li = parseJsonField(npc.lootItems, []); return li.length > 0 ? { lootItems: li } : {}; })()),
         ...((() => { const cd = parseJsonField(npc.coinDrop); return Object.keys(cd).length > 0 ? { coinDrop: cd } : {}; })()),
         ...((() => { const cr = parseJsonField(npc.crafterRecipes, []); return cr.length > 0 ? { crafterRecipes: cr } : {}; })()),
+        ...((() => { const tc = parseJsonField(npc.trainerConfig); return Object.keys(tc).length > 0 ? { trainerConfig: tc } : {}; })()),
       })),
     }
     zip.addFile(`world/${zone.id}.zone.json`, Buffer.from(JSON.stringify(zoneOut, null, 2)))
@@ -490,6 +491,7 @@ exportRouter.get('/json', async (req, res) => {
           ...((() => { const li = parseJsonField(npc.lootItems, []); return li.length > 0 ? { lootItems: li } : {}; })()),
           ...((() => { const cd = parseJsonField(npc.coinDrop); return Object.keys(cd).length > 0 ? { coinDrop: cd } : {}; })()),
           ...((() => { const cr = parseJsonField(npc.crafterRecipes, []); return cr.length > 0 ? { crafterRecipes: cr } : {}; })()),
+          ...((() => { const tc = parseJsonField(npc.trainerConfig); return Object.keys(tc).length > 0 ? { trainerConfig: tc } : {}; })()),
         }
       }
 
