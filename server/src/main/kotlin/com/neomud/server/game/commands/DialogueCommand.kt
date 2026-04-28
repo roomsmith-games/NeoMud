@@ -76,7 +76,10 @@ class DialogueCommand(
                 false
             }
             if (!granted) {
-                session.send(ServerMessage.SystemMessage("Your inventory is too full to receive ${npc.name}'s gift."))
+                // Covers both "inventory cap hit" and "grantItemId not in catalog" — InventoryRepository.addItem
+                // returns false for either. The neutral wording avoids misleading the player when the real cause
+                // is a content-author typo on the NPC's grantItemId.
+                session.send(ServerMessage.SystemMessage("${npc.name}'s gift slips away — there is no room for it."))
                 return
             }
 

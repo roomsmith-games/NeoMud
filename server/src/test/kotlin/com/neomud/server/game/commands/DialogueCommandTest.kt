@@ -255,10 +255,11 @@ class DialogueCommandTest {
         // Flag NOT set so player can retry on next interaction
         assertEquals(null, flags.getFlag(testPlayerName, "warden_token_received"),
             "Flag must NOT be set when inventory add fails")
-        // System message warned the player
+        // System message warned the player. Wording is intentionally neutral so it covers both
+        // inventory-full and content-author-typo-on-grantItemId — addItem returns false for either.
         val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
-        assertTrue(sysMessages.any { it.message.contains("inventory is too full") },
-            "Player should see 'inventory too full' message")
+        assertTrue(sysMessages.any { it.message.contains("slips away") || it.message.contains("no room") },
+            "Player should see a 'gift could not be received' message")
     }
 
     @Test
