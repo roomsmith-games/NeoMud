@@ -200,7 +200,7 @@ class TrainerCommandTest {
     fun trainStatBlockedAtTrainerMaxStatValue() = runBlocking {
         val repo = seedPlayer()
         val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
-        loadTrainer(npcManager, trainerConfig = TrainerConfig(tier = 1, maxLevel = 30, maxStatValue = 18))
+        loadTrainer(npcManager, trainerConfig = TrainerConfig(tier = 1, maxLevel = GameConfig.Progression.MAX_LEVEL, maxStatValue = 18))
         val command = buildCommand(npcManager, repo)
 
         val player = playerAtLevel(level = 1).copy(
@@ -216,7 +216,7 @@ class TrainerCommandTest {
     fun trainStatClampsToTrainerMaxStatValue() = runBlocking {
         val repo = seedPlayer()
         val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
-        loadTrainer(npcManager, trainerConfig = TrainerConfig(tier = 1, maxLevel = 30, maxStatValue = 18))
+        loadTrainer(npcManager, trainerConfig = TrainerConfig(tier = 1, maxLevel = GameConfig.Progression.MAX_LEVEL, maxStatValue = 18))
         val command = buildCommand(npcManager, repo)
 
         val player = playerAtLevel(level = 1).copy(
