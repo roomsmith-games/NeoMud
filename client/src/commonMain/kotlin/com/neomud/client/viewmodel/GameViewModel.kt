@@ -753,6 +753,18 @@ class GameViewModel(
             }
             // Handled by AuthViewModel, not GameViewModel
             is ServerMessage.PlatformAuthOk -> {}
+            is ServerMessage.PlaceItemPrompt -> {
+                // The full PlaceItemDialog Compose UI is a follow-up. For now
+                // surface the prompt + accepted-item hint in the log so the
+                // puzzle is at least observable.
+                addLog("[${message.label}] ${message.prompt}", MudColors.system)
+                if (message.acceptedItems.isNotEmpty()) {
+                    addLog(
+                        "Accepted items: ${message.acceptedItems.joinToString(", ")}",
+                        MudColors.system
+                    )
+                }
+            }
         }
     }
 

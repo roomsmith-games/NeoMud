@@ -244,7 +244,8 @@ object WorldLoader {
                             logger.warn("Room '${room.id}' interactable '${feat.id}' TELEPORT targetRoomId '$targetRoomId' not found")
                         }
                     }
-                    "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT" -> { /* validated at runtime */ }
+                    "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT",
+                    "DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP" -> { /* validated at runtime */ }
                     else -> logger.warn("Room '${room.id}' interactable '${feat.id}' unknown actionType '${feat.actionType}'")
                 }
             }

@@ -118,8 +118,10 @@
       "x": 3,
       "y": 1,
       "exits": {
-        "WEST": "iron_vein:east_shaft"
+        "WEST": "iron_vein:east_shaft",
+        "EAST": "iron_vein:hidden_alcove"
       },
+      "lockedExits": { "EAST": 99 },
       "backgroundImage": "/assets/images/rooms/iron_vein_abandoned_chamber.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,

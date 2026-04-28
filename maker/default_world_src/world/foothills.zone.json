@@ -285,16 +285,17 @@
     {
       "id": "foothills:summit_path",
       "name": "Summit Path",
-      "description": "The trail steepens sharply, snow gathering in the cracks even now. The wind carries voices \u2014 or something that sounds like voices, faint and high. The summit lies further on, but the path north is blocked for now by a wall of fresh ice.",
+      "description": "The trail steepens sharply, snow gathering in the cracks even now. The wall of ice that once sealed the way north has split clean down its spine \u2014 a finger\u2010wide crack runs through it, broad enough to slip past. Beyond, the trail flattens out onto a high windswept plateau.",
       "x": 0,
       "y": 17,
       "exits": {
-        "SOUTH": "foothills:ridge"
+        "SOUTH": "foothills:ridge",
+        "NORTH": "highmoor:south_climb"
       },
       "backgroundImage": "/assets/images/rooms/foothills_summit_path.webp",
-      "departSound": "footstep_snow",
+      "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
-      "imagePrompt": "First-person view of a steep snow-dusted mountain path, ice crystals glinting in the cracks, jagged peaks closing in around the trail, a wall of fresh translucent ice blocking the path ahead, sense of cold and forbidden boundary.",
+      "imagePrompt": "First-person view of a steep snow-dusted mountain path, ice crystals glinting in the cracks, jagged peaks closing in around the trail, a wall of translucent ice with a finger-wide crack split clean down its spine, glimpse of a high windswept plateau beyond, sense of threshold opening.",
       "imageStyle": "fantasy digital painting, rich colors, cold blue alpine lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting, cold and high",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,

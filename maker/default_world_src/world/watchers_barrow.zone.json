@@ -1,0 +1,650 @@
+{
+  "id": "watchers_barrow",
+  "name": "Watcher's Barrow",
+  "description": "The greatest of the burial mounds on the Highmoor Steppes — a stone-lined warren beneath the grass crown, raised over the bones of the first Wardens. Until recently it was quiet. Something inside has stopped sleeping.",
+  "safe": false,
+  "bgm": "boss_intense",
+  "spawnConfig": {
+    "maxEntities": 8,
+    "maxPerRoom": 2,
+    "rateTicks": 22
+  },
+  "imageStyle": "fantasy digital painting, dry stone burial chamber, cold lantern light, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, daylight, bright",
+  "rooms": [
+    {
+      "id": "watchers_barrow:vestibule",
+      "name": "Barrow Vestibule",
+      "description": "A short stone-lined antechamber just inside the great mound, the air still and dry and very cold. Pale wedge of daylight reaches in from the entrance behind you; ahead the corridor narrows into utter dark. Faint scratches mark the floor — something dragged itself out of here once.",
+      "x": 0,
+      "y": 0,
+      "exits": {
+        "WEST": "highmoor:barrow_threshold",
+        "EAST": "watchers_barrow:cobweb_corridor"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_vestibule.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view just inside the vestibule of an ancient stone burial mound, pale wedge of daylight from the open entrance behind illuminating dry stone-lined walls and a packed earth floor, cold still air, faint drag-scratches on the floor leading deeper into a narrowing corridor of utter darkness ahead.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, cold pale daylight wedge, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "watchers_barrow:cobweb_corridor",
+      "name": "Cobweb Corridor",
+      "description": "A long stone-walled corridor thick with dust and old grey cobwebs, the ceiling supported every few paces by a heavy capstone. One of the capstones overhead looks loose, its stone cracked and slightly shifted from its neighbors.",
+      "x": 1,
+      "y": 0,
+      "exits": {
+        "WEST": "watchers_barrow:vestibule",
+        "EAST": "watchers_barrow:main_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_cobweb_corridor.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a long stone-walled barrow corridor thick with grey dust and old cobwebs, heavy stone capstones supporting the ceiling every few paces, one capstone overhead visibly cracked and slightly shifted out of line, dim torchlight, oppressive claustrophobic atmosphere.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, dim torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "loose_capstone",
+          "label": "loose ceiling capstone",
+          "description": "A heavy stone slab crudely shifted out of line in the ceiling — set to drop on whoever passes beneath.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 12,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "14",
+            "saveStat": "AGILITY",
+            "saveDC": "13",
+            "saveType": "DODGE",
+            "detectMessage": "You spot a capstone above you cracked and slightly shifted — set to fall on whoever passes beneath.",
+            "dodgeMessage": "You hear stone grind overhead and throw yourself sideways as a heavy capstone crashes down where you stood!",
+            "damageMessage": "Stone grinds overhead — you barely look up before a heavy capstone crashes down across your shoulders! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:main_hall",
+      "name": "Hall of the Honored Dead",
+      "description": "A broad rectangular chamber lined on every wall with stone-shelved alcoves, each alcove holding the bone-bundle of a long-dead Warden. Most lie undisturbed; a few have been pulled out and broken open. Passages lead north, east, and south, each marked by a different carved sigil above the lintel.",
+      "x": 2,
+      "y": 0,
+      "exits": {
+        "WEST": "watchers_barrow:cobweb_corridor",
+        "NORTH": "watchers_barrow:silent_chamber",
+        "EAST": "watchers_barrow:ritual_gate",
+        "SOUTH": "watchers_barrow:offering_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_main_hall.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a broad rectangular stone burial chamber lined wall to wall with stone-shelved alcoves, each alcove holding a wrapped bone-bundle of a long-dead warden, most undisturbed, a few pulled out and broken open with bones scattered on the floor, three corridors leading away each marked with a different carved sigil above the lintel, dim torchlight, oppressive ancient atmosphere.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, dim torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "watchers_barrow:silent_chamber",
+      "name": "Silent Chamber",
+      "description": "A small low-ceilinged side chamber, the air here unmistakably wrong — too still, faintly metallic in the lungs. A small stone basin in the center holds a fine grey dust that has not settled in centuries, kept agitated by something subterranean.",
+      "x": 2,
+      "y": 1,
+      "exits": {
+        "SOUTH": "watchers_barrow:main_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_silent_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a small low-ceilinged stone side chamber, a single round stone basin at the center holding a slow swirl of fine grey dust that never quite settles, thin haze of dust-mote in the air, faint metallic taste implied, dim cold torchlight, oppressive still atmosphere.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, cold dim torchlight, oppressive still atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "dust_basin",
+          "label": "swirling dust basin",
+          "description": "A stone basin agitating fine bone-dust into the chamber air. Breathe carefully.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 13,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "14",
+            "damageType": "poison",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "13",
+            "saveType": "RESIST",
+            "detectMessage": "You see the swirl of grey dust in the basin and feel its faint metallic bite at the back of your throat. You shield your mouth before you breathe deeper.",
+            "dodgeMessage": "You hold your breath and ease through the basin's bone-dust without inhaling.",
+            "damageMessage": "You inhale a lungful of bone-dust before you can stop yourself — it burns going down. (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:offering_chamber",
+      "name": "Offering Chamber",
+      "description": "A narrow side chamber, its far wall recessed into a shallow alcove holding a flat altar of polished black stone. The altar bears a single carved depression in its center, perfectly the size of a Watcher's honor-stone. The eastern wall behind the altar shows the joints of a hidden door, sealed for now.",
+      "x": 2,
+      "y": -1,
+      "exits": {
+        "NORTH": "watchers_barrow:main_hall",
+        "EAST": "watchers_barrow:bonepit"
+      },
+      "lockedExits": { "EAST": 99 },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_offering_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a narrow side chamber in a stone barrow, far wall recessed to hold a flat polished black-stone altar with a single carved circular depression at its center, the eastern wall behind the altar visibly showing the joints of a sealed hidden door, dim cold torchlight, atmosphere of waiting offering.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, cold dim torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "honor_altar",
+          "label": "polished black-stone altar",
+          "description": "The altar's central depression is the exact size of a Watcher's honor-stone. Place it here.",
+          "actionType": "PLACE_ITEM",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "acceptedItems": "item:watchers_honor_stone",
+            "consumeItem": "true",
+            "promptText": "The altar's central depression waits. Which item from your pack do you place here?",
+            "successMessage": "You set the honor-stone into the depression. It seats itself with a soft click — and the joints of the eastern wall ease open with a long sigh of stale air, revealing a hidden chamber beyond.",
+            "failureMessage": "Nothing happens. Whatever you tried to place, it is not what the altar is waiting for.",
+            "successDirection": "EAST"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:bonepit",
+      "name": "Bonepit",
+      "description": "A small hidden chamber behind the offering altar. Bones lie scattered ankle-deep across the floor — picked clean, very old. In the corner stands a stone-lidded cist, its lid askew, the wax seal across its rim freshly broken. The cist is half-empty — most of what was in it has been taken — but a few things remain.",
+      "x": 3,
+      "y": -1,
+      "exits": {
+        "WEST": "watchers_barrow:offering_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_bonepit.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a small hidden stone chamber behind a barrow altar, the floor scattered ankle-deep with old bones picked clean, a stone cist standing in the corner with its heavy lid askew and a freshly broken wax seal across its rim, half-emptied, dim cold torchlight, atmosphere of recently disturbed treasure-cache.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, dim cold torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "stone_cist",
+          "label": "broken stone cist",
+          "description": "A stone-lidded burial cist, recently disturbed, half-emptied. Whatever was taken is long gone, but the dregs remain.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:bone_acolyte_robes,item:greater_health_potion,item:cracked_warding_rune",
+            "minCopper": "0",
+            "maxCopper": "200",
+            "minSilver": "3",
+            "maxSilver": "8",
+            "minGold": "0",
+            "maxGold": "1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:ritual_gate",
+      "name": "Ritual Gate",
+      "description": "A small antechamber facing a great pair of stone doors carved with the four Watcher sigils — dawn, dusk, storm, star — and at the doors' joining a fifth sigil: the sealed eye. The doors will not move; the sealed eye is dark. A worn brass plate before them reads simply, ‘The four are spoken before the gate.’",
+      "x": 3,
+      "y": 0,
+      "exits": {
+        "WEST": "watchers_barrow:main_hall",
+        "EAST": "watchers_barrow:approach"
+      },
+      "lockedExits": { "EAST": 99 },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_ritual_gate.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a small barrow antechamber facing a great pair of carved stone doors, the four Watcher sigils prominent on the doors — rising sun, setting sun, lightning-on-anvil, five-pointed star — and at the doors' meeting a fifth large sealed-eye sigil, currently dark, a worn brass plate set into the floor before the doors, dim cold torchlight, atmosphere of obstinate gate.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, cold dim torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "sealed_eye_gate",
+          "label": "sealed-eye gate",
+          "description": "The fifth sigil at the joining of the doors. It will answer only to a hand that has already spoken to the four.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "steppe_cairns",
+            "puzzleStepIndex": "4",
+            "puzzleTotalSteps": "5",
+            "advanceMessage": "The sealed eye warms beneath your hand and opens — the four Watchers have answered through you. The great doors swing inward with a long stone groan, revealing the approach beyond.",
+            "successMessage": "The sealed eye warms beneath your hand and opens — the four Watchers have answered through you. The great doors swing inward with a long stone groan, revealing the approach beyond.",
+            "resetMessage": "The sealed eye stays cold. The litany has not been spoken in full — return to the cairns and try again.",
+            "alreadySolvedMessage": "The sealed eye is open. The way ahead lies beyond.",
+            "successDirection": "EAST"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:approach",
+      "name": "Watcher's Approach",
+      "description": "A wide stone-vaulted approach lined with carved relief friezes of the four Watchers in their long vigil. The floor is dark with old wax-spill from a hundred years of vigil-candles. Faint runic shapes glow softly red in the wall-arches, and the air smells of metal warming. To the east a side passage breaks off; the way north lies straight ahead, into the heart of the barrow.",
+      "x": 4,
+      "y": 0,
+      "exits": {
+        "WEST": "watchers_barrow:ritual_gate",
+        "EAST": "watchers_barrow:knife_track",
+        "NORTH": "watchers_barrow:barrow_heart"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_approach.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a wide stone-vaulted barrow approach corridor, walls covered in carved relief friezes of four hooded Watcher figures in long vigil, dark wax-spill staining the stone floor, faint glowing red runic shapes set into the wall-arches, faintly warming air, cold dramatic torchlight, atmosphere of mounting threshold.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, cold dramatic torchlight with hints of red rune-glow, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "warming_runes",
+          "label": "softly glowing wall-runes",
+          "description": "Carved runes set into the wall-arches, charged with a slow arcane curse keyed to anyone passing beneath them.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 14,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "17",
+            "damageType": "arcane",
+            "saveStat": "WILLPOWER",
+            "saveDC": "14",
+            "saveType": "RESIST",
+            "detectMessage": "You see the runes in the wall-arches glowing faintly red — a slow curse hooked to anyone passing beneath. You steel your mind before you cross.",
+            "dodgeMessage": "You set your jaw and walk through, the curse breaking on the wall of your will.",
+            "damageMessage": "The runes flare red as you pass — a hooked cold thought drives in behind your eyes! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:knife_track",
+      "name": "Knife Track",
+      "description": "A narrow side passage, its floor laid with rough stone slabs. Several of the slabs are subtly raised on hidden springs, set with razor-thin metal teeth that have not yet rusted through. At the far end stands an iron-banded coffer, and the dust-thick floor around it has been recently disturbed.",
+      "x": 5,
+      "y": 0,
+      "exits": {
+        "WEST": "watchers_barrow:approach"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_knife_track.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a narrow stone side passage in a barrow, several floor slabs subtly raised on hidden springs visible at angle, razor-thin metal teeth glinting along the slab edges, an iron-banded coffer at the far end, recently disturbed dust pattern around it, dim cold torchlight, atmosphere of dangerous side passage.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, dim cold torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "spring_blades",
+          "label": "spring-loaded floor blades",
+          "description": "Pressure-plate blade-traps in the floor slabs — set to spring up the moment weight crosses them.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 13,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "16",
+            "saveStat": "AGILITY",
+            "saveDC": "14",
+            "saveType": "DODGE",
+            "detectMessage": "You catch the glint of metal teeth along the slab edges and step over them, picking your line.",
+            "dodgeMessage": "You skip lightly across the trap-line, blades springing up an instant after each step.",
+            "damageMessage": "A floor slab gives — razor-blades whip up under your shins before you can pull back! (-{damage} HP)"
+          }
+        },
+        {
+          "id": "iron_coffer",
+          "label": "iron-banded coffer",
+          "description": "A small iron-banded coffer at the end of the passage, its dust disturbed.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:greater_health_potion,item:cracked_warding_rune,item:moor_charm_ring",
+            "minCopper": "100",
+            "maxCopper": "300",
+            "minSilver": "3",
+            "maxSilver": "8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "watchers_barrow:barrow_heart",
+      "name": "Heart of the Barrow",
+      "description": "The deepest chamber of the mound, a wide circular vault with a stone bier at its center. On the bier lies a stone effigy of a Watcher — and standing over it, swathed in tattered grave-linen and crowned with a bone diadem, the Barrow-Wight Esketh waits. The chamber's vaulted roof is hung with cairn-stones tied with ancient rope, set to fall the moment intruders cross the inner threshold.",
+      "x": 4,
+      "y": 1,
+      "exits": {
+        "SOUTH": "watchers_barrow:approach"
+      },
+      "backgroundImage": "/assets/images/rooms/watchers_barrow_barrow_heart.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a wide circular vaulted barrow chamber, a long stone bier at the center bearing a stone effigy of a hooded warden, the vaulted ceiling overhead hung with bound cairn-stones suspended on ancient rope, single shaft of cold pale light falling from a high crack onto the bier, dim torchlight at the edges, atmosphere of deep tomb arena.",
+      "imageStyle": "fantasy digital painting, dry stone burial chamber, cold dramatic light, oppressive ancient boss arena atmosphere, slightly painterly, fixed perspective, JRPG dungeon boss arena background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "hung_cairnstones",
+          "label": "suspended cairn-stones",
+          "description": "Bound cairn-stones suspended from the vault ceiling on aged rope, rigged to drop on whoever crosses the threshold.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 14,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "18",
+            "saveStat": "AGILITY",
+            "saveDC": "14",
+            "saveType": "DODGE",
+            "detectMessage": "You see the cairn-stones bound overhead and the rope-rigging running along the wall — you slip in low and tight along the edge of the threshold.",
+            "dodgeMessage": "You hear rope snap overhead and roll forward, cairn-stones smashing into the floor where you stood!",
+            "damageMessage": "Rope snaps overhead — a hail of cairn-stones crashes down across your back as you cross the threshold! (-{damage} HP)"
+          }
+        }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:bone_acolyte",
+      "name": "Bone Acolyte",
+      "description": "A gaunt figure in tattered grave-linen, a circlet of bone fragments wired around its skull. Where the eyes should be, two pinpricks of sour green light. The acolyte chants under what would be its breath, the words shaped like a curse.",
+      "startRoomId": "watchers_barrow:main_hall",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 195,
+      "damage": 33,
+      "level": 11,
+      "xpReward": 280,
+      "accuracy": 17,
+      "defense": 12,
+      "evasion": 14,
+      "agility": 16,
+      "attackSound": "magic_attack",
+      "missSound": "magic_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body gaunt undead acolyte in tattered grey grave-linen, circlet of small wired bone fragments around the skull, two pinpricks of sour green light where the eyes should be, mouth open in a soundless chant, raised hand crackling with faint green spell-light, threatening pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, undead caster mood, sickly green accents",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:watchers_honor_stone",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:bone_acolyte_robes",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 40,
+        "maxCopper": 110,
+        "minSilver": 1,
+        "maxSilver": 3
+      }
+    },
+    {
+      "id": "npc:restless_dead",
+      "name": "Restless Honored Dead",
+      "description": "A long-bone skeleton wrapped in the rotted leathers and ringmail of a Warden, animate and walking. The bones are stained brown with the soil of a long burial, and a dull sigil-pendant hangs at its sternum where the heart used to be.",
+      "startRoomId": "watchers_barrow:silent_chamber",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 175,
+      "damage": 32,
+      "level": 11,
+      "xpReward": 245,
+      "accuracy": 14,
+      "defense": 14,
+      "evasion": 10,
+      "agility": 12,
+      "attackSound": "claw_slash",
+      "missSound": "claw_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body animate skeletal warden in rotted leather and brown-stained ringmail, long-bone limbs walking forward, dull sigil-pendant hanging at the sternum where the heart should be, hollow eye sockets, slow patient threatening pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, undead warrior mood",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:cracked_warding_rune",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_ore",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 50,
+        "maxCopper": 130,
+        "minSilver": 1,
+        "maxSilver": 3
+      }
+    },
+    {
+      "id": "npc:tomb_spider",
+      "name": "Tomb Spider",
+      "description": "A long-legged dark spider the size of a hunting dog, its abdomen marked with a pale skull-shaped patch. Its silk lies in old grey drapes through the corridors. It does not skitter — it stalks.",
+      "startRoomId": "watchers_barrow:knife_track",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 165,
+      "damage": 35,
+      "level": 12,
+      "xpReward": 270,
+      "accuracy": 16,
+      "defense": 10,
+      "evasion": 20,
+      "agility": 22,
+      "attackSound": "spider_bite",
+      "missSound": "spider_miss",
+      "deathSound": "spider_death",
+      "imagePrompt": "Full-body long-legged dark tomb spider the size of a hunting dog, abdomen marked with a clear pale skull-shaped patch, eight thin black eyes, sharp pedipalps, slow stalking pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, dark crypt mood",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:spider_fang",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:antivenom_vial",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 90
+      }
+    },
+    {
+      "id": "npc:crypt_wraith",
+      "name": "Crypt Wraith",
+      "description": "A drift of nearly-transparent pale fog held in the rough shape of a kneeling figure. Where it passes, candle-flames go blue and stay that way. Its voice is the sound of sand poured slowly through a drum.",
+      "startRoomId": "watchers_barrow:approach",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 145,
+      "damage": 37,
+      "level": 12,
+      "xpReward": 285,
+      "accuracy": 18,
+      "defense": 6,
+      "evasion": 26,
+      "agility": 22,
+      "attackSound": "ghost_attack",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body drifting wraith of nearly-transparent pale fog held in the rough shape of a kneeling figure, faintly luminescent in cold blue, no clear face, faint outstretched hand, ghostly silent threatening pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, cold ghost mood, translucent",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, solid opaque",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:cracked_warding_rune",
+          "chance": 0.55,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:mana_potion",
+          "chance": 0.45,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 40,
+        "maxCopper": 120,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
+    },
+    {
+      "id": "npc:barrow_wight_esketh",
+      "name": "Barrow-Wight Esketh",
+      "description": "A tall figure in tattered grave-linen, crowned with a diadem of fused finger-bones. Esketh's flesh is grey and gone-translucent, but the eyes still burn — a steady, watchful light, neither malevolent nor kind. He does not speak. The barrow speaks for him, in the slow grinding of its stone.",
+      "startRoomId": "watchers_barrow:barrow_heart",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 540,
+      "damage": 44,
+      "level": 12,
+      "xpReward": 1450,
+      "accuracy": 18,
+      "defense": 20,
+      "evasion": 12,
+      "agility": 14,
+      "bossRespawnHours": 4,
+      "attackSound": "ghost_attack",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body tall undead barrow-wight boss in tattered grey grave-linen, crowned with a diadem of fused human finger-bones, grey translucent flesh, two steady watchful pale-blue burning lights for eyes, hands at his sides bearing pale rune-tattoos, threatening but composed presence facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, solid white background, monumental dread, cold pale tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:eskeths_skull",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:eskeths_seal_fragment",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:wight_kings_cleaver",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:soul_woven_cloak",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:bone_singer_amulet",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 0,
+        "maxCopper": 150,
+        "minSilver": 8,
+        "maxSilver": 18,
+        "minGold": 1,
+        "maxGold": 4
+      }
+    }
+  ]
+}
