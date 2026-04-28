@@ -1,0 +1,480 @@
+{
+  "id": "iron_vein",
+  "name": "Iron Vein Mine",
+  "description": "An old iron mine carved into the bones of the foothills. The miners abandoned it years ago when something began to crawl up from the lower shafts. Now it belongs to the Cavemother and her brood.",
+  "safe": false,
+  "bgm": "boss_intense",
+  "spawnConfig": {
+    "maxEntities": 7,
+    "maxPerRoom": 2,
+    "rateTicks": 20
+  },
+  "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, daylight, bright",
+  "rooms": [
+    {
+      "id": "iron_vein:entrance",
+      "name": "Mine Entrance",
+      "description": "A few paces inside the mine, daylight still reaches the floor as a pale wedge. Old timber supports brace the ceiling, and rusted iron tools lean against the wall. The shaft drops away into darkness ahead.",
+      "x": 0,
+      "y": 0,
+      "exits": {
+        "WEST": "foothills:mine_entrance_overlook",
+        "EAST": "iron_vein:antechamber"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_entrance.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view just inside the entrance of an old iron mine, pale wedge of daylight on the floor from behind, ancient timber ceiling supports, rusted iron tools leaning against the cut-stone wall, dark shaft dropping away ahead.",
+      "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, daylight, bright",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:antechamber",
+      "name": "Lit Antechamber",
+      "description": "A small open chamber where the miners once gathered before each shift. A lantern still burns on a hook by the wall, kept lit by some unknown hand. This is the last truly safe spot in the mine.",
+      "x": 1,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:entrance",
+        "EAST": "iron_vein:upper_tunnel"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_antechamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "healPerTick": 1,
+      "imagePrompt": "First-person view of a small lit underground antechamber in a mine, an oil lantern hanging from a hook on the rough stone wall casting warm orange light, wooden bench along one wall, sense of small refuge in deep stone, no people.",
+      "imageStyle": "fantasy digital painting, warm lantern light against dark stone, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:upper_tunnel",
+      "name": "Upper Tunnel",
+      "description": "The main tunnel widens into a junction, three passages branching out. The floor is littered with debris — fallen support timbers, broken ore carts. Watch your step.",
+      "x": 2,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:antechamber",
+        "NORTH": "iron_vein:east_shaft",
+        "SOUTH": "iron_vein:west_shaft",
+        "EAST": "iron_vein:flooded_passage"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_upper_tunnel.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a wide three-way junction in an underground mine tunnel, scattered debris on the floor — fallen wooden support timbers, broken iron ore carts, dim lantern light barely revealing the branching passages, oppressive damp stone atmosphere.",
+      "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "tripwire_trap",
+          "label": "old tripwire across the floor",
+          "description": "A trip-and-swing trap rigged from an old miner's counterweight system.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 10,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "8",
+            "saveStat": "AGILITY",
+            "saveDC": "12",
+            "saveType": "DODGE",
+            "detectMessage": "You spot an old tripwire stretched low across the floor, attached to a counterweight in the ceiling.",
+            "dodgeMessage": "You leap aside as a heavy wooden beam swings down where you stood!",
+            "damageMessage": "A tripwire snaps and a heavy wooden beam swings down, slamming into your side! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iron_vein:east_shaft",
+      "name": "East Shaft",
+      "description": "A narrower side tunnel, hewn close enough that you can touch both walls. Faint scratches mark the stone where many small claws have passed.",
+      "x": 2,
+      "y": 1,
+      "exits": {
+        "SOUTH": "iron_vein:upper_tunnel",
+        "EAST": "iron_vein:abandoned_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_east_shaft.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a very narrow underground mine shaft, walls close enough to touch on both sides, faint claw marks visible on the dark stone, single dim lantern far ahead, suffocating tight space.",
+      "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:abandoned_chamber",
+      "name": "Abandoned Chamber",
+      "description": "A larger chamber that once served as a foreman's office. A heavy wooden desk lies overturned, papers scattered and water-damaged. A rusted iron lever protrudes from one wall, its purpose unclear at first glance.",
+      "x": 3,
+      "y": 1,
+      "exits": {
+        "WEST": "iron_vein:east_shaft"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_abandoned_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a larger underground chamber, a heavy wooden desk overturned in the foreground with scattered water-damaged papers, a rusted iron lever protruding from the back stone wall, a few broken lanterns, sense of long-abandoned office space.",
+      "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "rusted_lever",
+          "label": "rusted iron lever",
+          "description": "A heavy iron lever protruding from the wall, locked in place by years of rust. Brute force will free it.",
+          "actionType": "EXIT_OPEN",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "difficulty": 14,
+          "difficultyCheck": "STRENGTH",
+          "resetTicks": 0,
+          "failureMessage": "The lever resists, rust clogging the mechanism. You'll need more force.",
+          "actionData": {
+            "direction": "EAST",
+            "targetRoom": "iron_vein:hidden_alcove"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iron_vein:hidden_alcove",
+      "name": "Hidden Alcove",
+      "description": "A small alcove revealed behind the rotated desk-back, lit by a single guttering candle that has somehow not gone out. A small iron-banded chest sits in the corner, dust-thick on its lid.",
+      "x": 4,
+      "y": 1,
+      "exits": {
+        "WEST": "iron_vein:abandoned_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_hidden_alcove.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view of a tiny hidden underground alcove revealed behind rotated stone, a single small candle burning on a stone shelf casting soft orange light, a small dusty iron-banded wooden chest in the corner, sense of long-undisturbed secret.",
+      "imageStyle": "fantasy digital painting, warm candlelight against dark stone, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "dusty_chest",
+          "label": "small iron-banded chest",
+          "description": "A dusty iron-banded chest, untouched for years.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:health_potion,item:mana_potion,item:foreman_key",
+            "minCopper": "100",
+            "maxCopper": "250",
+            "minSilver": "2",
+            "maxSilver": "5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iron_vein:west_shaft",
+      "name": "West Shaft",
+      "description": "A working ore vein, the rough walls glittering with darker mineral seams. The air is thick with stone dust. Skittering sounds echo from somewhere ahead.",
+      "x": 2,
+      "y": -1,
+      "exits": {
+        "NORTH": "iron_vein:upper_tunnel",
+        "SOUTH": "iron_vein:ore_vein"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_west_shaft.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a working ore mine shaft, rough stone walls glittering with darker mineral seams of iron and silver, thick stone dust visible in the lantern light, oppressive damp atmosphere, sense of being watched.",
+      "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:ore_vein",
+      "name": "Iron Vein",
+      "description": "The richest seam of iron in the mine, the walls thick with raw ore. Old tools lie where their owners dropped them. Cobwebs choke the corners. Multiple skittering forms scatter at your light.",
+      "x": 2,
+      "y": -2,
+      "exits": {
+        "NORTH": "iron_vein:west_shaft"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_ore_vein.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a rich iron ore vein deep in a mine, raw iron embedded thickly in the dark stone walls, abandoned mining tools on the floor, thick cobwebs in every corner, multiple small dark shapes skittering at the edge of lantern light.",
+      "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:flooded_passage",
+      "name": "Flooded Passage",
+      "description": "Knee-deep cold water pools in this section of the tunnel, its surface utterly still. Loose stones from the ceiling have fallen here over the years, leaving the floor uneven and treacherous beneath the dark surface.",
+      "x": 3,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:upper_tunnel",
+        "EAST": "iron_vein:deep_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_flooded_passage.webp",
+      "departSound": "footstep_water",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a flooded mine passage with knee-deep dark water pooling across the tunnel floor, perfectly still surface reflecting lantern light, fallen stones half-submerged, treacherous footing implied beneath the dark water.",
+      "imageStyle": "fantasy digital painting, dark stone and water reflections, lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "submerged_stones",
+          "label": "loose stones beneath the water",
+          "description": "Treacherous footing beneath cold dark water — a fall trap.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 11,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "10",
+            "saveStat": "AGILITY",
+            "saveDC": "13",
+            "saveType": "DODGE",
+            "detectMessage": "Looking carefully at the water you see the floor is uneven — loose stones lurk beneath the surface.",
+            "dodgeMessage": "You step carefully across the loose stones, keeping your balance.",
+            "damageMessage": "A loose stone shifts under your foot — you fall hard against the wet rock! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iron_vein:deep_chamber",
+      "name": "Deep Chamber",
+      "description": "The tunnel opens into a wide natural chamber, the air thick with the smell of damp earth and something acrid underneath. Strands of pale silk hang from the ceiling like a bride's veil. Whatever made this knows you are here.",
+      "x": 4,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:flooded_passage",
+        "EAST": "iron_vein:webbed_corridor"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_deep_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a wide natural underground chamber, pale silk webbing hanging from the high ceiling like sheets, damp earth floor, faint acrid scent implied, sense of being inside something alive, dim greenish lantern light.",
+      "imageStyle": "fantasy digital painting, dark stone and pale silk, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, dread",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:webbed_corridor",
+      "name": "Webbed Corridor",
+      "description": "The corridor narrows and the silk thickens — strands as thick as ship rope crisscross between the walls. Every surface is sticky. Something massive must have made this.",
+      "x": 5,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:deep_chamber",
+        "EAST": "iron_vein:cavemother_lair"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_webbed_corridor.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a narrowing underground corridor choked with thick spider silk, strands as thick as ship rope crisscrossing between dark stone walls, every surface tacky and pale, sense of approaching something massive at the end.",
+      "imageStyle": "fantasy digital painting, pale silk and dark stone, oppressive horror atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic dread",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "sticky_strands",
+          "label": "thick sticky silk strands",
+          "description": "Venomous spider silk thick enough to ensnare a hand.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 12,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "12",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "14",
+            "saveType": "RESIST",
+            "detectMessage": "You see the silk strands are not just decorative — they pulse faintly, alive with some venom.",
+            "dodgeMessage": "You twist away from the worst of the strands, brushing them off before they take hold.",
+            "damageMessage": "Sticky venomous silk catches your skin — burning where it touches! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iron_vein:cavemother_lair",
+      "name": "Cavemother's Lair",
+      "description": "A vast circular chamber, the floor packed earth scattered with the bones of those who came before. Pale eggs the size of human heads cling to the walls in clusters. At the chamber's center, the Cavemother waits — and she has been waiting a long time.",
+      "x": 6,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:webbed_corridor",
+        "EAST": "iron_vein:treasure_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_cavemother_lair.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a vast circular underground boss chamber, packed earth floor scattered with old bones, clusters of pale spider eggs the size of human heads clinging to the dark stone walls, single shaft of dim greenish light from a high crack illuminating the center, sense of waiting predator at the heart of the room.",
+      "imageStyle": "fantasy digital painting, dark stone and pale eggs, sickly green light, dread atmosphere, slightly painterly, fixed perspective, JRPG dungeon boss arena background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "iron_vein:treasure_chamber",
+      "name": "Cavemother's Hoard",
+      "description": "A small chamber behind the lair, the floor strewn with the gear and gold of the Cavemother's victims. Some of it looks fresh.",
+      "x": 7,
+      "y": 0,
+      "exits": {
+        "WEST": "iron_vein:cavemother_lair"
+      },
+      "backgroundImage": "/assets/images/rooms/iron_vein_treasure_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "healPerTick": 1,
+      "imagePrompt": "First-person view of a small chamber behind a boss lair, the floor scattered with weapons, armor, scattered coins, leather pouches, the spoils of long predation, dim warm light filtering in, sense of grim reward.",
+      "imageStyle": "fantasy digital painting, warm light against dark stone, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:cave_spider",
+      "name": "Cave Spider",
+      "description": "A dog-sized arachnid, its dark carapace flecked with iron dust from the mine walls. Its eyes glint with malevolent intelligence.",
+      "startRoomId": "iron_vein:upper_tunnel",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 70,
+      "damage": 10,
+      "level": 8,
+      "xpReward": 100,
+      "accuracy": 15,
+      "defense": 7,
+      "evasion": 18,
+      "agility": 22,
+      "attackSound": "spider_bite",
+      "missSound": "spider_miss",
+      "deathSound": "spider_death",
+      "imagePrompt": "Full-body dog-sized cave spider with dark carapace flecked with rust-red iron dust, eight glinting black eyes, sharp pedipalps, aggressive stalking pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, dark mood",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:spider_fang", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2},
+        {"itemId": "item:health_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1}
+      ],
+      "coinDrop": {"minCopper": 20, "maxCopper": 60}
+    },
+    {
+      "id": "npc:mine_ghoul",
+      "name": "Mine Ghoul",
+      "description": "A gaunt humanoid, hunched and clawed, its skin gone grey and translucent from years away from the sun. The remnants of a miner's leather apron hang from its shoulders.",
+      "startRoomId": "iron_vein:east_shaft",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 95,
+      "damage": 13,
+      "level": 9,
+      "xpReward": 130,
+      "accuracy": 14,
+      "defense": 10,
+      "evasion": 12,
+      "agility": 14,
+      "attackSound": "claw_slash",
+      "missSound": "claw_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body gaunt hunched humanoid undead miner ghoul, grey translucent skin, long claw-tipped fingers, tattered remnants of a leather miner's apron hanging from skeletal shoulders, sunken hollow eyes, lurching aggressive pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, horror mood",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:ghoul_claw", "chance": 0.6, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:iron_ore", "chance": 0.4, "minQuantity": 1, "maxQuantity": 2},
+        {"itemId": "item:health_potion", "chance": 0.25, "minQuantity": 1, "maxQuantity": 1}
+      ],
+      "coinDrop": {"minCopper": 35, "maxCopper": 90, "minSilver": 0, "maxSilver": 1}
+    },
+    {
+      "id": "npc:ore_golem",
+      "name": "Iron Ore Golem",
+      "description": "A lumbering humanoid figure made of unworked iron ore and stone, its joints grinding as it moves. Its head is little more than a crude mass with a single glowing red ember where an eye should be.",
+      "startRoomId": "iron_vein:ore_vein",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 140,
+      "damage": 16,
+      "level": 10,
+      "xpReward": 180,
+      "accuracy": 12,
+      "defense": 22,
+      "evasion": 5,
+      "agility": 8,
+      "attackSound": "rock_smash",
+      "missSound": "rock_miss",
+      "deathSound": "golem_death",
+      "imagePrompt": "Full-body lumbering humanoid golem made of unworked iron ore and dark stone, jagged crude limbs, joints with visible grinding stone, head a crude mass with a single glowing red ember as an eye, threatening pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, monolithic and slow-moving",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:iron_ore", "chance": 0.95, "minQuantity": 2, "maxQuantity": 4},
+        {"itemId": "item:golem_core", "chance": 0.25, "minQuantity": 1, "maxQuantity": 1}
+      ],
+      "coinDrop": {"minCopper": 0, "maxCopper": 0}
+    },
+    {
+      "id": "npc:cavemother_vrelda",
+      "name": "Cavemother Vrelda",
+      "description": "A horror larger than a horse, the Cavemother's body is a swollen abdomen marked with raised veins of black ichor. Eight thick legs splay around her, each tipped with a chitinous spike. Her eyes — too many to count — fix on you with cold maternal calm.",
+      "startRoomId": "iron_vein:cavemother_lair",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 320,
+      "damage": 22,
+      "level": 11,
+      "xpReward": 800,
+      "accuracy": 16,
+      "defense": 18,
+      "evasion": 10,
+      "agility": 14,
+      "attackSound": "tongue_lash",
+      "missSound": "tongue_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "Full-body massive boss horror spider Cavemother larger than a horse, swollen pale-grey abdomen marked with raised veins of black ichor, eight thick chitinous legs splayed wide each tipped with a sharp spike, head crowned with too many gleaming dark eyes arranged in clusters, cold malevolent calm. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature boss sprite, full body, side-facing, clean edges, game asset, solid white background, monumental dread",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:cavemother_fang", "chance": 1.0, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:venom_silk_robes", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:fang_carved_blade", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:greater_health_potion", "chance": 0.8, "minQuantity": 1, "maxQuantity": 2}
+      ],
+      "coinDrop": {"minCopper": 0, "maxCopper": 100, "minSilver": 5, "maxSilver": 15, "minGold": 1, "maxGold": 3}
+    }
+  ]
+}

@@ -87,7 +87,8 @@
       "x": 0,
       "y": 11,
       "exits": {
-        "SOUTH": "gorge:ledge"
+        "SOUTH": "gorge:ledge",
+        "NORTH": "foothills:south_trail"
       },
       "backgroundImage": "/assets/images/rooms/gorge_depths.webp",
       "departSound": "footstep_stone",

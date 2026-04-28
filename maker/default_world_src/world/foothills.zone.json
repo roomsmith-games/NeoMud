@@ -1,0 +1,429 @@
+{
+  "id": "foothills",
+  "name": "Foothill Pass",
+  "description": "A wind-worn pass through the lower mountains, rising out of the gorge below toward the snow-capped peaks. Master Aldric's lodge stands here, and the entrance to the Iron Vein Mine breaks the eastern slope.",
+  "safe": false,
+  "bgm": "forest_clearing",
+  "spawnConfig": {
+    "maxEntities": 8,
+    "maxPerRoom": 2,
+    "rateTicks": 18
+  },
+  "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+  "rooms": [
+    {
+      "id": "foothills:south_trail",
+      "name": "Hidden Ascent",
+      "description": "A narrow switchback trail clings to the gorge wall here, climbing away from the depths below. The air thins as you ascend, and the sound of dripping water fades behind you. To the south, the trail drops back into the gorge; to the north, sunlight breaks through.",
+      "x": 0,
+      "y": 12,
+      "exits": {
+        "SOUTH": "gorge:depths",
+        "NORTH": "foothills:winding_climb"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_south_trail.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a narrow stone switchback trail clinging to a gorge wall, ascending out of darkness toward bright sunlight at the top. Cliff face on one side, sheer drop on the other. Cool mountain air, ferns growing from cracks.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:winding_climb",
+      "name": "Winding Mountain Climb",
+      "description": "The trail levels out into a series of broad switchbacks across the mountain face. Sparse pines cling to the rocky soil, their needles whispering in the high wind. The pass opens up to the north, revealing distant snowcapped peaks.",
+      "x": 0,
+      "y": 13,
+      "exits": {
+        "SOUTH": "foothills:south_trail",
+        "NORTH": "foothills:meadow"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_winding_climb.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a broad mountain switchback trail, sparse pine trees scattered across rocky slopes, distant snow-capped peaks visible to the north, late afternoon golden light, cool blue sky.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:meadow",
+      "name": "High Meadow",
+      "description": "A broad alpine meadow opens before you, ringed by jagged peaks. Wildflowers nod in the breeze and a small stream cuts across the grass. A worn path leads west toward an overlook, east toward Master Aldric's lodge, and north further into the pass.",
+      "x": 0,
+      "y": 14,
+      "exits": {
+        "WEST": "foothills:overlook",
+        "EAST": "foothills:lodge_approach",
+        "NORTH": "foothills:crossroads",
+        "SOUTH": "foothills:winding_climb"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_meadow.webp",
+      "departSound": "footstep_grass",
+      "maxHostileNpcs": 0,
+      "healPerTick": 1,
+      "imagePrompt": "First-person view of a broad alpine meadow ringed by jagged mountain peaks, colorful wildflowers in the foreground, a small clear stream cutting across the grass, distant snow on the highest peaks, warm afternoon light, peaceful and open.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:overlook",
+      "name": "Eagle's Overlook",
+      "description": "A rocky outcropping juts from the mountainside, offering a vast view of the gorge and forests far below. From here you can see the marsh as a hazy green smudge in the distance, and the smoke of Millhaven beyond that. A pair of eagles circle on the thermals.",
+      "x": -1,
+      "y": 14,
+      "exits": {
+        "EAST": "foothills:meadow"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_overlook.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view from a high rocky overlook on a mountainside, looking out across vast distances, gorge and dark forests below in shadow, a hazy green marsh and a smoke trail from a distant town visible far away, two eagles circling in middle distance, golden hour, sense of altitude and breadth.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:lodge_approach",
+      "name": "Lodge Approach",
+      "description": "A well-tended path leads east, rough flagstones laid into the mountain grass. Smoke rises from a stone chimney up ahead, and the sound of metal on stone reaches you faintly — the steady tap of a chisel from someone old and unhurried.",
+      "x": 1,
+      "y": 14,
+      "exits": {
+        "WEST": "foothills:meadow",
+        "EAST": "foothills:masters_lodge"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_lodge_approach.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view of a flagstone path winding through alpine grass toward a stone lodge with a smoking chimney visible up ahead, mountain pines flanking the trail, late afternoon light.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:masters_lodge",
+      "name": "Master Aldric's Lodge",
+      "description": "A sturdy stone lodge built into the mountain face, its interior warm and lit by a generous hearth. Weapons and training dummies line the walls, and the air smells of leather, wood smoke, and wax. Master Aldric stands by the fire, watching you with measured interest.",
+      "x": 2,
+      "y": 14,
+      "exits": {
+        "WEST": "foothills:lodge_approach"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_masters_lodge.webp",
+      "departSound": "footstep_wood",
+      "maxHostileNpcs": 0,
+      "healPerTick": 2,
+      "imagePrompt": "First-person view of the warm interior of a stone mountain lodge, generous fireplace on the right wall casting orange light, training dummies and weapon racks along the walls, wooden beams overhead, leather and wood-smoke atmosphere, no people visible.",
+      "imageStyle": "fantasy digital painting, rich colors, warm interior firelight, slightly painterly, fixed perspective, JRPG background, stage-like composition, cozy lodge interior",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:crossroads",
+      "name": "Pass Crossroads",
+      "description": "Trails meet here at a weathered stone marker carved with a sealed-eye sigil — the same as the token Old Wren gave you. East leads toward the cliffs and the dark mouth of the Iron Vein Mine. West, an old bandit camp lies abandoned. The trail north climbs higher.",
+      "x": 0,
+      "y": 15,
+      "exits": {
+        "SOUTH": "foothills:meadow",
+        "EAST": "foothills:eastern_trail",
+        "WEST": "foothills:western_trail",
+        "NORTH": "foothills:ridge"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_crossroads.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a mountain pass crossroads, weathered stone marker in the center carved with a sealed-eye sigil similar to a worn coin, trails branching to four directions across rocky alpine terrain, distant peaks framing the scene.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:eastern_trail",
+      "name": "Eastern Trail",
+      "description": "The trail clings to a steep slope as it bends east, the ground giving way to broken scree. The dark mouth of a mine shaft is visible up ahead, framed by old timber supports.",
+      "x": 1,
+      "y": 15,
+      "exits": {
+        "WEST": "foothills:crossroads",
+        "EAST": "foothills:mine_approach"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_eastern_trail.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a narrow mountain trail along a steep scree slope, broken stones underfoot, distant view of a dark mine shaft entrance with old timber supports framed in mountain rock.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:mine_approach",
+      "name": "Mine Approach",
+      "description": "A leveled platform of crushed stone leads to the mine entrance. Old iron tools rust quietly in the open air — pickaxes, ore carts, a cracked anvil. Whoever worked this mine left in a hurry.",
+      "x": 2,
+      "y": 15,
+      "exits": {
+        "WEST": "foothills:eastern_trail",
+        "EAST": "foothills:mine_entrance_overlook"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_mine_approach.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a flat stone platform outside a mine, abandoned rusty mining tools scattered around — pickaxes, an overturned ore cart, a cracked anvil, sense of hasty abandonment, the dark mine entrance ahead in shadow.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting, abandoned",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:mine_entrance_overlook",
+      "name": "Iron Vein Mine Entrance",
+      "description": "The mouth of the mine yawns before you — a dark archway of cut stone, supported by ancient timbers. A cool draft flows out, carrying the metallic smell of damp iron and something else underneath, faintly musty. Faint scratches mark the threshold, as if something dragged itself across the stone.",
+      "x": 3,
+      "y": 15,
+      "exits": {
+        "WEST": "foothills:mine_approach",
+        "EAST": "iron_vein:entrance"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_mine_entrance_overlook.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view at the threshold of a stone mine entrance, dark archway supported by ancient timbers, cold draft visible as faint mist flowing outward, metallic damp atmosphere, faint scratch marks across the stone threshold suggesting something dragged itself out, sense of dread.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting, ominous",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:western_trail",
+      "name": "Western Trail",
+      "description": "The trail bends west, descending through stunted pines. Old wagon ruts cut deep into the dirt, suggesting this was once a busier route. A faint smell of old smoke drifts on the breeze.",
+      "x": -1,
+      "y": 15,
+      "exits": {
+        "EAST": "foothills:crossroads",
+        "WEST": "foothills:old_camp"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_western_trail.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of an old descending mountain trail through stunted pines, deep wagon ruts carved into the dirt path, late afternoon light filtering through the trees, faint haze of smoke in the distance.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:old_camp",
+      "name": "Abandoned Camp",
+      "description": "A scattering of overturned tents and collapsed firepits speaks to a hasty retreat. Whoever camped here did not pack carefully. A tarnished signet glints among the ash, half-buried.",
+      "x": -2,
+      "y": 15,
+      "exits": {
+        "EAST": "foothills:western_trail"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_old_camp.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of an abandoned mountain camp clearing, overturned tents, collapsed firepits with ash, scattered rusted gear, sense of hasty abandonment and old struggle, evening light, melancholy mood.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting, abandoned",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:ridge",
+      "name": "High Ridge",
+      "description": "The ridge rises sharply here, granting a windswept view of the broader range. Eastward, the path bends toward a small cave half-hidden in the rocks. The trail north continues toward the summit.",
+      "x": 0,
+      "y": 16,
+      "exits": {
+        "SOUTH": "foothills:crossroads",
+        "EAST": "foothills:hermit_cave",
+        "NORTH": "foothills:summit_path"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_ridge.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view standing on a high windswept mountain ridge, broad view of jagged peaks all around, a small cave entrance visible in the rocks to the right, sweeping panorama, golden hour light, sense of altitude.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:hermit_cave",
+      "name": "Hermit's Cave",
+      "description": "A small natural cave, dry and well-kept. A stone bench sits along one wall, alongside a few simple tools. Whoever made this their home is not here now, but the kindled fire pit suggests they will return.",
+      "x": 1,
+      "y": 16,
+      "exits": {
+        "WEST": "foothills:ridge"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_hermit_cave.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "healPerTick": 1,
+      "imagePrompt": "First-person view inside a small dry natural mountain cave, a smooth stone bench along one wall, simple wooden tools, a small kindled firepit glowing softly, hermit's spartan dwelling, warm firelight, peaceful and lived-in.",
+      "imageStyle": "fantasy digital painting, rich colors, warm cave firelight, slightly painterly, fixed perspective, JRPG background, stage-like composition, cozy interior",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "foothills:summit_path",
+      "name": "Summit Path",
+      "description": "The trail steepens sharply, snow gathering in the cracks even now. The wind carries voices — or something that sounds like voices, faint and high. The summit lies further on, but the path north is blocked for now by a wall of fresh ice.",
+      "x": 0,
+      "y": 17,
+      "exits": {
+        "SOUTH": "foothills:ridge"
+      },
+      "backgroundImage": "/assets/images/rooms/foothills_summit_path.webp",
+      "departSound": "footstep_snow",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a steep snow-dusted mountain path, ice crystals glinting in the cracks, jagged peaks closing in around the trail, a wall of fresh translucent ice blocking the path ahead, sense of cold and forbidden boundary.",
+      "imageStyle": "fantasy digital painting, rich colors, cold blue alpine lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting, cold and high",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:master_aldric",
+      "name": "Master Aldric",
+      "description": "A grizzled veteran of indeterminate age, weathered face calm and unhurried. He wears practical leathers over plain wool, with a heavy two-handed sword leaning against the wall behind him. His hands bear the scars of a thousand drills. He does not waste words.",
+      "startRoomId": "foothills:masters_lodge",
+      "behaviorType": "trainer",
+      "interactSound": "guildmaster_intro",
+      "exitSound": "guildmaster_exit",
+      "trainerConfig": {
+        "tier": 2,
+        "maxLevel": 10,
+        "maxStatValue": 70,
+        "nextTierTrainerName": "Sage Iolanthe",
+        "nextTierLocationHint": "the Salt Coast far to the east"
+      },
+      "imagePrompt": "Full-body grizzled veteran warrior trainer standing upright facing the viewer, weathered indeterminate-age face, calm composed expression, practical leather armor over plain wool tunic, scarred hands at his sides, no weapon held but a heavy two-hander leans behind him out of frame. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background, weighty and grounded, muted earth tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, young, glamorous, ornate armor",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:mountain_wolf",
+      "name": "Mountain Wolf",
+      "description": "A lean grey wolf adapted to the high passes, its coat a smoke-grey blending with stone. Yellow eyes track you with patient hunger.",
+      "startRoomId": "foothills:south_trail",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 65,
+      "damage": 9,
+      "level": 8,
+      "xpReward": 95,
+      "accuracy": 14,
+      "defense": 8,
+      "evasion": 18,
+      "agility": 22,
+      "attackSound": "wolf_bite",
+      "missSound": "wolf_miss",
+      "deathSound": "wolf_death",
+      "imagePrompt": "Full-body lean grey mountain wolf with smoke-grey coat blending with stone, yellow predator eyes, alert stalking pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, cold mountain mood",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:wolf_pelt", "chance": 0.7, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:health_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1}
+      ],
+      "coinDrop": {"minCopper": 30, "maxCopper": 80, "minSilver": 0, "maxSilver": 2}
+    },
+    {
+      "id": "npc:ridgeback_hawk",
+      "name": "Ridgeback Hawk",
+      "description": "A massive raptor with a wingspan greater than a man's reach, its dappled brown plumage breaking up its outline against the rocks. It dives without warning.",
+      "startRoomId": "foothills:overlook",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 55,
+      "damage": 11,
+      "level": 9,
+      "xpReward": 110,
+      "accuracy": 18,
+      "defense": 5,
+      "evasion": 25,
+      "agility": 28,
+      "attackSound": "claw_slash",
+      "missSound": "claw_miss",
+      "deathSound": "creature_death",
+      "imagePrompt": "Full-body massive mountain raptor hawk with dappled brown and grey plumage, broad wingspan partially extended, sharp talons, predator pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:hawk_feather", "chance": 0.85, "minQuantity": 1, "maxQuantity": 2}
+      ],
+      "coinDrop": {"minCopper": 25, "maxCopper": 60}
+    },
+    {
+      "id": "npc:foothill_bandit",
+      "name": "Foothill Bandit",
+      "description": "A wiry man in faded leathers and a hooded cloak, scar across the bridge of his nose. He grips a short sword and assesses you with the patience of someone who has done this before.",
+      "startRoomId": "foothills:old_camp",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 80,
+      "damage": 12,
+      "level": 9,
+      "xpReward": 120,
+      "accuracy": 16,
+      "defense": 12,
+      "evasion": 16,
+      "agility": 18,
+      "attackSound": "bandit_stab",
+      "missSound": "bandit_miss",
+      "deathSound": "bandit_death",
+      "imagePrompt": "Full-body wiry human bandit standing upright facing the viewer, faded leather armor, hooded cloak, scar across the bridge of his nose, short sword held ready, patient predatory expression. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {"itemId": "item:rustic_dagger", "chance": 0.4, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1},
+        {"itemId": "item:tarnished_signet", "chance": 0.15, "minQuantity": 1, "maxQuantity": 1}
+      ],
+      "coinDrop": {"minCopper": 50, "maxCopper": 150, "minSilver": 1, "maxSilver": 3}
+    },
+    {
+      "id": "npc:mountain_warden",
+      "name": "Mountain Warden",
+      "description": "A stoic figure in plain leathers stands watch on the high ridge, leaning on a gnarled staff. He wears no insignia, but his eyes have the same far-seeing weight as Old Wren's.",
+      "startRoomId": "foothills:ridge",
+      "behaviorType": "quest",
+      "interactSound": "",
+      "exitSound": "",
+      "dialogueScript": "You climbed out of the gorge, then. Most don't.\n\nThe seals are old work, child. Not ours — the Wardens before us. We watch them as long as we can. The mine to the east has been... noisy lately. The Cavemother stirs.\n\nGo if you must. Just remember: not every door down there is meant to be opened.",
+      "imagePrompt": "Full-body stoic middle-aged human warden standing upright facing the viewer on a windswept ridge, plain weathered leather armor without insignia, leaning on a gnarled wooden staff, far-seeing patient eyes, no weapon visible. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background, weighted and watchful",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, young, glamorous, ornate armor",
+      "imageWidth": 384,
+      "imageHeight": 384
+    }
+  ]
+}
