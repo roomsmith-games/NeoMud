@@ -440,8 +440,13 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 <label style={{ color: '#666' }}>Save Stat (optional)</label>
                 <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.saveStat || ''} onChange={(e) => setData(i, { saveStat: e.target.value })}>
                   <option value="">No save (full damage)</option>
+                  <option value="STRENGTH">Strength (force-resist)</option>
                   <option value="AGILITY">Agility (dodge)</option>
                   <option value="TOUGHNESS">Toughness — (STR+WIL)/2 (resist)</option>
+                  <option value="INTELLECT">Intellect (mental ward)</option>
+                  <option value="WILLPOWER">Willpower (mind-resist)</option>
+                  <option value="HEALTH">Health (constitution)</option>
+                  <option value="CHARM">Charm (presence)</option>
                 </select>
               </div>
               <div>

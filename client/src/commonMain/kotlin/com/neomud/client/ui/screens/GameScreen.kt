@@ -58,6 +58,7 @@ import com.neomud.client.ui.components.SpriteOverlay
 import com.neomud.client.ui.components.CraftingPanel
 import com.neomud.client.ui.components.TrainerPanel
 import com.neomud.client.ui.components.VendorPanel
+import com.neomud.client.ui.components.PlaceItemDialog
 import com.neomud.client.ui.components.KickDirectionPicker
 import com.neomud.client.ui.components.LockTargetPicker
 import com.neomud.client.ui.components.MapOverlay
@@ -102,6 +103,8 @@ fun GameScreen(
     val vendorInfo by gameViewModel.vendorInfo.collectAsState()
     val showCrafting by gameViewModel.showCrafting.collectAsState()
     val crafterInfo by gameViewModel.crafterInfo.collectAsState()
+    val showPlaceItem by gameViewModel.showPlaceItem.collectAsState()
+    val placeItemPrompt by gameViewModel.placeItemPrompt.collectAsState()
     val spellCatalogState by gameViewModel.spellCatalog.collectAsState()
     val spellSlots by gameViewModel.spellSlots.collectAsState()
     val readiedSpellId by gameViewModel.readiedSpellId.collectAsState()
@@ -274,6 +277,20 @@ fun GameScreen(
                     itemCatalog = itemCatalog,
                     onCraft = { recipeId -> gameViewModel.craftItem(recipeId) },
                     onClose = { gameViewModel.dismissCrafter() }
+                )
+            }
+        }
+
+        // PlaceItem altar dialog (PUZZLE two-phase)
+        if (showPlaceItem) {
+            val pip = placeItemPrompt
+            if (pip != null) {
+                PlaceItemDialog(
+                    prompt = pip,
+                    inventory = inventory,
+                    itemCatalog = itemCatalog,
+                    onPlace = { itemId -> gameViewModel.placeItem(pip.featureId, itemId) },
+                    onDismiss = { gameViewModel.dismissPlaceItem() }
                 )
             }
         }

@@ -138,6 +138,13 @@ class GameViewModel(
     private val _showCrafting = MutableStateFlow(false)
     val showCrafting: StateFlow<Boolean> = _showCrafting
 
+    // PlaceItem (PUZZLE altar two-phase: server prompts → dialog → ClientMessage.PlaceItem)
+    private val _placeItemPrompt = MutableStateFlow<ServerMessage.PlaceItemPrompt?>(null)
+    val placeItemPrompt: StateFlow<ServerMessage.PlaceItemPrompt?> = _placeItemPrompt
+
+    private val _showPlaceItem = MutableStateFlow(false)
+    val showPlaceItem: StateFlow<Boolean> = _showPlaceItem
+
     // Visited rooms (fog-of-war)
     private val _visitedRooms = MutableStateFlow<Set<RoomId>>(emptySet())
     val visitedRooms: StateFlow<Set<RoomId>> = _visitedRooms
@@ -754,16 +761,8 @@ class GameViewModel(
             // Handled by AuthViewModel, not GameViewModel
             is ServerMessage.PlatformAuthOk -> {}
             is ServerMessage.PlaceItemPrompt -> {
-                // The full PlaceItemDialog Compose UI is a follow-up. For now
-                // surface the prompt + accepted-item hint in the log so the
-                // puzzle is at least observable.
-                addLog("[${message.label}] ${message.prompt}", MudColors.system)
-                if (message.acceptedItems.isNotEmpty()) {
-                    addLog(
-                        "Accepted items: ${message.acceptedItems.joinToString(", ")}",
-                        MudColors.system
-                    )
-                }
+                _placeItemPrompt.value = message
+                _showPlaceItem.value = true
             }
         }
     }
@@ -997,6 +996,18 @@ class GameViewModel(
         _vendorInfo.value?.exitSound?.let { if (it.isNotBlank()) npcSfx(it, "npcs") }
         _showVendor.value = false
         _vendorInfo.value = null
+    }
+
+    fun placeItem(featureId: String, itemId: String) {
+        viewModelScope.launch {
+            wsClient.send(ClientMessage.PlaceItem(featureId, itemId))
+        }
+        dismissPlaceItem()
+    }
+
+    fun dismissPlaceItem() {
+        _showPlaceItem.value = false
+        _placeItemPrompt.value = null
     }
 
     fun interactCrafter() {

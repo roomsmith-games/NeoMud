@@ -11,13 +11,20 @@ import com.neomud.shared.model.Stats
  * player-triggered traps (via InteractCommand) and passive traps (via
  * TrapManager) share identical behavior.
  *
- * Save stats supported:
- *   AGILITY  — dodge save (typically `saveType=DODGE` for full avoid)
+ * Save stats supported (all 7 from [Stats] plus the derived TOUGHNESS):
+ *   STRENGTH  — force-resist (typically `saveType=RESIST` for half damage)
+ *   AGILITY   — dodge save (typically `saveType=DODGE` for full avoid)
  *   TOUGHNESS — derived as (strength + willpower) / 2; physical/poison resist
  *               (typically `saveType=RESIST` for half damage)
+ *   INTELLECT — mental ward (RESIST)
+ *   WILLPOWER — mind-resist for arcane/curse traps (RESIST)
+ *   HEALTH    — constitution save (RESIST)
+ *   CHARM     — presence/social save (RESIST)
  *
- * NeoMud has no HEALTH stat; what design docs call a "health resist" maps
- * to TOUGHNESS here.
+ * Authors pick the stat that thematically fits the trap. The [resolveSave]
+ * still gates on `statValue > 0` so a character with truly zero in a stat
+ * always fails; in practice [Stats] defaults all six native fields to 30
+ * so this only fires on data-author error or extreme min-max builds.
  */
 object TrapResolver {
 
@@ -28,10 +35,15 @@ object TrapResolver {
     fun resolveDetection(perceptionRoll: Int, perceptionDC: Int): Boolean =
         perceptionDC > 0 && perceptionRoll >= perceptionDC
 
-    /** Save stat → integer value. TOUGHNESS = (STR + WIL) / DIVISOR, no native stat. */
+    /** Save stat → integer value. TOUGHNESS is the only synthetic stat, blended from STR+WIL. */
     fun saveStatValue(stats: Stats, saveStat: String): Int = when (saveStat.uppercase()) {
-        "AGILITY" -> stats.agility
+        "STRENGTH"  -> stats.strength
+        "AGILITY"   -> stats.agility
         "TOUGHNESS" -> (stats.strength + stats.willpower) / GameConfig.Trap.TOUGHNESS_DIVISOR
+        "INTELLECT" -> stats.intellect
+        "WILLPOWER" -> stats.willpower
+        "HEALTH"    -> stats.health
+        "CHARM"     -> stats.charm
         else -> 0
     }
 

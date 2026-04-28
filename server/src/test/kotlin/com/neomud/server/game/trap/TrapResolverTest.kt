@@ -46,8 +46,33 @@ class TrapResolverTest {
     }
 
     @Test
+    fun `saveStatValue maps STRENGTH directly`() {
+        assertEquals(72, TrapResolver.saveStatValue(Stats(strength = 72), "STRENGTH"))
+    }
+
+    @Test
+    fun `saveStatValue maps INTELLECT directly`() {
+        assertEquals(58, TrapResolver.saveStatValue(Stats(intellect = 58), "INTELLECT"))
+    }
+
+    @Test
+    fun `saveStatValue maps WILLPOWER directly`() {
+        assertEquals(64, TrapResolver.saveStatValue(Stats(willpower = 64), "WILLPOWER"))
+    }
+
+    @Test
+    fun `saveStatValue maps HEALTH directly`() {
+        assertEquals(55, TrapResolver.saveStatValue(Stats(health = 55), "HEALTH"))
+    }
+
+    @Test
+    fun `saveStatValue maps CHARM directly`() {
+        assertEquals(48, TrapResolver.saveStatValue(Stats(charm = 48), "CHARM"))
+    }
+
+    @Test
     fun `saveStatValue returns 0 for unknown stat`() {
-        assertEquals(0, TrapResolver.saveStatValue(Stats(strength = 99), "STRENGTH"))
+        assertEquals(0, TrapResolver.saveStatValue(Stats(strength = 99), "TELEPATHY"))
     }
 
     @Test
@@ -103,6 +128,28 @@ class TrapResolverTest {
         val outcome = TrapResolver.resolveSave(
             stats = Stats(agility = 10), level = 0,
             saveStat = "AGILITY", saveDC = 30, saveType = TrapResolver.SaveType.DODGE
+        ) { 1 }
+        assertEquals(TrapResolver.SaveOutcome.FAIL, outcome)
+    }
+
+    @Test
+    fun `resolveSave WILLPOWER RESIST success returns HALF at high stat`() {
+        // Curse-rune trap regression guard. Before this commit WILLPOWER was
+        // unsupported and silently always-failed → trap dealt full damage with
+        // no save chance. Now: willpower 60 + level 12/2 + roll 15 = 81 vs DC 14 → pass → HALF.
+        val outcome = TrapResolver.resolveSave(
+            stats = Stats(willpower = 60), level = 12,
+            saveStat = "WILLPOWER", saveDC = 14, saveType = TrapResolver.SaveType.RESIST
+        ) { 15 }
+        assertEquals(TrapResolver.SaveOutcome.HALF, outcome)
+    }
+
+    @Test
+    fun `resolveSave WILLPOWER RESIST failure returns FAIL at low stat`() {
+        // willpower 5 + level 0/2 + roll 1 = 6 vs DC 14 → fail
+        val outcome = TrapResolver.resolveSave(
+            stats = Stats(willpower = 5), level = 0,
+            saveStat = "WILLPOWER", saveDC = 14, saveType = TrapResolver.SaveType.RESIST
         ) { 1 }
         assertEquals(TrapResolver.SaveOutcome.FAIL, outcome)
     }
