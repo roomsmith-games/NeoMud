@@ -655,7 +655,12 @@ private fun GameScreenPortrait(
                 groundCoins = roomGroundCoins,
                 itemCatalog = itemCatalog,
                 selectedTargetId = selectedTargetId,
-                onSelectTarget = { gameViewModel.selectTarget(it) },
+                onSelectTarget = { npcId ->
+                    // Quest/lore NPCs (Phase 8) dispatch to dialogue rather than combat selection.
+                    val npc = npcId?.let { id -> roomEntities.find { it.id == id } }
+                    if (npc?.behaviorType == "quest") gameViewModel.talkToNpc(npc.id)
+                    else gameViewModel.selectTarget(npcId)
+                },
                 onPickupItem = { itemId, qty -> gameViewModel.pickupItem(itemId, qty) },
                 onPickupCoins = { coinType -> gameViewModel.pickupCoins(coinType) },
                 onPlayerTap = onPlayerTap,
@@ -916,7 +921,12 @@ private fun GameScreenLandscape(
                     groundCoins = roomGroundCoins,
                     itemCatalog = itemCatalog,
                     selectedTargetId = selectedTargetId,
-                    onSelectTarget = { gameViewModel.selectTarget(it) },
+                    onSelectTarget = { npcId ->
+                    // Quest/lore NPCs (Phase 8) dispatch to dialogue rather than combat selection.
+                    val npc = npcId?.let { id -> roomEntities.find { it.id == id } }
+                    if (npc?.behaviorType == "quest") gameViewModel.talkToNpc(npc.id)
+                    else gameViewModel.selectTarget(npcId)
+                },
                     onPickupItem = { itemId, qty -> gameViewModel.pickupItem(itemId, qty) },
                     onPickupCoins = { coinType -> gameViewModel.pickupCoins(coinType) },
                     onPlayerTap = onPlayerTap,

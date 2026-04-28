@@ -489,6 +489,18 @@ class GameViewModel(
                     _coachMark.value = message
                 }
             }
+            is ServerMessage.NpcDialogue -> {
+                // NPC dialogue reuses the blocking-tutorial modal slot since the UX is identical
+                // (modal with title + content + dismiss). The protocol message is distinct from
+                // Tutorial so the server does not dedup re-interactions in PlayerDiscoveryTable.
+                enqueueBlockingTutorial(ServerMessage.Tutorial(
+                    key = "npc_dialogue:${message.npcId}",
+                    title = message.npcName,
+                    content = message.content,
+                    blocking = true,
+                    targetElement = null
+                ))
+            }
             is ServerMessage.Error -> addLog("[Error] ${message.message}", MudColors.error)
             is ServerMessage.LoginOk -> _player.value = message.player
             is ServerMessage.Pong -> { /* ignore */ }
@@ -812,6 +824,13 @@ class GameViewModel(
         _selectedTargetId.value = npcId
         viewModelScope.launch {
             wsClient.send(ClientMessage.SelectTarget(npcId))
+        }
+    }
+
+    /** Send an InteractNpc to the server. Used by quest/lore NPCs (Phase 8). */
+    fun talkToNpc(npcId: String) {
+        viewModelScope.launch {
+            wsClient.send(ClientMessage.InteractNpc(npcId))
         }
     }
 
