@@ -923,7 +923,7 @@
       "id": "item:warden_token",
       "name": "Warden's Token",
       "description": "A heavy bronze coin etched with a sealed eye, its rim worn smooth by a thousand years of restless hands. Old Wren pressed it into your palm and would not say what it was for. It feels heavier than it should.",
-      "type": "crafting",
+      "type": "quest",
       "value": 0,
       "weight": 1,
       "stackable": false,
