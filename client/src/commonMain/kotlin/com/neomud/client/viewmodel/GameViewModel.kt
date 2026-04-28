@@ -177,7 +177,11 @@ class GameViewModel(
     private val _showHelp = MutableStateFlow(false)
     val showHelp: StateFlow<Boolean> = _showHelp
 
-    // Tutorial modal (blocking)
+    // Tutorial modal (blocking). The currently-shown tutorial is the head of [tutorialQueue];
+    // additional incoming blocking Tutorials append to the tail and are shown sequentially as
+    // each is dismissed. Required so that multi-step intros (#272: per-world intro then welcome)
+    // don't lose the first tutorial.
+    private val tutorialQueue: ArrayDeque<ServerMessage.Tutorial> = ArrayDeque()
     private val _tutorialMessage = MutableStateFlow<ServerMessage.Tutorial?>(null)
     val tutorialMessage: StateFlow<ServerMessage.Tutorial?> = _tutorialMessage
 
@@ -239,9 +243,17 @@ class GameViewModel(
 
     fun setInitialTutorial(tutorial: ServerMessage.Tutorial) {
         if (tutorial.blocking) {
-            _tutorialMessage.value = tutorial
+            enqueueBlockingTutorial(tutorial)
         } else {
             _coachMark.value = tutorial
+        }
+    }
+
+    private fun enqueueBlockingTutorial(tutorial: ServerMessage.Tutorial) {
+        if (_tutorialMessage.value == null) {
+            _tutorialMessage.value = tutorial
+        } else {
+            tutorialQueue.addLast(tutorial)
         }
     }
 
@@ -472,7 +484,7 @@ class GameViewModel(
             is ServerMessage.SystemMessage -> addLog("[System] ${message.message}", MudColors.system)
             is ServerMessage.Tutorial -> {
                 if (message.blocking) {
-                    _tutorialMessage.value = message
+                    enqueueBlockingTutorial(message)
                 } else {
                     _coachMark.value = message
                 }
@@ -895,7 +907,7 @@ class GameViewModel(
     }
 
     fun dismissTutorial() {
-        _tutorialMessage.value = null
+        _tutorialMessage.value = if (tutorialQueue.isNotEmpty()) tutorialQueue.removeFirst() else null
     }
 
     fun dismissCoachMark() {

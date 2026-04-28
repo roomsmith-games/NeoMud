@@ -57,8 +57,13 @@ class AuthViewModel(
     private val _initialMapData = MutableStateFlow<ServerMessage.MapData?>(null)
     val initialMapData: StateFlow<ServerMessage.MapData?> = _initialMapData
 
-    private val _initialTutorial = MutableStateFlow<ServerMessage.Tutorial?>(null)
-    val initialTutorial: StateFlow<ServerMessage.Tutorial?> = _initialTutorial
+    /**
+     * Captures Tutorial messages arriving between LoginOk and GameViewModel.startCollecting().
+     * Queue (not single slot) so multiple sequential tutorials — e.g. per-world intro
+     * (#272) followed by `welcome` — both reach the GameViewModel.
+     */
+    private val _initialTutorials = MutableStateFlow<List<ServerMessage.Tutorial>>(emptyList())
+    val initialTutorials: StateFlow<List<ServerMessage.Tutorial>> = _initialTutorials
 
     private val _serverInfo = MutableStateFlow(ServerInfo())
     val serverInfo: StateFlow<ServerInfo> = _serverInfo
@@ -92,7 +97,7 @@ class AuthViewModel(
                             pendingLoginPassword = null
                             _initialRoomInfo.value = null
                             _initialMapData.value = null
-                            _initialTutorial.value = null
+                            _initialTutorials.value = emptyList()
                             _authState.value = AuthState.LoggedIn(message.player)
                         }
                         is ServerMessage.RoomInfo -> {
@@ -109,7 +114,7 @@ class AuthViewModel(
                         }
                         is ServerMessage.Tutorial -> {
                             if (_authState.value is AuthState.LoggedIn) {
-                                _initialTutorial.value = message
+                                _initialTutorials.value = _initialTutorials.value + message
                             }
                         }
                         is ServerMessage.RegisterOk -> {
