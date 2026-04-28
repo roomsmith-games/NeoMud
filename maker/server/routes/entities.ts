@@ -535,6 +535,7 @@ entitiesRouter.put('/world-meta', rejectIfReadOnly, async (req, res) => {
       res.status(400).json({ error: 'Body must be an object of key-value pairs' })
       return
     }
+    sanitizeTextFields(incoming as Record<string, any>)
     for (const [key, value] of Object.entries(incoming)) {
       if (key === 'readOnly') continue
       await req.db!.projectMeta.upsert({

@@ -512,6 +512,9 @@ class CommandProcessor(
         session.send(ServerMessage.LoginOk(player))
 
         if (tutorialService != null) {
+            // Per-world intro (#272) fires BEFORE welcome on every onboarding path
+            // (Login + Register + GuestLogin + PlatformLogin all flow through here).
+            tutorialService.trySendWorldIntro(session)
             tutorialService.trySend(session, "welcome",
                 contentOverride = "Greetings, ${player.name}!\n\n" +
                     "Use the directional pad to move between rooms. " +
