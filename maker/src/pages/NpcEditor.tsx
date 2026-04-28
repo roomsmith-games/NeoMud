@@ -46,6 +46,9 @@ interface NpcRecord {
   vendorItems: string;
   crafterRecipes: string;
   trainerConfig: string;
+  dialogueScript: string;
+  grantItemId: string;
+  grantItemFlag: string;
   spawnPoints: string;
   lootItems: string;
   coinDrop: string;
@@ -314,7 +317,7 @@ function NpcEditor() {
       id: '', name: '', description: '', zoneId: zones[0]?.id || '', startRoomId: '',
       behaviorType: 'idle', hostile: false, level: 1, maxHp: 10, damage: 1,
       accuracy: 0, defense: 0, evasion: 0, agility: 10, perception: 0, xpReward: 0,
-      patrolRoute: '', vendorItems: '', crafterRecipes: '', trainerConfig: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
+      patrolRoute: '', vendorItems: '', crafterRecipes: '', trainerConfig: '', dialogueScript: '', grantItemId: '', grantItemFlag: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
       attackSound: '', missSound: '', deathSound: '', interactSound: '', exitSound: '',
       imagePrompt: '', imageStyle: '', imageNegativePrompt: '', imageWidth: 384, imageHeight: 512,
     });
@@ -1016,6 +1019,45 @@ function NpcEditor() {
                 </>
               );
             })()}
+
+            {/* Quest dialogue (only for quest NPCs) */}
+            {form.behaviorType === 'quest' && (
+              <>
+                <div style={styles.sectionTitle}>Quest Dialogue (Phase 8)</div>
+                <div style={{ fontSize: 11, color: '#666', marginBottom: 6 }}>
+                  Tap-to-talk dialogue for lore/quest NPCs. Optional one-time item grant tracked per character.
+                </div>
+                <label style={styles.label}>Dialogue Script</label>
+                <textarea
+                  style={styles.textarea}
+                  value={form.dialogueScript ?? ''}
+                  onChange={(e) => handleChange('dialogueScript', e.target.value)}
+                  placeholder="The text shown in a blocking modal when the player taps this NPC."
+                />
+                <label style={styles.label}>Grant Item (optional)</label>
+                <select
+                  style={styles.select}
+                  value={form.grantItemId ?? ''}
+                  onChange={(e) => handleChange('grantItemId', e.target.value)}
+                >
+                  <option value="">-- No item grant --</option>
+                  {items.map((it) => (
+                    <option key={it.id} value={it.id}>{it.name} ({it.id})</option>
+                  ))}
+                </select>
+                <label style={styles.label}>Grant Flag Key (optional)</label>
+                <input
+                  type="text"
+                  style={styles.input}
+                  value={form.grantItemFlag ?? ''}
+                  onChange={(e) => handleChange('grantItemFlag', e.target.value)}
+                  placeholder="e.g. warden_token_received"
+                />
+                <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>
+                  Both fields are required to grant. Empty flag = no grant. The player gets the item once per character; subsequent interactions repeat the dialogue without re-granting.
+                </div>
+              </>
+            )}
 
             {/* Loot */}
             <div style={styles.sectionTitle}>Loot Items</div>
