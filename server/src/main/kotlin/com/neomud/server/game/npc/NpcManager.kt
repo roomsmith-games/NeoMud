@@ -46,7 +46,10 @@ data class NpcState(
     val deathSound: String = "",
     val interactSound: String = "",
     val exitSound: String = "",
-    val trainerConfig: TrainerConfig? = null
+    val trainerConfig: TrainerConfig? = null,
+    val dialogueScript: String = "",
+    val grantItemId: String = "",
+    val grantItemFlag: String = ""
 ) {
     /** Active spell effects on this NPC (DoT, HoT, etc.). */
     val activeEffects: MutableList<ActiveEffect> = mutableListOf()
@@ -145,7 +148,10 @@ class NpcManager(
             deathSound = data.deathSound,
             interactSound = data.interactSound,
             exitSound = data.exitSound,
-            trainerConfig = data.trainerConfig
+            trainerConfig = data.trainerConfig,
+            dialogueScript = data.dialogueScript,
+            grantItemId = data.grantItemId,
+            grantItemFlag = data.grantItemFlag
         )
     }
 

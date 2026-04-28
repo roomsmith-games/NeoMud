@@ -25,7 +25,7 @@ open class InventoryRepository(private val itemCatalog: ItemCatalog) {
         }
     }
 
-    fun addItem(playerName: String, itemId: String, quantity: Int = 1): Boolean = transaction {
+    open fun addItem(playerName: String, itemId: String, quantity: Int = 1): Boolean = transaction {
         val item = itemCatalog.getItem(itemId) ?: return@transaction false
 
         if (item.stackable) {

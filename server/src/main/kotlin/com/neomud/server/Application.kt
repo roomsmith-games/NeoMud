@@ -5,6 +5,7 @@ import com.neomud.server.game.GameLoop
 import com.neomud.server.game.MovementTrailManager
 import com.neomud.server.game.TutorialService
 import com.neomud.server.game.combat.CombatManager
+import com.neomud.server.game.commands.DialogueCommand
 import com.neomud.server.game.commands.InventoryCommand
 import com.neomud.server.game.commands.PickupCommand
 import com.neomud.server.game.commands.CraftCommand
@@ -310,6 +311,8 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
     val vendorCommand = VendorCommand(npcManager, itemCatalog, inventoryRepository, coinRepository, inventoryCommand, sessionManager, skillCatalog)
     val craftingService = CraftingService(recipeCatalog, itemCatalog, inventoryRepository, coinRepository)
     val craftCommand = CraftCommand(npcManager, craftingService, recipeCatalog, inventoryCommand, sessionManager, inventoryRepository, coinRepository)
+    val playerFlagsRepository = com.neomud.server.persistence.repository.PlayerFlagsRepository()
+    val dialogueCommand = DialogueCommand(npcManager, sessionManager, inventoryRepository, playerFlagsRepository, inventoryCommand)
     val adminUsernames = adminUsernamesOverride ?: (System.getenv("NEOMUD_ADMINS")
         ?.split(",")
         ?.map { it.trim().lowercase() }
@@ -333,7 +336,7 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
         classCatalog, itemCatalog, skillCatalog, raceCatalog, inventoryCommand, pickupCommand, roomItemManager,
         trainerCommand, spellCommand, spellCatalog, vendorCommand, lootService, lootTableCatalog,
         inventoryRepository, coinRepository, discoveryRepository, craftCommand, adminUsernames, movementTrailManager,
-        pcSpriteCatalog, tutorialService, platformVerifier, trapManager
+        pcSpriteCatalog, tutorialService, platformVerifier, trapManager, dialogueCommand
     )
     val gameLoop = GameLoop(sessionManager, npcManager, combatManager, worldGraph, lootService, lootTableCatalog, roomItemManager, playerRepository, skillCatalog, classCatalog, itemCatalog, inventoryRepository, coinRepository, movementTrailManager, spellCommand, spellCatalog, tutorialService)
     commandProcessor.setGameLoop(gameLoop)

@@ -3,6 +3,7 @@ package com.neomud.server.game
 import com.neomud.server.game.commands.AdminCommand
 import com.neomud.server.game.commands.AttackCommand
 import com.neomud.server.game.commands.BashCommand
+import com.neomud.server.game.commands.DialogueCommand
 import com.neomud.server.game.commands.InventoryCommand
 import com.neomud.server.game.commands.KickCommand
 import com.neomud.server.game.commands.LookCommand
@@ -75,7 +76,8 @@ class CommandProcessor(
     private val pcSpriteCatalog: PcSpriteCatalog? = null,
     private val tutorialService: TutorialService? = null,
     private val platformTokenVerifier: PlatformTokenVerifier? = null,
-    private val trapManager: com.neomud.server.game.trap.TrapManager? = null
+    private val trapManager: com.neomud.server.game.trap.TrapManager? = null,
+    private val dialogueCommand: DialogueCommand? = null
 ) {
     private val logger = LoggerFactory.getLogger(CommandProcessor::class.java)
 
@@ -300,6 +302,12 @@ class CommandProcessor(
             }
             is ClientMessage.CraftItem -> {
                 requireAuth(session) { craftCommand?.handleCraft(session, message.recipeId) ?: session.send(ServerMessage.SystemMessage("Crafting is not available.")) }
+            }
+            is ClientMessage.InteractNpc -> {
+                requireAuth(session) {
+                    dialogueCommand?.execute(session, message.npcId)
+                        ?: session.send(ServerMessage.SystemMessage("They don't seem to want to talk."))
+                }
             }
             else -> {} // Register, Login, Ping already handled in process()
         }

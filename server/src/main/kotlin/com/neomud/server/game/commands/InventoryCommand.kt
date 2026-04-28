@@ -13,7 +13,7 @@ import com.neomud.server.world.WorldGraph
 import com.neomud.shared.model.EquipmentSlots
 import com.neomud.shared.protocol.ServerMessage
 
-class InventoryCommand(
+open class InventoryCommand(
     private val inventoryRepository: InventoryRepository,
     private val itemCatalog: ItemCatalog,
     private val coinRepository: CoinRepository,
@@ -143,7 +143,7 @@ class InventoryCommand(
         session.pendingSkill = PendingSkill.UseItem(itemId)
     }
 
-    suspend fun sendInventoryUpdate(session: PlayerSession) {
+    open suspend fun sendInventoryUpdate(session: PlayerSession) {
         val playerName = session.playerName ?: return
         val inventory = inventoryRepository.getInventory(playerName)
         val equipment = inventoryRepository.getEquippedItems(playerName)

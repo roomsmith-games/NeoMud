@@ -186,6 +186,20 @@ sealed class ServerMessage {
         val targetElement: String? = null
     ) : ServerMessage()
 
+    /**
+     * Quest/lore NPC dialogue. Distinct from [Tutorial] so it can re-fire on
+     * every interaction without polluting the per-character dedup set in
+     * `PlayerDiscoveryTable`. The client renders this in the same blocking
+     * modal slot as Tutorial — it is the same UX, different persistence.
+     */
+    @Serializable
+    @SerialName("npc_dialogue")
+    data class NpcDialogue(
+        @SerialName("npc_id") val npcId: String,
+        @SerialName("npc_name") val npcName: String,
+        val content: String
+    ) : ServerMessage()
+
     @Serializable
     @SerialName("pong")
     data object Pong : ServerMessage()

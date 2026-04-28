@@ -144,6 +144,10 @@ sealed class ClientMessage {
     data object InteractCrafter : ClientMessage()
 
     @Serializable
+    @SerialName("interact_npc")
+    data class InteractNpc(@SerialName("npc_id") val npcId: String) : ClientMessage()
+
+    @Serializable
     @SerialName("craft_item")
     data class CraftItem(val recipeId: String) : ClientMessage()
 
