@@ -54,7 +54,7 @@
     {
       "id": "iron_vein:upper_tunnel",
       "name": "Upper Tunnel",
-      "description": "The main tunnel widens into a junction, three passages branching out. The floor is littered with debris — fallen support timbers, broken ore carts. Watch your step.",
+      "description": "The main tunnel widens into a junction, three passages branching out. The floor is littered with debris \u2014 fallen support timbers, broken ore carts. Watch your step.",
       "x": 2,
       "y": 0,
       "exits": {
@@ -66,7 +66,7 @@
       "backgroundImage": "/assets/images/rooms/iron_vein_upper_tunnel.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
-      "imagePrompt": "First-person view of a wide three-way junction in an underground mine tunnel, scattered debris on the floor — fallen wooden support timbers, broken iron ore carts, dim lantern light barely revealing the branching passages, oppressive damp stone atmosphere.",
+      "imagePrompt": "First-person view of a wide three-way junction in an underground mine tunnel, scattered debris on the floor \u2014 fallen wooden support timbers, broken iron ore carts, dim lantern light barely revealing the branching passages, oppressive damp stone atmosphere.",
       "imageStyle": "fantasy digital painting, dark stone and lantern light, oppressive atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, claustrophobic",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
@@ -242,7 +242,7 @@
         {
           "id": "submerged_stones",
           "label": "loose stones beneath the water",
-          "description": "Treacherous footing beneath cold dark water — a fall trap.",
+          "description": "Treacherous footing beneath cold dark water \u2014 a fall trap.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
           "perceptionDC": 11,
@@ -252,9 +252,9 @@
             "saveStat": "AGILITY",
             "saveDC": "13",
             "saveType": "DODGE",
-            "detectMessage": "Looking carefully at the water you see the floor is uneven — loose stones lurk beneath the surface.",
+            "detectMessage": "Looking carefully at the water you see the floor is uneven \u2014 loose stones lurk beneath the surface.",
             "dodgeMessage": "You step carefully across the loose stones, keeping your balance.",
-            "damageMessage": "A loose stone shifts under your foot — you fall hard against the wet rock! (-{damage} HP)"
+            "damageMessage": "A loose stone shifts under your foot \u2014 you fall hard against the wet rock! (-{damage} HP)"
           }
         }
       ]
@@ -281,7 +281,7 @@
     {
       "id": "iron_vein:webbed_corridor",
       "name": "Webbed Corridor",
-      "description": "The corridor narrows and the silk thickens — strands as thick as ship rope crisscross between the walls. Every surface is sticky. Something massive must have made this.",
+      "description": "The corridor narrows and the silk thickens \u2014 strands as thick as ship rope crisscross between the walls. Every surface is sticky. Something massive must have made this.",
       "x": 5,
       "y": 0,
       "exits": {
@@ -310,9 +310,9 @@
             "saveStat": "TOUGHNESS",
             "saveDC": "14",
             "saveType": "RESIST",
-            "detectMessage": "You see the silk strands are not just decorative — they pulse faintly, alive with some venom.",
+            "detectMessage": "You see the silk strands are not just decorative \u2014 they pulse faintly, alive with some venom.",
             "dodgeMessage": "You twist away from the worst of the strands, brushing them off before they take hold.",
-            "damageMessage": "Sticky venomous silk catches your skin — burning where it touches! (-{damage} HP)"
+            "damageMessage": "Sticky venomous silk catches your skin \u2014 burning where it touches! (-{damage} HP)"
           }
         }
       ]
@@ -320,7 +320,7 @@
     {
       "id": "iron_vein:cavemother_lair",
       "name": "Cavemother's Lair",
-      "description": "A vast circular chamber, the floor packed earth scattered with the bones of those who came before. Pale eggs the size of human heads cling to the walls in clusters. At the chamber's center, the Cavemother waits — and she has been waiting a long time.",
+      "description": "A vast circular chamber, the floor packed earth scattered with the bones of those who came before. Pale eggs the size of human heads cling to the walls in clusters. At the chamber's center, the Cavemother waits \u2014 and she has been waiting a long time.",
       "x": 6,
       "y": 0,
       "exits": {
@@ -364,10 +364,10 @@
       "startRoomId": "iron_vein:upper_tunnel",
       "behaviorType": "wander",
       "hostile": true,
-      "maxHp": 70,
-      "damage": 10,
+      "maxHp": 100,
+      "damage": 24,
       "level": 8,
-      "xpReward": 100,
+      "xpReward": 140,
       "accuracy": 15,
       "defense": 7,
       "evasion": 18,
@@ -381,10 +381,23 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        {"itemId": "item:spider_fang", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2},
-        {"itemId": "item:health_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1}
+        {
+          "itemId": "item:spider_fang",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": {"minCopper": 20, "maxCopper": 60}
+      "coinDrop": {
+        "minCopper": 20,
+        "maxCopper": 60
+      }
     },
     {
       "id": "npc:mine_ghoul",
@@ -393,10 +406,10 @@
       "startRoomId": "iron_vein:east_shaft",
       "behaviorType": "wander",
       "hostile": true,
-      "maxHp": 95,
-      "damage": 13,
+      "maxHp": 130,
+      "damage": 27,
       "level": 9,
-      "xpReward": 130,
+      "xpReward": 165,
       "accuracy": 14,
       "defense": 10,
       "evasion": 12,
@@ -410,11 +423,31 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        {"itemId": "item:ghoul_claw", "chance": 0.6, "minQuantity": 1, "maxQuantity": 1},
-        {"itemId": "item:iron_ore", "chance": 0.4, "minQuantity": 1, "maxQuantity": 2},
-        {"itemId": "item:health_potion", "chance": 0.25, "minQuantity": 1, "maxQuantity": 1}
+        {
+          "itemId": "item:ghoul_claw",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_ore",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": {"minCopper": 35, "maxCopper": 90, "minSilver": 0, "maxSilver": 1}
+      "coinDrop": {
+        "minCopper": 35,
+        "maxCopper": 90,
+        "minSilver": 0,
+        "maxSilver": 1
+      }
     },
     {
       "id": "npc:ore_golem",
@@ -423,10 +456,10 @@
       "startRoomId": "iron_vein:ore_vein",
       "behaviorType": "wander",
       "hostile": true,
-      "maxHp": 140,
-      "damage": 16,
+      "maxHp": 170,
+      "damage": 30,
       "level": 10,
-      "xpReward": 180,
+      "xpReward": 220,
       "accuracy": 12,
       "defense": 22,
       "evasion": 5,
@@ -440,22 +473,35 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        {"itemId": "item:iron_ore", "chance": 0.95, "minQuantity": 2, "maxQuantity": 4},
-        {"itemId": "item:golem_core", "chance": 0.25, "minQuantity": 1, "maxQuantity": 1}
+        {
+          "itemId": "item:iron_ore",
+          "chance": 0.95,
+          "minQuantity": 2,
+          "maxQuantity": 4
+        },
+        {
+          "itemId": "item:golem_core",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": {"minCopper": 0, "maxCopper": 0}
+      "coinDrop": {
+        "minCopper": 0,
+        "maxCopper": 0
+      }
     },
     {
       "id": "npc:cavemother_vrelda",
       "name": "Cavemother Vrelda",
-      "description": "A horror larger than a horse, the Cavemother's body is a swollen abdomen marked with raised veins of black ichor. Eight thick legs splay around her, each tipped with a chitinous spike. Her eyes — too many to count — fix on you with cold maternal calm.",
+      "description": "A horror larger than a horse, the Cavemother's body is a swollen abdomen marked with raised veins of black ichor. Eight thick legs splay around her, each tipped with a chitinous spike. Her eyes \u2014 too many to count \u2014 fix on you with cold maternal calm.",
       "startRoomId": "iron_vein:cavemother_lair",
       "behaviorType": "idle",
       "hostile": true,
-      "maxHp": 320,
-      "damage": 22,
+      "maxHp": 420,
+      "damage": 38,
       "level": 11,
-      "xpReward": 800,
+      "xpReward": 1100,
       "accuracy": 16,
       "defense": 18,
       "evasion": 10,
@@ -469,12 +515,39 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        {"itemId": "item:cavemother_fang", "chance": 1.0, "minQuantity": 1, "maxQuantity": 1},
-        {"itemId": "item:venom_silk_robes", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1},
-        {"itemId": "item:fang_carved_blade", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1},
-        {"itemId": "item:greater_health_potion", "chance": 0.8, "minQuantity": 1, "maxQuantity": 2}
+        {
+          "itemId": "item:cavemother_fang",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:venom_silk_robes",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:fang_carved_blade",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.8,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
       ],
-      "coinDrop": {"minCopper": 0, "maxCopper": 100, "minSilver": 5, "maxSilver": 15, "minGold": 1, "maxGold": 3}
+      "coinDrop": {
+        "minCopper": 0,
+        "maxCopper": 100,
+        "minSilver": 5,
+        "maxSilver": 15,
+        "minGold": 1,
+        "maxGold": 3
+      }
     }
   ]
 }

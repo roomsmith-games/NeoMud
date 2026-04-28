@@ -83,7 +83,7 @@
     {
       "id": "gorge:depths",
       "name": "Gorge Depths",
-      "description": "The deepest chamber of Blackstone Gorge, where the walls widen into a natural arena of dark stone. Lava seeps through cracks in the floor, casting an infernal glow across towering basalt columns. The air thrums with a low vibration, and massive claw gouges in the stone walls speak of something immensely powerful that calls this place home.",
+      "description": "The deepest chamber of Blackstone Gorge, where the walls widen into a natural arena of dark stone. Lava seeps through cracks in the floor, casting an infernal glow across towering basalt columns. The air thrums with a low vibration, and massive claw gouges in the stone walls speak of something immensely powerful that calls this place home. A narrow cleft in the north face reveals a switchback trail climbing the outer gorge wall toward distant daylight.",
       "x": 0,
       "y": 11,
       "exits": {
