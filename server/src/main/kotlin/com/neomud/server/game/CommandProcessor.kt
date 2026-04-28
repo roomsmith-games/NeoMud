@@ -424,8 +424,10 @@ class CommandProcessor(
 
                 session.send(ServerMessage.LoginOk(effectivePlayer))
 
-                // First-time welcome tutorial for new characters (sent right after LoginOk for predictable ordering)
+                // First-time welcome tutorial for new characters (sent right after LoginOk for predictable ordering).
+                // Per-world intro (#272) fires BEFORE welcome so worlds can set the scene before the generic onboarding.
                 if (tutorialService != null) {
+                    tutorialService.trySendWorldIntro(session)
                     tutorialService.trySend(session, "welcome",
                         contentOverride = "Greetings, ${effectivePlayer.name}!\n\n" +
                             "Use the directional pad to move between rooms. " +

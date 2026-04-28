@@ -24,5 +24,6 @@ data class WorldManifest(
     val worldId: String = "",
     val createdWithMaker: Boolean = false,
     val coverImage: String = "",
-    val loadingBgm: String = ""
+    val loadingBgm: String = "",
+    val introScript: String = ""
 )

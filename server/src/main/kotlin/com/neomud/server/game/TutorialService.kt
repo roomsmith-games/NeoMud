@@ -3,6 +3,7 @@ package com.neomud.server.game
 import com.neomud.server.persistence.repository.DiscoveryRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.world.ClassCatalog
+import com.neomud.server.world.WorldManifest
 import com.neomud.shared.protocol.ServerMessage
 import org.slf4j.LoggerFactory
 
@@ -12,7 +13,8 @@ import org.slf4j.LoggerFactory
  */
 class TutorialService(
     private val discoveryRepository: DiscoveryRepository,
-    private val classCatalog: ClassCatalog
+    private val classCatalog: ClassCatalog,
+    private val worldManifest: WorldManifest? = null
 ) {
     private val logger = LoggerFactory.getLogger(TutorialService::class.java)
 
@@ -155,6 +157,51 @@ class TutorialService(
             blocking = false
         )
     )
+
+    /**
+     * Send a per-world intro Tutorial (#272) on first character login.
+     *
+     * Content comes from the loaded world's `manifest.json` `introScript` field
+     * rather than the hardcoded [tutorials] map — this is the engine primitive
+     * that any world can populate to set the scene before the generic [welcome]
+     * tutorial. Empty introScript or missing manifest is a no-op (worlds opt in).
+     *
+     * Persistence and dedup follow the same pattern as [trySend]: keyed
+     * `tut_world_intro` in `PlayerDiscoveryTable`, fires at most once per character.
+     */
+    suspend fun trySendWorldIntro(session: PlayerSession): Boolean {
+        val key = "tut_world_intro"
+        if (key in session.seenTutorials) return false
+        val script = worldManifest?.introScript?.takeIf { it.isNotBlank() } ?: return false
+        val title = worldManifest.name.ifBlank { "Welcome" }
+
+        val tutorial = ServerMessage.Tutorial(
+            key = key,
+            title = title,
+            content = script,
+            blocking = true,
+            targetElement = null
+        )
+
+        session.seenTutorials.add(key)
+
+        val playerName = session.playerName
+        if (playerName != null) {
+            try {
+                discoveryRepository.markTutorialSeen(playerName, key)
+            } catch (e: Exception) {
+                logger.warn("Failed to persist world-intro tutorial for $playerName: ${e.message}")
+            }
+        }
+
+        try {
+            session.send(tutorial)
+        } catch (e: Exception) {
+            logger.warn("Failed to send world-intro tutorial: ${e.message}")
+        }
+
+        return true
+    }
 
     /**
      * Try to send a tutorial. Checks if already seen — each tutorial fires at most once

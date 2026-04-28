@@ -3,6 +3,7 @@ package com.neomud.server.game
 import com.neomud.server.persistence.repository.DiscoveryRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.world.ClassCatalog
+import com.neomud.server.world.WorldManifest
 import com.neomud.shared.model.*
 import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
@@ -76,6 +77,92 @@ class TutorialServiceTest {
             )
         ))
         return TutorialService(discoveryRepo, classCatalog)
+    }
+
+    private fun createServiceWithManifest(introScript: String, name: String = "Test World"): TutorialService {
+        val discoveryRepo = object : DiscoveryRepository() {
+            override fun markTutorialSeen(playerName: String, tutorialKey: String) {}
+        }
+        val classCatalog = ClassCatalog(emptyList())
+        val manifest = WorldManifest(
+            formatVersion = 1,
+            name = name,
+            author = "Test",
+            version = "0.1.0",
+            introScript = introScript
+        )
+        return TutorialService(discoveryRepo, classCatalog, manifest)
+    }
+
+    // --- World intro (#272) ---
+
+    @Test
+    fun worldIntroFiresOnceWhenScriptPresent() = runBlocking {
+        val service = createServiceWithManifest("A thousand years ago, the world cracked.", name = "Wardens")
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+
+        val first = service.trySendWorldIntro(session)
+        assertTrue(first, "First send should fire")
+        assertTrue("tut_world_intro" in session.seenTutorials)
+
+        val tutorials = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>()
+        assertEquals(1, tutorials.size)
+        assertEquals("tut_world_intro", tutorials[0].key)
+        assertEquals("Wardens", tutorials[0].title)
+        assertTrue(tutorials[0].blocking)
+        assertEquals("A thousand years ago, the world cracked.", tutorials[0].content)
+    }
+
+    @Test
+    fun worldIntroSkipsAlreadySeen() = runBlocking {
+        val service = createServiceWithManifest("Some lore.")
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+        session.seenTutorials.add("tut_world_intro")
+
+        val result = service.trySendWorldIntro(session)
+        assertFalse(result, "Should not re-fire")
+        assertTrue(drainMessages(outgoing).isEmpty())
+    }
+
+    @Test
+    fun worldIntroNoOpWhenScriptEmpty() = runBlocking {
+        val service = createServiceWithManifest("")
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+
+        val result = service.trySendWorldIntro(session)
+        assertFalse(result, "Empty introScript should be a no-op")
+        assertFalse("tut_world_intro" in session.seenTutorials, "No-op should not mark seen")
+        assertTrue(drainMessages(outgoing).isEmpty())
+    }
+
+    @Test
+    fun worldIntroNoOpWhenManifestAbsent() = runBlocking {
+        val service = createService() // no manifest
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+
+        val result = service.trySendWorldIntro(session)
+        assertFalse(result, "Missing manifest should be a no-op")
+        assertTrue(drainMessages(outgoing).isEmpty())
+    }
+
+    @Test
+    fun worldIntroFallsBackToWelcomeTitleWhenWorldNameBlank() = runBlocking {
+        val service = createServiceWithManifest("Lore here.", name = "")
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+
+        service.trySendWorldIntro(session)
+        val tutorial = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>().first()
+        assertEquals("Welcome", tutorial.title)
     }
 
     @Test
