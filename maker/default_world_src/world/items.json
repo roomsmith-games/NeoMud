@@ -961,7 +961,7 @@
     {
       "id": "item:foreman_key",
       "name": "Foreman's Iron Key",
-      "description": "A heavy iron key with a foreman's tag wired to its bow. The tag is unreadable, the wax seal cracked. It probably opens something deeper in the mine.",
+      "description": "A heavy iron key with a foreman's tag wired to its bow. The tag is unreadable, the wax seal cracked. Perhaps it opens something — somewhere — for someone who knows where to look.",
       "type": "quest",
       "value": 0,
       "weight": 1,

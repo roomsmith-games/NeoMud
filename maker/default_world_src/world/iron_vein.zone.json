@@ -506,9 +506,9 @@
       "defense": 18,
       "evasion": 10,
       "agility": 14,
-      "attackSound": "tongue_lash",
+      "attackSound": "cavemother_strike",
       "missSound": "tongue_miss",
-      "deathSound": "enemy_death",
+      "deathSound": "cavemother_death",
       "imagePrompt": "Full-body massive boss horror spider Cavemother larger than a horse, swollen pale-grey abdomen marked with raised veins of black ichor, eight thick chitinous legs splayed wide each tipped with a sharp spike, head crowned with too many gleaming dark eyes arranged in clusters, cold malevolent calm. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature boss sprite, full body, side-facing, clean edges, game asset, solid white background, monumental dread",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
@@ -523,13 +523,13 @@
         },
         {
           "itemId": "item:venom_silk_robes",
-          "chance": 0.5,
+          "chance": 0.2,
           "minQuantity": 1,
           "maxQuantity": 1
         },
         {
           "itemId": "item:fang_carved_blade",
-          "chance": 0.5,
+          "chance": 0.2,
           "minQuantity": 1,
           "maxQuantity": 1
         },
