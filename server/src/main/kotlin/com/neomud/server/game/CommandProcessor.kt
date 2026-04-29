@@ -77,7 +77,8 @@ class CommandProcessor(
     private val tutorialService: TutorialService? = null,
     private val platformTokenVerifier: PlatformTokenVerifier? = null,
     private val trapManager: com.neomud.server.game.trap.TrapManager? = null,
-    private val dialogueCommand: DialogueCommand? = null
+    private val dialogueCommand: DialogueCommand? = null,
+    private val worldOwnerPlatformUserId: String? = null
 ) {
     private val logger = LoggerFactory.getLogger(CommandProcessor::class.java)
 
@@ -106,6 +107,27 @@ class CommandProcessor(
 
     private fun clearFailedLogins(username: String) {
         failedLogins.remove(username.lowercase())
+    }
+
+    /**
+     * Decides whether [player] should be promoted to admin on this login.
+     *
+     * Two paths:
+     * - Username allowlist (NEOMUD_ADMINS / adminUsernames): the legacy local-dev / OSS path.
+     * - World-owner platform JWT: when this game-server's world has an owner, the platform
+     *   user whose JWT userId matches that owner is admin in this world only.
+     *
+     * Both paths require explicit configuration. The world-owner check is double-guarded
+     * (`worldOwnerPlatformUserId != null && session.platformUserId != null`) to avoid
+     * the `null == null` trap that would otherwise grant admin to every unauthenticated
+     * connection in a misconfigured setup.
+     */
+    private fun shouldPromoteAdmin(session: PlayerSession, dbUsername: String): Boolean {
+        val isUsernameAdmin = dbUsername.lowercase() in adminUsernames
+        val isOwnerAdmin = worldOwnerPlatformUserId != null
+            && session.platformUserId != null
+            && session.platformUserId == worldOwnerPlatformUserId
+        return isUsernameAdmin || isOwnerAdmin
     }
 
     private val adminCommand = AdminCommand(
@@ -403,8 +425,9 @@ class CommandProcessor(
         result.fold(
             onSuccess = { player ->
                 clearFailedLogins(msg.username)
-                // Auto-promote admin from env var
-                val effectivePlayer = if (msg.username.lowercase() in adminUsernames && !player.isAdmin) {
+                // Auto-promote admin via username allowlist or world-owner platform JWT.
+                // See shouldPromoteAdmin for the two paths.
+                val effectivePlayer = if (!player.isAdmin && shouldPromoteAdmin(session, msg.username)) {
                     playerRepository.promoteAdmin(msg.username)
                     player.copy(isAdmin = true)
                 } else {
@@ -506,6 +529,14 @@ class CommandProcessor(
 
     /** Shared post-authentication setup: load discovery, send LoginOk, room info, inventory. */
     private suspend fun completeLogin(session: PlayerSession, player: com.neomud.shared.model.Player, username: String) {
+        // Promote to admin if either path matches (username allowlist or world-owner JWT match).
+        // Shadows the param so the rest of the function uses the post-promotion player.
+        @Suppress("NAME_SHADOWING")
+        val player = if (!player.isAdmin && shouldPromoteAdmin(session, username)) {
+            playerRepository.promoteAdmin(username)
+            player.copy(isAdmin = true)
+        } else player
+
         session.player = player
         session.playerName = player.name
         session.currentRoomId = player.currentRoomId

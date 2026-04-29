@@ -249,7 +249,7 @@ fun main(args: Array<String>) {
     server.start(wait = true)
 }
 
-fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: String = "build/worlds/default-world.nmd", adminUsernamesOverride: Set<String>? = null, platformVerifierOverride: com.neomud.server.auth.PlatformTokenVerifier? = null) {
+fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: String = "build/worlds/default-world.nmd", adminUsernamesOverride: Set<String>? = null, platformVerifierOverride: com.neomud.server.auth.PlatformTokenVerifier? = null, worldOwnerPlatformUserIdOverride: String? = null) {
     // Initialize database
     DatabaseFactory.init(jdbcUrl)
 
@@ -331,12 +331,28 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
         logger.info("Platform JWT verification enabled")
     }
 
+    // World-owner admin path: when running under the platform orchestrator,
+    // each game-server container is spawned with WORLD_OWNER_PLATFORM_USER_ID
+    // set to that world's owner. The matching platform-token user is auto-promoted
+    // to admin in that world only. Empty / unset / blank → null → inert.
+    // OSS local-dev (no platform JWT, env unset) falls through to NEOMUD_ADMINS.
+    val worldOwnerPlatformUserId = worldOwnerPlatformUserIdOverride
+        ?: System.getenv("WORLD_OWNER_PLATFORM_USER_ID")?.takeIf { it.isNotBlank() }
+    if (worldOwnerPlatformUserId != null) {
+        if (platformVerifier.isEnabled) {
+            logger.info("World owner platform user: $worldOwnerPlatformUserId (auto-admin in this world)")
+        } else {
+            logger.warn("WORLD_OWNER_PLATFORM_USER_ID set but no platform JWT verifier configured — owner-admin path is inert. Set PLATFORM_JWKS_URL or PLATFORM_JWT_SECRET to activate.")
+        }
+    }
+
     val commandProcessor = CommandProcessor(
         worldGraph, sessionManager, npcManager, playerRepository,
         classCatalog, itemCatalog, skillCatalog, raceCatalog, inventoryCommand, pickupCommand, roomItemManager,
         trainerCommand, spellCommand, spellCatalog, vendorCommand, lootService, lootTableCatalog,
         inventoryRepository, coinRepository, discoveryRepository, craftCommand, adminUsernames, movementTrailManager,
-        pcSpriteCatalog, tutorialService, platformVerifier, trapManager, dialogueCommand
+        pcSpriteCatalog, tutorialService, platformVerifier, trapManager, dialogueCommand,
+        worldOwnerPlatformUserId
     )
     val gameLoop = GameLoop(sessionManager, npcManager, combatManager, worldGraph, lootService, lootTableCatalog, roomItemManager, playerRepository, skillCatalog, classCatalog, itemCatalog, inventoryRepository, coinRepository, movementTrailManager, spellCommand, spellCatalog, tutorialService)
     commandProcessor.setGameLoop(gameLoop)

@@ -288,6 +288,15 @@ sudo apt install -y nodejs
 
 The dev server loads the world from `server/build/worlds/default-world.nmd` (built by `packageWorld` from `maker/default_world_src/`). You must re-run `packageWorld --rerun-tasks` after any change to world data files.
 
+##### Admin promotion
+
+Admins can run privileged slash commands like `/teleport <roomId>`, `/give`, etc. Two paths grant admin status, both checked at every login:
+
+- **Username allowlist** — set `NEOMUD_ADMINS` to a comma-separated list of usernames (or pass `--admins`). Matching characters are auto-promoted on login. The `:server:run` task injects `NEOMUD_ADMINS=bob` by default, so a freshly-cloned, freshly-registered character named `bob` is admin out of the box.
+- **World ownership (platform-managed)** — when running under the NeoMud-platform marketplace, the orchestrator injects `WORLD_OWNER_PLATFORM_USER_ID`. The platform user whose JWT `userId` matches is auto-promoted in their own world. **Self-hosted servers can ignore this** — the env var is optional and inert if unset.
+
+Both paths compose: a player can be promoted by either match. Either env var being unset is silent — no warn spam, no startup error.
+
 #### Client (Android)
 
 ```bash
