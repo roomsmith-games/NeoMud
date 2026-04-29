@@ -286,16 +286,17 @@
     {
       "id": "highmoor:north_pass",
       "name": "Northern Pass",
-      "description": "The plateau begins to fold in on itself here, ridges rising on either side and the wind carrying a salt tang you can almost taste. A trail leads on north, but the way is choked with old fallen stone — passable, perhaps, but not today. The horizon ahead is hazy with what could be sea.",
+      "description": "The plateau begins to fold in on itself here, ridges rising on either side and the wind carrying a real salt tang now. The fallen stone that once choked the trail has been cleared aside — recently, by no hand you can name — and the path leads down toward a far hazy horizon that is unmistakably the sea.",
       "x": 1,
       "y": 25,
       "exits": {
-        "SOUTH": "highmoor:raven_perch"
+        "SOUTH": "highmoor:raven_perch",
+        "NORTH": "salt_coast:cliff_descent"
       },
       "backgroundImage": "/assets/images/rooms/highmoor_north_pass.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
-      "imagePrompt": "First-person view of the northern edge of a high plateau folding into ridges, a trail ahead choked with fallen stone, cold wind carrying a faint salt tang, hazy distant horizon suggesting sea far below, late afternoon cold blue light, sense of unreachable next country.",
+      "imagePrompt": "First-person view of the northern edge of a high plateau folding into ridges, a trail ahead with the fallen stone cleared aside, the path opening down toward a far hazy horizon unmistakably the sea, cold wind carrying salt tang, late afternoon cold blue light, sense of newly-opened path.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, far horizon",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,

@@ -1,0 +1,747 @@
+{
+  "id": "drowned_chapel",
+  "name": "Drowned Chapel",
+  "description": "An old Warden temple sunk halfway into the tidal flats, its lower courses permanently flooded, its upper still walking-dry. The seals it once kept have weakened, and what answered the Wardens' calls in the depths has come up to live in the choir.",
+  "safe": false,
+  "bgm": "boss_intense",
+  "spawnConfig": {
+    "maxEntities": 8,
+    "maxPerRoom": 2,
+    "rateTicks": 22
+  },
+  "imageStyle": "fantasy digital painting, salt-stained stone temple interior, drowned chapel, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, sea-water and decay",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, daylight, bright",
+  "rooms": [
+    {
+      "id": "drowned_chapel:vestibule",
+      "name": "Drowned Vestibule",
+      "description": "A short stone-vaulted antechamber inside the chapel doors, the floor ankle-deep in salt water that never quite drains. Pale wedge of daylight reaches in from behind. The vault overhead drips slowly, and the air carries an unmistakable rot-of-the-deep smell.",
+      "x": 0,
+      "y": 0,
+      "exits": {
+        "SOUTH": "salt_coast:chapel_threshold",
+        "NORTH": "drowned_chapel:flooded_narthex"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_vestibule.webp",
+      "departSound": "footstep_splash",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view just inside the vestibule of a drowned stone chapel, ankle-deep salt water on the flagstone floor, pale wedge of daylight from the open entrance behind, vaulted ceiling overhead dripping slowly, salt-stain rings on the walls, atmosphere of tidal sanctuary gone wrong.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim daylight wedge, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "drowned_chapel:flooded_narthex",
+      "name": "Flooded Narthex",
+      "description": "A long colonnaded narthex, the floor flooded knee-deep at high tide and gleaming with brine even as the tide retreats. Two great bronze tide-marks set into the wall show the flood-line of the worst surges. The water occasionally lifts in unexplained eddies, as if something passed through.",
+      "x": 0,
+      "y": 1,
+      "exits": {
+        "SOUTH": "drowned_chapel:vestibule",
+        "NORTH": "drowned_chapel:nave"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_flooded_narthex.webp",
+      "departSound": "footstep_splash",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a long colonnaded narthex inside a drowned chapel, flooded knee-deep with dark salt water, two great bronze tide-marks set into the side walls showing flood lines, faint eddy in the water as if something just passed, dim cold light from above, atmosphere of submerged hallway.",
+      "imageStyle": "fantasy digital painting, salt-stained stone columns, dim watery light, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "tide_surge",
+          "label": "swelling tidal surge",
+          "description": "A deep-sea pulse builds in the flooded narthex water, ready to sweep the unwary off their feet against the column-bases.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 14,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "20",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "14",
+            "saveType": "RESIST",
+            "detectMessage": "You see the water in the narthex starting to swell — a deep-sea pulse rising. You set your stance against the columns before it hits.",
+            "dodgeMessage": "You brace against a column as the surge rolls past, taking it on the shoulder.",
+            "damageMessage": "A deep-sea surge rolls through the narthex — you are slammed sideways into a column-base before you can brace! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:nave",
+      "name": "Sunken Nave",
+      "description": "The great central hall of the chapel, its choir and high altar still recognisable through a thigh-deep skin of brackish water. The roof is high and shadowed; faint red rune-marks gleam on the floor below the surface. Side chapels open off east and west, and the inner chapel approach lies further north.",
+      "x": 0,
+      "y": 2,
+      "exits": {
+        "SOUTH": "drowned_chapel:flooded_narthex",
+        "WEST": "drowned_chapel:side_chapel_north",
+        "EAST": "drowned_chapel:side_chapel_south",
+        "NORTH": "drowned_chapel:crypt_corridor"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_nave.webp",
+      "departSound": "footstep_splash",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of the great central hall of a drowned chapel, choir and high altar visible through thigh-deep brackish water, high shadowed roof above, faint glowing red rune-marks gleaming on the submerged floor, salt-stained pillars, three corridors leading away, atmosphere of cold cathedral half-submerged.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim watery light with rune-glow, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "brittle_floor",
+          "label": "cracked submerged flagstone",
+          "description": "A floor flagstone in the nave is cracked through and sits unsupported over a drop into the chapel undercroft.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 14,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "22",
+            "saveStat": "AGILITY",
+            "saveDC": "14",
+            "saveType": "DODGE",
+            "detectMessage": "You see the cracked flagstone shimmer beneath the water — a step-thin shell over a drop. You skirt around it.",
+            "dodgeMessage": "You feel the flagstone start to give and throw your weight onto the next one as it shatters into the dark water beneath.",
+            "damageMessage": "A flagstone shatters beneath your foot — you fall hard against the rim of the drop, water rushing up around your ribs! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:side_chapel_north",
+      "name": "North Side Chapel",
+      "description": "A small side chapel off the nave, drier than the rest of the temple, dedicated by the carving above its lintel to the Watcher of Dawn. A bronze tide-bell hangs at the chapel's heart, salt-greened but intact, the pull-rope still sound. This is the first bell of the hymn.",
+      "x": -1,
+      "y": 2,
+      "exits": {
+        "EAST": "drowned_chapel:nave"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_side_chapel_north.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a small side chapel inside a drowned temple, drier than the surrounding flooded halls, lintel above carved with a rising-sun sigil dedicating it to the Watcher of Dawn, a bronze tide-bell hanging at the chapel's heart from a beam, salt-greened but intact, pull-rope still sound, dim warm sanctuary light, atmosphere of preserved chamber.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim warm sanctuary light, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "north_tide_bell",
+          "label": "bronze tide-bell of Dawn",
+          "description": "The first bell of the Mariner's Hymn. Pull the rope.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "tide_bells",
+            "puzzleStepIndex": "0",
+            "puzzleTotalSteps": "5",
+            "advanceMessage": "You haul on the rope. The bronze bell sings out a deep clear note that runs through the chapel stone — and somewhere far below, the chapel itself answers, almost imperceptibly. The hymn has begun.",
+            "resetMessage": "The bell rings hollowly, but the chapel does not answer. The hymn has slipped — return to the start.",
+            "alreadySolvedMessage": "The bell of Dawn is silent now. Its note has been given."
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:side_chapel_south",
+      "name": "South Side Chapel",
+      "description": "The southern side chapel, dedicated to the Watcher of Dusk by its setting-sun lintel. A second bronze tide-bell hangs at its heart. Salt-eater fungus blooms along the wet wall in a sour grey-yellow growth.",
+      "x": 1,
+      "y": 2,
+      "exits": {
+        "WEST": "drowned_chapel:nave"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_side_chapel_south.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a southern side chapel inside a drowned temple, lintel above carved with a setting-sun sigil dedicating it to the Watcher of Dusk, a bronze tide-bell hanging at the chapel's heart from a beam, sour grey-yellow salt-eater fungus blooming along a wet wall, dim sanctuary light, atmosphere of contaminated holy place.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim warm sanctuary light, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition, fungal decay",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "south_tide_bell",
+          "label": "bronze tide-bell of Dusk",
+          "description": "The second bell of the Mariner's Hymn. Pull the rope.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "tide_bells",
+            "puzzleStepIndex": "1",
+            "puzzleTotalSteps": "5",
+            "advanceMessage": "You haul on the rope. The Dusk-bell answers Dawn's distant ring with a lower note. Two of five — the chapel listens.",
+            "resetMessage": "The Dusk-bell rings hollow. The hymn has slipped — return to the start.",
+            "alreadySolvedMessage": "The bell of Dusk is silent now. Its note has been given."
+          }
+        },
+        {
+          "id": "salt_eater_fungus",
+          "label": "blooming salt-eater fungus",
+          "description": "A sour grey-yellow fungal growth that releases acrid spores when disturbed.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 15,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "22",
+            "damageType": "poison",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "15",
+            "saveType": "RESIST",
+            "detectMessage": "You see the fungus along the wall starting to swell — disturbed by your presence. You hold your breath and ease past.",
+            "dodgeMessage": "You hold your breath and slip past as a small puff of grey-yellow spores releases behind you.",
+            "damageMessage": "Sour spores release as you pass — burning where they touch your skin and lungs! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:crypt_corridor",
+      "name": "Crypt Corridor",
+      "description": "A long stone-vaulted corridor descending toward the chapel undercroft, its floor angling steeper as it goes. The walls hold high alcoves where the bronze tide-bells of past Wardens once tolled — most are gone, but one remains in its niche, carved in the shape of a storm-anvil. The roof creaks faintly above.",
+      "x": 0,
+      "y": 3,
+      "exits": {
+        "SOUTH": "drowned_chapel:nave",
+        "NORTH": "drowned_chapel:crypt_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_crypt_corridor.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a long stone-vaulted corridor descending into the undercroft of a drowned chapel, floor angling steeper, walls lined with high alcoves where bronze bells once hung — most empty, one alcove still holding a bronze bell carved with a storm-anvil sigil, dim torchlight, faintly creaking ceiling, atmosphere of descent into older crypt.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim torchlight, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "crypt_tide_bell",
+          "label": "bronze tide-bell of Storms",
+          "description": "The third bell of the Mariner's Hymn. Pull the rope.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "tide_bells",
+            "puzzleStepIndex": "2",
+            "puzzleTotalSteps": "5",
+            "advanceMessage": "You pull the rope. The Storm-bell rings out a low metallic peal — the third Watcher hears you. The chapel walls themselves vibrate faintly in response.",
+            "resetMessage": "The Storm-bell rings hollow. The hymn has slipped — return to the start.",
+            "alreadySolvedMessage": "The bell of Storms is silent now. Its note has been given."
+          }
+        },
+        {
+          "id": "bell_pull_tripwire",
+          "label": "rigged tripwire across the corridor",
+          "description": "A taut rope strung across the corridor at shin-height, rigged to a counterweight in the ceiling alcoves.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 15,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "24",
+            "saveStat": "AGILITY",
+            "saveDC": "15",
+            "saveType": "DODGE",
+            "detectMessage": "You spot the taut rope strung across the corridor at shin-height, glinting where stray light catches it. You step over.",
+            "dodgeMessage": "You leap aside as the tripwire snaps and a counterweight crashes into the wall where you stood!",
+            "damageMessage": "Your shin catches the tripwire — a counterweight comes crashing down across your shoulders before you can throw yourself flat! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:crypt_chamber",
+      "name": "Crypt Chamber",
+      "description": "A circular chamber at the bottom of the corridor, the floor a single round slab inscribed with a five-pointed star. A bronze star-bell hangs above it in a frame of dark iron — the fourth of the hymn's bells. A figure in salt-stained robes stands by the bell-frame, the Tide-Speaker, who tolls these bells now in ways the Wardens never sang. The air is thick, stagnant, gritty in the lungs.",
+      "x": 0,
+      "y": 4,
+      "exits": {
+        "SOUTH": "drowned_chapel:crypt_corridor",
+        "NORTH": "drowned_chapel:inner_sanctum"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_crypt_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a circular chamber at the bottom of a chapel undercroft, floor a single round slab inscribed with a five-pointed star sigil, a bronze star-bell hanging above it in a dark-iron frame, dim cold torchlight, thick stagnant air, atmosphere of arrested ritual.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim cold torchlight, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "star_tide_bell",
+          "label": "bronze tide-bell of the Star",
+          "description": "The fourth bell of the Mariner's Hymn. Pull the rope.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "tide_bells",
+            "puzzleStepIndex": "3",
+            "puzzleTotalSteps": "5",
+            "advanceMessage": "You pull the rope. The Star-bell rings out clear and high — four of five. Whatever sleeps in the inner sanctum stirs.",
+            "resetMessage": "The Star-bell rings hollow. The hymn has slipped — return to the start.",
+            "alreadySolvedMessage": "The bell of the Star is silent now. Its note has been given."
+          }
+        },
+        {
+          "id": "drowning_gas",
+          "label": "thick stagnant air pocket",
+          "description": "A pocket of brine-thick air in the chamber, heavy enough to fill the lungs and not let go.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 15,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "23",
+            "damageType": "poison",
+            "saveStat": "HEALTH",
+            "saveDC": "15",
+            "saveType": "RESIST",
+            "detectMessage": "You see the air in the chamber shimmer thick with brine — heavy. You take a steady breath through your sleeve before you cross.",
+            "dodgeMessage": "Your lungs fight the brine-thick air, but your conditioning holds — you cross without faltering.",
+            "damageMessage": "The brine-thick air fills your lungs and refuses to let go — you stagger as your chest fights for breath! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:inner_sanctum",
+      "name": "Inner Sanctum",
+      "description": "A high-vaulted chamber beyond the crypt — the chapel's true heart, dry and warm where the rest is cold and flooded. A great bronze sea-altar of fitted scales stands in the center, its central depression empty. Above it the fifth and largest tide-bell hangs from the vault — the Sealed-Eye Bell. To the east a wall recess shows the joints of a hidden door, sealed for now.",
+      "x": 0,
+      "y": 5,
+      "exits": {
+        "SOUTH": "drowned_chapel:crypt_chamber",
+        "EAST": "drowned_chapel:mariners_vault",
+        "NORTH": "drowned_chapel:korlach_lair"
+      },
+      "lockedExits": { "EAST": 99, "NORTH": 99 },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_inner_sanctum.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a high-vaulted dry inner sanctum chamber inside a drowned chapel, a great bronze sea-altar of fitted scaled plates standing at the center with an empty central depression, the fifth and largest bronze tide-bell hanging from the vault overhead with a sealed-eye sigil cast into its body, the eastern wall showing the joints of a sealed hidden door, dim warm sanctuary light, atmosphere of arrested holy heart.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim warm sanctuary light, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "sealed_eye_bell",
+          "label": "Sealed-Eye Bell",
+          "description": "The fifth and largest tide-bell, hanging from the vault. Pull the rope to ring out the final note of the Mariner's Hymn — and to open the way to whatever sleeps beyond.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "tide_bells",
+            "puzzleStepIndex": "4",
+            "puzzleTotalSteps": "5",
+            "successMessage": "You pull the rope. The great Sealed-Eye Bell rings out a deep all-encompassing note that rolls up through the chapel and out to sea — the hymn is complete. With a long stone groan, the doors at the north of the sanctum swing inward, revealing the way to Korlach's lair.",
+            "resetMessage": "The Sealed-Eye Bell rings hollow. The hymn has slipped — return to the bell of Dawn and begin again.",
+            "alreadySolvedMessage": "The Sealed-Eye Bell hangs silent now. The way ahead is open.",
+            "successDirection": "NORTH"
+          }
+        },
+        {
+          "id": "sea_altar",
+          "label": "bronze sea-altar of fitted scales",
+          "description": "The altar's central depression is the exact size of a Mariner's Conch — placing one would, by the chapel's old rite, open the seaward vault.",
+          "actionType": "PLACE_ITEM",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "acceptedItems": "item:mariners_conch",
+            "consumeItem": "true",
+            "promptText": "The sea-altar's central depression waits. Which item from your pack do you place here?",
+            "successMessage": "You set the Mariner's Conch into the depression. It seats with a soft hollow boom that runs through the bronze of the altar and into the floor — and the joints of the eastern wall ease open with a long sigh of trapped air, revealing the seaward vault beyond.",
+            "failureMessage": "Nothing happens. Whatever you tried to place, the sea-altar does not recognise it.",
+            "successDirection": "EAST"
+          }
+        },
+        {
+          "id": "warming_curse_runes",
+          "label": "softly glowing red wall-runes",
+          "description": "Carved runes in the sanctum walls, charged with a slow arcane curse that hooks at the willpower of whoever stands beneath them.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 16,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "26",
+            "damageType": "arcane",
+            "saveStat": "WILLPOWER",
+            "saveDC": "16",
+            "saveType": "RESIST",
+            "detectMessage": "You see the runes set into the sanctum walls glowing faintly red — a slow curse hooked to whoever stands beneath them. You set your jaw before you cross.",
+            "dodgeMessage": "You hold your mind firm as you cross, the curse breaking against the wall of your will.",
+            "damageMessage": "The runes flare red as you cross — a hooked cold thought drives in behind your eyes! (-{damage} HP)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:mariners_vault",
+      "name": "Mariner's Vault",
+      "description": "A small dry chamber behind the sea-altar, shelved in dark stone. The shelves hold the votive offerings of mariners across centuries — small bronze tokens, sealed clay jars, scrimshaw, and at the back, a stone-lidded reliquary bearing the marks of older Wardens than even Old Wren has tales of.",
+      "x": 1,
+      "y": 5,
+      "exits": {
+        "WEST": "drowned_chapel:inner_sanctum"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_mariners_vault.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view of a small dry stone chamber behind a sea-altar, shelves of dark stone lining the walls bearing centuries of votive offerings — small bronze tokens, sealed clay jars, scrimshaw carvings, a stone-lidded reliquary at the back marked with very old Warden sigils, dim warm shrine light, atmosphere of preserved cache.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim warm shrine light, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "old_warden_reliquary",
+          "label": "stone-lidded Warden reliquary",
+          "description": "An old reliquary bearing Warden sigils older than the chapel itself. The lid sits askew.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:greater_health_potion,item:cracked_warding_rune,item:sealed_tide_fragment,item:salt_crystal_vial",
+            "minCopper": "150",
+            "maxCopper": "350",
+            "minSilver": "5",
+            "maxSilver": "12",
+            "minGold": "1",
+            "maxGold": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "drowned_chapel:korlach_lair",
+      "name": "Korlach's Lair",
+      "description": "The deepest chamber of the chapel — a vast oval flooded waist-deep in dark salt water, the centre dominated by a great bronze ring sunk into the floor like a mooring-stone for whatever lives down here. Above the ring rises the Tidewarden Korlach itself, fish-pale and many-armed, more wrong than any Warden could have predicted. The reliquary on the back wall threatens to fall the instant your weight crosses the threshold.",
+      "x": 0,
+      "y": 6,
+      "exits": {
+        "SOUTH": "drowned_chapel:inner_sanctum"
+      },
+      "backgroundImage": "/assets/images/rooms/drowned_chapel_korlach_lair.webp",
+      "departSound": "footstep_splash",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a vast oval boss chamber inside a drowned chapel, flooded waist-deep with dark salt water, centre dominated by a great corroded bronze ring sunk into the floor like a mooring-stone, dim shaft of pale light from a high crack illuminating the ring, salt-stained pillars at the edges, an old reliquary visible cracked on the back wall, atmosphere of deep flooded boss arena.",
+      "imageStyle": "fantasy digital painting, salt-stained stone, dim cold light, drowned chapel boss arena atmosphere, slightly painterly, fixed perspective, JRPG dungeon boss arena background, stage-like composition",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "falling_reliquary",
+          "label": "cracked back-wall reliquary",
+          "description": "An old reliquary bolted high on the back wall, the bolts long rusted through — set to break loose when the chamber is disturbed.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 16,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "28",
+            "saveStat": "STRENGTH",
+            "saveDC": "16",
+            "saveType": "RESIST",
+            "detectMessage": "You see the reliquary bolted high on the back wall, bolts rust-eaten through — set to break loose. You move with your guard up.",
+            "dodgeMessage": "The reliquary breaks loose as you cross — you brace and shoulder it aside before it crashes into your back.",
+            "damageMessage": "The reliquary breaks loose as you cross — a hundredweight of stone slams into your shoulders before you can brace! (-{damage} HP)"
+          }
+        }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:tide_speaker",
+      "name": "Tide-Speaker",
+      "description": "A robed figure in salt-stained vestments of the chapel's old order, hood drawn down over a face that gleams faintly wet. He carries no weapon but his voice — and at his throat hangs a Mariner's Conch, salt-bronze and singing softly in a register just below hearing.",
+      "startRoomId": "drowned_chapel:crypt_chamber",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 305,
+      "damage": 41,
+      "level": 13,
+      "xpReward": 430,
+      "accuracy": 18,
+      "defense": 14,
+      "evasion": 16,
+      "agility": 18,
+      "attackSound": "magic_attack",
+      "missSound": "magic_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body sub-boss robed figure in salt-stained pale chapel vestments, hood drawn low over a wet-gleaming faintly-translucent face, no weapon held, a salt-bronze Mariner's Conch hanging at the throat on a fine silver chain, hands raised slightly with faint blue spell-light at the fingertips, threatening pose facing the viewer. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, drowned cult sub-boss, sea-grey and salt-bronze tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, ornate, glamorous",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:mariners_conch",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:salt_etched_mail",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:cracked_warding_rune",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 80,
+        "maxCopper": 200,
+        "minSilver": 2,
+        "maxSilver": 6,
+        "minGold": 0,
+        "maxGold": 1
+      }
+    },
+    {
+      "id": "npc:drowned_acolyte",
+      "name": "Drowned Acolyte",
+      "description": "A figure in waterlogged grey vestments, face long since gone slack and pale beneath the hood. The acolyte chants under what should be its breath, water trickling steadily from the hem of its robes. Salt-rime crusts the lips.",
+      "startRoomId": "drowned_chapel:flooded_narthex",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 235,
+      "damage": 38,
+      "level": 13,
+      "xpReward": 310,
+      "accuracy": 16,
+      "defense": 12,
+      "evasion": 14,
+      "agility": 14,
+      "attackSound": "magic_attack",
+      "missSound": "magic_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body waterlogged drowned acolyte in soggy grey chapel vestments, face slack and pale beneath the deep hood, water trickling steadily from the hem of the robes, salt-rime crusted on the lips, raised hand crackling with faint pale-blue spell-light, threatening pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, drowned undead caster, pale sea-grey tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:cracked_warding_rune",
+          "chance": 0.45,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:salt_crystal_vial",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 60,
+        "maxCopper": 150,
+        "minSilver": 1,
+        "maxSilver": 4
+      }
+    },
+    {
+      "id": "npc:sea_spider",
+      "name": "Sea Spider",
+      "description": "A long-legged dark spider that crawls dripping from beneath the flooded floor stones, its abdomen marked with the same pale skull-shaped patch as the riptide-crab. It tolerates the salt water as if born to it.",
+      "startRoomId": "drowned_chapel:nave",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 215,
+      "damage": 39,
+      "level": 13,
+      "xpReward": 320,
+      "accuracy": 17,
+      "defense": 12,
+      "evasion": 22,
+      "agility": 22,
+      "attackSound": "spider_bite",
+      "missSound": "spider_miss",
+      "deathSound": "spider_death",
+      "imagePrompt": "Full-body long-legged dark sea-spider with dripping wet carapace, abdomen marked with a clear pale skull-shaped patch on the back, eight thin black eyes, sharp pedipalps, body crusted with salt-rime, slow stalking pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, sea-spider mood, dark wet salt tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:spider_fang",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:antivenom_vial",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 90
+      }
+    },
+    {
+      "id": "npc:mariner_wraith",
+      "name": "Mariner Wraith",
+      "description": "A tall figure of nearly transparent sea-mist in the rough silhouette of a ship's officer, salt-water dripping from a phantom storm-coat. It carries the cold of deep water with it; the brine in the chapel air thickens where it stands.",
+      "startRoomId": "drowned_chapel:crypt_corridor",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 185,
+      "damage": 43,
+      "level": 14,
+      "xpReward": 365,
+      "accuracy": 19,
+      "defense": 6,
+      "evasion": 28,
+      "agility": 24,
+      "attackSound": "ghost_attack",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body tall mariner wraith of nearly transparent sea-mist in the rough silhouette of a ship's storm-coated officer, salt-water dripping from the phantom hem of the coat, faint blue translucent luminescence, ghostly outstretched hand reaching toward the viewer, silent threatening pose. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, drowned ghost mood, translucent salt-grey",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, solid opaque",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:drift_wight_ectoplasm",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:cracked_warding_rune",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 70,
+        "maxCopper": 180,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
+    },
+    {
+      "id": "npc:tidewarden_korlach",
+      "name": "Tidewarden Korlach",
+      "description": "A vast pale shape rising from the salt water of the chapel's heart — once perhaps human, now broadened and many-armed and gone wrong with the depths. Its skin is fish-pale and runed with sigils older than the seals themselves. Where the eyes should be, a smooth band of bone, with no opening — and yet it knows exactly where you are.",
+      "startRoomId": "drowned_chapel:korlach_lair",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 620,
+      "damage": 50,
+      "level": 14,
+      "xpReward": 1900,
+      "accuracy": 19,
+      "defense": 22,
+      "evasion": 12,
+      "agility": 14,
+      "bossRespawnHours": 4,
+      "attackSound": "tongue_lash",
+      "missSound": "tongue_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body vast pale boss creature rising from waist-deep dark salt water, once-human form gone broad and many-armed in the depths, fish-pale skin runed with ancient pale-blue sigils, smooth eyeless band of bone where the eyes should be, multiple long muscular arms reaching outward, monumental dread presence facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, drowned horror boss, pale sea tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:tidewardens_maw",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:sealed_tide_fragment",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:tidewardens_trident",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:korlachs_coral_cuirass",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:sea_walkers_boots",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 0,
+        "maxCopper": 200,
+        "minSilver": 10,
+        "maxSilver": 22,
+        "minGold": 2,
+        "maxGold": 5
+      }
+    }
+  ]
+}
