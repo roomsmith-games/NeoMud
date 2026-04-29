@@ -195,7 +195,7 @@
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "npc:barkeep",
@@ -215,7 +215,7 @@
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "npc:guildmaster",
@@ -229,7 +229,7 @@
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "npc:blacksmith",
@@ -264,7 +264,7 @@
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "npc:enchantress",
@@ -290,7 +290,7 @@
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "npc:grimjaw",
@@ -328,7 +328,7 @@
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "npc:old_wren",

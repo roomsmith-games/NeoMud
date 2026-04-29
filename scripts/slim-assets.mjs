@@ -3,13 +3,18 @@
  * Slim default-world assets to spec dimensions and reasonable bitrates.
  *
  * Per-category targets (per CLAUDE.md "Asset Image Pipeline"):
- *   players  384×512  WebP q=80  alphaQ=90
+ *   players  384×384  WebP q=80  alphaQ=90
  *   items    256×256  WebP q=80  alphaQ=90
  *   npcs     per-NPC from zone JSON imageWidth/imageHeight
- *            (humanoid 384×512, creature 512×384)  WebP q=80  alphaQ=90
+ *            (humanoid 384×384, creature 512×384)  WebP q=80  alphaQ=90
  *   coins    256×256  WebP q=85  alphaQ=90
  *   rooms    1024×576 WebP q=82
  *   bgm      96kbps stereo MP3 (mono if --mono)
+ *
+ * Sprite resize uses fit:'contain' + transparent bg to pad to exact spec dims
+ * (the renderer ignores declared imageWidth/imageHeight and draws the file at
+ * its natural aspect — see SpriteOverlay.kt). Backgrounds use fit:'inside'
+ * because pillarbox bars on full-bleed scenes would be visible.
  *
  * Idempotency: a file is skipped iff its current dimensions are at-or-below
  * the target dimensions (or, for audio, current bitrate ≤ MAX_AUDIO_BITRATE).
@@ -61,7 +66,7 @@ for (const c of requested) {
 }
 
 const SPRITE_TARGETS = {
-  players: { dir: 'images/players', w: 384, h: 512, quality: 80, alphaQuality: 90 },
+  players: { dir: 'images/players', w: 384, h: 384, quality: 80, alphaQuality: 90 },
   items:   { dir: 'images/items',   w: 256, h: 256, quality: 80, alphaQuality: 90 },
   coins:   { dir: 'images/coins',   w: 256, h: 256, quality: 85, alphaQuality: 90 },
   rooms:   { dir: 'images/rooms',   w: 1024, h: 576, quality: 82, alphaQuality: 80 },
@@ -147,12 +152,18 @@ async function processSprite(category, file, target) {
   }
 
   const isJpg = /\.jpg$|\.jpeg$/i.test(file);
-  const alreadySmall = meta.width <= target.w && meta.height <= target.h;
+  // Backgrounds are full-bleed scenes — anything at-or-below target is fine,
+  // the renderer scales them to fit. Sprites must be EXACTLY at spec because
+  // the renderer respects file aspect ratio (a 384x209 NPC renders 1.83× wider
+  // than a 384x384 one and overflows its slot). The original at-or-below
+  // check across all categories silently shipped 343 off-spec sprite files.
+  const dimsMatch = category === 'rooms'
+    ? meta.width <= target.w && meta.height <= target.h
+    : meta.width === target.w && meta.height === target.h;
 
-  // For non-JPG sprites already at-or-below target dims: skip (idempotent re-runs).
-  if (!isJpg && alreadySmall) {
+  if (!isJpg && dimsMatch) {
     if (args.verbose) {
-      console.log(`  ⊘ ${rel(file)} (${meta.width}×${meta.height}, ${kb(oldBytes)}) already ≤ target`);
+      console.log(`  ⊘ ${rel(file)} (${meta.width}×${meta.height}, ${kb(oldBytes)}) at spec`);
     }
     stats.skipped++;
     stats.oldBytes += oldBytes;
@@ -165,12 +176,19 @@ async function processSprite(category, file, target) {
   const tmpFile = outFile + '.slim.tmp';
 
   if (args['dry-run']) {
-    // Estimate without writing. Pixel-count ratio is a rough proxy.
+    // Estimate without writing. For sprites: contain pads to exact target dims,
+    // so output px count is target.w * target.h (transparent pad is cheap).
+    // For backgrounds: inside-fit preserves source aspect, so output stays at
+    // source dims if smaller than target.
     const oldPx = meta.width * meta.height;
-    const newW = Math.min(meta.width, target.w);
-    const newH = Math.min(meta.height, target.h);
+    const isBg = category === 'rooms';
+    const newW = isBg ? Math.min(meta.width, target.w) : target.w;
+    const newH = isBg ? Math.min(meta.height, target.h) : target.h;
     const newPx = newW * newH;
-    const projected = Math.round(oldBytes * (newPx / oldPx) * 0.6); // ~0.6 quality factor
+    // Quality factor: padded transparent pixels compress nearly free, so use a
+    // weighted estimate: actual content area ≈ oldPx, pad ≈ 0.05× per pixel.
+    const contentRatio = isBg ? newPx / oldPx : Math.min(1, oldPx / newPx);
+    const projected = Math.round(oldBytes * contentRatio * 0.6);
     console.log(`  → ${rel(file)} ${meta.width}×${meta.height} ${kb(oldBytes)}` +
       ` → ${newW}×${newH} ~${kb(projected)}`);
     stats.processed++;
@@ -179,13 +197,24 @@ async function processSprite(category, file, target) {
     return;
   }
 
+  // Sprites (NPCs, items, coins, players) need EXACT spec dims — the renderer
+  // uses ContentScale.Fit + height-only-constrained Modifier, so a 384x209
+  // sprite renders 1.83× wider than a 384x384 one and overflows its slot.
+  // Pad with transparent margins via fit:'contain' so the rembg-cropped subject
+  // stays at its natural pixel size and the canvas grows to spec.
+  // Backgrounds (rooms) are full-bleed scenes — fit:'inside' is correct
+  // because cover/contain would either crop composition or leave pillarbox bars.
+  const isBackground = category === 'rooms';
+  const fit = isBackground ? 'inside' : 'contain';
+
   try {
     await sharp(file)
       .resize({
         width: target.w,
         height: target.h,
-        fit: 'inside',
-        withoutEnlargement: true,
+        fit,
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+        withoutEnlargement: isBackground,
       })
       .webp({
         quality: target.quality,

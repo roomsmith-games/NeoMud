@@ -122,7 +122,7 @@
       "imagePrompt": "Full-body sleek predatory lizard the size of a horse, obsidian-black scales, glowing ember eyes, razor claws, wisps of smoke from nostrils, aggressive hunting stance facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, dark mood, fiery",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:obsidian_shard", "chance": 0.6, "minQuantity": 1, "maxQuantity": 2 },
@@ -153,7 +153,7 @@
       "imagePrompt": "Full-body massive serpentine basilisk reptile with crown of jagged horns, scales glowing like cooling magma with orange cracks, coiled menacingly, petrifying gaze, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood, fiery volcanic",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:obsidian_shard", "chance": 0.9, "minQuantity": 1, "maxQuantity": 3 },
@@ -185,7 +185,7 @@
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
       "imageWidth": 384,
-      "imageHeight": 512,
+      "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:obsidian_shard", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 },
         { "itemId": "item:plated_gauntlets", "chance": 0.04, "minQuantity": 1, "maxQuantity": 1 },
@@ -217,7 +217,7 @@
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood, fiery volcanic",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
       "imageWidth": 384,
-      "imageHeight": 512,
+      "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:obsidian_shard", "chance": 0.9, "minQuantity": 2, "maxQuantity": 4 },
         { "itemId": "item:steel_greatsword", "chance": 0.06, "minQuantity": 1, "maxQuantity": 1 },

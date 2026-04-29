@@ -9,7 +9,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_cleric",
@@ -20,7 +20,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_druid",
@@ -31,7 +31,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_gypsy",
@@ -42,7 +42,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_mage",
@@ -53,7 +53,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_missionary",
@@ -64,7 +64,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_mystic",
@@ -75,7 +75,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_ninja",
@@ -86,7 +86,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_paladin",
@@ -97,7 +97,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_priest",
@@ -108,7 +108,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_ranger",
@@ -119,7 +119,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_thief",
@@ -130,7 +130,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_warlock",
@@ -141,7 +141,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_warrior",
@@ -152,7 +152,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_female_witchhunter",
@@ -163,7 +163,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_bard",
@@ -174,7 +174,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_cleric",
@@ -185,7 +185,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_druid",
@@ -196,7 +196,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_gypsy",
@@ -207,7 +207,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_mage",
@@ -218,7 +218,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_missionary",
@@ -229,7 +229,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_mystic",
@@ -240,7 +240,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_ninja",
@@ -251,7 +251,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_paladin",
@@ -262,7 +262,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_priest",
@@ -273,7 +273,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_ranger",
@@ -284,7 +284,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_thief",
@@ -295,7 +295,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_warlock",
@@ -306,7 +306,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_warrior",
@@ -317,7 +317,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_male_witchhunter",
@@ -328,7 +328,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_bard",
@@ -339,7 +339,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_cleric",
@@ -350,7 +350,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_druid",
@@ -361,7 +361,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_gypsy",
@@ -372,7 +372,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_mage",
@@ -383,7 +383,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_missionary",
@@ -394,7 +394,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_mystic",
@@ -405,7 +405,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_ninja",
@@ -416,7 +416,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_paladin",
@@ -427,7 +427,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_priest",
@@ -438,7 +438,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_ranger",
@@ -449,7 +449,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_thief",
@@ -460,7 +460,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_warlock",
@@ -471,7 +471,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_warrior",
@@ -482,7 +482,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "dwarf_neutral_witchhunter",
@@ -493,7 +493,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_bard",
@@ -504,7 +504,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_cleric",
@@ -515,7 +515,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_druid",
@@ -526,7 +526,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_gypsy",
@@ -537,7 +537,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_mage",
@@ -548,7 +548,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_missionary",
@@ -559,7 +559,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_mystic",
@@ -570,7 +570,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_ninja",
@@ -581,7 +581,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_paladin",
@@ -592,7 +592,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_priest",
@@ -603,7 +603,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_ranger",
@@ -614,7 +614,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_thief",
@@ -625,7 +625,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_warlock",
@@ -636,7 +636,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_warrior",
@@ -647,7 +647,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_female_witchhunter",
@@ -658,7 +658,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_bard",
@@ -669,7 +669,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_cleric",
@@ -680,7 +680,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_druid",
@@ -691,7 +691,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_gypsy",
@@ -702,7 +702,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_mage",
@@ -713,7 +713,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_missionary",
@@ -724,7 +724,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_mystic",
@@ -735,7 +735,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_ninja",
@@ -746,7 +746,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_paladin",
@@ -757,7 +757,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_priest",
@@ -768,7 +768,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_ranger",
@@ -779,7 +779,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_thief",
@@ -790,7 +790,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_warlock",
@@ -801,7 +801,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_warrior",
@@ -812,7 +812,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_male_witchhunter",
@@ -823,7 +823,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_bard",
@@ -834,7 +834,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_cleric",
@@ -845,7 +845,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_druid",
@@ -856,7 +856,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_gypsy",
@@ -867,7 +867,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_mage",
@@ -878,7 +878,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_missionary",
@@ -889,7 +889,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_mystic",
@@ -900,7 +900,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_ninja",
@@ -911,7 +911,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_paladin",
@@ -922,7 +922,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_priest",
@@ -933,7 +933,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_ranger",
@@ -944,7 +944,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_thief",
@@ -955,7 +955,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_warlock",
@@ -966,7 +966,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_warrior",
@@ -977,7 +977,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "elf_neutral_witchhunter",
@@ -988,7 +988,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_bard",
@@ -999,7 +999,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_cleric",
@@ -1010,7 +1010,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_druid",
@@ -1021,7 +1021,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_gypsy",
@@ -1032,7 +1032,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_mage",
@@ -1043,7 +1043,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_missionary",
@@ -1054,7 +1054,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_mystic",
@@ -1065,7 +1065,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_ninja",
@@ -1076,7 +1076,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_paladin",
@@ -1087,7 +1087,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_priest",
@@ -1098,7 +1098,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_ranger",
@@ -1109,7 +1109,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_thief",
@@ -1120,7 +1120,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_warlock",
@@ -1131,7 +1131,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_warrior",
@@ -1142,7 +1142,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_female_witchhunter",
@@ -1153,7 +1153,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_bard",
@@ -1164,7 +1164,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_cleric",
@@ -1175,7 +1175,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_druid",
@@ -1186,7 +1186,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_gypsy",
@@ -1197,7 +1197,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_mage",
@@ -1208,7 +1208,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_missionary",
@@ -1219,7 +1219,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_mystic",
@@ -1230,7 +1230,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_ninja",
@@ -1241,7 +1241,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_paladin",
@@ -1252,7 +1252,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_priest",
@@ -1263,7 +1263,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_ranger",
@@ -1274,7 +1274,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_thief",
@@ -1285,7 +1285,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_warlock",
@@ -1296,7 +1296,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_warrior",
@@ -1307,7 +1307,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_male_witchhunter",
@@ -1318,7 +1318,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_bard",
@@ -1329,7 +1329,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_cleric",
@@ -1340,7 +1340,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_druid",
@@ -1351,7 +1351,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_gypsy",
@@ -1362,7 +1362,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_mage",
@@ -1373,7 +1373,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_missionary",
@@ -1384,7 +1384,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_mystic",
@@ -1395,7 +1395,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_ninja",
@@ -1406,7 +1406,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_paladin",
@@ -1417,7 +1417,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_priest",
@@ -1428,7 +1428,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_ranger",
@@ -1439,7 +1439,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_thief",
@@ -1450,7 +1450,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_warlock",
@@ -1461,7 +1461,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_warrior",
@@ -1472,7 +1472,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "gnome_neutral_witchhunter",
@@ -1483,7 +1483,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_bard",
@@ -1494,7 +1494,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_cleric",
@@ -1505,7 +1505,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_druid",
@@ -1516,7 +1516,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_gypsy",
@@ -1527,7 +1527,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_mage",
@@ -1538,7 +1538,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_missionary",
@@ -1549,7 +1549,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_mystic",
@@ -1560,7 +1560,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_ninja",
@@ -1571,7 +1571,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_paladin",
@@ -1582,7 +1582,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_priest",
@@ -1593,7 +1593,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_ranger",
@@ -1604,7 +1604,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_thief",
@@ -1615,7 +1615,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_warlock",
@@ -1626,7 +1626,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_warrior",
@@ -1637,7 +1637,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_female_witchhunter",
@@ -1648,7 +1648,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_bard",
@@ -1659,7 +1659,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_cleric",
@@ -1670,7 +1670,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_druid",
@@ -1681,7 +1681,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_gypsy",
@@ -1692,7 +1692,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_mage",
@@ -1703,7 +1703,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_missionary",
@@ -1714,7 +1714,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_mystic",
@@ -1725,7 +1725,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_ninja",
@@ -1736,7 +1736,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_paladin",
@@ -1747,7 +1747,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_priest",
@@ -1758,7 +1758,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_ranger",
@@ -1769,7 +1769,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_thief",
@@ -1780,7 +1780,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_warlock",
@@ -1791,7 +1791,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_warrior",
@@ -1802,7 +1802,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_male_witchhunter",
@@ -1813,7 +1813,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_bard",
@@ -1824,7 +1824,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_cleric",
@@ -1835,7 +1835,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_druid",
@@ -1846,7 +1846,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_gypsy",
@@ -1857,7 +1857,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_mage",
@@ -1868,7 +1868,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_missionary",
@@ -1879,7 +1879,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_mystic",
@@ -1890,7 +1890,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_ninja",
@@ -1901,7 +1901,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_paladin",
@@ -1912,7 +1912,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_priest",
@@ -1923,7 +1923,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_ranger",
@@ -1934,7 +1934,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_thief",
@@ -1945,7 +1945,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_warlock",
@@ -1956,7 +1956,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_warrior",
@@ -1967,7 +1967,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "half_orc_neutral_witchhunter",
@@ -1978,7 +1978,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_bard",
@@ -1989,7 +1989,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_cleric",
@@ -2000,7 +2000,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_druid",
@@ -2011,7 +2011,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_gypsy",
@@ -2022,7 +2022,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_mage",
@@ -2033,7 +2033,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_missionary",
@@ -2044,7 +2044,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_mystic",
@@ -2055,7 +2055,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_ninja",
@@ -2066,7 +2066,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_paladin",
@@ -2077,7 +2077,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_priest",
@@ -2088,7 +2088,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_ranger",
@@ -2099,7 +2099,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_thief",
@@ -2110,7 +2110,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_warlock",
@@ -2121,7 +2121,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_warrior",
@@ -2132,7 +2132,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_female_witchhunter",
@@ -2143,7 +2143,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_bard",
@@ -2154,7 +2154,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_cleric",
@@ -2165,7 +2165,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_druid",
@@ -2176,7 +2176,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_gypsy",
@@ -2187,7 +2187,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_mage",
@@ -2198,7 +2198,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_missionary",
@@ -2209,7 +2209,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_mystic",
@@ -2220,7 +2220,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_ninja",
@@ -2231,7 +2231,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_paladin",
@@ -2242,7 +2242,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_priest",
@@ -2253,7 +2253,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_ranger",
@@ -2264,7 +2264,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_thief",
@@ -2275,7 +2275,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_warlock",
@@ -2286,7 +2286,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_warrior",
@@ -2297,7 +2297,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_male_witchhunter",
@@ -2308,7 +2308,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_bard",
@@ -2319,7 +2319,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_cleric",
@@ -2330,7 +2330,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_druid",
@@ -2341,7 +2341,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_gypsy",
@@ -2352,7 +2352,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_mage",
@@ -2363,7 +2363,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_missionary",
@@ -2374,7 +2374,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_mystic",
@@ -2385,7 +2385,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_ninja",
@@ -2396,7 +2396,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_paladin",
@@ -2407,7 +2407,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_priest",
@@ -2418,7 +2418,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_ranger",
@@ -2429,7 +2429,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_thief",
@@ -2440,7 +2440,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_warlock",
@@ -2451,7 +2451,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_warrior",
@@ -2462,7 +2462,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "halfling_neutral_witchhunter",
@@ -2473,7 +2473,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_bard",
@@ -2484,7 +2484,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_cleric",
@@ -2495,7 +2495,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_druid",
@@ -2506,7 +2506,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_gypsy",
@@ -2517,7 +2517,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_mage",
@@ -2528,7 +2528,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_missionary",
@@ -2539,7 +2539,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_mystic",
@@ -2550,7 +2550,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_ninja",
@@ -2561,7 +2561,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_paladin",
@@ -2572,7 +2572,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_priest",
@@ -2583,7 +2583,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_ranger",
@@ -2594,7 +2594,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_thief",
@@ -2605,7 +2605,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_warlock",
@@ -2616,7 +2616,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_warrior",
@@ -2627,7 +2627,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_female_witchhunter",
@@ -2638,7 +2638,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_bard",
@@ -2649,7 +2649,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_cleric",
@@ -2660,7 +2660,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_druid",
@@ -2671,7 +2671,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_gypsy",
@@ -2682,7 +2682,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_mage",
@@ -2693,7 +2693,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_missionary",
@@ -2704,7 +2704,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_mystic",
@@ -2715,7 +2715,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_ninja",
@@ -2726,7 +2726,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_paladin",
@@ -2737,7 +2737,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_priest",
@@ -2748,7 +2748,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_ranger",
@@ -2759,7 +2759,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_thief",
@@ -2770,7 +2770,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_warlock",
@@ -2781,7 +2781,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_warrior",
@@ -2792,7 +2792,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_male_witchhunter",
@@ -2803,7 +2803,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_bard",
@@ -2814,7 +2814,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_cleric",
@@ -2825,7 +2825,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_druid",
@@ -2836,7 +2836,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_gypsy",
@@ -2847,7 +2847,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_mage",
@@ -2858,7 +2858,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_missionary",
@@ -2869,7 +2869,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_mystic",
@@ -2880,7 +2880,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_ninja",
@@ -2891,7 +2891,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_paladin",
@@ -2902,7 +2902,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_priest",
@@ -2913,7 +2913,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_ranger",
@@ -2924,7 +2924,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_thief",
@@ -2935,7 +2935,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_warlock",
@@ -2946,7 +2946,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_warrior",
@@ -2957,7 +2957,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     },
     {
       "id": "human_neutral_witchhunter",
@@ -2968,7 +2968,7 @@
       "imageStyle": "digital painting, fantasy RPG character sprite, clean edges, solid white background, centered composition",
       "imageNegativePrompt": "background scenery, environment, ground, floor, shadows on ground, multiple characters, blurry, modern clothing, realistic photo, chibi, pixel art, anime, low quality, watermark, text",
       "imageWidth": 384,
-      "imageHeight": 512
+      "imageHeight": 384
     }
   ]
 }

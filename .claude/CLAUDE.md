@@ -38,6 +38,14 @@ cd maker && npm install && npm run dev  # http://localhost:5173
 
 **CRITICAL — World Bundle**: The server loads world data from `server/build/worlds/default-world.nmd`, built by `./gradlew packageWorld` from `maker/default_world_src/`. **Always run `./gradlew packageWorld --rerun-tasks`** after ANY change to `default_world_src/` (skills, items, zones, assets, etc.) and before running the server, running tests, or doing any verification. Gradle's UP-TO-DATE check for this task is unreliable — never trust it, always force with `--rerun-tasks`.
 
+## Tooling Sanity (read this before debugging env)
+
+- **If anything looks off** (PATH, MCP, "command not found", "playwright not loading"), run `./scripts/doctor.sh` first. It prints PASS/FAIL for every tool, env var, and MCP server. Do NOT start spelunking through `~/.claude/`, `~/.mcp.json`, etc. — they don't exist on this machine. The project-scoped `.mcp.json` (repo root) and `.claude/settings.local.json` are authoritative.
+- **MCP servers**: declared in `.mcp.json` at the repo root. Auto-loaded because `enableAllProjectMcpServers: true` is in `.claude/settings.local.json`. To inspect runtime state: `claude mcp list`. After editing `.mcp.json`, the session must be restarted — there is no live reload.
+- **Bash tool environment**: runs as a non-login non-interactive `bash`, but PATH is built from a shell snapshot that includes Homebrew, JAVA_HOME, and `~/.local/bin`. `npx`, `uvx`, `node`, `java`, `gradle` all resolve without absolute paths. Don't add absolute paths in scripts unless you actually need cross-shell portability.
+- **Waiting on long-running scripts/CI**: use `Bash` with `run_in_background: true` plus the `Monitor` tool to stream output line-by-line — each new line wakes the model. Do **not** poll in a `sleep` loop, do not run `gh run watch` in the foreground (it eats the whole turn). `RemoteTrigger` spawns a *new* session and cannot resume the current one — don't try.
+- **Secrets**: API keys live in `.claude/settings.local.json` env block. That file is gitignored (line 49 of `.gitignore`) and never tracked. Don't print key values to logs or copy them into committed files.
+
 ## Architecture Overview
 
 ### Protocol
@@ -89,6 +97,12 @@ Everything is JSON-defined, loaded into catalogs at startup:
 - `SkillCatalog` — 12 skills (active and passive)
 - `LootTableCatalog` — drop tables per NPC type
 - Zone JSON files — rooms, exits, coordinates, backgrounds
+
+### Observability (Sentry)
+- **Game server (Kotlin)**: `io.sentry:sentry` initialized in `server/src/main/kotlin/com/neomud/server/Application.kt` (gated on `SENTRY_DSN` env). DSN forwarded into each game container by the orchestrator on the platform side — game server doesn't read it from any local config.
+- **WASM client**: Sentry CDN loader script tag in `client/src/wasmJsMain/resources/index.html` — DSN baked into the CDN URL, rotation requires a code edit + redeploy.
+- Both surfaces report into the `roomsmith-games` Sentry org. Tracing sample rate is `0.2` to match the platform-side SDKs (errors are 100%). Don't add new Sentry integrations that capture PII without a `beforeSend` scrubber.
+- See NeoMud-platform `CLAUDE.md` §Observability and `project_sentry_observability.md` (auto-memory) for the full architecture.
 
 ### Persistence
 - SQLite + Exposed ORM
@@ -201,11 +215,11 @@ Use `--suffix nobg` for non-destructive output (e.g., `npc_rat_nobg.webp` alongs
 
 | Asset Type | Directory | Filename Pattern | Dimensions |
 |---|---|---|---|
-| NPC sprites (humanoid) | `images/npcs/` | `npc_{npc_id}.webp` | 384×512 |
+| NPC sprites (humanoid) | `images/npcs/` | `npc_{npc_id}.webp` | 384×384 |
 | NPC sprites (creature) | `images/npcs/` | `npc_{npc_id}.webp` | 512×384 |
 | Item sprites | `images/items/` | `item_{item_id}.webp` | 256×256 |
 | Coin sprites | `images/coins/` | `coin_{denomination}.webp` | 256×256 |
-| Player sprites | `images/players/` | `{race}_{gender}_{class}.webp` | 384×512 |
+| Player sprites | `images/players/` | `{race}_{gender}_{class}.webp` | 384×512 (declared); 384×384 on disk |
 | Room backgrounds | `images/rooms/` | `{zone}_{room}.webp` | 1024×576 |
 
 All paths are relative to `maker/default_world_src/assets/`. The `npc_id` and `item_id` strip the `npc:` / `item:` prefix (e.g., `npc:guildmaster` → `npc_guildmaster.webp`).
@@ -223,6 +237,7 @@ Image generation prompts are stored in the data files:
 - The script uses ML segmentation (rembg/birefnet-general) — it handles any background color including dark, gradient, and checkerboard
 - No special prompt requirements for background color — the ML model segments the foreground regardless
 - `nanobanana-output/` is gitignored — always clean it up after generation
+- **Sprite resize uses `fit:'contain'` + transparent background, NOT `fit:'inside'` or `fit:'cover'`.** The renderer (`SpriteOverlay.kt`) draws WebPs at their natural on-disk aspect via `ContentScale.Fit`, ignoring declared `imageWidth`/`imageHeight`. So a 384×209 sprite renders 1.83× wider than a 384×384 one and overflows its slot. `fit:'inside'` (the historical bug) fits-without-padding → off-spec dims. `fit:'cover'` would crop the rembg-trimmed subject. `fit:'contain'` pads with transparent margins → exact spec dims, subject intact. Backgrounds use `fit:'inside'` because they're full-bleed and pillarboxing would be visible.
 
 ## Asset SFX Pipeline
 
@@ -277,14 +292,15 @@ Image generation prompts are stored in the data files:
 ## Maker Dev Server Gotchas
 
 - **ALWAYS kill stale Vite dev server before rebuilding/testing maker UI changes**
-  - Check: `netstat -ano | grep -E "LISTENING" | grep -E ":5173"`
-  - Kill: `taskkill //PID <pid> //F`
+  - Check: `lsof -ti:5173`
+  - Kill: `lsof -ti:5173 | xargs kill -9` (no-op if nothing listening)
 - **After any change to `default_world_src/` or `prisma/schema.prisma`**: kill Vite first, then `cd maker && npm run rebuild-world`
 - SQLite DB will be EBUSY if Vite is running during rebuild
 
 ## Environment Notes
 
-- Windows 11, Git Bash shell — use Unix shell syntax (forward slashes, `/dev/null`)
-- Python available via `uv`/`uvx`
-- `.nmd` bundles are ZIP files — inspect with `jar tf file.nmd`
-- `packageWorld` Gradle task builds `default_world.nmd` from `server/src/main/resources/`
+- macOS Darwin (Apple Silicon), bash 5+ as default shell — use Unix shell syntax
+- Homebrew at `/opt/homebrew/bin` is first on PATH; `node`, `npm`, `npx`, `uv`, `uvx`, `jq` all installed there
+- `JAVA_HOME` is set in `.claude/settings.local.json` env (Corretto 21) and also exported by `~/.bashrc`
+- `.nmd` bundles are ZIP files — inspect with `unzip -l file.nmd`
+- `packageWorld` Gradle task builds `default_world.nmd` from `maker/default_world_src/` into `server/build/worlds/default-world.nmd`

@@ -141,7 +141,7 @@
       "imagePrompt": "Full-body hulking amphibious swamp creature with scaled hide caked in mud and algae, webbed claws, wide jaw with jagged teeth, rising from water in aggressive pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:marsh_hide", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2 },
@@ -171,7 +171,7 @@
       "imagePrompt": "Full-body enormous warty toad the size of a pony, glistening toxic mucus on bumpy skin, wide mouth with barbed tongue, sitting in aggressive crouch facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:marsh_hide", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
@@ -202,7 +202,7 @@
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood, ethereal",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
       "imageWidth": 384,
-      "imageHeight": 512,
+      "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:wraith_essence", "chance": 0.9, "minQuantity": 1, "maxQuantity": 2 },
         { "itemId": "item:mana_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1 },
@@ -233,7 +233,7 @@
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
       "imageWidth": 384,
-      "imageHeight": 512,
+      "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:wraith_essence", "chance": 0.9, "minQuantity": 1, "maxQuantity": 3 },
         { "itemId": "item:marsh_hide", "chance": 0.6, "minQuantity": 1, "maxQuantity": 2 },

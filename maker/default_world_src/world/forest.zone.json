@@ -180,7 +180,7 @@
       "imagePrompt": "Full-body large wolf with midnight-black fur, amber glowing eyes, wisps of shadow clinging to its form, in an aggressive stalking pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, side-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:wolf_pelt", "chance": 0.8, "minQuantity": 1, "maxQuantity": 1 },
@@ -210,7 +210,7 @@
       "imagePrompt": "Full-body massive spider the size of a large dog, chitinous body mottled green and brown, thick webs trailing from spinnerets, venom glistening on fangs, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:spider_fang", "chance": 0.9, "minQuantity": 1, "maxQuantity": 2 },
@@ -240,7 +240,7 @@
       "imagePrompt": "Full-body oversized rat with matted brown fur, beady red eyes, yellowed teeth bared aggressively, in a defensive hissing pose facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:health_potion", "chance": 0.10, "minQuantity": 1, "maxQuantity": 1 }
@@ -268,7 +268,7 @@
       "imagePrompt": "Full-body scruffy human brigand in tattered leather armor, wielding a rusty dagger, desperate and aggressive expression, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
-      "imageWidth": 512,
+      "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
         { "itemId": "item:health_potion", "chance": 0.20, "minQuantity": 1, "maxQuantity": 1 },
