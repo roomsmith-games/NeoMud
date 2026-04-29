@@ -219,7 +219,7 @@ Use `--suffix nobg` for non-destructive output (e.g., `npc_rat_nobg.webp` alongs
 | NPC sprites (creature) | `images/npcs/` | `npc_{npc_id}.webp` | 512×384 |
 | Item sprites | `images/items/` | `item_{item_id}.webp` | 256×256 |
 | Coin sprites | `images/coins/` | `coin_{denomination}.webp` | 256×256 |
-| Player sprites | `images/players/` | `{race}_{gender}_{class}.webp` | 384×512 (declared); 384×384 on disk |
+| Player sprites | `images/players/` | `{race}_{gender}_{class}.webp` | 384×384 |
 | Room backgrounds | `images/rooms/` | `{zone}_{room}.webp` | 1024×576 |
 
 All paths are relative to `maker/default_world_src/assets/`. The `npc_id` and `item_id` strip the `npc:` / `item:` prefix (e.g., `npc:guildmaster` → `npc_guildmaster.webp`).

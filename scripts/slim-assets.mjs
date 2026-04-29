@@ -6,7 +6,9 @@
  *   players  384×384  WebP q=80  alphaQ=90
  *   items    256×256  WebP q=80  alphaQ=90
  *   npcs     per-NPC from zone JSON imageWidth/imageHeight
- *            (humanoid 384×384, creature 512×384)  WebP q=80  alphaQ=90
+ *            (humanoid 384×384, creature 512×384 for new gens; some older
+ *            zones declare and ship 384×384 creatures — both are valid)
+ *            WebP q=80  alphaQ=90
  *   coins    256×256  WebP q=85  alphaQ=90
  *   rooms    1024×576 WebP q=82
  *   bgm      96kbps stereo MP3 (mono if --mono)
@@ -16,8 +18,9 @@
  * its natural aspect — see SpriteOverlay.kt). Backgrounds use fit:'inside'
  * because pillarbox bars on full-bleed scenes would be visible.
  *
- * Idempotency: a file is skipped iff its current dimensions are at-or-below
- * the target dimensions (or, for audio, current bitrate ≤ MAX_AUDIO_BITRATE).
+ * Idempotency: sprites are skipped iff dimensions exactly match the target;
+ * backgrounds and audio are skipped iff current dimensions are at-or-below
+ * target (or, for audio, current bitrate ≤ MAX_AUDIO_BITRATE).
  * File size is never the gate — a 1024² sprite that compresses to 50KB still
  * wastes RAM at decode time.
  *
