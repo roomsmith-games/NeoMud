@@ -7,6 +7,15 @@ on:
       - 'server/**'
       - 'shared/**'
       - 'Dockerfile'
+      # World content lives outside server/** but is packaged into the
+      # docker image via :server:packageWorld. Without this path the
+      # game server stays stuck on stale world data when only zone JSONs
+      # or assets change (Phase 8C 3c1c139 first surfaced this).
+      - 'maker/default_world_src/**'
+  # Manual dispatch — needed to retro-deploy when a content-only push
+  # didn't match the path filter at the time it landed, or to redeploy
+  # an unchanged build (e.g., env var rotation).
+  workflow_dispatch:
 
 permissions:
   contents: read
