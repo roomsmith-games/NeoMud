@@ -55,11 +55,12 @@ function forwardAuth(req: import('express').Request): string | null {
 
 export const projectsRouter = Router()
 
-// GET / — list this user's projects + shared templates
+// GET / — list this user's projects + shared templates (admin-only)
 projectsRouter.get('/', async (req, res) => {
   try {
     const userId = req.user!.userId
-    const projects = await listProjects(userId)
+    const role = req.user!.role
+    const projects = await listProjects(userId, role)
     res.json({ projects })
   } catch (err) {
     console.error('[projects] error:', err)

@@ -32,13 +32,33 @@ function userDir(userId: string): string {
   return path.join(PROJECTS_DIR, userId)
 }
 
-/** Resolve the DB path for a user's project. */
+/**
+ * Names of admin-editable shared templates. When the project name matches
+ * one of these, the resolver routes to `_shared/` instead of the user's
+ * per-userId dir, so multiple admins editing the same shared project see
+ * the same data. Visibility (whether a user is allowed to OPEN the project)
+ * is enforced separately by listProjects in db.ts (gated on req.user.role
+ * === 'ADMIN'); routing here is purely path-resolution.
+ */
+const SHARED_PROJECT_NAMES = new Set(['_default_world'])
+
+function isShared(projectName: string): boolean {
+  return SHARED_PROJECT_NAMES.has(projectName)
+}
+
+/** Resolve the DB path for a project. Shared templates route to _shared/. */
 function dbPath(userId: string, projectName: string): string {
+  if (isShared(projectName)) {
+    return path.join(PROJECTS_DIR, '_shared', `${projectName}.db`)
+  }
   return path.join(userDir(userId), `${projectName}.db`)
 }
 
-/** Resolve the assets root for a user's project. */
+/** Resolve the assets root for a project. Shared templates route to _shared/. */
 export function assetsRoot(userId: string, projectName: string): string {
+  if (isShared(projectName)) {
+    return path.join(PROJECTS_DIR, '_shared', `${projectName}_assets`, 'assets')
+  }
   return path.join(userDir(userId), `${projectName}_assets`, 'assets')
 }
 

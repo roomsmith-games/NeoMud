@@ -34,10 +34,14 @@ function dbUrl(userId: string, projectName: string): string {
 }
 
 /**
- * List projects for a specific user.
- * Includes shared read-only templates from the _shared directory.
+ * List projects visible to a specific user.
+ * Includes the user's own projects plus, for ADMIN users, shared templates
+ * from `_shared/` (e.g. `_default_world`) so admins can edit + republish
+ * the demo world directly through the Maker UI.
+ *
+ * Non-admin users (CREATOR, MODERATOR) see only their own projects.
  */
-export async function listProjects(userId: string): Promise<ProjectInfo[]> {
+export async function listProjects(userId: string, role?: string): Promise<ProjectInfo[]> {
   const results: ProjectInfo[] = []
 
   // User's own projects
@@ -54,17 +58,45 @@ export async function listProjects(userId: string): Promise<ProjectInfo[]> {
     }
   }
 
-  // Shared templates (`_shared/`, e.g. `_default_world`) are intentionally
-  // NOT surfaced here. They were an artifact of the pre-Platform design
-  // when the maker also hosted the demo world. Demos now live in the
-  // marketplace; the maker is for user-created worlds. The on-disk
-  // `_shared/` directory and the auto-import on startup are left intact
-  // (harmless when not listed) so that fork-from-template remains an
-  // option for the future tutorial work, but no current UI surfaces it.
-  // See issue #298. forkProject and POST /:name/fork are dormant for the
-  // same reason — listed only via direct project name.
+  // Shared templates from `_shared/` (e.g., `_default_world`). These are
+  // routed to a single canonical DB so all admins editing them see the
+  // same content (see projectContext.ts SHARED_PROJECT_NAMES). Surfaced
+  // ONLY to ADMIN role to keep the standard creator listing clean and
+  // prevent rank-and-file users from accidentally landing on the demo
+  // world's editable source. Read/write status is whatever the DB row
+  // says — the readOnly flag still applies if the admin wants to lock it.
+  if (role === 'ADMIN') {
+    const sharedDir = path.join(getProjectsDir(), '_shared')
+    if (fs.existsSync(sharedDir)) {
+      const names = fs
+        .readdirSync(sharedDir)
+        .filter((f) => f.endsWith('.db'))
+        .map((f) => f.replace('.db', ''))
+      for (const name of names) {
+        // _shared DBs aren't keyed by user, so check readOnly directly on the
+        // shared file rather than userDbPath().
+        const sharedDbFile = path.join(sharedDir, `${name}.db`)
+        const readOnly = await isSharedProjectReadOnly(sharedDbFile)
+        results.push({ name, readOnly })
+      }
+    }
+  }
 
   return results
+}
+
+async function isSharedProjectReadOnly(dbFile: string): Promise<boolean> {
+  if (!fs.existsSync(dbFile)) return false
+  const adapter = new PrismaBetterSqlite3({ url: `file:${dbFile}` })
+  const tmpClient = new PrismaClient({ adapter })
+  try {
+    const meta = await tmpClient.projectMeta.findUnique({ where: { key: 'readOnly' } })
+    return meta?.value === 'true'
+  } catch {
+    return false
+  } finally {
+    await tmpClient.$disconnect()
+  }
 }
 
 async function isProjectReadOnly(userId: string, name: string): Promise<boolean> {
