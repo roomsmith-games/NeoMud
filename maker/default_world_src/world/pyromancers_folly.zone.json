@@ -1,0 +1,557 @@
+{
+  "id": "pyromancers_folly",
+  "name": "Pyromancer's Folly",
+  "description": "The ruined lower levels of Vatric's arcane academy, partially collapsed and still saturated with residual fire magic. Flame constructs patrol the corridors, and the Cinder-Lich Vatric himself lurks in the deepest sanctum, bound to his failed experiment for eternity.",
+  "safe": false,
+  "bgm": "gorge_danger",
+  "levelRange": "15-16",
+  "spawnConfig": {
+    "maxEntities": 6,
+    "maxPerRoom": 2,
+    "rateTicks": 22
+  },
+  "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ruined arcane dungeon with residual fire magic",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green, outdoor",
+  "rooms": [
+    {
+      "id": "pyromancers_folly:gatehouse",
+      "name": "Collapsed Gatehouse",
+      "description": "The academy's gatehouse, half-buried in rubble. Stone steps descend from the surface through a gap in the collapsed ceiling. The walls are covered in scorched murals — students at study, lecturers at the board — now blackened beyond recognition. A corridor leads south into the interior.",
+      "x": -6,
+      "y": 27,
+      "exits": {
+        "UP": "ashwood:academy_approach",
+        "SOUTH": "pyromancers_folly:entry_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_gatehouse.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view inside a collapsed stone gatehouse, rubble piled high, stone steps leading up through a gap in the ceiling to daylight, scorched murals on walls showing blackened academic scenes, corridor leading deeper into darkness.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, collapsed dungeon entrance",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:entry_hall",
+      "name": "Scorched Entry Hall",
+      "description": "A long hall with a vaulted ceiling, cracked and stained by fire. Iron torch-brackets line the walls, still glowing with enchanted flames that have burned for decades without fuel. The floor is patterned tile, warped and buckled by heat. Corridors branch east and west.",
+      "x": -6,
+      "y": 26,
+      "exits": {
+        "NORTH": "pyromancers_folly:gatehouse",
+        "EAST": "pyromancers_folly:east_corridor",
+        "WEST": "pyromancers_folly:west_corridor"
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_entry_hall.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "interactables": [
+        {
+          "id": "fire_jet_hall",
+          "label": "cracked floor vent",
+          "description": "A vent in the floor periodically belches a jet of arcane fire upward.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 14,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "18",
+            "saveStat": "AGILITY",
+            "saveDC": "14",
+            "saveType": "DODGE",
+            "detectMessage": "You spot the cracked floor vent ahead and step carefully around it.",
+            "dodgeMessage": "A jet of arcane fire erupts from the floor — you throw yourself aside!",
+            "damageMessage": "A jet of arcane fire erupts from the floor vent, engulfing you! (-{damage} HP)"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a long vaulted dungeon hall, cracked ceiling stained by fire, iron torch-brackets with enchanted blue-orange flames, warped and buckled patterned tile floor, corridors branching left and right.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, scorched academy hall with magical fire",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:west_corridor",
+      "name": "West Corridor",
+      "description": "A narrow corridor with collapsed classrooms on either side. Desks and chairs are visible through doorways, all charred. An arcane ward shimmers across the corridor ahead — a pale blue barrier that crackles faintly. Three rune-pillars are visible in the rubble, their activation sequence long forgotten.",
+      "x": -7,
+      "y": 26,
+      "exits": {
+        "EAST": "pyromancers_folly:entry_hall",
+        "SOUTH": "pyromancers_folly:forge_altar"
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_west_corridor.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "interactables": [
+        {
+          "id": "rune_pillar_alpha",
+          "label": "rune-pillar marked α",
+          "description": "A stone pillar inscribed with the rune Alpha. Part of a three-rune ward-breaking sequence.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "folly_ward_runes",
+            "puzzleStepIndex": "0",
+            "puzzleTotalSteps": "3",
+            "advanceMessage": "You press the Alpha rune. It flares blue and hums — the ward ahead flickers.",
+            "resetMessage": "The rune flares red and goes dark. The ward strengthens. Start from Alpha.",
+            "alreadySolvedMessage": "The Alpha rune glows steady blue. The sequence is complete."
+          }
+        },
+        {
+          "id": "ceiling_collapse_trap",
+          "label": "cracked ceiling section",
+          "description": "The ceiling here is dangerously fractured, ready to collapse on the unwary.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 15,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "22",
+            "saveStat": "AGILITY",
+            "saveDC": "15",
+            "saveType": "DODGE",
+            "detectMessage": "You notice the ceiling is dangerously fractured and edge along the wall to avoid it.",
+            "dodgeMessage": "Stones crash down from the ceiling — you lunge clear!",
+            "damageMessage": "The ceiling gives way above you! Heavy stones slam into you! (-{damage} HP)"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a narrow dungeon corridor with collapsed classroom doorways on both sides, charred desks visible inside, a shimmering pale blue arcane ward barrier across the corridor ahead, stone rune-pillars in rubble.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ruined academy corridor with arcane ward",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:east_corridor",
+      "name": "East Corridor",
+      "description": "The east wing of the academy, where the advanced laboratories were. The walls here are slick with condensed magical residue — a faintly luminous orange film. Something large and hot patrols this corridor. The second rune-pillar stands against the far wall.",
+      "x": -5,
+      "y": 26,
+      "exits": {
+        "WEST": "pyromancers_folly:entry_hall",
+        "SOUTH": "pyromancers_folly:laboratory"
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_east_corridor.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "interactables": [
+        {
+          "id": "rune_pillar_beta",
+          "label": "rune-pillar marked β",
+          "description": "A stone pillar inscribed with the rune Beta. Second in the ward-breaking sequence.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "folly_ward_runes",
+            "puzzleStepIndex": "1",
+            "puzzleTotalSteps": "3",
+            "advanceMessage": "You press the Beta rune. It flares blue — the ward ahead weakens further.",
+            "resetMessage": "The rune flares red. Wrong order. The ward reforms. Start from Alpha.",
+            "alreadySolvedMessage": "The Beta rune glows steady blue. The sequence is complete."
+          }
+        },
+        {
+          "id": "arcane_ward_trap",
+          "label": "residual arcane ward",
+          "description": "An invisible ward still guards this section of corridor.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 16,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "20",
+            "saveStat": "INTELLECT",
+            "saveDC": "15",
+            "saveType": "RESIST",
+            "detectMessage": "You sense the arcane ward ahead and carefully dispel it as you pass.",
+            "resistMessage": "An arcane ward discharges — you grit your teeth and push through the worst of it.",
+            "damageMessage": "An invisible arcane ward discharges violently as you cross it! (-{damage} HP)"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a dungeon corridor in an advanced laboratory wing, walls slick with faintly luminous orange magical residue, stone and iron architecture, a rune-pillar against the far wall, sense of something large and hot lurking ahead.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, magical laboratory corridor with orange residue",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:laboratory",
+      "name": "Shattered Laboratory",
+      "description": "A large chamber that was once the academy's main experimental lab. Shattered glass apparatus, warped metal frames, and pools of solidified alchemical residue cover the floor. A bound infernal paces behind a containment circle that has held for decades — barely. The third rune-pillar stands by the south door.",
+      "x": -5,
+      "y": 25,
+      "exits": {
+        "NORTH": "pyromancers_folly:east_corridor",
+        "SOUTH": "pyromancers_folly:sentinel_chamber"
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_laboratory.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "interactables": [
+        {
+          "id": "rune_pillar_gamma",
+          "label": "rune-pillar marked γ",
+          "description": "A stone pillar inscribed with the rune Gamma. Final rune in the ward-breaking sequence. Activating it in the correct order will drop the ward in the west corridor.",
+          "actionType": "PUZZLE_STEP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "puzzleGroupId": "folly_ward_runes",
+            "puzzleStepIndex": "2",
+            "puzzleTotalSteps": "3",
+            "successMessage": "You press the Gamma rune. All three pillars pulse blue in unison — the arcane ward in the west corridor shatters with a crystalline crack. The way south from the west corridor is open.",
+            "resetMessage": "The rune flares red. Wrong order. The ward reforms. Start from Alpha.",
+            "alreadySolvedMessage": "The Gamma rune glows steady blue. The ward is already down.",
+            "successDirection": "SOUTH"
+          }
+        },
+        {
+          "id": "gas_vent_trap",
+          "label": "cracked alchemical pipe",
+          "description": "A cracked pipe still leaks noxious alchemical fumes.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 14,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "16",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "14",
+            "saveType": "RESIST",
+            "detectMessage": "You spot the leaking pipe and hold your breath as you pass.",
+            "resistMessage": "Noxious fumes blast from a cracked pipe — you choke but push through.",
+            "damageMessage": "A cracked alchemical pipe blasts noxious fumes directly into your face! (-{damage} HP)"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a shattered alchemical laboratory, broken glass apparatus and warped metal frames, pools of solidified glowing residue on the floor, a faint containment circle glowing on the floor, a rune-pillar by a southern door.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, destroyed magical laboratory",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor, clean, tidy",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:sentinel_chamber",
+      "name": "Sentinel Chamber",
+      "description": "A round chamber where the Ash Sentinel stands guard — a towering construct of fused stone and ember, built by Vatric to protect the inner sanctum. The construct's eye-slits glow a steady orange. Behind it, a heavy iron door leads south to the sanctum antechamber.",
+      "x": -5,
+      "y": 24,
+      "exits": {
+        "NORTH": "pyromancers_folly:laboratory",
+        "SOUTH": "pyromancers_folly:sanctum_antechamber"
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_sentinel_chamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "interactables": [
+        {
+          "id": "ember_pit_trap",
+          "label": "concealed ember pit",
+          "description": "The floor around the sentinel conceals a pit of burning coals.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 15,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "24",
+            "saveStat": "AGILITY",
+            "saveDC": "16",
+            "saveType": "DODGE",
+            "detectMessage": "You spot the concealed ember pit and step around it carefully.",
+            "dodgeMessage": "The floor gives way to burning coals — you leap clear!",
+            "damageMessage": "The floor collapses into a pit of burning coals! (-{damage} HP)"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a round stone chamber, a heavy iron door at the far end, enchanted torch-brackets casting orange light, sense of a guardian presence, imposing and fortified interior.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, guardian chamber with heavy iron door",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:sanctum_antechamber",
+      "name": "Sanctum Antechamber",
+      "description": "A narrow antechamber before Vatric's sanctum door. The door is massive — black iron bound in bronze, covered in arcane inscriptions. A brass speaking-face is set at eye height, its lips parted. The inscription above reads: \"Speak the answer, or burn.\" The riddle must be spoken aloud to open the way.",
+      "x": -5,
+      "y": 23,
+      "exits": {
+        "NORTH": "pyromancers_folly:sentinel_chamber",
+        "SOUTH": "pyromancers_folly:vatrics_sanctum"
+      },
+      "lockedExits": {
+        "SOUTH": 99
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_sanctum_antechamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "interactables": [
+        {
+          "id": "vatrics_door_riddle",
+          "label": "inscribed sanctum door",
+          "description": "A massive black iron door covered in arcane inscriptions. A brass speaking-face waits at eye height, its lips parted.",
+          "actionType": "RIDDLE_PROMPT",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "question": "I am sought by all who study, feared by all who wield, and lost by all who master. What am I?",
+            "hint": "Vatric's journal speaks of what drove him: not power itself, but the thing that precedes it.",
+            "acceptedAnswers": "knowledge,understanding",
+            "synonyms": "wisdom,learning,truth",
+            "successDirection": "SOUTH",
+            "successMessage": "The brass face nods slowly, its eyes lighting with approval. \"Correct.\" The massive door groans inward, trailing dust and the stench of old fire. Vatric's sanctum lies beyond.",
+            "failureMessage": "The brass face's eyes flare red. \"Wrong.\" Heat blasts from its mouth — the inscriptions glow white-hot for a moment, then dim. The door remains sealed."
+          }
+        },
+        {
+          "id": "floor_flame_trap",
+          "label": "pressure-triggered fire rune",
+          "description": "A fire rune is etched into the floor before the sanctum door.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 16,
+          "resetTicks": 0,
+          "actionData": {
+            "damage": "26",
+            "saveStat": "WILLPOWER",
+            "saveDC": "16",
+            "saveType": "RESIST",
+            "detectMessage": "You recognize the fire rune on the floor and step carefully over it.",
+            "resistMessage": "The fire rune erupts — you shield your mind and endure the worst of the blast.",
+            "damageMessage": "A fire rune on the floor detonates beneath your feet! Arcane flame engulfs you! (-{damage} HP)"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a narrow antechamber before a massive black iron door bound in bronze, covered in glowing arcane inscriptions, a brass speaking-face set at eye height with parted lips, ominous and theatrical.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, riddle door antechamber with brass face",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:vatrics_sanctum",
+      "name": "Vatric's Sanctum",
+      "description": "The heart of the Pyromancer's Folly — a vast circular chamber beneath a cracked dome. Fire still burns in the central pit where Vatric's experiment went wrong, casting dancing orange light on walls lined with scorched bookshelves. The Cinder-Lich Vatric stands at the far side of the fire, what remains of him — a skeletal figure wreathed in perpetual flame, still clutching a staff of fused glass and bone.",
+      "x": -5,
+      "y": 22,
+      "exits": {
+        "NORTH": "pyromancers_folly:sanctum_antechamber",
+        "WEST": "pyromancers_folly:forge_altar"
+      },
+      "lockedExits": {
+        "WEST": 99
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_vatrics_sanctum.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a vast circular chamber beneath a cracked domed ceiling, a central fire pit burning with eternal arcane flame casting dancing orange light, scorched bookshelves lining the walls, dramatic boss arena atmosphere.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, boss arena with eternal fire pit",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "pyromancers_folly:forge_altar",
+      "name": "Hidden Forge Altar",
+      "description": "A concealed vault behind the sanctum's west wall, accessible only after defeating the ward. A massive stone forge-altar dominates the room — its surface carved with fire runes and bearing a central depression the size of a fist. Heat radiates from the altar even now.",
+      "x": -6,
+      "y": 22,
+      "exits": {
+        "EAST": "pyromancers_folly:vatrics_sanctum",
+        "NORTH": "pyromancers_folly:west_corridor"
+      },
+      "lockedExits": {
+        "EAST": 99
+      },
+      "backgroundImage": "/assets/images/rooms/pyromancers_folly_forge_altar.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "interactables": [
+        {
+          "id": "forge_altar_place",
+          "label": "stone forge-altar with fire runes",
+          "description": "A massive stone forge-altar with a fist-sized depression at its centre. Something ember-hot would fit here.",
+          "actionType": "PLACE_ITEM",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "acceptedItems": "item:sentinel_ember_core",
+            "consumeItem": "true",
+            "promptText": "The forge-altar's central depression radiates heat. Which item from your pack do you place here?",
+            "successMessage": "You press the Sentinel's Ember Core into the depression. It locks into place with a deep resonant hum — the altar blazes to life, fire runes tracing bright lines across the stone, and the east wall grinds open to reveal Vatric's hidden vault.",
+            "failureMessage": "The altar does not respond. Whatever you placed, it is not what the forge requires.",
+            "successDirection": "EAST"
+          }
+        }
+      ],
+      "imagePrompt": "First-person view of a hidden stone vault, a massive forge-altar dominating the centre with carved fire runes glowing faintly, a fist-sized depression in its surface, heat haze in the air, treasure vault atmosphere.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, hidden forge altar vault with fire runes",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:flame_construct",
+      "name": "Flame Construct",
+      "description": "An animated golem of fused stone and iron, its joints glowing with trapped fire. Built by Vatric to guard the academy corridors. It moves with mechanical precision, each step leaving a scorch mark on the floor.",
+      "startRoomId": "pyromancers_folly:entry_hall",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 230,
+      "damage": 40,
+      "level": 15,
+      "xpReward": 320,
+      "accuracy": 19,
+      "defense": 22,
+      "evasion": 8,
+      "agility": 6,
+      "attackSound": "golem_slam",
+      "missSound": "golem_miss",
+      "deathSound": "golem_collapse",
+      "imagePrompt": "Full-body animated stone and iron golem with fire glowing in joints and seams, mechanical humanoid form, fused stone plating, ember-bright eye-slits, heavy and imposing, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, fire golem construct, stone and ember tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, organic, fleshy",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:iron_ore", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 },
+        { "itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 50, "maxCopper": 150, "minSilver": 2, "maxSilver": 5 }
+    },
+    {
+      "id": "npc:bound_infernal",
+      "name": "Bound Infernal",
+      "description": "A demon trapped decades ago in one of Vatric's containment experiments — now half-mad and straining against a fading circle. It is a thing of smoke and red light, with too many limbs and a voice like a furnace door.",
+      "startRoomId": "pyromancers_folly:laboratory",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 210,
+      "damage": 42,
+      "level": 15,
+      "xpReward": 340,
+      "accuracy": 22,
+      "defense": 18,
+      "evasion": 14,
+      "agility": 14,
+      "attackSound": "demon_slash",
+      "missSound": "demon_miss",
+      "deathSound": "demon_banish",
+      "imagePrompt": "Full-body trapped demon made of smoke and red light, too many limbs, furnace-bright eyes, straining against invisible bonds, wreathed in dark smoke and ember sparks, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, bound demon, smoke and red-light tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, pleasant",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:greater_health_potion", "chance": 0.4, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 80, "maxCopper": 200, "minSilver": 3, "maxSilver": 6 }
+    },
+    {
+      "id": "npc:spectral_apprentice",
+      "name": "Spectral Apprentice",
+      "description": "A young ghost in singed student robes, still clutching a charred textbook. Unlike the wraiths above, these shades retain scraps of personality — and hostility. They attack with bolts of spectral fire, reliving their last moments.",
+      "startRoomId": "pyromancers_folly:west_corridor",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 150,
+      "damage": 32,
+      "level": 14,
+      "xpReward": 220,
+      "accuracy": 18,
+      "defense": 13,
+      "evasion": 21,
+      "agility": 18,
+      "attackSound": "ghost_slash",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body young ghostly figure in singed student robes, translucent, clutching a charred book, spectral fire flickering around hands, sad hostile expression, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, spectral ghost student, pale and fire tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, solid body, old",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:mana_potion", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 40, "maxCopper": 100, "minSilver": 1, "maxSilver": 3 }
+    },
+    {
+      "id": "npc:ash_sentinel",
+      "name": "Ash Sentinel",
+      "description": "Vatric's masterwork guardian — a towering construct of fused stone, ember, and bound fire-spirit. Twice the height of a man, its chest cavity blazes with a molten core. When it falls, that core can be salvaged.",
+      "startRoomId": "pyromancers_folly:sentinel_chamber",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 380,
+      "damage": 46,
+      "level": 15,
+      "xpReward": 800,
+      "accuracy": 21,
+      "defense": 19,
+      "evasion": 14,
+      "agility": 10,
+      "attackSound": "golem_slam",
+      "missSound": "golem_miss",
+      "deathSound": "golem_collapse",
+      "imagePrompt": "Full-body towering stone and ember construct twice the height of a man, massive armored form of fused stone, blazing molten core visible in chest cavity, burning eye-slits, immense guardian presence, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, massive fire golem sub-boss, stone and molten-core tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, small, human-sized",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:sentinel_ember_core", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:greater_health_potion", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:iron_ore", "chance": 0.5, "minQuantity": 2, "maxQuantity": 4 }
+      ],
+      "coinDrop": { "minCopper": 100, "maxCopper": 300, "minSilver": 5, "maxSilver": 12, "minGold": 1, "maxGold": 2 }
+    },
+    {
+      "id": "npc:cinder_lich_vatric",
+      "name": "Cinder-Lich Vatric",
+      "description": "What remains of the pyromancer Vatric — a skeletal figure wreathed in perpetual flame, eyes burning blue-white in a charred skull. His robes are ash, his flesh is gone, but his will persists, bound to the experiment that killed him. He clutches a staff of fused glass and bone, and his voice is the crackle of a dying fire. He does not want visitors.",
+      "startRoomId": "pyromancers_folly:vatrics_sanctum",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 720,
+      "damage": 56,
+      "level": 16,
+      "xpReward": 2350,
+      "accuracy": 23,
+      "defense": 20,
+      "evasion": 16,
+      "agility": 16,
+      "bossRespawnHours": 4,
+      "attackSound": "fire_burst",
+      "missSound": "fire_miss",
+      "deathSound": "lich_collapse",
+      "imagePrompt": "Full-body skeletal lich wreathed in perpetual orange flame, charred skull with blue-white burning eyes, tattered ash robes, clutching a staff of fused glass and bone, fire dancing across the entire form, undead pyromancer boss, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, cinder lich boss, flame and bone tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, fleshy, alive, green",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:vatrics_ember_shard", "chance": 1.0, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:cinder_crown", "chance": 0.18, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:pyromancers_staff", "chance": 0.18, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:ashweave_robes", "chance": 0.18, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:greater_health_potion", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2 }
+      ],
+      "coinDrop": { "minCopper": 0, "maxCopper": 200, "minSilver": 12, "maxSilver": 25, "minGold": 3, "maxGold": 7 }
+    }
+  ]
+}

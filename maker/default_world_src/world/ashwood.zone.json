@@ -1,0 +1,613 @@
+{
+  "id": "ashwood",
+  "name": "Ashwood Burn",
+  "description": "A charred forest west of the Salt Coast, burned decades ago by the pyromancer Vatric's catastrophic experiment. Dead trees claw at grey skies, ember pits still glow faintly in the ash, and the ruins of an arcane academy loom at the heart of the burn. The air tastes of old smoke and ozone.",
+  "safe": false,
+  "bgm": "gorge_danger",
+  "levelRange": "14-16",
+  "spawnConfig": {
+    "maxEntities": 12,
+    "maxPerRoom": 2,
+    "rateTicks": 18
+  },
+  "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, charred forest burned wasteland",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+  "rooms": [
+    {
+      "id": "ashwood:scorched_trail",
+      "name": "Scorched Trail",
+      "description": "A path of cracked blackened earth leads west from the coastal cliffs into the burn. The trees here are dead but still standing — tall charred pillars with no leaves, no bark, just smooth carbon skin. Ash drifts on the wind like grey snow. The smell of old fire is everywhere.",
+      "x": -2,
+      "y": 30,
+      "exits": {
+        "EAST": "salt_coast:western_cliffs",
+        "WEST": "ashwood:ash_crossroads"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_scorched_trail.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a trail of cracked blackened earth leading into a dead charred forest, tall leafless burned trees standing like carbon pillars, grey ash drifting on the wind, overcast sky, sense of entering a burned wasteland.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, charred forest entrance",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:ash_crossroads",
+      "name": "Ash Crossroads",
+      "description": "Four paths meet in a clearing of deep ash. The burned stumps of what were once massive oaks ring the crossroads like broken teeth. To the west the burn deepens. South, the ash thins toward a hollow. North, a ridge of blackened stone rises. Ember-light flickers faintly in the ash underfoot.",
+      "x": -3,
+      "y": 30,
+      "exits": {
+        "EAST": "ashwood:scorched_trail",
+        "WEST": "ashwood:deep_burn",
+        "SOUTH": "ashwood:cinder_hollow",
+        "NORTH": "ashwood:burned_ridge"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_ash_crossroads.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a crossroads in deep grey ash, burned stumps of massive oaks ringing the clearing like broken teeth, four paths radiating outward, faint ember glow in the ash underfoot, overcast sky through dead branches.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, charred forest crossroads",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:cinder_hollow",
+      "name": "Cinder Hollow",
+      "description": "A low depression in the burned terrain where ash has pooled knee-deep. Small fire sprites flit and wink in the depths of the hollow like fireflies made of embers. The air shimmers with residual heat that has no earthly source — Vatric's magic still bleeds from the ground here.",
+      "x": -3,
+      "y": 29,
+      "exits": {
+        "NORTH": "ashwood:ash_crossroads",
+        "WEST": "ashwood:ember_pit"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_cinder_hollow.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a low depression filled with deep grey ash, tiny floating ember-like fire sprites winking in the air, shimmering heat haze rising from the ground, dead charred trees framing the hollow.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, charred hollow with magical embers",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:ember_pit",
+      "name": "Ember Pit",
+      "description": "A wide pit where the ground collapsed into some subterranean chamber long ago. The walls of the pit glow a dull angry orange, and waves of heat roll upward. Something moves in the depths — large, slow, and burning. The charred trees around the rim lean inward as if drawn by the heat.",
+      "x": -4,
+      "y": 29,
+      "exits": {
+        "EAST": "ashwood:cinder_hollow",
+        "SOUTH": "ashwood:burned_clearing"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_ember_pit.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a wide collapsed pit in burned terrain, walls glowing dull angry orange, waves of heat distortion rising upward, charred trees leaning inward around the rim, sense of something burning in the depths.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, glowing ember pit in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:burned_clearing",
+      "name": "Burned Clearing",
+      "description": "An open patch of scorched ground where nothing grows — not even the hardy ash-moss that colonizes the rest of the burn. The earth here is fused to a dark glass in places, cratered by the force of whatever blast swept the forest. Charred treants sometimes wander through, drawn to the residual energy.",
+      "x": -4,
+      "y": 28,
+      "exits": {
+        "NORTH": "ashwood:ember_pit",
+        "EAST": "ashwood:south_ash_track",
+        "WEST": "ashwood:blasted_vale"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_burned_clearing.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of an open scorched clearing, earth fused to dark volcanic glass in patches, cratered by ancient magical blasts, dead charred forest surrounding the clearing, grey overcast sky.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, magical blast clearing in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:south_ash_track",
+      "name": "South Ash Track",
+      "description": "A narrow track through dense standing deadwood. The trunks are packed so tightly that even burned they block the wind, making the air heavy and stale. Boot-prints in the ash suggest scavengers have been through recently.",
+      "x": -3,
+      "y": 28,
+      "exits": {
+        "WEST": "ashwood:burned_clearing",
+        "NORTH": "ashwood:cinder_hollow",
+        "EAST": "ashwood:ash_narrows"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_south_ash_track.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a narrow track through dense standing dead charred trees packed tightly together, heavy stale air, boot-prints in grey ash, claustrophobic burned deadwood passage.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, dense charred deadwood trail",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:ash_narrows",
+      "name": "Ash Narrows",
+      "description": "The burn pinches between two low ridges of exposed basalt here, funnelling the path into a corridor barely wide enough for two abreast. Wraith-light sometimes flickers along the ridge-tops at dusk — the ghosts of Vatric's students, some say.",
+      "x": -2,
+      "y": 28,
+      "exits": {
+        "WEST": "ashwood:south_ash_track",
+        "SOUTH": "ashwood:scavenger_camp"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_ash_narrows.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a narrow corridor between two low basalt ridges in a charred forest, barely wide enough for two people, ghostly flickering light along the ridge-tops, dead trees above.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, narrow basalt corridor in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:scavenger_camp",
+      "name": "Scavenger Camp",
+      "description": "A rough camp of salvaged canvas and charred timbers tucked against a basalt outcrop. Cook-fires smoulder in ash-lined pits. The scavengers who pick through the burn's ruins make their base here — hard folk who trade in anything they can dig out of the rubble.",
+      "x": -2,
+      "y": 27,
+      "exits": {
+        "NORTH": "ashwood:ash_narrows",
+        "WEST": "ashwood:southern_burn"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_scavenger_camp.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a rough camp in a charred forest, salvaged canvas shelters and charred timber lean-tos against a basalt outcrop, smouldering cook-fires in ash-lined pits, rough survival camp atmosphere.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, scavenger camp in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:southern_burn",
+      "name": "Southern Burn",
+      "description": "The southern edge of the burn, where charred trees give way to scrubby half-alive brush struggling to reclaim the land. The ash is thinner here. Ember stalkers hunt the transition zone, preying on animals that wander in from the unburned lands.",
+      "x": -3,
+      "y": 27,
+      "exits": {
+        "EAST": "ashwood:scavenger_camp",
+        "NORTH": "ashwood:south_ash_track",
+        "WEST": "ashwood:char_gully"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_southern_burn.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of the edge of a charred forest, burned trees giving way to scrubby half-alive brush, thinner grey ash, transition zone between dead burn and recovering wildland.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, forest burn edge transition zone",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:char_gully",
+      "name": "Char Gully",
+      "description": "A dry streambed cut through layers of ash and charcoite — the fused mineral crust that forms when raw magic burns wet earth. The gully runs roughly east-west, its banks steep and crumbling. Good ambush country.",
+      "x": -4,
+      "y": 27,
+      "exits": {
+        "EAST": "ashwood:southern_burn",
+        "NORTH": "ashwood:blasted_vale"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_char_gully.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a dry streambed gully cut through layers of grey ash and dark fused mineral crust, steep crumbling banks on both sides, dead charred forest above, sense of enclosed danger.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, dry gully in charred wasteland",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:blasted_vale",
+      "name": "Blasted Vale",
+      "description": "A shallow valley at the heart of the burn. This was the epicentre of Vatric's failed experiment — the trees here didn't just burn, they were obliterated. Only scorched earth remains, with a few standing stones that may once have been part of an outer academy wall. The academy approach lies to the west.",
+      "x": -5,
+      "y": 28,
+      "exits": {
+        "EAST": "ashwood:burned_clearing",
+        "SOUTH": "ashwood:char_gully",
+        "WEST": "ashwood:academy_approach",
+        "NORTH": "ashwood:ruined_waystation"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_blasted_vale.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a shallow valley of total devastation, all trees obliterated leaving only scorched flat earth, a few standing stones from ruined walls, sense of the epicentre of a magical catastrophe, oppressive silence.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, magical blast epicentre wasteland",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:ruined_waystation",
+      "name": "Ruined Waystation",
+      "description": "The stone foundations of a small waystation survive among the ash — once a rest-stop for academy students and faculty. A section of roof still stands, propped on two blackened pillars. Keeper Maeven has made a camp here, tending a small smokeless fire and her collection of salvaged texts.",
+      "x": -5,
+      "y": 29,
+      "exits": {
+        "SOUTH": "ashwood:blasted_vale",
+        "EAST": "ashwood:wraith_hollow"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_ruined_waystation.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "healPerTick": 1,
+      "imagePrompt": "First-person view of ruined stone waystation foundations in a charred forest, a section of roof still standing on two blackened pillars, a small smokeless campfire, scattered salvaged books and scrolls, sense of a scholarly refuge in devastation.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ruined scholarly waystation in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:wraith_hollow",
+      "name": "Wraith Hollow",
+      "description": "A sunken area thick with pale ash-mist that never seems to clear. The ghosts of Vatric's students are said to congregate here — spectral lights drift through the mist at all hours, and whispers in old academic cant echo from nowhere. The ground is cold despite the burn's residual heat.",
+      "x": -4,
+      "y": 29,
+      "exits": {
+        "WEST": "ashwood:ruined_waystation",
+        "NORTH": "ashwood:ember_pit"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_wraith_hollow.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "effects": [
+        {
+          "type": "chill",
+          "value": 3,
+          "message": "Cold spectral wind cuts through you despite the burn's residual heat.",
+          "sound": "ghost_moan"
+        }
+      ],
+      "imagePrompt": "First-person view of a sunken hollow filled with pale ghostly ash-mist, spectral lights drifting through the fog, cold ethereal atmosphere despite surrounding burned forest, sense of haunted ground.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ghostly hollow in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:burned_ridge",
+      "name": "Burned Ridge",
+      "description": "A ridge of blackened stone running roughly east-west above the burn. From here you can see the extent of the devastation — a grey dead forest stretching in every direction, with the ruins of the academy visible to the southwest as a cluster of broken walls. The coastal cliffs are visible to the east.",
+      "x": -3,
+      "y": 31,
+      "exits": {
+        "SOUTH": "ashwood:ash_crossroads",
+        "WEST": "ashwood:ridge_west",
+        "EAST": "ashwood:ridge_lookout"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_burned_ridge.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view from atop a blackened stone ridge overlooking a vast charred forest, grey dead trees stretching in every direction, ruins of broken walls visible in the distance, coastal cliffs to the east, panoramic devastation.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, panoramic ridge overlooking charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:ridge_lookout",
+      "name": "Ridge Lookout",
+      "description": "The eastern end of the ridge, where a natural stone platform juts out over the burn. Someone has piled a cairn of blackened stones here — a grave marker, or a warning. The coastal wind is stronger at this height, carrying the smell of salt through the ash.",
+      "x": -2,
+      "y": 31,
+      "exits": {
+        "WEST": "ashwood:burned_ridge"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_ridge_lookout.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view from a natural stone platform jutting from a ridge over a charred forest, a cairn of blackened stones at the edge, strong coastal wind, vast burned forest below, dramatic lookout point.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, dramatic ridge lookout over charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:ridge_west",
+      "name": "Western Ridge",
+      "description": "The ridge descends westward in a series of broken steps, the stone shattered by the same forces that burned the forest. A treant patrols this section — one of the burned, twisted things that were once living trees, now shambling constructs of charcoal and spite.",
+      "x": -4,
+      "y": 31,
+      "exits": {
+        "EAST": "ashwood:burned_ridge",
+        "SOUTH": "ashwood:deep_burn"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_ridge_west.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a ridge descending westward in broken stone steps, shattered by ancient magical forces, charred twisted dead trees, a sense of slow patrol by something massive and burned.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, broken ridge descent in charred forest",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:deep_burn",
+      "name": "Deep Burn",
+      "description": "The densest part of the burn, where the fire was hottest. The trees here are fused together into twisted charcoal arches. The ground underfoot is spongy with deep ash over a layer of fused glass. Small flames lick up from cracks in the earth without fuel or apparent cause.",
+      "x": -4,
+      "y": 30,
+      "exits": {
+        "EAST": "ashwood:ash_crossroads",
+        "NORTH": "ashwood:ridge_west",
+        "SOUTH": "ashwood:ember_pit",
+        "WEST": "ashwood:charcoal_merchant"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_deep_burn.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view deep in a charred forest, trees fused into twisted charcoal arches, spongy deep ash underfoot, small sourceless flames licking up from cracks in vitrified ground, oppressive heat haze.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, deep charred forest with sourceless fire",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:charcoal_merchant",
+      "name": "Charcoal Merchant's Post",
+      "description": "A stubborn old merchant has set up a trading post in the lee of a massive charred stump, using the hollow interior as a shop. Shelves of salvaged goods, fire-ward scrolls, and medicinal salves line the walls. A hand-painted sign reads: OPEN — WE BUY ASH-IRON.",
+      "x": -5,
+      "y": 30,
+      "exits": {
+        "EAST": "ashwood:deep_burn"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_charcoal_merchant.webp",
+      "departSound": "footstep_dirt",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view inside a massive hollow charred tree stump converted to a merchant's post, shelves of goods lining the interior walls, a small counter, warm lantern light, a hand-painted OPEN sign, cozy trading post in devastation.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, merchant post inside hollow charred stump",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "ashwood:academy_approach",
+      "name": "Academy Approach",
+      "description": "A broad avenue of cracked flagstones leads through a shattered gatehouse toward the ruins of Vatric's academy. The gate pillars still stand — tall blackened columns carved with arcane formulae now melted to illegibility. Beyond, the academy's outer walls rise broken against the sky. The entrance to the Pyromancer's Folly dungeon lies through the gatehouse.",
+      "x": -6,
+      "y": 28,
+      "exits": {
+        "EAST": "ashwood:blasted_vale",
+        "DOWN": "pyromancers_folly:gatehouse"
+      },
+      "backgroundImage": "/assets/images/rooms/ashwood_academy_approach.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "lockedExits": {},
+      "imagePrompt": "First-person view of a broad cracked flagstone avenue leading through a shattered gatehouse, tall blackened columns with melted arcane carvings, broken academy walls beyond, sense of ruined arcane grandeur, descent into dungeon ahead.",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ruined arcane academy gatehouse",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, lush green",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:ashwood_prowler",
+      "name": "Ashwood Prowler",
+      "description": "A lean grey wolf-like predator adapted to the burn — its fur is patchy and dark, its eyes ember-orange. It hunts by scent through the ash, silent and low to the ground.",
+      "startRoomId": "ashwood:cinder_hollow",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 175,
+      "damage": 35,
+      "level": 14,
+      "xpReward": 250,
+      "accuracy": 20,
+      "defense": 16,
+      "evasion": 18,
+      "agility": 18,
+      "attackSound": "wolf_bite",
+      "missSound": "wolf_miss",
+      "deathSound": "wolf_death",
+      "imagePrompt": "Full-body lean grey wolf-like predator adapted to burned forest, patchy dark fur, ember-orange eyes, low hunting posture, ash-stained, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, ashen wolf predator, dark grey and ember tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:health_potion", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 40, "maxCopper": 120, "minSilver": 1, "maxSilver": 3 }
+    },
+    {
+      "id": "npc:cinder_sprite",
+      "name": "Cinder Sprite",
+      "description": "A small fire elemental no bigger than a fist, trailing sparks and ash. It flickers erratically — harmless-looking until it detonates against flesh. They congregate in the hollows where Vatric's residual magic pools.",
+      "startRoomId": "ashwood:ember_pit",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 155,
+      "damage": 33,
+      "level": 14,
+      "xpReward": 230,
+      "accuracy": 19,
+      "defense": 14,
+      "evasion": 20,
+      "agility": 20,
+      "attackSound": "fire_burst",
+      "missSound": "fire_miss",
+      "deathSound": "fire_extinguish",
+      "imagePrompt": "Full-body small fire elemental sprite made of living ember and spark, fist-sized glowing core with trailing cinder particles, erratic flickering flame form, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, tiny fire elemental, orange-red ember tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, large",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:cinder_dust", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 }
+      ],
+      "coinDrop": { "minCopper": 30, "maxCopper": 90 }
+    },
+    {
+      "id": "npc:charred_treant",
+      "name": "Charred Treant",
+      "description": "What was once a great oak is now a shambling ruin of blackened wood and smouldering heartwood. It moves with a slow grinding creak, dragging root-legs through the ash. When it strikes, burning splinters fly.",
+      "startRoomId": "ashwood:ridge_west",
+      "behaviorType": "patrol",
+      "hostile": true,
+      "maxHp": 220,
+      "damage": 38,
+      "level": 15,
+      "xpReward": 300,
+      "accuracy": 18,
+      "defense": 20,
+      "evasion": 10,
+      "agility": 6,
+      "attackSound": "treant_slam",
+      "missSound": "treant_miss",
+      "deathSound": "treant_collapse",
+      "imagePrompt": "Full-body massive charred treant, a burned ruined oak tree animated as a creature, blackened wood body with smouldering orange heartwood visible in cracks, root-legs, branch-arms, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, charred tree monster, black and ember-orange tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, green leaves",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:charred_bark", "chance": 0.55, "minQuantity": 1, "maxQuantity": 3 },
+        { "itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 50, "maxCopper": 150, "minSilver": 1, "maxSilver": 4 }
+    },
+    {
+      "id": "npc:ash_wraith",
+      "name": "Ash Wraith",
+      "description": "The spectral remnant of one of Vatric's students — a translucent figure in scorched academic robes, its face a blur of ash and grief. It drifts through the burn at head-height, whispering fragments of arcane theory in a dead language.",
+      "startRoomId": "ashwood:wraith_hollow",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 185,
+      "damage": 37,
+      "level": 15,
+      "xpReward": 280,
+      "accuracy": 20,
+      "defense": 15,
+      "evasion": 19,
+      "agility": 16,
+      "attackSound": "ghost_slash",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body translucent spectral ghost of a human scholar in scorched academic robes, face a blur of ash and grief, drifting at head-height, trailing wisps of ash and pale light, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, spectral ghost scholar, pale grey and ash tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, solid body",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:ash_wraith_essence", "chance": 0.45, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 60, "maxCopper": 140, "minSilver": 2, "maxSilver": 4 }
+    },
+    {
+      "id": "npc:ember_stalker",
+      "name": "Ember Stalker",
+      "description": "A large predator that hunts the burn's edges — four-legged, low-slung, with a hide of cracked obsidian and a maw that glows furnace-bright. It is patient and fast when it strikes, clamping jaws that burn as well as crush.",
+      "startRoomId": "ashwood:southern_burn",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 200,
+      "damage": 39,
+      "level": 15,
+      "xpReward": 310,
+      "accuracy": 21,
+      "defense": 17,
+      "evasion": 17,
+      "agility": 17,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "beast_death",
+      "imagePrompt": "Full-body large four-legged predator with cracked obsidian-like hide, low-slung powerful build, furnace-bright glowing maw, ember-lit eyes, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, volcanic predator beast, obsidian and ember tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:ember_fang", "chance": 0.45, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1 }
+      ],
+      "coinDrop": { "minCopper": 60, "maxCopper": 160, "minSilver": 2, "maxSilver": 5 }
+    },
+    {
+      "id": "npc:ruins_scavenger",
+      "name": "Ruins Scavenger",
+      "description": "A hard-bitten human in mismatched leather and scavenged plate, face wrapped against the ash. The scavengers pick through the burn for anything of value — and defend their finds with sharpened salvage-steel and no hesitation.",
+      "startRoomId": "ashwood:scavenger_camp",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 160,
+      "damage": 34,
+      "level": 14,
+      "xpReward": 240,
+      "accuracy": 19,
+      "defense": 15,
+      "evasion": 17,
+      "agility": 15,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "bandit_death",
+      "imagePrompt": "Full-body hard-bitten human scavenger in mismatched leather armor and scavenged plate pieces, face wrapped in ash-stained cloth, holding sharpened salvage-steel blade, facing the viewer. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, post-apocalyptic scavenger, muted earth and rust tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, clean armor",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        { "itemId": "item:scavenger_lockpick", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:health_potion", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 },
+        { "itemId": "item:iron_ore", "chance": 0.3, "minQuantity": 1, "maxQuantity": 2 }
+      ],
+      "coinDrop": { "minCopper": 80, "maxCopper": 200, "minSilver": 2, "maxSilver": 5 }
+    },
+    {
+      "id": "npc:keeper_maeven",
+      "name": "Keeper Maeven",
+      "description": "A slight, white-haired woman in smoke-stained scholar's robes, sitting cross-legged by her smokeless fire with a stack of salvaged codices. She was the academy's head archivist when Vatric burned it all. Now she haunts the ruins, cataloguing what survived. She is calm, precise, and very tired.",
+      "startRoomId": "ashwood:ruined_waystation",
+      "behaviorType": "idle",
+      "hostile": false,
+      "interactSound": "npc_greet",
+      "exitSound": "enchantress_exit",
+      "imagePrompt": "Full-body slight white-haired elderly woman scholar in smoke-stained scholar's robes, sitting cross-legged, stack of old books and codices beside her, calm tired expression, gold-rimmed spectacles, facing the viewer. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, elderly scholar archivist, smoke-stained grey and cream tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, young, glamorous",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "interactMessage": "Keeper Maeven looks up from her codex. \"Another seeker. Vatric's sanctum lies below the academy — but the door answers only to those who can speak its riddle. He was theatrical that way.\" She presses a torn journal page into your hand. \"This may help. His vanity was always his weakness.\"",
+      "lootItems": [
+        { "itemId": "item:vatrics_journal_page", "chance": 1.0, "minQuantity": 1, "maxQuantity": 1 }
+      ]
+    },
+    {
+      "id": "npc:charcoal_merchant_npc",
+      "name": "Grizzle",
+      "description": "A stocky, soot-blackened dwarf with a permanent squint and a voice like gravel in a bellows. He's been trading in the burn for years and knows every ash-trail and ember-pit. He sells fire-ward scrolls, healing salves, and whatever else the scavengers bring in.",
+      "startRoomId": "ashwood:charcoal_merchant",
+      "behaviorType": "vendor",
+      "hostile": false,
+      "interactSound": "vendor_greet",
+      "exitSound": "vendor_farewell",
+      "vendorConfig": {
+        "stock": [
+          { "itemId": "item:fire_ward_scroll", "quantity": 5, "priceCopper": 0, "priceSilver": 12, "priceGold": 0 },
+          { "itemId": "item:ash_salve", "quantity": 10, "priceCopper": 0, "priceSilver": 6, "priceGold": 0 },
+          { "itemId": "item:health_potion", "quantity": 8, "priceCopper": 0, "priceSilver": 4, "priceGold": 0 },
+          { "itemId": "item:mana_potion", "quantity": 5, "priceCopper": 0, "priceSilver": 5, "priceGold": 0 }
+        ],
+        "buyMultiplier": 0.3
+      },
+      "imagePrompt": "Full-body stocky soot-blackened dwarf merchant with permanent squint, gravel-rough expression, heavy leather apron over work-clothes, surrounded by goods and wares, facing the viewer. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, dwarf merchant, soot and earth tones",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, tall, slender",
+      "imageWidth": 384,
+      "imageHeight": 384
+    }
+  ]
+}

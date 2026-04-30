@@ -310,11 +310,12 @@
     {
       "id": "salt_coast:western_cliffs",
       "name": "Western Cliffs",
-      "description": "The shore turns to a high cliff again here, dropping straight down to angry white water. A path runs along the cliff edge, narrow and exposed, used by no one in good weather and nobody at all in bad.",
+      "description": "The shore turns to a high cliff again here, dropping straight down to angry white water. A path runs along the cliff edge, narrow and exposed. To the west, a trail of cracked blackened earth descends into the Ashwood Burn — a vast charred forest destroyed decades ago by a pyromancer's failed experiment.",
       "x": -1,
       "y": 30,
       "exits": {
-        "SOUTH": "salt_coast:beach_west"
+        "SOUTH": "salt_coast:beach_west",
+        "WEST": "ashwood:scorched_trail"
       },
       "backgroundImage": "/assets/images/rooms/salt_coast_western_cliffs.webp",
       "departSound": "footstep_stone",
