@@ -324,6 +324,9 @@ class CommandProcessor(
             is ClientMessage.PlaceItem -> {
                 requireAuth(session) { interactCommand.handlePlaceItem(session, message.featureId, message.itemId) }
             }
+            is ClientMessage.AnswerRiddle -> {
+                requireAuth(session) { interactCommand.handleRiddleAnswer(session, message.featureId, message.answer) }
+            }
             is ClientMessage.ReadySpell -> {
                 requireAuth(session) { handleReadySpell(session, message) }
             }

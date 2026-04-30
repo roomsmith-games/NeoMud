@@ -107,6 +107,7 @@ class InteractCommand(
             "TELEPORT" -> executeTeleport(session, roomId, feat.actionData)
             "DAMAGE_TRAP" -> executeDamageTrap(session, feat)
             "PLACE_ITEM" -> { sendPlaceItemPrompt(session, feat); return }
+            "RIDDLE_PROMPT" -> { sendRiddlePrompt(session, feat); return }
             "PUZZLE_STEP" -> executePuzzleStep(session, roomId, feat)
             else -> {
                 session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
@@ -460,6 +461,51 @@ class InteractCommand(
         }
         // Fire success: open the configured exit, broadcast room refresh.
         val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "It fits. Something shifts."
+        val openedExit = openSuccessExit(session, roomId, feat.actionData)
+        worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
+        session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))
+        if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
+    }
+
+    // ─── RIDDLE_PROMPT ───────────────────────────────────────────────
+    // Two-phase: tap interactable → server sends RiddlePrompt with question;
+    // client shows text input → ClientMessage.AnswerRiddle → handleRiddleAnswer.
+
+    private suspend fun sendRiddlePrompt(session: PlayerSession, feat: com.neomud.shared.model.RoomInteractable) {
+        val question = feat.actionData["question"]?.takeIf { it.isNotBlank() } ?: "Speak the answer."
+        val hint = feat.actionData["hint"]?.takeIf { it.isNotBlank() }
+        session.send(ServerMessage.RiddlePrompt(
+            featureId = feat.id,
+            label = feat.label,
+            question = question,
+            hint = hint
+        ))
+        val roomId = session.currentRoomId ?: return
+        session.interactableCooldowns["$roomId::${feat.id}"] = 1
+    }
+
+    suspend fun handleRiddleAnswer(session: PlayerSession, featureId: String, answer: String) {
+        val roomId = session.currentRoomId ?: return
+        val feat = worldGraph.getInteractableDefs(roomId).find { it.id == featureId }
+        if (feat == null || feat.actionType != "RIDDLE_PROMPT") {
+            session.send(ServerMessage.SystemMessage("There is nothing to answer here."))
+            return
+        }
+        if (worldGraph.isInteractableUsed(roomId, featureId)) {
+            session.send(ServerMessage.InteractResult(false, feat.label, feat.actionData["alreadySolvedMessage"]?.takeIf { it.isNotBlank() } ?: "The riddle has already been answered."))
+            return
+        }
+        val accepted = (feat.actionData["acceptedAnswers"] ?: "").split(",").map { it.trim().lowercase() }.filter { it.isNotEmpty() }
+        val synonyms = (feat.actionData["synonyms"] ?: "").split(",").map { it.trim().lowercase() }.filter { it.isNotEmpty() }
+        val allValid = accepted + synonyms
+        val normalized = answer.trim().lowercase()
+
+        if (normalized.isEmpty() || normalized !in allValid) {
+            val msg = feat.actionData["failureMessage"]?.takeIf { it.isNotBlank() } ?: "That is not the answer."
+            session.send(ServerMessage.InteractResult(false, feat.label, msg))
+            return
+        }
+        val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "Correct. Something shifts."
         val openedExit = openSuccessExit(session, roomId, feat.actionData)
         worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
         session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))

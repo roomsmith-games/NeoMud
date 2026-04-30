@@ -59,6 +59,7 @@ import com.neomud.client.ui.components.CraftingPanel
 import com.neomud.client.ui.components.TrainerPanel
 import com.neomud.client.ui.components.VendorPanel
 import com.neomud.client.ui.components.PlaceItemDialog
+import com.neomud.client.ui.components.RiddleDialog
 import com.neomud.client.ui.components.KickDirectionPicker
 import com.neomud.client.ui.components.LockTargetPicker
 import com.neomud.client.ui.components.MapOverlay
@@ -105,6 +106,8 @@ fun GameScreen(
     val crafterInfo by gameViewModel.crafterInfo.collectAsState()
     val showPlaceItem by gameViewModel.showPlaceItem.collectAsState()
     val placeItemPrompt by gameViewModel.placeItemPrompt.collectAsState()
+    val showRiddle by gameViewModel.showRiddle.collectAsState()
+    val riddlePrompt by gameViewModel.riddlePrompt.collectAsState()
     val spellCatalogState by gameViewModel.spellCatalog.collectAsState()
     val spellSlots by gameViewModel.spellSlots.collectAsState()
     val readiedSpellId by gameViewModel.readiedSpellId.collectAsState()
@@ -291,6 +294,18 @@ fun GameScreen(
                     itemCatalog = itemCatalog,
                     onPlace = { itemId -> gameViewModel.placeItem(pip.featureId, itemId) },
                     onDismiss = { gameViewModel.dismissPlaceItem() }
+                )
+            }
+        }
+
+        // Riddle dialog (RIDDLE_PROMPT two-phase)
+        if (showRiddle) {
+            val rp = riddlePrompt
+            if (rp != null) {
+                RiddleDialog(
+                    prompt = rp,
+                    onSubmit = { answer -> gameViewModel.submitRiddleAnswer(rp.featureId, answer) },
+                    onDismiss = { gameViewModel.dismissRiddle() }
                 )
             }
         }

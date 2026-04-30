@@ -145,6 +145,13 @@ class GameViewModel(
     private val _showPlaceItem = MutableStateFlow(false)
     val showPlaceItem: StateFlow<Boolean> = _showPlaceItem
 
+    // Riddle (two-phase: server prompts → text input dialog → ClientMessage.AnswerRiddle)
+    private val _riddlePrompt = MutableStateFlow<ServerMessage.RiddlePrompt?>(null)
+    val riddlePrompt: StateFlow<ServerMessage.RiddlePrompt?> = _riddlePrompt
+
+    private val _showRiddle = MutableStateFlow(false)
+    val showRiddle: StateFlow<Boolean> = _showRiddle
+
     // Visited rooms (fog-of-war)
     private val _visitedRooms = MutableStateFlow<Set<RoomId>>(emptySet())
     val visitedRooms: StateFlow<Set<RoomId>> = _visitedRooms
@@ -764,6 +771,10 @@ class GameViewModel(
                 _placeItemPrompt.value = message
                 _showPlaceItem.value = true
             }
+            is ServerMessage.RiddlePrompt -> {
+                _riddlePrompt.value = message
+                _showRiddle.value = true
+            }
         }
     }
 
@@ -1008,6 +1019,18 @@ class GameViewModel(
     fun dismissPlaceItem() {
         _showPlaceItem.value = false
         _placeItemPrompt.value = null
+    }
+
+    fun submitRiddleAnswer(featureId: String, answer: String) {
+        viewModelScope.launch {
+            wsClient.send(ClientMessage.AnswerRiddle(featureId, answer))
+        }
+        dismissRiddle()
+    }
+
+    fun dismissRiddle() {
+        _showRiddle.value = false
+        _riddlePrompt.value = null
     }
 
     fun interactCrafter() {

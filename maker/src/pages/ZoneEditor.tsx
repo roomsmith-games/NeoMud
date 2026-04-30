@@ -333,6 +333,7 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 <option value="DAMAGE_TRAP">Damage Trap</option>
                 <option value="PLACE_ITEM">Place Item (puzzle)</option>
                 <option value="PUZZLE_STEP">Puzzle Step (sequence)</option>
+                <option value="RIDDLE_PROMPT">Riddle Prompt (text answer)</option>
               </select>
             </div>
             <div>
@@ -506,6 +507,45 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
               <div>
                 <label style={{ color: '#666' }}>Failure Message</label>
                 <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. Nothing — that's not what fits." value={feat.actionData?.failureMessage || ''} onChange={(e) => setData(i, { failureMessage: e.target.value })} />
+              </div>
+            </div>
+          )}
+          {feat.actionType === 'RIDDLE_PROMPT' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, marginTop: 4, fontSize: 10 }}>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Question (shown to player)</label>
+                <textarea style={{ ...styles.input, fontSize: 11, minHeight: 40 }} placeholder="e.g. What burns but is never consumed?" value={feat.actionData?.question || ''} onChange={(e) => setData(i, { question: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Hint (optional, shown dimmed)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. It feeds on knowledge, not kindling." value={feat.actionData?.hint || ''} onChange={(e) => setData(i, { hint: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Accepted Answers (comma-separated, case-insensitive)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. curiosity,desire" value={feat.actionData?.acceptedAnswers || ''} onChange={(e) => setData(i, { acceptedAnswers: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Synonyms (optional, additional accepted answers)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. passion,ambition" value={feat.actionData?.synonyms || ''} onChange={(e) => setData(i, { synonyms: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Success Direction (exit to open)</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.successDirection || ''} onChange={(e) => setData(i, { successDirection: e.target.value })}>
+                  <option value="">--</option>
+                  {['NORTH','SOUTH','EAST','WEST','UP','DOWN'].map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Max Attempts (0 = unlimited)</label>
+                <input type="number" style={{ ...styles.input, fontSize: 11 }} min={0} value={feat.actionData?.maxAttempts || '0'} onChange={(e) => setData(i, { maxAttempts: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Success Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The door groans open." value={feat.actionData?.successMessage || ''} onChange={(e) => setData(i, { successMessage: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Failure Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The inscription pulses red — wrong." value={feat.actionData?.failureMessage || ''} onChange={(e) => setData(i, { failureMessage: e.target.value })} />
               </div>
             </div>
           )}

@@ -159,6 +159,13 @@ sealed class ClientMessage {
     ) : ClientMessage()
 
     @Serializable
+    @SerialName("answer_riddle")
+    data class AnswerRiddle(
+        @SerialName("feature_id") val featureId: String,
+        val answer: String
+    ) : ClientMessage()
+
+    @Serializable
     @SerialName("craft_item")
     data class CraftItem(val recipeId: String) : ClientMessage()
 

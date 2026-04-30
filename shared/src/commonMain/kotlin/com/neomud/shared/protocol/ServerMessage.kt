@@ -215,6 +215,15 @@ sealed class ServerMessage {
     ) : ServerMessage()
 
     @Serializable
+    @SerialName("riddle_prompt")
+    data class RiddlePrompt(
+        @SerialName("feature_id") val featureId: String,
+        val label: String,
+        val question: String,
+        val hint: String? = null
+    ) : ServerMessage()
+
+    @Serializable
     @SerialName("pong")
     data object Pong : ServerMessage()
 
