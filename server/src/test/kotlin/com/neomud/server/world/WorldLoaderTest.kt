@@ -239,15 +239,31 @@ class WorldLoaderTest {
         val result = load()
         val world = result.worldGraph
 
-        val ruins = world.getRoom("forest:ruins")
-        assertNotNull(ruins)
-        assertEquals("marsh:edge", ruins.exits[com.neomud.shared.model.Direction.NORTH],
-            "forest:ruins should exit north to marsh:edge")
+        val cave = world.getRoom("forest:cave")
+        assertNotNull(cave)
+        assertEquals("marsh:shallows", cave.exits[com.neomud.shared.model.Direction.WEST],
+            "forest:cave should exit west to marsh:shallows")
 
-        val marshEdge = world.getRoom("marsh:edge")
-        assertNotNull(marshEdge)
-        assertEquals("forest:ruins", marshEdge.exits[com.neomud.shared.model.Direction.SOUTH],
-            "marsh:edge should exit south to forest:ruins")
+        val shallows = world.getRoom("marsh:shallows")
+        assertNotNull(shallows)
+        assertEquals("forest:cave", shallows.exits[com.neomud.shared.model.Direction.EAST],
+            "marsh:shallows should exit east to forest:cave")
+    }
+
+    @Test
+    fun testForestToGorgeCrossZoneExits() {
+        val result = load()
+        val world = result.worldGraph
+
+        val stream = world.getRoom("forest:stream")
+        assertNotNull(stream)
+        assertEquals("gorge:fissure", stream.exits[com.neomud.shared.model.Direction.NORTH],
+            "forest:stream should exit north to gorge:fissure")
+
+        val fissure = world.getRoom("gorge:fissure")
+        assertNotNull(fissure)
+        assertEquals("forest:stream", fissure.exits[com.neomud.shared.model.Direction.SOUTH],
+            "gorge:fissure should exit south to forest:stream")
     }
 
     @Test

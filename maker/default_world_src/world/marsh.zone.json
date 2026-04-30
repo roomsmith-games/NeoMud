@@ -4,18 +4,21 @@
   "description": "A waterlogged expanse of twisted mangroves and stagnant pools, where mist clings to the ground and strange lights flicker in the distance.",
   "safe": false,
   "bgm": "marsh_danger",
-  "spawnConfig": { "maxEntities": 5, "maxPerRoom": 2, "rateTicks": 30 },
+  "spawnConfig": {
+    "maxEntities": 5,
+    "maxPerRoom": 2,
+    "rateTicks": 30
+  },
   "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
   "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
   "rooms": [
     {
       "id": "marsh:edge",
       "name": "Marsh Edge",
-      "description": "The forest floor gives way to soft, waterlogged earth. Gnarled mangrove roots rise from murky pools, and the air grows thick with the stench of decay. The carcass of an armored knight lies half-submerged in the muck nearby, his plate mail crushed and torn by something immensely powerful. A low-hanging mist obscures everything beyond a few paces. The ruins lie safely to the south, while the marsh stretches ominously northward and eastward.",
-      "x": 0,
-      "y": 6,
+      "description": "The forest floor gives way to soft, waterlogged earth. Gnarled mangrove roots rise from murky pools, and the air grows thick with the stench of decay. The carcass of an armored knight lies half-submerged in the muck nearby, his plate mail crushed and torn by something immensely powerful. A low-hanging mist obscures everything beyond a few paces. The marsh stretches ominously northward and eastward.",
+      "x": -3,
+      "y": 4,
       "exits": {
-        "SOUTH": "forest:ruins",
         "NORTH": "marsh:trail",
         "EAST": "marsh:shallows"
       },
@@ -31,8 +34,8 @@
       "id": "marsh:trail",
       "name": "Sunken Trail",
       "description": "A half-submerged trail of rotting planks stretches across the mire, many boards cracked or missing entirely. Dark water ripples on either side, disturbed by unseen things beneath the surface. The path continues north toward the heart of the marsh, while a gap in the undergrowth leads west to a darkened hollow.",
-      "x": 0,
-      "y": 7,
+      "x": -3,
+      "y": 5,
       "exits": {
         "SOUTH": "marsh:edge",
         "NORTH": "marsh:heart",
@@ -49,12 +52,13 @@
     {
       "id": "marsh:shallows",
       "name": "Fetid Shallows",
-      "description": "Ankle-deep water stretches in every direction, broken only by tufts of swamp grass and the occasional rotting stump. Bubbles rise sluggishly from the muck below, releasing foul-smelling gas. Something large disturbed the water recently — fresh tracks lead north toward a small island.",
-      "x": 1,
-      "y": 6,
+      "description": "Ankle-deep water stretches in every direction, broken only by tufts of swamp grass and the occasional rotting stump. Bubbles rise sluggishly from the muck below, releasing foul-smelling gas. Something large disturbed the water recently — fresh tracks lead north toward a small island. To the east, firmer ground and the canopy of the forest beckon.",
+      "x": -2,
+      "y": 4,
       "exits": {
         "WEST": "marsh:edge",
-        "NORTH": "marsh:island"
+        "NORTH": "marsh:island",
+        "EAST": "forest:cave"
       },
       "backgroundImage": "/assets/images/rooms/marsh_shallows.webp",
       "departSound": "footstep_splash",
@@ -68,8 +72,8 @@
       "id": "marsh:hollow",
       "name": "Hag's Hollow",
       "description": "A dark depression in the marsh, ringed by ancient willows whose drooping branches form a natural curtain. The water here is unnaturally still and black as ink. Strange totems of bone and feather hang from the branches, clicking softly in a breeze you cannot feel. This place reeks of dark magic.",
-      "x": -1,
-      "y": 7,
+      "x": -4,
+      "y": 5,
       "exits": {
         "EAST": "marsh:trail"
       },
@@ -85,8 +89,8 @@
       "id": "marsh:island",
       "name": "Mire Island",
       "description": "A rare patch of solid ground rises from the swamp — a small island of packed earth and moss-covered stones. The remains of a campfire suggest someone or something shelters here. The island offers a commanding but unsettling view of the marsh in every direction, with the dark heart of the swamp visible to the northwest.",
-      "x": 1,
-      "y": 7,
+      "x": -2,
+      "y": 5,
       "exits": {
         "SOUTH": "marsh:shallows",
         "NORTHWEST": "marsh:heart"
@@ -102,9 +106,9 @@
     {
       "id": "marsh:heart",
       "name": "Heart of the Marsh",
-      "description": "The deepest part of the Thornveil Marsh, where the mist is so thick it seems almost solid. Ancient trees have petrified here, their stone trunks rising like pillars from the black water. Will-o'-wisps dance in the gloom, leading the unwary deeper into the mire. To the north, the ground rises sharply — the dark mouth of a rocky gorge yawns open.",
-      "x": 0,
-      "y": 8,
+      "description": "The deepest part of the Thornveil Marsh, where the mist is so thick it seems almost solid. Ancient trees have petrified here, their stone trunks rising like pillars from the black water. Will-o'-wisps dance in the gloom, leading the unwary deeper into the mire. To the north, the ground rises sharply — a treacherous trail climbs toward the dark mouth of a rocky gorge.",
+      "x": -3,
+      "y": 6,
       "exits": {
         "SOUTH": "marsh:trail",
         "SOUTHEAST": "marsh:island",
@@ -144,11 +148,31 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:marsh_hide", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:health_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:chain_leggings", "chance": 0.06, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:marsh_hide",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:chain_leggings",
+          "chance": 0.06,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 15, "maxCopper": 40, "minSilver": 0, "maxSilver": 2 }
+      "coinDrop": {
+        "minCopper": 15,
+        "maxCopper": 40,
+        "minSilver": 0,
+        "maxSilver": 2
+      }
     },
     {
       "id": "npc:bog_toad",
@@ -174,11 +198,31 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:marsh_hide", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:health_potion", "chance": 0.15, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:iron_boots", "chance": 0.04, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:marsh_hide",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_boots",
+          "chance": 0.04,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 10, "maxCopper": 30, "minSilver": 0, "maxSilver": 1 }
+      "coinDrop": {
+        "minCopper": 10,
+        "maxCopper": 30,
+        "minSilver": 0,
+        "maxSilver": 1
+      }
     },
     {
       "id": "npc:marsh_wraith",
@@ -204,12 +248,37 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:wraith_essence", "chance": 0.9, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:mana_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:chainmail_vest", "chance": 0.08, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:scroll_of_healing", "chance": 0.1, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:wraith_essence",
+          "chance": 0.9,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:mana_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:chainmail_vest",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:scroll_of_healing",
+          "chance": 0.1,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 20, "maxCopper": 50, "minSilver": 1, "maxSilver": 3 }
+      "coinDrop": {
+        "minCopper": 20,
+        "maxCopper": 50,
+        "minSilver": 1,
+        "maxSilver": 3
+      }
     },
     {
       "id": "npc:mire_hag",
@@ -235,13 +304,43 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:wraith_essence", "chance": 0.9, "minQuantity": 1, "maxQuantity": 3 },
-        { "itemId": "item:marsh_hide", "chance": 0.6, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:amulet_of_warding", "chance": 0.12, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:iron_shield", "chance": 0.08, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:greater_health_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:wraith_essence",
+          "chance": 0.9,
+          "minQuantity": 1,
+          "maxQuantity": 3
+        },
+        {
+          "itemId": "item:marsh_hide",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:amulet_of_warding",
+          "chance": 0.12,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_shield",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 30, "maxCopper": 70, "minSilver": 2, "maxSilver": 5 }
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 70,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
     }
   ]
 }

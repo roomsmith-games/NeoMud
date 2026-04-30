@@ -4,14 +4,18 @@
   "description": "A jagged volcanic ravine carved through dark basalt, where the air shimmers with heat and the ground rumbles with distant tremors.",
   "safe": false,
   "bgm": "gorge_danger",
-  "spawnConfig": { "maxEntities": 4, "maxPerRoom": 1, "rateTicks": 35 },
+  "spawnConfig": {
+    "maxEntities": 4,
+    "maxPerRoom": 1,
+    "rateTicks": 35
+  },
   "imageStyle": "fantasy digital painting, volcanic rocky gorge, dark basalt and obsidian, orange lava glow, harsh lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
   "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful, green forest",
   "rooms": [
     {
       "id": "gorge:mouth",
       "name": "Gorge Mouth",
-      "description": "The marsh gives way abruptly to sheer walls of black basalt. A narrow ravine cuts into the rock, its walls scarred with claw marks and scorch marks alike. Charred bones and shattered weapons litter the entrance — grim testimony to the gorge's lethal inhabitants. The air is noticeably warmer here, carrying a faint sulfurous tang. Loose stones crunch underfoot as the path descends into darkness.",
+      "description": "Sheer walls of black basalt rise on either side, forming a narrow ravine scarred with claw marks and scorch marks alike. Charred bones and shattered weapons litter the entrance — grim testimony to the gorge's lethal inhabitants. The air is noticeably warmer here, carrying a faint sulfurous tang. Loose stones crunch underfoot as the path descends into darkness. A treacherous trail to the south winds down through the mist toward the marsh.",
       "x": 0,
       "y": 9,
       "exits": {
@@ -49,11 +53,12 @@
     {
       "id": "gorge:fissure",
       "name": "Volcanic Fissure",
-      "description": "A wide crack in the gorge floor reveals a hellish glow from far below. Molten rock pulses deep within the fissure, casting dancing orange light across the cavern walls. The heat is almost unbearable, and the air ripples with thermal distortion. Shed scales litter the ground around a makeshift nest of scorched stones.",
+      "description": "A wide crack in the gorge floor reveals a hellish glow from far below. Molten rock pulses deep within the fissure, casting dancing orange light across the cavern walls. The heat is almost unbearable, and the air ripples with thermal distortion. Shed scales litter the ground around a makeshift nest of scorched stones. A rocky trail descends south through a ravine, eventually reaching a stream in the forest far below.",
       "x": 1,
       "y": 9,
       "exits": {
-        "WEST": "gorge:mouth"
+        "WEST": "gorge:mouth",
+        "SOUTH": "forest:stream"
       },
       "backgroundImage": "/assets/images/rooms/gorge_fissure.webp",
       "departSound": "footstep_stone",
@@ -106,7 +111,11 @@
       "description": "A sleek predatory lizard the size of a horse, with obsidian-black scales and eyes that glow like embers. It moves with terrifying speed across the rocky terrain, its razor-sharp claws finding purchase on sheer surfaces. Wisps of smoke curl from its nostrils.",
       "startRoomId": "gorge:mouth",
       "behaviorType": "patrol",
-      "patrolRoute": ["gorge:mouth", "gorge:ledge", "gorge:depths"],
+      "patrolRoute": [
+        "gorge:mouth",
+        "gorge:ledge",
+        "gorge:depths"
+      ],
       "hostile": true,
       "maxHp": 80,
       "damage": 26,
@@ -125,12 +134,37 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:obsidian_shard", "chance": 0.6, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:health_potion", "chance": 0.2, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:plated_boots", "chance": 0.05, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:scroll_of_fireball", "chance": 0.06, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:obsidian_shard",
+          "chance": 0.6,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:plated_boots",
+          "chance": 0.05,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:scroll_of_fireball",
+          "chance": 0.06,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 25, "maxCopper": 60, "minSilver": 1, "maxSilver": 3 }
+      "coinDrop": {
+        "minCopper": 25,
+        "maxCopper": 60,
+        "minSilver": 1,
+        "maxSilver": 3
+      }
     },
     {
       "id": "npc:volcanic_basilisk",
@@ -156,12 +190,37 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:obsidian_shard", "chance": 0.9, "minQuantity": 1, "maxQuantity": 3 },
-        { "itemId": "item:plated_helm", "chance": 0.05, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:greater_health_potion", "chance": 0.15, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:scroll_of_fireball", "chance": 0.08, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:obsidian_shard",
+          "chance": 0.9,
+          "minQuantity": 1,
+          "maxQuantity": 3
+        },
+        {
+          "itemId": "item:plated_helm",
+          "chance": 0.05,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:scroll_of_fireball",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 30, "maxCopper": 70, "minSilver": 2, "maxSilver": 4 }
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 70,
+        "minSilver": 2,
+        "maxSilver": 4
+      }
     },
     {
       "id": "npc:blackstone_marauder",
@@ -187,13 +246,43 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:obsidian_shard", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:plated_gauntlets", "chance": 0.04, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:plated_legs", "chance": 0.03, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:greater_mana_potion", "chance": 0.1, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:scroll_of_healing", "chance": 0.08, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:obsidian_shard",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:plated_gauntlets",
+          "chance": 0.04,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:plated_legs",
+          "chance": 0.03,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_mana_potion",
+          "chance": 0.1,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:scroll_of_healing",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 30, "maxCopper": 80, "minSilver": 2, "maxSilver": 5 }
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 80,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
     },
     {
       "id": "npc:gorge_warden",
@@ -219,14 +308,51 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:obsidian_shard", "chance": 0.9, "minQuantity": 2, "maxQuantity": 4 },
-        { "itemId": "item:steel_greatsword", "chance": 0.06, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:tower_shield", "chance": 0.05, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:plated_chest", "chance": 0.04, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:greater_health_potion", "chance": 0.25, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:scroll_of_fireball", "chance": 0.1, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:obsidian_shard",
+          "chance": 0.9,
+          "minQuantity": 2,
+          "maxQuantity": 4
+        },
+        {
+          "itemId": "item:steel_greatsword",
+          "chance": 0.06,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:tower_shield",
+          "chance": 0.05,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:plated_chest",
+          "chance": 0.04,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:scroll_of_fireball",
+          "chance": 0.1,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 50, "maxCopper": 99, "minSilver": 3, "maxSilver": 8, "minGold": 0, "maxGold": 1 }
+      "coinDrop": {
+        "minCopper": 50,
+        "maxCopper": 99,
+        "minSilver": 3,
+        "maxSilver": 8,
+        "minGold": 0,
+        "maxGold": 1
+      }
     }
   ]
 }

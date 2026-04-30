@@ -4,7 +4,11 @@
   "description": "An ancient forest where the trees seem to murmur secrets to one another.",
   "safe": false,
   "bgm": "forest_danger",
-  "spawnConfig": { "maxEntities": 6, "maxPerRoom": 2, "rateTicks": 15 },
+  "spawnConfig": {
+    "maxEntities": 6,
+    "maxPerRoom": 2,
+    "rateTicks": 15
+  },
   "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
   "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
   "rooms": [
@@ -55,7 +59,14 @@
       "exits": {
         "WEST": "forest:path"
       },
-      "effects": [{"type": "SANCTUARY", "value": 0, "message": "The clearing's natural serenity repels hostile creatures.", "sound": ""}],
+      "effects": [
+        {
+          "type": "SANCTUARY",
+          "value": 0,
+          "message": "The clearing's natural serenity repels hostile creatures.",
+          "sound": ""
+        }
+      ],
       "backgroundImage": "/assets/images/rooms/forest_clearing.webp",
       "bgm": "forest_clearing",
       "departSound": "footstep_grass",
@@ -108,11 +119,12 @@
     {
       "id": "forest:cave",
       "name": "Hidden Cave",
-      "description": "A narrow cave entrance hidden behind thick vines opens into a small, damp chamber. Water drips from the low ceiling, and patches of bioluminescent moss cast an eerie blue-green glow across the rough stone walls. The air smells of damp earth and something faintly metallic.",
+      "description": "A narrow cave entrance hidden behind thick vines opens into a small, damp chamber. Water drips from the low ceiling, and patches of bioluminescent moss cast an eerie blue-green glow across the rough stone walls. The air smells of damp earth and something faintly metallic. Beyond the western mouth of the cave, the ground turns soft and waterlogged — the edge of a vast marsh.",
       "x": -1,
       "y": 4,
       "exits": {
-        "EAST": "forest:deep"
+        "EAST": "forest:deep",
+        "WEST": "marsh:shallows"
       },
       "backgroundImage": "/assets/images/rooms/forest_cave.webp",
       "departSound": "footstep_stone",
@@ -125,11 +137,12 @@
     {
       "id": "forest:stream",
       "name": "Forest Stream",
-      "description": "A crystal-clear stream burbles over smooth stones, cutting a gentle path through the forest floor. Ferns and water plants line the banks, and small silver fish dart in the shallows. The sound of running water is calming after the oppressive silence of the deep woods.",
+      "description": "A crystal-clear stream burbles over smooth stones, cutting a gentle path through the forest floor. Ferns and water plants line the banks, and small silver fish dart in the shallows. The sound of running water is calming after the oppressive silence of the deep woods. Northward, the stream narrows and the banks steepen into a rocky ravine that climbs toward the gorge.",
       "x": 1,
       "y": 4,
       "exits": {
-        "WEST": "forest:deep"
+        "WEST": "forest:deep",
+        "NORTH": "gorge:fissure"
       },
       "backgroundImage": "/assets/images/rooms/forest_stream.webp",
       "departSound": "footstep_splash",
@@ -142,12 +155,11 @@
     {
       "id": "forest:ruins",
       "name": "Overgrown Ruins",
-      "description": "Crumbling stone walls rise from the forest floor, half-swallowed by moss and creeping vines. The remains of an ancient structure — perhaps a watchtower or shrine — stand in eerie silence. Faded carvings on the stones hint at a civilization long forgotten. The air here feels heavy, as if the ruins remember what the forest has tried to bury. To the north, the ground grows treacherous and waterlogged. Dark shapes move in the distant mist — this is no place for the unprepared.",
+      "description": "Crumbling stone walls rise from the forest floor, half-swallowed by moss and creeping vines. The remains of an ancient structure — perhaps a watchtower or shrine — stand in eerie silence. Faded carvings on the stones hint at a civilization long forgotten. The air here feels heavy, as if the ruins remember what the forest has tried to bury.",
       "x": 0,
       "y": 5,
       "exits": {
-        "SOUTH": "forest:deep",
-        "NORTH": "marsh:edge"
+        "SOUTH": "forest:deep"
       },
       "backgroundImage": "/assets/images/rooms/forest_ruins.webp",
       "departSound": "footstep_dirt",
@@ -183,11 +195,31 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:wolf_pelt", "chance": 0.8, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:health_potion", "chance": 0.15, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:mana_potion", "chance": 0.10, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:wolf_pelt",
+          "chance": 0.8,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:mana_potion",
+          "chance": 0.1,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 5, "maxCopper": 20, "minSilver": 0, "maxSilver": 1 }
+      "coinDrop": {
+        "minCopper": 5,
+        "maxCopper": 20,
+        "minSilver": 0,
+        "maxSilver": 1
+      }
     },
     {
       "id": "npc:forest_spider",
@@ -213,11 +245,31 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:spider_fang", "chance": 0.9, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:leather_gloves", "chance": 0.1, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:health_potion", "chance": 0.15, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:spider_fang",
+          "chance": 0.9,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:leather_gloves",
+          "chance": 0.1,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 10, "maxCopper": 35, "minSilver": 0, "maxSilver": 1 }
+      "coinDrop": {
+        "minCopper": 10,
+        "maxCopper": 35,
+        "minSilver": 0,
+        "maxSilver": 1
+      }
     },
     {
       "id": "npc:forest_rat",
@@ -243,9 +295,17 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:health_potion", "chance": 0.10, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.1,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 1, "maxCopper": 8 }
+      "coinDrop": {
+        "minCopper": 1,
+        "maxCopper": 8
+      }
     },
     {
       "id": "npc:forest_bandit",
@@ -271,11 +331,29 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:health_potion", "chance": 0.20, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:leather_gloves", "chance": 0.08, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:leather_boots", "chance": 0.08, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:leather_gloves",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:leather_boots",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 8, "maxCopper": 25 }
+      "coinDrop": {
+        "minCopper": 8,
+        "maxCopper": 25
+      }
     }
   ]
 }
