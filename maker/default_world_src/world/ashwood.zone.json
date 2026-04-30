@@ -418,9 +418,19 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:health_potion", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 40, "maxCopper": 120, "minSilver": 1, "maxSilver": 3 }
+      "coinDrop": {
+        "minCopper": 40,
+        "maxCopper": 120,
+        "minSilver": 1,
+        "maxSilver": 3
+      }
     },
     {
       "id": "npc:cinder_sprite",
@@ -446,9 +456,17 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:cinder_dust", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 }
+        {
+          "itemId": "item:cinder_dust",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
       ],
-      "coinDrop": { "minCopper": 30, "maxCopper": 90 }
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 90
+      }
     },
     {
       "id": "npc:charred_treant",
@@ -474,10 +492,25 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:charred_bark", "chance": 0.55, "minQuantity": 1, "maxQuantity": 3 },
-        { "itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:charred_bark",
+          "chance": 0.55,
+          "minQuantity": 1,
+          "maxQuantity": 3
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 50, "maxCopper": 150, "minSilver": 1, "maxSilver": 4 }
+      "coinDrop": {
+        "minCopper": 50,
+        "maxCopper": 150,
+        "minSilver": 1,
+        "maxSilver": 4
+      }
     },
     {
       "id": "npc:ash_wraith",
@@ -503,9 +536,19 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:ash_wraith_essence", "chance": 0.45, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:ash_wraith_essence",
+          "chance": 0.45,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 60, "maxCopper": 140, "minSilver": 2, "maxSilver": 4 }
+      "coinDrop": {
+        "minCopper": 60,
+        "maxCopper": 140,
+        "minSilver": 2,
+        "maxSilver": 4
+      }
     },
     {
       "id": "npc:ember_stalker",
@@ -531,10 +574,25 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:ember_fang", "chance": 0.45, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:ember_fang",
+          "chance": 0.45,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 60, "maxCopper": 160, "minSilver": 2, "maxSilver": 5 }
+      "coinDrop": {
+        "minCopper": 60,
+        "maxCopper": 160,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
     },
     {
       "id": "npc:ruins_scavenger",
@@ -560,11 +618,31 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:scavenger_lockpick", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:health_potion", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:iron_ore", "chance": 0.3, "minQuantity": 1, "maxQuantity": 2 }
+        {
+          "itemId": "item:scavenger_lockpick",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_ore",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
       ],
-      "coinDrop": { "minCopper": 80, "maxCopper": 200, "minSilver": 2, "maxSilver": 5 }
+      "coinDrop": {
+        "minCopper": 80,
+        "maxCopper": 200,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
     },
     {
       "id": "npc:keeper_maeven",
@@ -582,8 +660,15 @@
       "imageHeight": 384,
       "interactMessage": "Keeper Maeven looks up from her codex. \"Another seeker. Vatric's sanctum lies below the academy — but the door answers only to those who can speak its riddle. He was theatrical that way.\" She presses a torn journal page into your hand. \"This may help. His vanity was always his weakness.\"",
       "lootItems": [
-        { "itemId": "item:vatrics_journal_page", "chance": 1.0, "minQuantity": 1, "maxQuantity": 1 }
-      ]
+        {
+          "itemId": "item:vatrics_journal_page",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "grantItemId": "item:vatrics_journal_page",
+      "grantItemFlag": "maeven_journal_given"
     },
     {
       "id": "npc:charcoal_merchant_npc",
@@ -596,10 +681,34 @@
       "exitSound": "vendor_farewell",
       "vendorConfig": {
         "stock": [
-          { "itemId": "item:fire_ward_scroll", "quantity": 5, "priceCopper": 0, "priceSilver": 12, "priceGold": 0 },
-          { "itemId": "item:ash_salve", "quantity": 10, "priceCopper": 0, "priceSilver": 6, "priceGold": 0 },
-          { "itemId": "item:health_potion", "quantity": 8, "priceCopper": 0, "priceSilver": 4, "priceGold": 0 },
-          { "itemId": "item:mana_potion", "quantity": 5, "priceCopper": 0, "priceSilver": 5, "priceGold": 0 }
+          {
+            "itemId": "item:fire_ward_scroll",
+            "quantity": 5,
+            "priceCopper": 0,
+            "priceSilver": 12,
+            "priceGold": 0
+          },
+          {
+            "itemId": "item:ash_salve",
+            "quantity": 10,
+            "priceCopper": 0,
+            "priceSilver": 6,
+            "priceGold": 0
+          },
+          {
+            "itemId": "item:health_potion",
+            "quantity": 8,
+            "priceCopper": 0,
+            "priceSilver": 4,
+            "priceGold": 0
+          },
+          {
+            "itemId": "item:mana_potion",
+            "quantity": 5,
+            "priceCopper": 0,
+            "priceSilver": 5,
+            "priceGold": 0
+          }
         ],
         "buyMultiplier": 0.3
       },

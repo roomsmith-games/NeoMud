@@ -536,10 +536,6 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 </select>
               </div>
               <div>
-                <label style={{ color: '#666' }}>Max Attempts (0 = unlimited)</label>
-                <input type="number" style={{ ...styles.input, fontSize: 11 }} min={0} value={feat.actionData?.maxAttempts || '0'} onChange={(e) => setData(i, { maxAttempts: e.target.value })} />
-              </div>
-              <div>
                 <label style={{ color: '#666' }}>Success Message</label>
                 <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The door groans open." value={feat.actionData?.successMessage || ''} onChange={(e) => setData(i, { successMessage: e.target.value })} />
               </div>

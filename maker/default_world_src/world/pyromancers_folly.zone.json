@@ -239,7 +239,10 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, destroyed magical laboratory",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor, clean, tidy",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "lockedExits": {
+        "SOUTH": 99
+      }
     },
     {
       "id": "pyromancers_folly:sentinel_chamber",
@@ -429,10 +432,25 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:iron_ore", "chance": 0.5, "minQuantity": 1, "maxQuantity": 2 },
-        { "itemId": "item:health_potion", "chance": 0.3, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:iron_ore",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 50, "maxCopper": 150, "minSilver": 2, "maxSilver": 5 }
+      "coinDrop": {
+        "minCopper": 50,
+        "maxCopper": 150,
+        "minSilver": 2,
+        "maxSilver": 5
+      }
     },
     {
       "id": "npc:bound_infernal",
@@ -458,9 +476,19 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:greater_health_potion", "chance": 0.4, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 80, "maxCopper": 200, "minSilver": 3, "maxSilver": 6 }
+      "coinDrop": {
+        "minCopper": 80,
+        "maxCopper": 200,
+        "minSilver": 3,
+        "maxSilver": 6
+      }
     },
     {
       "id": "npc:spectral_apprentice",
@@ -470,7 +498,7 @@
       "behaviorType": "wander",
       "hostile": true,
       "maxHp": 150,
-      "damage": 32,
+      "damage": 34,
       "level": 14,
       "xpReward": 220,
       "accuracy": 18,
@@ -486,9 +514,20 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:mana_potion", "chance": 0.35, "minQuantity": 1, "maxQuantity": 1 }
+        {
+          "itemId": "item:mana_potion",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
       ],
-      "coinDrop": { "minCopper": 40, "maxCopper": 100, "minSilver": 1, "maxSilver": 3 }
+      "coinDrop": {
+        "minCopper": 40,
+        "maxCopper": 100,
+        "minSilver": 1,
+        "maxSilver": 3
+      },
+      "hp": 170
     },
     {
       "id": "npc:ash_sentinel",
@@ -514,11 +553,33 @@
       "imageWidth": 512,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:sentinel_ember_core", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:greater_health_potion", "chance": 0.5, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:iron_ore", "chance": 0.5, "minQuantity": 2, "maxQuantity": 4 }
+        {
+          "itemId": "item:sentinel_ember_core",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_ore",
+          "chance": 0.5,
+          "minQuantity": 2,
+          "maxQuantity": 4
+        }
       ],
-      "coinDrop": { "minCopper": 100, "maxCopper": 300, "minSilver": 5, "maxSilver": 12, "minGold": 1, "maxGold": 2 }
+      "coinDrop": {
+        "minCopper": 100,
+        "maxCopper": 300,
+        "minSilver": 5,
+        "maxSilver": 12,
+        "minGold": 1,
+        "maxGold": 2
+      }
     },
     {
       "id": "npc:cinder_lich_vatric",
@@ -545,13 +606,45 @@
       "imageWidth": 384,
       "imageHeight": 384,
       "lootItems": [
-        { "itemId": "item:vatrics_ember_shard", "chance": 1.0, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:cinder_crown", "chance": 0.18, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:pyromancers_staff", "chance": 0.18, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:ashweave_robes", "chance": 0.18, "minQuantity": 1, "maxQuantity": 1 },
-        { "itemId": "item:greater_health_potion", "chance": 0.7, "minQuantity": 1, "maxQuantity": 2 }
+        {
+          "itemId": "item:vatrics_ember_shard",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:cinder_crown",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:pyromancers_staff",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:ashweave_robes",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.7,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
       ],
-      "coinDrop": { "minCopper": 0, "maxCopper": 200, "minSilver": 12, "maxSilver": 25, "minGold": 3, "maxGold": 7 }
+      "coinDrop": {
+        "minCopper": 0,
+        "maxCopper": 200,
+        "minSilver": 12,
+        "maxSilver": 25,
+        "minGold": 3,
+        "maxGold": 7
+      }
     }
   ]
 }
