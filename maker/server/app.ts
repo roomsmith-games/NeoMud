@@ -128,8 +128,18 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /**
- * Auto-import the default world as a shared read-only template.
- * Stored in projects/_shared/ so all users can see it.
+ * Auto-import the default world as a shared, admin-editable template.
+ * Stored in projects/_shared/. Visible only to ADMIN-role users via
+ * listProjects (db.ts) — they can edit and click Publish to push a new
+ * version of default-world to the marketplace. Non-admins never see it.
+ *
+ * Historically this was imported readOnly: true (the legacy "demo
+ * template" model). Post the admin-by-ownership refactor (NeoMud commit
+ * 1f7411e + NeoMud-Platform 9fb0207) we want admins to iterate on the
+ * demo world IN the Maker, so we import it editable. Existing _shared/
+ * DBs that were imported under the old readOnly: true regime are
+ * fixed-up in place on each startup so deploys don't require manual
+ * volume resets.
  */
 export async function autoImportDefaultWorld() {
   const nmdPath = process.env.NEOMUD_DEFAULT_WORLD
@@ -148,6 +158,26 @@ export async function autoImportDefaultWorld() {
   const dbPath = path.join(sharedDir, '_default_world.db')
 
   if (fs.existsSync(dbPath)) {
+    // Fix-up: ensure projectMeta.readOnly is 'false' even if this DB was
+    // imported under the legacy readOnly: true regime. Idempotent.
+    try {
+      const { PrismaClient } = await import('./generated/prisma/client.js')
+      const { PrismaBetterSqlite3 } = await import('@prisma/adapter-better-sqlite3')
+      const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` })
+      const tmp = new PrismaClient({ adapter })
+      try {
+        await tmp.projectMeta.upsert({
+          where: { key: 'readOnly' },
+          create: { key: 'readOnly', value: 'false' },
+          update: { value: 'false' },
+        })
+      } finally {
+        await tmp.$disconnect()
+      }
+    } catch (err) {
+      console.warn('[startup] Could not fix-up _default_world readOnly flag:', err instanceof Error ? err.message : err)
+    }
+
     const mtimePath = path.join(sharedDir, '_default_world.mtime')
     const storedMtime = fs.existsSync(mtimePath) ? fs.readFileSync(mtimePath, 'utf-8').trim() : null
     if (storedMtime === nmdMtime) {
@@ -160,9 +190,11 @@ export async function autoImportDefaultWorld() {
 
   try {
     console.log(`[startup] Importing default world from ${nmdPath}...`)
-    await importNmd(nmdPath, '_shared', '_default_world', true)
+    // readOnly: false — admins editing the shared template is the new flow
+    // (see Maker db.ts listProjects ADMIN-role gate).
+    await importNmd(nmdPath, '_shared', '_default_world', false)
     fs.writeFileSync(path.join(sharedDir, '_default_world.mtime'), nmdMtime)
-    console.log('[startup] Default world imported successfully as read-only shared template.')
+    console.log('[startup] Default world imported successfully as admin-editable shared template.')
   } catch (err) {
     console.error('[startup] Failed to import default world:', err)
   }
