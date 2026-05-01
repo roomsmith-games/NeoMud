@@ -31,12 +31,12 @@ jobs:
           distribution: corretto
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
-      - name: "[1/9] Run tests"
+      - name: "[1/8] Run tests"
         run: |
-          echo "[1/9] Running tests..."
+          echo "[1/8] Running tests..."
           ./gradlew packageWorld --rerun-tasks
           ./gradlew :shared:jvmTest :server:test --no-daemon
-          echo "[1/9] ✓ All tests passed"
+          echo "[1/8] ✓ All tests passed"
 
   deploy-server:
     needs: test
@@ -51,29 +51,29 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: "[2/9] Clean and build"
+      - name: "[2/8] Clean and build"
         run: |
-          echo "[2/9] Clean building..."
+          echo "[2/8] Clean building..."
           ./gradlew clean
           ./gradlew packageWorld --rerun-tasks
           ./gradlew :server:shadowJar --no-daemon
-          echo "[2/9] ✓ Build complete"
+          echo "[2/8] ✓ Build complete"
 
-      - name: "[3/9] Verify build artifacts"
+      - name: "[3/8] Verify build artifacts"
         run: |
-          echo "[3/9] Verifying artifacts..."
-          ls -lh server/build/libs/neomud-server.jar || { echo "[3/9] ✗ FATAL: shadowJar not found"; exit 1; }
-          ls -lh server/build/worlds/default-world.nmd || { echo "[3/9] ✗ FATAL: world bundle not found"; exit 1; }
-          echo "[3/9] ✓ Artifacts verified"
+          echo "[3/8] Verifying artifacts..."
+          ls -lh server/build/libs/neomud-server.jar || { echo "[3/8] ✗ FATAL: shadowJar not found"; exit 1; }
+          ls -lh server/build/worlds/default-world.nmd || { echo "[3/8] ✗ FATAL: world bundle not found"; exit 1; }
+          echo "[3/8] ✓ Artifacts verified"
 
-      - name: "[4/9] Log in to GHCR"
+      - name: "[4/8] Log in to GHCR"
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "[5/9] Build and push Docker image"
+      - name: "[5/8] Build and push Docker image"
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -82,34 +82,19 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/neomud-server:latest
             ghcr.io/${{ github.repository_owner }}/neomud-server:sha-${{ github.sha }}
 
-      - name: "[6/9] Deploy to staging"
+      - name: "[6/8] Deploy Docker image to VPS"
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY_STAGING }}
           script: |
-            echo "[6/9] Pulling new image and restarting..."
+            echo "[6/8] Pulling new game server image..."
             docker pull ghcr.io/${{ github.repository_owner }}/neomud-server:latest
-            docker ps --filter "label=neomud.worldId" -q | xargs -r docker stop
-            docker ps -a --filter "label=neomud.worldId" -q | xargs -r docker rm
             docker image prune -f
-            cd ~/neomud-staging
-            docker compose restart platform-stg
-            echo "[6/9] ✓ Platform restarted — game server will auto-start"
+            echo "[6/8] ✓ Image ready"
 
-      - name: "[7/9] Clean old world bundle"
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY_STAGING }}
-          script: |
-            echo "[7/9] Cleaning old bundle..."
-            rm -f /srv/neomud-assets/default-world.nmd
-            echo "[7/9] ✓ Cleaned"
-
-      - name: "[8/9] Upload world bundle"
+      - name: "[7/8] Upload seed bundle (first-boot safety net)"
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -120,10 +105,62 @@ jobs:
           strip_components: 3
           overwrite: true
 
-      - name: "[9/9] Verify staging health"
+      - name: "[8/8] Publish world via API + verify"
+        env:
+          STAGE_API: https://stage-api.neomud.app
+          ADMIN_EMAIL: ${{ secrets.STAGE_ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.STAGE_ADMIN_PASSWORD }}
         run: |
-          echo "[9/9] Waiting for staging to come up..."
-          sleep 30
-          curl -sf https://stage-api.neomud.app/api/v1/health || { echo "[9/9] ✗ API health check failed"; exit 1; }
-          echo "[9/9] ✓ API healthy"
-          curl -sf https://stage.neomud.app/health && echo " [9/9] ✓ Game server healthy" || echo "[9/9] ⚠ Game server may still be starting"
+          set -euo pipefail
+
+          MANIFEST_VER=$(jq -r .version maker/default_world_src/manifest.json)
+          MAJOR=$(echo "$MANIFEST_VER" | cut -d. -f1)
+          MINOR=$(echo "$MANIFEST_VER" | cut -d. -f2)
+          VERSION="${MAJOR}.${MINOR}.${{ github.run_number }}"
+          CHANGELOG="CI publish from $(echo '${{ github.sha }}' | head -c 7)"
+
+          echo "Publishing default-world v${VERSION}..."
+
+          # 1) Authenticate
+          TOKEN=$(curl -fsS -X POST "$STAGE_API/api/v1/auth/login" \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"$ADMIN_EMAIL\",\"password\":\"$ADMIN_PASSWORD\"}" \
+            | jq -r '.accessToken')
+          [ -n "$TOKEN" ] && [ "$TOKEN" != "null" ] || { echo "❌ Login failed"; exit 1; }
+          echo "✓ Authenticated"
+
+          # 2) Resolve world ID from slug
+          WORLD_ID=$(curl -fsS "$STAGE_API/api/v1/worlds/default-world" \
+            | jq -r '.id')
+          [ -n "$WORLD_ID" ] && [ "$WORLD_ID" != "null" ] || { echo "❌ World not found"; exit 1; }
+          echo "✓ World ID: $WORLD_ID"
+
+          # 3) Publish version (uploads bundle, retires old, auto-starts)
+          HTTP_CODE=$(curl -sS -o /tmp/publish-response.json -w '%{http_code}' \
+            -X POST "$STAGE_API/api/v1/worlds/$WORLD_ID/versions" \
+            -H "Authorization: Bearer $TOKEN" \
+            -F "version=$VERSION" \
+            -F "changelog=$CHANGELOG" \
+            -F "bundle=@server/build/worlds/default-world.nmd")
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "❌ Publish failed (HTTP $HTTP_CODE):"
+            cat /tmp/publish-response.json
+            exit 1
+          fi
+          echo "✓ Published: $(jq -c '{id,version,checksum}' /tmp/publish-response.json)"
+
+          # 4) Poll until game server is ONLINE (150s timeout)
+          echo "Waiting for game server..."
+          for i in $(seq 1 30); do
+            STATUS=$(curl -fsS "$STAGE_API/api/v1/worlds/$WORLD_ID" \
+              -H "Authorization: Bearer $TOKEN" \
+              | jq -r '.serverStatus // "UNKNOWN"')
+            if [ "$STATUS" = "ONLINE" ]; then
+              echo "✅ Game server ONLINE — v${VERSION} deployed"
+              exit 0
+            fi
+            echo "  [$i/30] serverStatus=$STATUS"
+            sleep 5
+          done
+          echo "⚠️ Game server not ONLINE after 150s (status=$STATUS)"
+          exit 1
