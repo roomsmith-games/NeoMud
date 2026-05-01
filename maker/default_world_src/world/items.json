@@ -1716,6 +1716,16 @@
       "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
     },
     {
+      "id": "item:stone_golem_heart",
+      "name": "Stone Golem Heart",
+      "description": "A dense crystalline core extracted from a Stone Sentinel. It pulses with residual warding energy, the animating force that once gave the construct life. The surface is etched with micro-scale glyph patterns too fine for the naked eye.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Dense crystalline stone core with faint golden energy veins, geometric facets, warding glyph micro-etchings, fantasy crafting material",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, crystal stone core, golden veins",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
       "id": "item:seal_essence",
       "name": "Seal Essence",
       "description": "A vial of liquid darkness with a core of golden light — the distilled remains of a Seal Shade. The darkness coils and writhes around the golden center, the two forces locked in eternal opposition. Alchemists would pay dearly for this.",

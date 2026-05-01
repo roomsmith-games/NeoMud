@@ -96,7 +96,7 @@
           "actionType": "PUZZLE_STEP",
           "actionData": {
             "puzzleGroupId": "seal_ward_glyphs",
-            "stepOrder": "0",
+            "puzzleStepIndex": "0",
             "puzzleTotalSteps": "3",
             "advanceMessage": "Your fingers trace the spiraling glyph. The golden light intensifies, and the pillar hums with renewed energy. The pattern seems to resonate with something deeper in the ruins.",
             "resetMessage": "The glyph's light flickers and dies. The sequence has been broken."
@@ -131,7 +131,7 @@
           "actionType": "PUZZLE_STEP",
           "actionData": {
             "puzzleGroupId": "seal_ward_glyphs",
-            "stepOrder": "1",
+            "puzzleStepIndex": "1",
             "puzzleTotalSteps": "3",
             "advanceMessage": "You press your palm against the arch fragment's glyph. It flares to life, and a distant hum rises from the direction of the forecourt.",
             "resetMessage": "The glyph's light fades. You'll need to restart the sequence from the pillars."
@@ -288,7 +288,8 @@
       "y": 31,
       "exits": {
         "SOUTH": "first_seal:inner_approach",
-        "WEST": "first_seal:overgrown_plaza"
+        "WEST": "first_seal:overgrown_plaza",
+        "EAST": "first_seal:seal_threshold"
       },
       "lockedExits": {
         "EAST": 99
@@ -308,7 +309,7 @@
           "actionType": "PUZZLE_STEP",
           "actionData": {
             "puzzleGroupId": "seal_ward_glyphs",
-            "stepOrder": "2",
+            "puzzleStepIndex": "2",
             "puzzleTotalSteps": "3",
             "successDirection": "EAST",
             "successMessage": "You complete the glyph sequence. All three points of the warding triangle flare to life simultaneously, and a beam of golden light lances from the central glyph to the sealed stairway. Ancient locks disengage with a grinding of stone on stone, and the passage to the Cradle of the Seal stands open.",

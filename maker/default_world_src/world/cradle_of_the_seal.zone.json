@@ -82,6 +82,9 @@
         "EAST": "cradle_of_the_seal:outer_ring",
         "SOUTH": "cradle_of_the_seal:west_passage"
       },
+      "lockedExits": {
+        "SOUTH": 99
+      },
       "backgroundImage": "cradle_of_the_seal_ward_chamber",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
