@@ -152,8 +152,7 @@ jobs:
           # 4) Poll until game server is ONLINE (150s timeout)
           echo "Waiting for game server..."
           for i in $(seq 1 30); do
-            STATUS=$(curl -fsS "$STAGE_API/api/v1/worlds/$WORLD_ID" \
-              -H "Authorization: Bearer $TOKEN" \
+            STATUS=$(curl -fsS "$STAGE_API/api/v1/worlds/default-world" \
               | jq -r '.serverStatus // "UNKNOWN"')
             if [ "$STATUS" = "ONLINE" ]; then
               echo "✅ Game server ONLINE — v${VERSION} deployed"
