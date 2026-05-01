@@ -1637,6 +1637,155 @@
       "imagePrompt": "A single crude lockpick fashioned from bent salvaged wire, rough but functional tool, sense of improvised craftsmanship. Centered, isolated object, no surface, no hands.",
       "imageStyle": "fantasy item sprite, game icon, clean edges, solid white background, detailed, crude tool, dark metal wire",
       "imageNegativePrompt": "background, surface, table, hands, person, multiple items, modern, sci-fi, polished, elegant"
+    },
+    {
+      "id": "item:seal_guardian_sigil",
+      "name": "Seal-Guardian's Sigil",
+      "description": "A disc of pure golden light solidified into crystal, bearing the unmistakable pattern of the First Seal. It hums with contained power and warmth. This is the fourth fragment in the chain of ward-pieces — the Wardens scattered their authority across multiple seals to prevent any single point of failure.",
+      "type": "quest",
+      "slot": "none",
+      "imagePrompt": "Golden crystallized disc of solidified light bearing an intricate seal pattern, glowing with warm golden energy, ward symbols visible within, fantasy quest item",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, golden crystal seal disc, glowing",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:seal_keeper_notes",
+      "name": "Seal-Keeper's Notes",
+      "description": "Taren's careful observations, written in a precise hand on preserved vellum. The notes detail the seal's deterioration, the ward-points' behavior, and the riddle of the bronze door. Most valuable is his analysis of the Guardian — it fights to protect, not to kill. Understanding its purpose is the key to surviving it.",
+      "type": "quest",
+      "slot": "none",
+      "imagePrompt": "Bundle of preserved vellum pages tied with cord, precise handwriting visible, seal diagrams and ward-point sketches, fantasy quest document",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, vellum notes, scholarly document",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:first_seal_blade",
+      "name": "First Seal Blade",
+      "description": "A longsword forged from warding-steel, its blade etched with the same glyph patterns that power the First Seal. The edge never dulls, maintained by the residual warding energy that suffuses the metal. In the hands of a worthy wielder, it hums with quiet, terrible purpose.",
+      "type": "equipment",
+      "slot": "weapon",
+      "damageBonus": 23,
+      "damageRange": 15,
+      "levelRequirement": 18,
+      "imagePrompt": "Elegant longsword with blade of golden-tinged warding steel, etched with intricate glyph patterns, faint golden glow along the edge, ornate guard with seal design, fantasy weapon",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, glowing longsword, golden glyph etchings",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime, hand, person"
+    },
+    {
+      "id": "item:sealwoven_mail",
+      "name": "Sealwoven Mail",
+      "description": "Chainmail woven from links of warding-steel, each ring individually inscribed with a micro-glyph. The armor is impossibly light for its apparent bulk, and it radiates a constant warmth. When struck, the glyph-links flare gold and redistribute the force across the entire mesh.",
+      "type": "equipment",
+      "slot": "chest",
+      "armorValue": 21,
+      "levelRequirement": 18,
+      "imagePrompt": "Chainmail armor woven from golden-tinged steel links with tiny glyph inscriptions on each ring, radiating warm golden light, impossibly fine craftsmanship, fantasy chest armor",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, golden chainmail, glowing glyph links",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime, person, mannequin"
+    },
+    {
+      "id": "item:guardian_aegis",
+      "name": "Guardian's Aegis",
+      "description": "A round shield of polished bronze and obsidian, its face bearing the sigil of the Seal-Guardian. When raised in defense, the sigil projects a brief barrier of golden warding energy that absorbs incoming blows. The shield is warm to the touch and hums when danger is near.",
+      "type": "equipment",
+      "slot": "shield",
+      "armorValue": 10,
+      "levelRequirement": 18,
+      "imagePrompt": "Round shield of polished bronze and black obsidian, golden seal sigil on the face projecting faint golden energy barrier, warm glow, fantasy shield",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, bronze obsidian shield, golden sigil",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime, person, arm"
+    },
+    {
+      "id": "item:sentinel_core_fragment",
+      "name": "Sentinel Core Fragment",
+      "description": "A shard of crystallized warding energy, extracted from the chest of a Seal Sentinel. It pulses with steady golden light and feels warm in your hand. The fragment could serve as a focusing component for the ward-amplification altar in the Cradle.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Shard of crystallized golden energy, pulsing with warm golden light, geometric crystal facets, fantasy crafting component",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, golden crystal shard, pulsing light",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:glyph_stone",
+      "name": "Glyph Stone",
+      "description": "A small stone bearing a single warding glyph that still glows faintly. Extracted from the remains of a Glyph Wraith. The glyph's pattern is unique — no two are alike, each one a fragment of the greater seal design.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Small dark stone with single glowing golden glyph symbol, faint warm glow, unique pattern, fantasy crafting material",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, glyph stone, golden symbol",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:seal_essence",
+      "name": "Seal Essence",
+      "description": "A vial of liquid darkness with a core of golden light — the distilled remains of a Seal Shade. The darkness coils and writhes around the golden center, the two forces locked in eternal opposition. Alchemists would pay dearly for this.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Glass vial containing liquid darkness coiling around a core of golden light, two opposing forces, fantasy alchemical ingredient",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, vial, dark liquid with golden core",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:corrupted_warden_badge",
+      "name": "Corrupted Warden's Badge",
+      "description": "The rank badge of a fallen Warden, its once-golden surface tarnished by dark corruption. The Warden's name is still legible beneath the corruption: a reminder that even the most dedicated guardians can fall.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Tarnished golden rank badge with dark corruption stains, Warden seal partially visible beneath corrosion, fantasy badge",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, tarnished golden badge, corrupted",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:serpent_scale",
+      "name": "Coastal Serpent Scale",
+      "description": "An iridescent scale from a coastal serpent, hardened by exposure to the seal's ambient energy. The scale shifts color in the light, revealing hidden glyph patterns etched into its surface by centuries of proximity to the warding field.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Large iridescent serpent scale with hidden glyph patterns visible when light shifts, hardened and shimmering, fantasy crafting material",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, iridescent scale, glyph patterns",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:prowler_fang",
+      "name": "Seal Prowler Fang",
+      "description": "A fang from a seal prowler, crackling with residual static energy. The tooth is longer and sharper than any natural wolf's, warped by generations of exposure to the seal's power.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Large sharp wolf fang crackling with golden static energy, warped and elongated, fantasy crafting material",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, wolf fang, golden static",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:fanatic_totem",
+      "name": "Fanatic's Totem",
+      "description": "A crude totem carved from bone, covered in blood-drawn glyphs. The seal fanatics believe these totems channel the will of the entity beneath the seal. Whether or not that's true, the totem radiates a palpable aura of wrongness.",
+      "type": "crafting",
+      "slot": "none",
+      "imagePrompt": "Crude bone totem carved with blood-drawn glyph symbols, emanating dark aura, primitive ritual object, fantasy crafting material",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, bone totem, dark aura",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:seal_ward_scroll",
+      "name": "Scroll of Seal-Ward",
+      "description": "A scroll inscribed with a protective ward derived from the seal's own patterns. When read, it temporarily bolsters the reader's defenses against the corrupted energies found near the First Seal.",
+      "type": "consumable",
+      "slot": "none",
+      "effect": "buff_damage:-6:20",
+      "imagePrompt": "Rolled parchment scroll with golden warding glyph seal, protective ward inscription visible, golden glow, fantasy consumable",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, scroll, golden seal",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+    },
+    {
+      "id": "item:greater_fortifying_tonic",
+      "name": "Greater Fortifying Tonic",
+      "description": "A thick, amber tonic brewed from rare coastal herbs and seal-energy-infused minerals. Drinking it temporarily hardens the body against physical trauma.",
+      "type": "consumable",
+      "slot": "none",
+      "effect": "heal:35",
+      "imagePrompt": "Thick amber liquid in a sturdy glass flask, swirling with mineral particles, cork stopper, fantasy healing potion",
+      "imageStyle": "fantasy item sprite, clean edges, game asset, amber potion flask",
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
     }
   ]
 }

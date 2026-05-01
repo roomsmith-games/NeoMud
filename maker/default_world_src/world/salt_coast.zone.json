@@ -233,11 +233,12 @@
     {
       "id": "salt_coast:lighthouse_ruin",
       "name": "Lighthouse Ruin",
-      "description": "A great round tower of fitted stone, broken halfway up its height — the upper courses fallen long ago, the lantern-room and its mirror-wheel scattered as cold rubble across the rocks below. The doorway gapes empty. The base of the tower still smells faintly of old whale-oil.",
+      "description": "A great round tower of fitted stone, broken halfway up its height — the upper courses fallen long ago, the lantern-room and its mirror-wheel scattered as cold rubble across the rocks below. The doorway gapes empty. The base of the tower still smells faintly of old whale-oil. Eastward, ancient stone markers line the cliff edge, marking a forgotten road along the coast.",
       "x": 3,
       "y": 30,
       "exits": {
-        "WEST": "salt_coast:tide_pools"
+        "WEST": "salt_coast:tide_pools",
+        "EAST": "first_seal:coastal_bluffs"
       },
       "backgroundImage": "/assets/images/rooms/salt_coast_lighthouse_ruin.webp",
       "departSound": "footstep_stone",

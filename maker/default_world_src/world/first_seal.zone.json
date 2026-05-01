@@ -1,0 +1,637 @@
+{
+  "id": "first_seal",
+  "name": "First Seal Approach",
+  "description": "The ancient coastline east of the Salt Coast, where the Wardens built the first of their great seals millennia ago. Weathered pylons and crumbling roads hint at a civilization that poured everything into containing what lies below. The air hums with residual warding energy, and the local wildlife has been warped by centuries of exposure.",
+  "safe": false,
+  "bgm": "gorge_danger",
+  "levelRange": "16-18",
+  "spawnConfig": {
+    "maxNpcsPerRoom": 2,
+    "spawnIntervalTicks": 8,
+    "maxTotalNpcs": 10
+  },
+  "imageStyle": "fantasy landscape, ancient ruins on coastal cliffs, weathered stone pylons, overgrown with vines, moody sky, digital painting, muted blues and grays with golden rune-glow accents",
+  "imageNegativePrompt": "modern, sci-fi, anime, cartoon, bright colors, cheerful, people, characters, text, watermark",
+  "rooms": [
+    {
+      "id": "first_seal:coastal_bluffs",
+      "name": "Coastal Bluffs",
+      "description": "Wind-scoured bluffs rise above a churning sea. Ancient stone markers, their inscriptions long eroded, line the cliff edge like silent sentinels. The grass is coarse and salt-bleached, bent permanently eastward by the relentless gale. Ahead, the remnants of a paved road lead deeper along the coast.",
+      "x": 4,
+      "y": 30,
+      "exits": {
+        "WEST": "salt_coast:lighthouse_ruin",
+        "EAST": "first_seal:eroded_path",
+        "SOUTH": "first_seal:tidal_cave"
+      },
+      "backgroundImage": "first_seal_coastal_bluffs",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Dramatic coastal cliff edge with ancient weathered stone markers and pylons, coarse salt-bleached grass, churning gray sea below, overcast sky, remnants of old stone road, fantasy landscape painting",
+      "imageStyle": "fantasy landscape, atmospheric, muted palette, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, cartoon, text, bright cheerful colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:tidal_cave",
+      "name": "Tidal Cave",
+      "description": "A sea-carved cave in the cliff face, accessible only at low tide. The walls glisten with brine and mineral deposits. Strange phosphorescent algae casts a sickly green glow across tide pools full of unusual creatures. The back wall looks unnaturally smooth, as if something was sealed behind it long ago.",
+      "x": 4,
+      "y": 29,
+      "exits": {
+        "NORTH": "first_seal:coastal_bluffs"
+      },
+      "backgroundImage": "first_seal_tidal_cave",
+      "departSound": "footstep_water",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Sea cave interior with glistening wet walls, phosphorescent green algae, tide pools, smooth back wall with faint carved runes, dim atmospheric lighting, fantasy underground cavern",
+      "imageStyle": "fantasy landscape, cave interior, atmospheric, moody green-blue lighting",
+      "imageNegativePrompt": "modern, characters, anime, bright, cheerful, text",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:eroded_path",
+      "name": "Eroded Path",
+      "description": "The ancient road continues east, its flagstones cracked and tilted by centuries of freeze and thaw. Salt-crusted shrubs cling to the gaps between stones. To the north, a line of massive stone pillars stands against the sky, each carved with spiraling glyphs that still faintly pulse with warding light.",
+      "x": 5,
+      "y": 30,
+      "exits": {
+        "WEST": "first_seal:coastal_bluffs",
+        "NORTH": "first_seal:warden_pillars",
+        "EAST": "first_seal:seal_road"
+      },
+      "backgroundImage": "first_seal_eroded_path",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Ancient cracked stone road along coastal cliffs, salt-crusted shrubs, massive carved stone pylons visible on the horizon to the north, overcast sky, fantasy landscape, weathered and atmospheric",
+      "imageStyle": "fantasy landscape, ruins, coastal, muted colors, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:warden_pillars",
+      "name": "Warden Pillars",
+      "description": "Six massive stone pillars rise thirty feet from a circular foundation of fitted basalt. Each pillar bears spiraling glyphs that glow faintly gold in sequence, as if the warding enchantment still cycles through its ancient pattern. The air between the pillars thrums with barely-perceptible energy. Something powerful was contained here — or still is.",
+      "x": 5,
+      "y": 31,
+      "exits": {
+        "SOUTH": "first_seal:eroded_path",
+        "EAST": "first_seal:collapsed_arch"
+      },
+      "backgroundImage": "first_seal_warden_pillars",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Circle of six massive ancient stone pillars on a basalt foundation, spiraling golden glyphs glowing on each pillar, mystical atmospheric energy between them, overcast sky, fantasy ancient ruins",
+      "imageStyle": "fantasy landscape, ancient magic, golden glow accents, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "glyph_pillar_alpha",
+          "description": "The first pillar's glyphs pulse steadily. You could trace the pattern with your hand.",
+          "actionType": "PUZZLE_STEP",
+          "actionData": {
+            "puzzleGroupId": "seal_ward_glyphs",
+            "stepOrder": "0",
+            "puzzleTotalSteps": "3",
+            "advanceMessage": "Your fingers trace the spiraling glyph. The golden light intensifies, and the pillar hums with renewed energy. The pattern seems to resonate with something deeper in the ruins.",
+            "resetMessage": "The glyph's light flickers and dies. The sequence has been broken."
+          },
+          "label": "Glowing Glyph Pillar"
+        }
+      ]
+    },
+    {
+      "id": "first_seal:collapsed_arch",
+      "name": "Collapsed Arch",
+      "description": "A great stone archway has fallen here, its keystone cracked and lying amid rubble. The arch once marked the formal entrance to the Seal Approach — carved reliefs on the surviving sections show robed figures performing a binding ritual. Beyond the rubble, the ruins grow denser and more deliberate.",
+      "x": 6,
+      "y": 31,
+      "exits": {
+        "WEST": "first_seal:warden_pillars",
+        "SOUTH": "first_seal:seal_road",
+        "EAST": "first_seal:overgrown_plaza"
+      },
+      "backgroundImage": "first_seal_collapsed_arch",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Massive collapsed stone archway with carved reliefs showing robed ritual figures, rubble scattered, ancient ruins beyond, overcast moody sky, fantasy landscape",
+      "imageStyle": "fantasy landscape, ruins, atmospheric, carved stone reliefs, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "glyph_arch_beta",
+          "description": "A section of the fallen arch still bears a glowing glyph, matching the pattern on the pillars.",
+          "actionType": "PUZZLE_STEP",
+          "actionData": {
+            "puzzleGroupId": "seal_ward_glyphs",
+            "stepOrder": "1",
+            "puzzleTotalSteps": "3",
+            "advanceMessage": "You press your palm against the arch fragment's glyph. It flares to life, and a distant hum rises from the direction of the forecourt.",
+            "resetMessage": "The glyph's light fades. You'll need to restart the sequence from the pillars."
+          },
+          "label": "Arch Glyph Fragment"
+        }
+      ]
+    },
+    {
+      "id": "first_seal:seal_road",
+      "name": "Seal Road",
+      "description": "The ancient road widens here into a proper avenue, its stones fitted so precisely that even after millennia, barely a blade of grass grows between them. Ward-stones line both sides, their carved eyes gazing inward at travelers. The craftsmanship speaks of absolute dedication to a single purpose: keeping something contained.",
+      "x": 6,
+      "y": 30,
+      "exits": {
+        "WEST": "first_seal:eroded_path",
+        "NORTH": "first_seal:collapsed_arch",
+        "EAST": "first_seal:sentinel_grounds",
+        "SOUTH": "first_seal:sunken_garden"
+      },
+      "backgroundImage": "first_seal_seal_road",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Wide ancient stone avenue with perfectly fitted stones, ward-stones with carved watchful eyes lining both sides, moody overcast sky, ancient ruins in the distance, fantasy road",
+      "imageStyle": "fantasy landscape, ancient road, atmospheric, symmetrical, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "pressure_plate_trap",
+          "description": "One of the road stones sits slightly higher than its neighbors.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "actionData": {
+            "damage": "22",
+            "saveStat": "AGILITY",
+            "perceptionDC": "16",
+            "saveDC": "16",
+            "damageType": "physical",
+            "noticeMessage": "You spot a pressure plate hidden among the flagstones — ward-stones on either side are aimed inward.",
+            "triggerMessage": "You step on a loose flagstone. The ward-stones flanking the road flare with golden light and a bolt of concentrated warding energy strikes you!",
+            "saveMessage": "The ward-stones fire, but you dive aside as the energy bolt scorches the ground where you stood.",
+            "failMessage": "A bolt of warding energy catches you square in the chest, burning with ancient power."
+          },
+          "label": "Loose Flagstone"
+        }
+      ]
+    },
+    {
+      "id": "first_seal:sunken_garden",
+      "name": "Sunken Garden",
+      "description": "A terraced garden has sunk below the level of the surrounding ruins, its once-manicured beds now choked with salt-resistant weeds and stunted trees. A cracked fountain at the center still weeps a thin trickle of brackish water. The garden walls are carved with scenes of the Wardens' vigil — robed figures standing guard over a great circle of light.",
+      "x": 6,
+      "y": 29,
+      "exits": {
+        "NORTH": "first_seal:seal_road",
+        "EAST": "first_seal:keeper_outpost"
+      },
+      "backgroundImage": "first_seal_sunken_garden",
+      "departSound": "footstep_grass",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Sunken terraced garden in ancient ruins, overgrown with weeds and stunted trees, cracked stone fountain with trickling water, carved wall reliefs of robed guardians, fantasy landscape, moody",
+      "imageStyle": "fantasy landscape, overgrown ruins, garden, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:sentinel_grounds",
+      "name": "Sentinel Grounds",
+      "description": "A broad open area paved in dark stone, ringed by the remains of great statues. Only three of the original twelve still stand — faceless stone warriors in archaic armor, each twice the height of a man. The broken statues lie in pieces across the grounds, their severed limbs and shattered torsos slowly being reclaimed by lichen and moss.",
+      "x": 7,
+      "y": 30,
+      "exits": {
+        "WEST": "first_seal:seal_road",
+        "NORTH": "first_seal:overgrown_plaza",
+        "EAST": "first_seal:inner_approach"
+      },
+      "backgroundImage": "first_seal_sentinel_grounds",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Broad dark stone paved area with massive ancient warrior statues, some broken and fallen, lichen and moss growing on ruins, three intact faceless stone warriors standing, atmospheric moody sky",
+      "imageStyle": "fantasy landscape, ancient sentinel statues, ruins, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:overgrown_plaza",
+      "name": "Overgrown Plaza",
+      "description": "What was once a grand ceremonial plaza is now a tangle of salt-hardy vegetation pushing through cracked marble. The outline of a great circle is still visible in the stonework — a smaller echo of the seal pattern itself. Stone benches line the edges, their surfaces worn smooth by wind and time.",
+      "x": 7,
+      "y": 31,
+      "exits": {
+        "SOUTH": "first_seal:sentinel_grounds",
+        "WEST": "first_seal:collapsed_arch",
+        "EAST": "first_seal:pillar_walk"
+      },
+      "backgroundImage": "first_seal_overgrown_plaza",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Grand ceremonial plaza overgrown with vegetation pushing through cracked marble, circular pattern visible in stonework, stone benches, ancient ruins, moody overcast lighting, fantasy",
+      "imageStyle": "fantasy landscape, overgrown ruins, marble plaza, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:keeper_outpost",
+      "name": "Keeper's Outpost",
+      "description": "A small stone building, remarkably intact compared to the surrounding ruins. Someone has repaired the roof with salvaged timber and oiled canvas. A fire pit outside still holds warm coals, and supplies are stacked neatly against one wall. This is clearly a lived-in space — the last keeper of the First Seal still maintains their vigil.",
+      "x": 7,
+      "y": 29,
+      "exits": {
+        "WEST": "first_seal:sunken_garden",
+        "NORTH": "first_seal:inner_approach"
+      },
+      "backgroundImage": "first_seal_keeper_outpost",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "Small intact stone building amid ancient ruins, repaired roof with timber and canvas, warm fire pit outside, supplies stacked neatly, lived-in outpost, fantasy landscape, warm lighting",
+      "imageStyle": "fantasy landscape, cozy outpost in ruins, warm tones, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright cheerful, damaged",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:inner_approach",
+      "name": "Inner Approach",
+      "description": "The ruins close in here, forming a natural corridor of crumbling walls and toppled columns. The warding energy is palpable now — the air tastes of copper and ozone, and your skin prickles with static. Every surface bears glyphs, some still glowing, others dark and cracked. Whatever the Wardens sealed, you are drawing close to it.",
+      "x": 8,
+      "y": 30,
+      "exits": {
+        "WEST": "first_seal:sentinel_grounds",
+        "SOUTH": "first_seal:keeper_outpost",
+        "NORTH": "first_seal:seal_forecourt",
+        "EAST": "first_seal:rift_overlook"
+      },
+      "backgroundImage": "first_seal_inner_approach",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Narrow corridor formed by crumbling ancient walls and toppled columns, glowing golden glyphs on every surface, copper-ozone atmosphere, static energy in the air, fantasy ruins approach",
+      "imageStyle": "fantasy landscape, ancient corridor, glowing glyphs, atmospheric energy, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:seal_forecourt",
+      "name": "Seal Forecourt",
+      "description": "A vast semicircular courtyard before the entrance to the Cradle. The pavement is inlaid with a massive warding circle in brass and obsidian, still intact despite the ruin of everything around it. The circle's geometric precision is breathtaking — every line, every angle calculated to contain and redirect enormous amounts of arcane energy. At the far edge, a stairway descends into darkness.",
+      "x": 8,
+      "y": 31,
+      "exits": {
+        "SOUTH": "first_seal:inner_approach",
+        "WEST": "first_seal:overgrown_plaza"
+      },
+      "lockedExits": {
+        "EAST": 99
+      },
+      "backgroundImage": "first_seal_seal_forecourt",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Vast semicircular courtyard with massive warding circle inlaid in brass and obsidian in the pavement, geometric precision, stairway descending into darkness at the edge, ancient ruins, atmospheric",
+      "imageStyle": "fantasy landscape, ancient courtyard, warding circle, brass and obsidian, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "glyph_forecourt_gamma",
+          "description": "The central glyph of the warding circle pulses with dormant energy. It matches the pattern from the pillars and the arch.",
+          "actionType": "PUZZLE_STEP",
+          "actionData": {
+            "puzzleGroupId": "seal_ward_glyphs",
+            "stepOrder": "2",
+            "puzzleTotalSteps": "3",
+            "successDirection": "EAST",
+            "successMessage": "You complete the glyph sequence. All three points of the warding triangle flare to life simultaneously, and a beam of golden light lances from the central glyph to the sealed stairway. Ancient locks disengage with a grinding of stone on stone, and the passage to the Cradle of the Seal stands open.",
+            "resetMessage": "The glyph's light dies. The sequence must be restarted from the Warden Pillars.",
+            "alreadySolvedMessage": "The warding triangle is already active. The passage to the Cradle stands open."
+          },
+          "label": "Central Warding Glyph"
+        }
+      ]
+    },
+    {
+      "id": "first_seal:seal_threshold",
+      "name": "Seal Threshold",
+      "description": "The stairway descends through a narrow passage cut from living rock, its walls lined with the most intricate warding glyphs you have seen — layer upon layer of containment magic, redundancy built upon redundancy. The Wardens were not merely cautious. They were terrified. A cold draft rises from below, carrying the scent of ancient stone and something else — something that makes the hair on your arms stand on end.",
+      "x": 9,
+      "y": 31,
+      "exits": {
+        "WEST": "first_seal:seal_forecourt",
+        "DOWN": "cradle_of_the_seal:descent"
+      },
+      "backgroundImage": "first_seal_seal_threshold",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Narrow stone stairway descending through carved rock, intricate layered golden warding glyphs covering every wall surface, cold draft rising from below, atmospheric moody lighting, fantasy dungeon entrance",
+      "imageStyle": "fantasy landscape, dungeon entrance, warding glyphs, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:rift_overlook",
+      "name": "Rift Overlook",
+      "description": "The cliff edge drops away sharply here, revealing a dizzying view down into a great rift in the earth. Far below, at the bottom of the chasm, you can see a faint golden glow — the First Seal itself, still burning after all these millennia. The scale of it is staggering. The entire Cradle was built inside this natural fissure, and the seal spans its full width.",
+      "x": 9,
+      "y": 30,
+      "exits": {
+        "WEST": "first_seal:inner_approach"
+      },
+      "backgroundImage": "first_seal_rift_overlook",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Dramatic cliff edge overlooking a vast rift in the earth, faint golden glow from a massive seal visible far below, dizzying height, ancient ruins on the cliff edge, atmospheric moody sky, fantasy landscape",
+      "imageStyle": "fantasy landscape, dramatic overlook, golden glow from below, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:pillar_walk",
+      "name": "Pillar Walk",
+      "description": "A long colonnade of square-cut pillars stretches east to west, their surfaces carved with the names and deeds of every Warden who served at this seal. Thousands of names, spanning centuries. The most recent entries are faded but legible — the last guardians wrote with increasing urgency about cracks in the seal and dwindling numbers. The final entry reads simply: 'Taren remains. May that be enough.'",
+      "x": 8,
+      "y": 32,
+      "exits": {
+        "WEST": "first_seal:overgrown_plaza",
+        "EAST": "first_seal:watcher_perch"
+      },
+      "backgroundImage": "first_seal_pillar_walk",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Long colonnade of square stone pillars with carved names and inscriptions covering every surface, atmospheric lighting, ancient memorial hall, fantasy ruins, solemn mood",
+      "imageStyle": "fantasy landscape, colonnade, carved stone, atmospheric, memorial, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "first_seal:watcher_perch",
+      "name": "Watcher's Perch",
+      "description": "An elevated stone platform at the eastern end of the Pillar Walk, built as a watch post overlooking the approaches from three directions. A crumbling parapet offers some shelter from the wind. From here you can see the full extent of the Seal Approach — the ancient road, the broken arch, the sentinel grounds, the forecourt with its great warding circle. It is beautiful and terrible in its ruined grandeur.",
+      "x": 9,
+      "y": 32,
+      "exits": {
+        "WEST": "first_seal:pillar_walk"
+      },
+      "backgroundImage": "first_seal_watcher_perch",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Elevated stone watchtower platform with crumbling parapet, panoramic view of ancient ruins below including roads and warding circles, dramatic sky, fantasy landscape, elevated vantage point",
+      "imageStyle": "fantasy landscape, watchtower, panoramic view, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:seal_prowler",
+      "name": "Seal Prowler",
+      "description": "A large wolf-like creature whose fur crackles with residual warding energy. Its eyes glow with the same golden light as the glyphs, and arcs of static discharge snap between its hackles as it moves. The centuries of seal-energy exposure have twisted it into something more than natural.",
+      "startRoomId": "first_seal:eroded_path",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 195,
+      "damage": 39,
+      "level": 16,
+      "xpReward": 280,
+      "accuracy": 21,
+      "defense": 17,
+      "evasion": 19,
+      "agility": 18,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "beast_death",
+      "imagePrompt": "Full-body large wolf-like creature with fur crackling with golden static energy, glowing golden eyes, arcs of electricity between hackles, warped by magical exposure, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, magical wolf beast, golden energy crackling",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:prowler_fang",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 8,
+        "max": 18
+      }
+    },
+    {
+      "id": "npc:glyph_wraith",
+      "name": "Glyph Wraith",
+      "description": "The translucent specter of a long-dead Warden, still patrolling the ruins in death as it did in life. Golden glyphs orbit its form like slow-spinning halos. Its face is set in an expression of eternal vigilance — it attacks anything it perceives as a threat to the seal.",
+      "startRoomId": "first_seal:warden_pillars",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 175,
+      "damage": 37,
+      "level": 16,
+      "xpReward": 260,
+      "accuracy": 20,
+      "defense": 15,
+      "evasion": 21,
+      "agility": 20,
+      "attackSound": "ghost_slash",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body translucent spectral Warden figure in ancient robes, golden glyph symbols orbiting the form like halos, vigilant expression, ghostly blue-white with golden accents, facing viewer. Single character, isolated on solid white background.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, spectral ghost, golden glyph effects",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple characters, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:glyph_stone",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 6,
+        "max": 14
+      }
+    },
+    {
+      "id": "npc:stone_sentinel",
+      "name": "Stone Sentinel",
+      "description": "One of the ancient guardian statues has stirred to life, animated by residual warding magic. It moves with grinding deliberation, its stone fists capable of crushing bone. Cracks in its surface leak golden light. It attacks with the same mechanical precision with which it was carved.",
+      "startRoomId": "first_seal:sentinel_grounds",
+      "behaviorType": "patrol",
+      "patrolRoute": [
+        "first_seal:sentinel_grounds",
+        "first_seal:seal_road",
+        "first_seal:inner_approach"
+      ],
+      "hostile": true,
+      "maxHp": 250,
+      "damage": 43,
+      "level": 17,
+      "xpReward": 350,
+      "accuracy": 19,
+      "defense": 24,
+      "evasion": 8,
+      "agility": 8,
+      "attackSound": "golem_slam",
+      "missSound": "golem_miss",
+      "deathSound": "golem_collapse",
+      "imagePrompt": "Full-body massive animated stone warrior statue, cracks leaking golden light, ancient carved armor, grinding stone fists, mechanical pose, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, stone golem construct, golden light cracks",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:stone_golem_heart",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 10,
+        "max": 22
+      }
+    },
+    {
+      "id": "npc:seal_fanatic",
+      "name": "Seal Fanatic",
+      "description": "A wild-eyed human in tattered robes, covered in self-carved glyphs that weep blood. These cultists believe the sealed entity is a god deserving of freedom. They've been coming in greater numbers as the seal weakens, and they attack Wardens and travelers alike with fanatical fury.",
+      "startRoomId": "first_seal:overgrown_plaza",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 210,
+      "damage": 41,
+      "level": 17,
+      "xpReward": 320,
+      "accuracy": 21,
+      "defense": 18,
+      "evasion": 16,
+      "agility": 16,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "Full-body wild-eyed human cultist in tattered dark robes, self-carved bleeding glyph symbols on arms and face, fanatical expression, crude ritual dagger, facing viewer. Single character, isolated on solid white background.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, dark cultist, tattered robes",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple characters, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:fanatic_totem",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 5,
+        "max": 12
+      }
+    },
+    {
+      "id": "npc:coastal_serpent",
+      "name": "Coastal Serpent",
+      "description": "A massive sea serpent that has adapted to the rocky coast, its iridescent scales hardened by salt and seal-energy exposure. It strikes from crevices and tide pools with terrifying speed, its fangs dripping with a paralytic venom.",
+      "startRoomId": "first_seal:tidal_cave",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 185,
+      "damage": 38,
+      "level": 16,
+      "xpReward": 270,
+      "accuracy": 22,
+      "defense": 14,
+      "evasion": 22,
+      "agility": 21,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "beast_death",
+      "imagePrompt": "Full-body large coastal sea serpent with iridescent hardened scales, dripping fangs, coiled strike pose, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, sea serpent, iridescent scales",
+      "imageNegativePrompt": "background, scenery, ground, shadow, water, multiple creatures, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:serpent_scale",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "min": 7,
+        "max": 16
+      }
+    },
+    {
+      "id": "npc:seal_keeper_taren",
+      "name": "Seal-Keeper Taren",
+      "description": "A weathered man in patched Warden's robes, his beard long and gray, his eyes sharp despite his years. He is the last of the Seal-Keepers — the final link in an unbroken chain of guardians stretching back millennia. He carries the weight of that duty in every line of his face, but his grip on his staff is steady.",
+      "startRoomId": "first_seal:keeper_outpost",
+      "behaviorType": "idle",
+      "hostile": false,
+      "interactSound": "npc_greet",
+      "exitSound": "enchantress_exit",
+      "grantItemId": "item:seal_keeper_notes",
+      "grantItemFlag": "taren_notes_given",
+      "imagePrompt": "Full-body weathered elderly man in patched gray Warden's robes, long gray beard, sharp intelligent eyes, sturdy wooden staff, standing straight with quiet dignity, facing viewer. Single character, isolated on solid white background.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, elderly guardian, patched gray robes",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple characters, portrait crop, modern, sci-fi, anime, young",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "interactMessage": "Taren looks up from his watch-fire. \"Another seeker. The seal weakens — I feel it in the stones. The fanatics come more boldly now, and the constructs grow restless.\" He hands you a bundle of carefully preserved notes. \"My observations. The patterns, the ward-points, what I've learned about the Guardian below. You'll need them if you mean to descend into the Cradle.\"",
+      "lootItems": []
+    },
+    {
+      "id": "npc:seal_road_vendor",
+      "name": "Wandering Provisioner",
+      "description": "A lean merchant with a heavy pack and a wary expression. She trades along the dangerous eastern coast, selling supplies to the rare travelers and the even rarer seal-keepers. Her prices reflect the risk of her route.",
+      "startRoomId": "first_seal:collapsed_arch",
+      "behaviorType": "vendor",
+      "hostile": false,
+      "interactSound": "vendor_greet",
+      "exitSound": "vendor_farewell",
+      "imagePrompt": "Full-body lean female merchant with heavy backpack, wary expression, practical traveling clothes with many pouches and straps, weathered appearance, facing viewer. Single character, isolated on solid white background.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, traveling merchant, practical gear",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple characters, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "shopItems": [
+        {
+          "itemId": "item:seal_ward_scroll",
+          "price": 120
+        },
+        {
+          "itemId": "item:greater_fortifying_tonic",
+          "price": 90
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "price": 60
+        },
+        {
+          "itemId": "item:greater_mana_potion",
+          "price": 55
+        }
+      ],
+      "lootItems": []
+    }
+  ]
+}

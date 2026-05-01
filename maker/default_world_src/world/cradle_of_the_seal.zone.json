@@ -1,0 +1,528 @@
+{
+  "id": "cradle_of_the_seal",
+  "name": "Cradle of the Seal",
+  "description": "The underground complex built around the First Seal — a massive warding construct spanning a natural rift in the earth. The Wardens carved their greatest achievement into living rock, layer upon layer of containment magic protecting the world from what lies beneath. The seal still holds, but barely. Cracks run through the ward-lines, and the golden light that once burned steadily now flickers and surges unpredictably.",
+  "safe": false,
+  "bgm": "boss_intense",
+  "levelRange": "17-18",
+  "spawnConfig": {
+    "maxNpcsPerRoom": 2,
+    "spawnIntervalTicks": 10,
+    "maxTotalNpcs": 6
+  },
+  "imageStyle": "fantasy underground dungeon, ancient sealed chamber, golden warding glyphs, cracked stone, atmospheric lighting, digital painting",
+  "imageNegativePrompt": "modern, sci-fi, anime, cartoon, bright cheerful colors, text, watermark",
+  "rooms": [
+    {
+      "id": "cradle_of_the_seal:descent",
+      "name": "The Descent",
+      "description": "A spiral staircase carved from a single column of granite, descending deep into the rift. The warding glyphs on the walls grow brighter as you descend — the seal's power concentrates here, pressed into the stone like light into crystal. Each step echoes in the vertical shaft, the sound swallowed by the vast darkness below.",
+      "x": 0,
+      "y": 0,
+      "exits": {
+        "UP": "first_seal:seal_threshold",
+        "SOUTH": "cradle_of_the_seal:outer_ring"
+      },
+      "backgroundImage": "cradle_of_the_seal_descent",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Spiral stone staircase descending into darkness, warding glyphs glowing golden on the walls, carved from single granite column, vast rift visible below, atmospheric moody lighting",
+      "imageStyle": "fantasy dungeon interior, spiral staircase, golden glyphs, atmospheric, digital painting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "cradle_of_the_seal:outer_ring",
+      "name": "Outer Ring",
+      "description": "A circular corridor following the outer wall of the Cradle. The ceiling is low, the air close and warm. Ward-lines run along the floor in channels of hammered brass, still conducting faint golden energy. Doorways lead inward toward the seal chamber, but the wards here are the first line of defense — and they are cracking.",
+      "x": 0,
+      "y": -1,
+      "exits": {
+        "NORTH": "cradle_of_the_seal:descent",
+        "WEST": "cradle_of_the_seal:ward_chamber",
+        "EAST": "cradle_of_the_seal:seal_gallery"
+      },
+      "backgroundImage": "cradle_of_the_seal_outer_ring",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Circular underground corridor with low ceiling, hammered brass channels in the floor conducting golden energy, cracking ward-lines, doorways leading inward, atmospheric dungeon interior",
+      "imageStyle": "fantasy dungeon interior, circular corridor, brass ward-lines, golden energy, atmospheric",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "collapse_trap",
+          "description": "Cracks web across the ceiling here, and dust sifts down with each footstep.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "actionData": {
+            "damage": "24",
+            "saveStat": "TOUGHNESS",
+            "perceptionDC": "16",
+            "saveDC": "16",
+            "damageType": "physical",
+            "noticeMessage": "You notice the ceiling is dangerously stressed — best to move carefully through this section.",
+            "triggerMessage": "A section of ceiling gives way! Heavy stone crashes down on you!",
+            "saveMessage": "Stone crashes down around you, but you brace yourself and the worst misses you.",
+            "failMessage": "A slab of stone catches your shoulder, driving you to your knees."
+          },
+          "label": "Stressed Ceiling"
+        }
+      ]
+    },
+    {
+      "id": "cradle_of_the_seal:ward_chamber",
+      "name": "Ward Chamber",
+      "description": "A hexagonal room built as an amplification node for the seal's warding network. Six pillars ring a central altar of polished obsidian, each pillar connected to the altar by channels of brass filled with slowly pulsing golden light. The altar's surface is carved with a complex interlocking pattern — a focusing lens for the seal's power.",
+      "x": -1,
+      "y": -1,
+      "exits": {
+        "EAST": "cradle_of_the_seal:outer_ring",
+        "SOUTH": "cradle_of_the_seal:west_passage"
+      },
+      "backgroundImage": "cradle_of_the_seal_ward_chamber",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Hexagonal underground chamber with six pillars and central obsidian altar, brass channels connecting pillars to altar with golden pulsing light, intricate carved pattern on altar, atmospheric",
+      "imageStyle": "fantasy dungeon interior, hexagonal chamber, obsidian altar, golden energy channels, atmospheric",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "warding_glyph_trap",
+          "description": "The altar's surface crackles with unstable energy.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "actionData": {
+            "damage": "20",
+            "saveStat": "INTELLECT",
+            "perceptionDC": "17",
+            "saveDC": "17",
+            "damageType": "arcane",
+            "noticeMessage": "You sense the ward node is unstable — approaching carefully might let you avoid its discharge.",
+            "triggerMessage": "The ward node erupts! A blast of raw arcane energy fills the chamber!",
+            "saveMessage": "You instinctively shield your mind, deflecting the worst of the psychic blast.",
+            "failMessage": "Arcane energy sears through your mind, leaving your thoughts scattered and your vision blurred."
+          },
+          "label": "Active Ward Node"
+        },
+        {
+          "id": "warding_altar_place",
+          "description": "The obsidian altar has a depression shaped to receive something — a focusing component, perhaps.",
+          "actionType": "PLACE_ITEM",
+          "actionData": {
+            "acceptedItems": "item:sentinel_core_fragment",
+            "consumeItem": "true",
+            "promptText": "The altar's depression matches the shape of the Sentinel Core Fragment. Place it here to restore the ward amplifier?",
+            "successMessage": "The Sentinel Core Fragment slots into the altar with a resonant click. The ward channels flare to brilliant life, and the sealed passage to the south groans open as the amplified warding energy overrides its failing locks.",
+            "failureMessage": "The altar's depression doesn't match what you're holding. It needs something specific — a focusing component of the right shape.",
+            "successDirection": "SOUTH"
+          },
+          "label": "Warding Altar"
+        }
+      ]
+    },
+    {
+      "id": "cradle_of_the_seal:seal_gallery",
+      "name": "Seal Gallery",
+      "description": "The walls of this long chamber are carved with murals depicting the creation of the First Seal. Panel by panel, the story unfolds: the discovery of the entity, the convening of the Warden Council, the months of ritual preparation, and finally the sealing itself — thirty Wardens giving their lives to bind the entity for eternity. The final panel shows a single figure remaining to watch over the seal. The paint is faded, but the golden leaf still catches the light.",
+      "x": 1,
+      "y": -1,
+      "exits": {
+        "WEST": "cradle_of_the_seal:outer_ring",
+        "SOUTH": "cradle_of_the_seal:east_passage"
+      },
+      "backgroundImage": "cradle_of_the_seal_seal_gallery",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Long underground chamber with carved wall murals depicting a sealing ritual, robed figures giving their lives, golden leaf details catching light, faded paint, atmospheric dungeon gallery",
+      "imageStyle": "fantasy dungeon interior, mural gallery, carved stone, golden leaf details, atmospheric",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "cradle_of_the_seal:east_passage",
+      "name": "East Passage",
+      "description": "A narrow passage slopes downward, the walls scarred with claw marks from something that tried to escape from below. The ward-lines here are fractured and dark — this section of the containment has failed. The air is colder, and an oppressive presence weighs on your mind, testing your resolve.",
+      "x": 1,
+      "y": -2,
+      "exits": {
+        "NORTH": "cradle_of_the_seal:seal_gallery",
+        "WEST": "cradle_of_the_seal:guardian_hall"
+      },
+      "backgroundImage": "cradle_of_the_seal_east_passage",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Narrow underground passage sloping downward, deep claw marks on walls, broken dark ward-lines, cold atmosphere, oppressive feeling, fantasy dungeon corridor",
+      "imageStyle": "fantasy dungeon interior, narrow passage, claw marks, broken wards, dark atmospheric",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "seal_energy_surge",
+          "description": "A broken ward-line sparks erratically with golden energy.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "actionData": {
+            "damage": "26",
+            "saveStat": "WILLPOWER",
+            "perceptionDC": "17",
+            "saveDC": "17",
+            "damageType": "arcane",
+            "noticeMessage": "The fractured ward-line is leaking energy in dangerous surges — you can time your passage between pulses.",
+            "triggerMessage": "The broken ward-line surges! A wave of psychic pressure slams into your mind!",
+            "saveMessage": "You steel your will against the mental assault, pushing through the wave of pressure.",
+            "failMessage": "The psychic surge overwhelms your defenses, flooding your mind with alien impressions of something vast and patient."
+          },
+          "label": "Fractured Ward-Line"
+        }
+      ]
+    },
+    {
+      "id": "cradle_of_the_seal:west_passage",
+      "name": "West Passage",
+      "description": "This passage runs parallel to the east corridor but in better repair — the wards here still hold, casting steady golden light across fitted stone walls. Alcoves hold the preserved remains of fallen Wardens, their hands folded over their chests, faces serene in death. Even in death, they serve the seal.",
+      "x": -1,
+      "y": -2,
+      "exits": {
+        "NORTH": "cradle_of_the_seal:ward_chamber",
+        "EAST": "cradle_of_the_seal:guardian_hall"
+      },
+      "lockedExits": {
+        "NORTH": 99
+      },
+      "backgroundImage": "cradle_of_the_seal_west_passage",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Underground passage with intact golden warding glyphs, alcoves containing preserved remains of robed guardians lying in state, steady golden light, solemn atmosphere, fantasy dungeon",
+      "imageStyle": "fantasy dungeon interior, passage, golden ward light, funeral alcoves, solemn, atmospheric",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "cradle_of_the_seal:guardian_hall",
+      "name": "Guardian Hall",
+      "description": "A vast hall at the heart of the Cradle, its vaulted ceiling lost in shadow. The floor is a single massive warding circle, fifty feet across, its brass and obsidian lines still glowing with fierce golden light. This is where the seal's guardian dwells — the last and most powerful defense before the seal itself. The air thrums with concentrated warding energy.",
+      "x": 0,
+      "y": -2,
+      "exits": {
+        "WEST": "cradle_of_the_seal:west_passage",
+        "EAST": "cradle_of_the_seal:east_passage",
+        "SOUTH": "cradle_of_the_seal:seal_antechamber"
+      },
+      "backgroundImage": "cradle_of_the_seal_guardian_hall",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "Vast underground hall with high vaulted ceiling lost in shadow, massive fifty-foot warding circle on the floor in brass and obsidian with fierce golden light, dramatic atmospheric lighting, fantasy boss arena",
+      "imageStyle": "fantasy dungeon interior, grand hall, massive warding circle, golden brass light, atmospheric, dramatic",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "cradle_of_the_seal:seal_antechamber",
+      "name": "Seal Antechamber",
+      "description": "The final chamber before the seal itself. A great door of warded bronze blocks the way south — the last physical barrier. Its surface is covered in thousands of individual glyphs, each one a separate binding. A speaking-horn is set into the door at eye level, and an inscription above reads: 'Only those who understand the cost may pass.'",
+      "x": 0,
+      "y": -3,
+      "exits": {
+        "NORTH": "cradle_of_the_seal:guardian_hall",
+        "SOUTH": "cradle_of_the_seal:seal_chamber"
+      },
+      "lockedExits": {
+        "SOUTH": 99
+      },
+      "backgroundImage": "cradle_of_the_seal_seal_antechamber",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "Underground antechamber with massive bronze door covered in thousands of tiny glowing glyphs, speaking-horn set into the door, inscription carved above, dramatic golden lighting, fantasy dungeon",
+      "imageStyle": "fantasy dungeon interior, bronze door, thousands of glyphs, speaking horn, dramatic lighting",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "seal_door_riddle",
+          "description": "The speaking-horn awaits your answer. The inscription reads: 'Only those who understand the cost may pass.'",
+          "actionType": "RIDDLE_PROMPT",
+          "actionData": {
+            "question": "I bind the strong, I silence the mighty, I hold what cannot be held. Thirty gave everything to create me, and one remains to ensure I endure. What am I?",
+            "hint": "Taren's notes describe the thirty Wardens who sacrificed themselves to create the binding, and the single keeper who stayed behind.",
+            "acceptedAnswers": "seal,the seal,a seal",
+            "synonyms": "sacrifice,the sacrifice,duty,binding,the binding",
+            "successDirection": "SOUTH",
+            "successMessage": "The speaking-horn echoes your answer through the door. One by one, the thousands of glyphs flare to brilliant life and then dim, the bindings acknowledging your understanding. The great bronze door swings inward with the weight of ages, revealing the First Seal beyond.",
+            "failureMessage": "The speaking-horn falls silent. The glyphs on the door pulse once — a warning — and then return to their steady glow. The door does not open."
+          },
+          "label": "Warded Bronze Door"
+        },
+        {
+          "id": "guardian_ward_trap",
+          "description": "The floor before the door shimmers with concentrated energy.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "actionData": {
+            "damage": "28",
+            "saveStat": "AGILITY",
+            "perceptionDC": "18",
+            "saveDC": "18",
+            "damageType": "arcane",
+            "noticeMessage": "The threshold ward is active — you can see the trigger-lines in the floor tiles.",
+            "triggerMessage": "The threshold ward activates! A barrier of golden energy slams into you!",
+            "saveMessage": "You leap back as the ward fires, the energy barrier passing inches from your face.",
+            "failMessage": "The ward-barrier catches you full force, golden energy burning through your defenses."
+          },
+          "label": "Threshold Ward"
+        }
+      ]
+    },
+    {
+      "id": "cradle_of_the_seal:seal_chamber",
+      "name": "The First Seal",
+      "description": "The chamber of the First Seal. The rift in the earth yawns open here, a chasm a hundred feet across, and the seal spans it — a web of golden light so intricate and beautiful that it takes your breath away. Millions of ward-lines intersect in perfect geometric harmony, containing something vast and dark that presses against them from below. Cracks are visible now, thin lines of darkness in the golden web. The seal is failing. At the chamber's center, a stone platform overlooks the seal, and here the Guardian waits.",
+      "x": 0,
+      "y": -4,
+      "exits": {
+        "NORTH": "cradle_of_the_seal:seal_antechamber",
+        "WEST": "cradle_of_the_seal:inner_sanctum"
+      },
+      "lockedExits": {
+        "WEST": 99
+      },
+      "backgroundImage": "cradle_of_the_seal_seal_chamber",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "Vast underground chamber spanning a massive chasm, web of golden light ward-lines crossing the chasm in intricate geometric patterns, cracks of darkness visible, stone platform at center, epic dramatic scale, fantasy boss arena",
+      "imageStyle": "fantasy dungeon interior, vast seal chamber, golden light web, chasm, epic scale, dramatic",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors, small room",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "cradle_of_the_seal:inner_sanctum",
+      "name": "Inner Sanctum",
+      "description": "A small chamber carved into the rock behind the seal platform, once the private quarters of the Seal-Keeper. Shelves hold ancient texts and preservation jars, and a narrow cot suggests someone lived here for years at a time. A chest against the far wall bears the Warden seal — whatever is inside, it was left here deliberately for whoever might follow.",
+      "x": -1,
+      "y": -4,
+      "exits": {
+        "EAST": "cradle_of_the_seal:seal_chamber"
+      },
+      "backgroundImage": "cradle_of_the_seal_inner_sanctum",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "Small carved underground chamber with shelves of ancient texts and jars, narrow cot, chest with seal emblem against far wall, warm candlelight, intimate atmospheric space, fantasy treasure room",
+      "imageStyle": "fantasy dungeon interior, small chamber, bookshelves, treasure chest, warm candlelight, atmospheric",
+      "imageNegativePrompt": "modern, characters, anime, text, bright colors, large room",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:ward_construct",
+      "name": "Ward Construct",
+      "description": "A humanoid figure assembled from fragments of warding stone, animated by the seal's residual energy. Its body is a patchwork of carved glyph-bearing blocks, held together by crackling golden light. It moves with jerky precision, programmed to destroy anything that threatens the containment.",
+      "startRoomId": "cradle_of_the_seal:outer_ring",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 260,
+      "damage": 45,
+      "level": 17,
+      "xpReward": 370,
+      "accuracy": 20,
+      "defense": 23,
+      "evasion": 9,
+      "agility": 9,
+      "attackSound": "golem_slam",
+      "missSound": "golem_miss",
+      "deathSound": "golem_collapse",
+      "imagePrompt": "Full-body humanoid construct made of carved warding stone blocks held together by golden crackling energy, glyph symbols on every block, jerky mechanical pose, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, stone construct, golden energy joints",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:sentinel_core_fragment",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 12,
+        "max": 25
+      }
+    },
+    {
+      "id": "npc:seal_shade",
+      "name": "Seal Shade",
+      "description": "A tendril of whatever the seal contains, forced through a crack in the warding and given semi-solid form. It is a thing of pure darkness, shapeless and hungry, with no features except a gaping void where a mouth might be. The golden ward-lines in its vicinity flicker and dim as it passes.",
+      "startRoomId": "cradle_of_the_seal:east_passage",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 170,
+      "damage": 36,
+      "level": 16,
+      "xpReward": 250,
+      "accuracy": 19,
+      "defense": 13,
+      "evasion": 23,
+      "agility": 22,
+      "attackSound": "ghost_slash",
+      "missSound": "ghost_miss",
+      "deathSound": "ghost_death",
+      "imagePrompt": "Full-body amorphous creature of pure darkness and shadow, gaping void mouth, tendrils of shadow extending outward, golden ward-light flickering nearby, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, shadow entity, dark amorphous creature",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, anime, humanoid",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:seal_essence",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 5,
+        "max": 12
+      }
+    },
+    {
+      "id": "npc:corrupted_warden",
+      "name": "Corrupted Warden",
+      "description": "A dead Warden risen from its alcove, its preserved body animated by the seal-entity's influence. It wears the robes and bears the staff of its former station, but its eyes are pools of darkness and its movements are puppet-like — something else is pulling the strings. It fights with the skill it had in life, but without mercy or restraint.",
+      "startRoomId": "cradle_of_the_seal:west_passage",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 230,
+      "damage": 44,
+      "level": 17,
+      "xpReward": 350,
+      "accuracy": 22,
+      "defense": 20,
+      "evasion": 15,
+      "agility": 15,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "Full-body undead Warden in ancient robes with staff, preserved but corrupted, eyes as pools of pure darkness, puppet-like posture with visible dark tendrils controlling limbs, facing viewer. Single character, isolated on solid white background.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, corrupted undead guardian, dark-eyes puppeted body",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple characters, portrait crop, modern, sci-fi, anime",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:corrupted_warden_badge",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 10,
+        "max": 20
+      }
+    },
+    {
+      "id": "npc:seal_sentinel",
+      "name": "Seal Sentinel",
+      "description": "The Cradle's inner guardian — a massive construct of warding stone and bronze, standing twelve feet tall. Unlike the smaller ward constructs, this one was built with care and purpose. Its chest bears a single great glyph that blazes with golden fire, and its bronze fists are the size of anvils. It has guarded the Guardian Hall for millennia, and it has no intention of stopping.",
+      "startRoomId": "cradle_of_the_seal:guardian_hall",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 420,
+      "damage": 50,
+      "level": 17,
+      "xpReward": 900,
+      "accuracy": 22,
+      "defense": 21,
+      "evasion": 15,
+      "agility": 10,
+      "bossRespawnHours": 2,
+      "attackSound": "golem_slam",
+      "missSound": "golem_miss",
+      "deathSound": "golem_collapse",
+      "imagePrompt": "Full-body massive twelve-foot stone and bronze construct guardian, single blazing golden glyph on chest, anvil-sized bronze fists, imposing stance, ancient warding construct, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, massive stone-bronze construct, blazing golden chest glyph",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, small",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:sentinel_core_fragment",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    {
+      "id": "npc:first_seal_guardian",
+      "name": "The First Seal-Guardian",
+      "description": "The ultimate protector of the First Seal — a being of pure warding energy given form. It appears as a towering humanoid figure of golden light, its features abstract and shifting, its eyes twin suns of concentrated power. It is the seal made manifest, the living embodiment of the thirty Wardens who sacrificed themselves to create it. It does not speak. It does not negotiate. It exists to protect, and it will destroy anything it perceives as a threat to the containment — including you.",
+      "startRoomId": "cradle_of_the_seal:seal_chamber",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 820,
+      "damage": 62,
+      "level": 18,
+      "xpReward": 2700,
+      "accuracy": 24,
+      "defense": 22,
+      "evasion": 14,
+      "agility": 14,
+      "bossRespawnHours": 4,
+      "attackSound": "golem_slam",
+      "missSound": "golem_miss",
+      "deathSound": "golem_collapse",
+      "imagePrompt": "Full-body towering humanoid figure made entirely of golden warding energy and light, abstract shifting features, twin sun-bright eyes, radiating power, translucent with visible internal energy patterns, facing viewer. Single creature, isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, golden energy being, towering light guardian",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, solid body, armor",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:seal_guardian_sigil",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:first_seal_blade",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:sealwoven_mail",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:guardian_aegis",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 80,
+        "max": 150
+      }
+    }
+  ]
+}
