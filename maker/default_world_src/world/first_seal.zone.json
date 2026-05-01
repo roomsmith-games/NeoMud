@@ -166,6 +166,7 @@
           "description": "One of the road stones sits slightly higher than its neighbors.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
+          "perceptionDC": 16,
           "actionData": {
             "damage": "22",
             "saveStat": "AGILITY",

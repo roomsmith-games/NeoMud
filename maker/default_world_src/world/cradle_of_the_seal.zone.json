@@ -57,6 +57,7 @@
           "description": "Cracks web across the ceiling here, and dust sifts down with each footstep.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
+          "perceptionDC": 16,
           "actionData": {
             "damage": "24",
             "saveStat": "TOUGHNESS",
@@ -99,6 +100,7 @@
           "description": "The altar's surface crackles with unstable energy.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
+          "perceptionDC": 17,
           "actionData": {
             "damage": "20",
             "saveStat": "INTELLECT",
@@ -171,6 +173,7 @@
           "description": "A broken ward-line sparks erratically with golden energy.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
+          "perceptionDC": 17,
           "actionData": {
             "damage": "26",
             "saveStat": "WILLPOWER",
@@ -270,6 +273,7 @@
           "description": "The floor before the door shimmers with concentrated energy.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
+          "perceptionDC": 18,
           "actionData": {
             "damage": "28",
             "saveStat": "AGILITY",
