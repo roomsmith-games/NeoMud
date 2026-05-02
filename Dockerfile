@@ -47,7 +47,7 @@ ENV NEOMUD_ADMINS=
 
 # Health check
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q --spider http://localhost:8080/health || exit 1
+  CMD wget -qO/dev/null http://localhost:8080/health || exit 1
 
 # Run as non-root
 USER neomud
