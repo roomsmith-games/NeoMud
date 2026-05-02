@@ -417,4 +417,37 @@ class NpcManagerTest {
         assertTrue(npcsOneTick.size <= 1,
             "NPC should not respawn immediately after death (timer should have reset). Had ${npcsOneTick.size} NPCs")
     }
+
+    @Test
+    fun testRoomMaxHostileNpcsZeroBlocksAllHostiles() {
+        // A room with maxHostileNpcs=0 should block ALL hostile NPCs from wandering in or spawning
+        val world = WorldGraph()
+        world.addRoom(Room("test:a", "A", "", mapOf(Direction.EAST to "test:safe"), "test", 0, 0))
+        world.addRoom(Room("test:safe", "Safe", "", mapOf(Direction.WEST to "test:a"), "test", 1, 0))
+
+        val roomCaps = mapOf("test:safe" to 0)
+        val zoneConfigs = mapOf("test" to SpawnConfig(maxEntities = 10, maxPerRoom = 5, rateTicks = 1))
+        val manager = NpcManager(world, zoneConfigs, roomCaps)
+
+        val wolf = NpcData("npc:wolf", "Wolf", "", startRoomId = "test:a", behaviorType = "wander", hostile = true, maxHp = 20, damage = 3)
+        manager.loadNpcs(listOf(wolf to "test"))
+
+        repeat(200) {
+            manager.tick()
+            val inSafe = manager.getLivingHostileNpcsInRoom("test:safe")
+            assertTrue(inSafe.isEmpty(), "Room with maxHostileNpcs=0 should have no hostile NPCs, but had ${inSafe.size}")
+        }
+    }
+
+    @Test
+    fun testVendorRoomBlocksHostilesInDefaultWorld() {
+        val result = load()
+        val npcManager = NpcManager(result.worldGraph, result.zoneSpawnConfigs, result.roomMaxHostileNpcs)
+        npcManager.loadNpcs(result.npcDataList)
+
+        assertEquals(0, result.roomMaxHostileNpcs["cracked_plains:rift_spring"],
+            "Vendor room rift_spring should have maxHostileNpcs=0")
+        assertEquals(0, result.roomMaxHostileNpcs["cracked_plains:signal_cairn"],
+            "Quest NPC room signal_cairn should have maxHostileNpcs=0")
+    }
 }

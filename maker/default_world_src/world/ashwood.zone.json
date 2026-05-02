@@ -680,39 +680,7 @@
       "hostile": false,
       "interactSound": "vendor_greet",
       "exitSound": "vendor_farewell",
-      "vendorConfig": {
-        "stock": [
-          {
-            "itemId": "item:fire_ward_scroll",
-            "quantity": 5,
-            "priceCopper": 0,
-            "priceSilver": 12,
-            "priceGold": 0
-          },
-          {
-            "itemId": "item:ash_salve",
-            "quantity": 10,
-            "priceCopper": 0,
-            "priceSilver": 6,
-            "priceGold": 0
-          },
-          {
-            "itemId": "item:health_potion",
-            "quantity": 8,
-            "priceCopper": 0,
-            "priceSilver": 4,
-            "priceGold": 0
-          },
-          {
-            "itemId": "item:mana_potion",
-            "quantity": 5,
-            "priceCopper": 0,
-            "priceSilver": 5,
-            "priceGold": 0
-          }
-        ],
-        "buyMultiplier": 0.3
-      },
+      "vendorItems": ["item:fire_ward_scroll", "item:ash_salve", "item:health_potion", "item:mana_potion"],
       "imagePrompt": "Full-body stocky soot-blackened dwarf merchant with permanent squint, gravel-rough expression, heavy leather apron over work-clothes, surrounded by goods and wares, facing the viewer. Single character, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, dwarf merchant, soot and earth tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, tall, slender",

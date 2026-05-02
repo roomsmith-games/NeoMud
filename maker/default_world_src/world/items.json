@@ -961,7 +961,7 @@
     {
       "id": "item:foreman_key",
       "name": "Foreman's Iron Key",
-      "description": "A heavy iron key with a foreman's tag wired to its bow. The tag is unreadable, the wax seal cracked. Perhaps it opens something — somewhere — for someone who knows where to look.",
+      "description": "A heavy iron key with a foreman's tag wired to its bow. The tag is unreadable, the wax seal cracked. Perhaps it opens something \u2014 somewhere \u2014 for someone who knows where to look.",
       "type": "quest",
       "value": 0,
       "weight": 1,
@@ -1087,7 +1087,7 @@
     {
       "id": "item:cracked_warding_rune",
       "name": "Cracked Warding Rune",
-      "description": "A small carved stone rune, cracked clean across the middle. Even broken, it hums faintly against the skin — useful raw material for warding scrolls and trinkets.",
+      "description": "A small carved stone rune, cracked clean across the middle. Even broken, it hums faintly against the skin \u2014 useful raw material for warding scrolls and trinkets.",
       "type": "crafting",
       "value": 60,
       "weight": 1,
@@ -1100,7 +1100,7 @@
     {
       "id": "item:weathered_warden_journal",
       "name": "Weathered Warden's Journal",
-      "description": "A thin leather-bound journal Vexa pressed into your hand. The pages are filled with patient observations of the cairns — sketches, notes on which sigils warm and when, and at the end, a careful sketch of the four Watchers' sigils in their proper order: dawn, dusk, storm, star.",
+      "description": "A thin leather-bound journal Vexa pressed into your hand. The pages are filled with patient observations of the cairns \u2014 sketches, notes on which sigils warm and when, and at the end, a careful sketch of the four Watchers' sigils in their proper order: dawn, dusk, storm, star.",
       "type": "quest",
       "value": 0,
       "weight": 1,
@@ -1113,7 +1113,7 @@
     {
       "id": "item:watchers_honor_stone",
       "name": "Watcher's Honor-Stone",
-      "description": "A flat disc of polished basalt the size of a palm, carved with a sealed-eye sigil and rimmed in tarnished silver. Heavy beyond its size. Wardens were buried with one — and the bone-acolytes have been digging them out.",
+      "description": "A flat disc of polished basalt the size of a palm, carved with a sealed-eye sigil and rimmed in tarnished silver. Heavy beyond its size. Wardens were buried with one \u2014 and the bone-acolytes have been digging them out.",
       "type": "quest",
       "value": 0,
       "weight": 1,
@@ -1126,7 +1126,7 @@
     {
       "id": "item:steppe_blade",
       "name": "Steppe Blade",
-      "description": "A long single-edged saber forged for the Highmoor brigands, balanced for a sweeping cut from horseback. Plain wood-and-wire grip, no ornament — just a working weapon.",
+      "description": "A long single-edged saber forged for the Highmoor brigands, balanced for a sweeping cut from horseback. Plain wood-and-wire grip, no ornament \u2014 just a working weapon.",
       "type": "weapon",
       "slot": "weapon",
       "damageBonus": 13,
@@ -1177,7 +1177,7 @@
     {
       "id": "item:wight_kings_cleaver",
       "name": "Wight-King's Cleaver",
-      "description": "A heavy two-handed cleaver-blade taken from Esketh's burial bier — slab-thick steel etched along its spine with the names of those Wardens it was buried beside. The hilt is wound in rough black grave-linen. It is colder in the hand than steel ought to be.",
+      "description": "A heavy two-handed cleaver-blade taken from Esketh's burial bier \u2014 slab-thick steel etched along its spine with the names of those Wardens it was buried beside. The hilt is wound in rough black grave-linen. It is colder in the hand than steel ought to be.",
       "type": "weapon",
       "slot": "weapon",
       "damageBonus": 19,
@@ -1241,7 +1241,7 @@
     {
       "id": "item:eskeths_seal_fragment",
       "name": "Esketh's Seal Fragment",
-      "description": "A jagged shard of dark stone bearing part of a sigil you almost recognise. Vexa will want to see this — and Old Wren, when next you reach Millhaven, even more so. The fragment is warm in the hand, and grows warmer the longer you hold it.",
+      "description": "A jagged shard of dark stone bearing part of a sigil you almost recognise. Vexa will want to see this \u2014 and Old Wren, when next you reach Millhaven, even more so. The fragment is warm in the hand, and grows warmer the longer you hold it.",
       "type": "quest",
       "value": 0,
       "weight": 1,
@@ -1267,7 +1267,7 @@
     {
       "id": "item:drift_wight_ectoplasm",
       "name": "Drift Wight Ectoplasm",
-      "description": "A small sealed glass vial of the drowned-mariner ectoplasm — cold pale-grey liquid that slowly settles into a clear layer above a sediment of brine-fine salt. Useful raw material for cold-magic and warding work.",
+      "description": "A small sealed glass vial of the drowned-mariner ectoplasm \u2014 cold pale-grey liquid that slowly settles into a clear layer above a sediment of brine-fine salt. Useful raw material for cold-magic and warding work.",
       "type": "crafting",
       "value": 60,
       "weight": 1,
@@ -1385,7 +1385,7 @@
     {
       "id": "item:tidewardens_trident",
       "name": "Tidewarden's Trident",
-      "description": "A great two-handed trident wrought of corroded salt-bronze, taken from the Tidewarden Korlach's heart-chamber. Its three tines drip a slow, never-ending rime of seawater that does not pool on the floor — and the haft is colder in the hand than bronze should be.",
+      "description": "A great two-handed trident wrought of corroded salt-bronze, taken from the Tidewarden Korlach's heart-chamber. Its three tines drip a slow, never-ending rime of seawater that does not pool on the floor \u2014 and the haft is colder in the hand than bronze should be.",
       "type": "weapon",
       "slot": "weapon",
       "damageBonus": 21,
@@ -1449,7 +1449,7 @@
     {
       "id": "item:sealed_tide_fragment",
       "name": "Sealed Tide Fragment",
-      "description": "A second jagged shard of dark stone bearing part of a sigil, paired-shape to the Esketh fragment from the Highmoor barrow. The two fit together along their broken edge — which means there are at least eight more out there, somewhere, and someone is going to want the whole sigil whole again.",
+      "description": "A second jagged shard of dark stone bearing part of a sigil, paired-shape to the Esketh fragment from the Highmoor barrow. The two fit together along their broken edge \u2014 which means there are at least eight more out there, somewhere, and someone is going to want the whole sigil whole again.",
       "type": "quest",
       "value": 0,
       "weight": 1,
@@ -1488,7 +1488,7 @@
     {
       "id": "item:cinder_crown",
       "name": "Cinder Crown",
-      "description": "A crown of fused bone and blackite metal, still warm to the touch. Vatric wore this in life — it amplifies arcane focus at the cost of a persistent low headache that some say drives its wearer slowly mad.",
+      "description": "A crown of fused bone and blackite metal, still warm to the touch. Vatric wore this in life \u2014 it amplifies arcane focus at the cost of a persistent low headache that some say drives its wearer slowly mad.",
       "type": "armor",
       "slot": "head",
       "armorValue": 9,
@@ -1502,7 +1502,7 @@
     {
       "id": "item:pyromancers_staff",
       "name": "Pyromancer's Staff",
-      "description": "A staff of fused glass and bone — Vatric's weapon, forged in the same fire that killed him. It channels fire magic with terrifying efficiency. The glass is warm and pulses faintly when gripped.",
+      "description": "A staff of fused glass and bone \u2014 Vatric's weapon, forged in the same fire that killed him. It channels fire magic with terrifying efficiency. The glass is warm and pulses faintly when gripped.",
       "type": "weapon",
       "slot": "weapon",
       "damageBonus": 22,
@@ -1519,7 +1519,7 @@
     {
       "id": "item:ashweave_robes",
       "name": "Ashweave Robes",
-      "description": "Robes woven from fireproof ashweave cloth — a lost art of Vatric's academy. Light as silk but nearly indestructible by fire. The cloth is a deep charcoal grey shot with faint ember-thread that glows in dim light.",
+      "description": "Robes woven from fireproof ashweave cloth \u2014 a lost art of Vatric's academy. Light as silk but nearly indestructible by fire. The cloth is a deep charcoal grey shot with faint ember-thread that glows in dim light.",
       "type": "armor",
       "slot": "chest",
       "armorValue": 20,
@@ -1533,7 +1533,7 @@
     {
       "id": "item:sentinel_ember_core",
       "name": "Sentinel's Ember Core",
-      "description": "The molten core ripped from the chest of the Ash Sentinel — a sphere of fused stone containing a bound fire-spirit. It pulses with deep heat and faint, angry light. The forge-altar in the Pyromancer's Folly might accept this.",
+      "description": "The molten core ripped from the chest of the Ash Sentinel \u2014 a sphere of fused stone containing a bound fire-spirit. It pulses with deep heat and faint, angry light. The forge-altar in the Pyromancer's Folly might accept this.",
       "type": "crafting",
       "value": 120,
       "weight": 4,
@@ -1546,7 +1546,7 @@
     {
       "id": "item:charred_bark",
       "name": "Charred Bark",
-      "description": "A slab of bark from a charred treant — hard as iron and still faintly warm. Crafters prize it for fire-resistant construction.",
+      "description": "A slab of bark from a charred treant \u2014 hard as iron and still faintly warm. Crafters prize it for fire-resistant construction.",
       "type": "crafting",
       "value": 10,
       "weight": 2,
@@ -1559,7 +1559,7 @@
     {
       "id": "item:cinder_dust",
       "name": "Cinder Dust",
-      "description": "Fine sparkling dust left when a cinder sprite is destroyed — warm to the touch and faintly luminous. Used in fire-enchantment recipes.",
+      "description": "Fine sparkling dust left when a cinder sprite is destroyed \u2014 warm to the touch and faintly luminous. Used in fire-enchantment recipes.",
       "type": "crafting",
       "value": 8,
       "weight": 1,
@@ -1641,7 +1641,7 @@
     {
       "id": "item:seal_guardian_sigil",
       "name": "Seal-Guardian's Sigil",
-      "description": "A disc of pure golden light solidified into crystal, bearing the unmistakable pattern of the First Seal. It hums with contained power and warmth. This is the fourth fragment in the chain of ward-pieces — the Wardens scattered their authority across multiple seals to prevent any single point of failure.",
+      "description": "A disc of pure golden light solidified into crystal, bearing the unmistakable pattern of the First Seal. It hums with contained power and warmth. This is the fourth fragment in the chain of ward-pieces \u2014 the Wardens scattered their authority across multiple seals to prevent any single point of failure.",
       "type": "quest",
       "slot": "none",
       "imagePrompt": "Golden crystallized disc of solidified light bearing an intricate seal pattern, glowing with warm golden energy, ward symbols visible within, fantasy quest item",
@@ -1651,7 +1651,7 @@
     {
       "id": "item:seal_keeper_notes",
       "name": "Seal-Keeper's Notes",
-      "description": "Taren's careful observations, written in a precise hand on preserved vellum. The notes detail the seal's deterioration, the ward-points' behavior, and the riddle of the bronze door. Most valuable is his analysis of the Guardian — it fights to protect, not to kill. Understanding its purpose is the key to surviving it.",
+      "description": "Taren's careful observations, written in a precise hand on preserved vellum. The notes detail the seal's deterioration, the ward-points' behavior, and the riddle of the bronze door. Most valuable is his analysis of the Guardian \u2014 it fights to protect, not to kill. Understanding its purpose is the key to surviving it.",
       "type": "quest",
       "slot": "none",
       "imagePrompt": "Bundle of preserved vellum pages tied with cord, precise handwriting visible, seal diagrams and ward-point sketches, fantasy quest document",
@@ -1708,7 +1708,7 @@
     {
       "id": "item:glyph_stone",
       "name": "Glyph Stone",
-      "description": "A small stone bearing a single warding glyph that still glows faintly. Extracted from the remains of a Glyph Wraith. The glyph's pattern is unique — no two are alike, each one a fragment of the greater seal design.",
+      "description": "A small stone bearing a single warding glyph that still glows faintly. Extracted from the remains of a Glyph Wraith. The glyph's pattern is unique \u2014 no two are alike, each one a fragment of the greater seal design.",
       "type": "crafting",
       "slot": "none",
       "imagePrompt": "Small dark stone with single glowing golden glyph symbol, faint warm glow, unique pattern, fantasy crafting material",
@@ -1728,7 +1728,7 @@
     {
       "id": "item:seal_essence",
       "name": "Seal Essence",
-      "description": "A vial of liquid darkness with a core of golden light — the distilled remains of a Seal Shade. The darkness coils and writhes around the golden center, the two forces locked in eternal opposition. Alchemists would pay dearly for this.",
+      "description": "A vial of liquid darkness with a core of golden light \u2014 the distilled remains of a Seal Shade. The darkness coils and writhes around the golden center, the two forces locked in eternal opposition. Alchemists would pay dearly for this.",
       "type": "crafting",
       "slot": "none",
       "imagePrompt": "Glass vial containing liquid darkness coiling around a core of golden light, two opposing forces, fantasy alchemical ingredient",
@@ -1781,10 +1781,15 @@
       "description": "A scroll inscribed with a protective ward derived from the seal's own patterns. When read, it temporarily bolsters the reader's defenses against the corrupted energies found near the First Seal.",
       "type": "consumable",
       "slot": "none",
-      "effect": "buff_damage:-6:20",
       "imagePrompt": "Rolled parchment scroll with golden warding glyph seal, protective ward inscription visible, golden glow, fantasy consumable",
       "imageStyle": "fantasy item sprite, clean edges, game asset, scroll, golden seal",
-      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime",
+      "useEffect": "buff_damage:-6:20",
+      "useSound": "scroll_read",
+      "value": 60,
+      "weight": 1,
+      "stackable": true,
+      "maxStack": 5
     },
     {
       "id": "item:greater_fortifying_tonic",
@@ -1792,10 +1797,15 @@
       "description": "A thick, amber tonic brewed from rare coastal herbs and seal-energy-infused minerals. Drinking it temporarily hardens the body against physical trauma.",
       "type": "consumable",
       "slot": "none",
-      "effect": "heal:35",
       "imagePrompt": "Thick amber liquid in a sturdy glass flask, swirling with mineral particles, cork stopper, fantasy healing potion",
       "imageStyle": "fantasy item sprite, clean edges, game asset, amber potion flask",
-      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime"
+      "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime",
+      "useEffect": "heal:35",
+      "useSound": "potion_drink",
+      "value": 45,
+      "weight": 1,
+      "stackable": true,
+      "maxStack": 5
     },
     {
       "id": "item:rift_stalker_fang",
@@ -1820,7 +1830,7 @@
     {
       "id": "item:marauders_blade",
       "name": "Marauder's Blade",
-      "description": "A heavy-bladed sword taken from one of Drask's outriders. The steel is decent — better than bandit gear has any right to be — and the edge is maintained with professional care. A clenched-fist brand is stamped into the pommel.",
+      "description": "A heavy-bladed sword taken from one of Drask's outriders. The steel is decent \u2014 better than bandit gear has any right to be \u2014 and the edge is maintained with professional care. A clenched-fist brand is stamped into the pommel.",
       "type": "weapon",
       "slot": "weapon",
       "damageBonus": 24,
@@ -1837,7 +1847,7 @@
     {
       "id": "item:riftweave_cloak",
       "name": "Riftweave Cloak",
-      "description": "A cloak woven from rift crawler silk — tough, lightweight, and faintly iridescent. The silk changes color subtly with the light, mimicking the stone hues of the rift walls. It provides surprising protection despite its thinness.",
+      "description": "A cloak woven from rift crawler silk \u2014 tough, lightweight, and faintly iridescent. The silk changes color subtly with the light, mimicking the stone hues of the rift walls. It provides surprising protection despite its thinness.",
       "type": "armor",
       "slot": "chest",
       "armorValue": 22,
@@ -1851,7 +1861,7 @@
     {
       "id": "item:war_scouts_helm",
       "name": "War Scout's Helm",
-      "description": "A light helm of hardened leather and steel bands, designed for Drask's forward scouts. Open-faced for visibility, with cheek guards and a short nose bridge. Practical and unadorned — function over form.",
+      "description": "A light helm of hardened leather and steel bands, designed for Drask's forward scouts. Open-faced for visibility, with cheek guards and a short nose bridge. Practical and unadorned \u2014 function over form.",
       "type": "armor",
       "slot": "head",
       "armorValue": 10,
@@ -1865,7 +1875,7 @@
     {
       "id": "item:drasks_war_brand",
       "name": "Drask's War-Brand",
-      "description": "A tarnished metal brand bearing the clenched-fist sigil — Warden issue, recovered by the scout Haela from one of Drask's officers. The Wardens used these to mark their outposts. That Drask collects them suggests he has found something in the old Hold's sealed levels.",
+      "description": "A tarnished metal brand bearing the clenched-fist sigil \u2014 Warden issue, recovered by the scout Haela from one of Drask's officers. The Wardens used these to mark their outposts. That Drask collects them suggests he has found something in the old Hold's sealed levels.",
       "type": "quest",
       "slot": "none",
       "value": 0,
@@ -1877,7 +1887,7 @@
     {
       "id": "item:drasks_war_key",
       "name": "Drask's War-Key",
-      "description": "A heavy iron key shaped like a clenched fist — Drask's personal key to the Hold's vault. Taken from his lieutenant's body. The teeth are worn smooth from use.",
+      "description": "A heavy iron key shaped like a clenched fist \u2014 Drask's personal key to the Hold's vault. Taken from his lieutenant's body. The teeth are worn smooth from use.",
       "type": "quest",
       "slot": "none",
       "value": 0,
@@ -1903,7 +1913,7 @@
     {
       "id": "item:warlords_cleaver",
       "name": "Warlord's Cleaver",
-      "description": "Drask's personal weapon — a massive single-edged cleaver that most warriors would need two hands to lift. The blade is dark iron, etched with kill marks. The grip is wrapped in black leather over a core of dense wood. It cleaves through armor like a butcher through bone.",
+      "description": "Drask's personal weapon \u2014 a massive single-edged cleaver that most warriors would need two hands to lift. The blade is dark iron, etched with kill marks. The grip is wrapped in black leather over a core of dense wood. It cleaves through armor like a butcher through bone.",
       "type": "weapon",
       "slot": "weapon",
       "damageBonus": 26,
@@ -1920,7 +1930,7 @@
     {
       "id": "item:warlords_warplate",
       "name": "Warlord's Warplate",
-      "description": "Dark iron plate armor of ancient make, found in the Hold's vault. Heavier than modern plate but nearly indestructible. The metal has a faint reddish sheen — whether from age, alloy, or something sealed into the metal itself. It hums faintly when struck.",
+      "description": "Dark iron plate armor of ancient make, found in the Hold's vault. Heavier than modern plate but nearly indestructible. The metal has a faint reddish sheen \u2014 whether from age, alloy, or something sealed into the metal itself. It hums faintly when struck.",
       "type": "armor",
       "slot": "chest",
       "armorValue": 25,
@@ -1934,7 +1944,7 @@
     {
       "id": "item:warlords_iron_crown",
       "name": "Warlord's Iron Crown",
-      "description": "A heavy crown of dark iron shaped like a ring of clenched fists. Drask wore it over his helm as a symbol of authority. Despite its crude appearance, the metalwork is sophisticated — the fists interlock seamlessly, and the crown is perfectly balanced.",
+      "description": "A heavy crown of dark iron shaped like a ring of clenched fists. Drask wore it over his helm as a symbol of authority. Despite its crude appearance, the metalwork is sophisticated \u2014 the fists interlock seamlessly, and the crown is perfectly balanced.",
       "type": "armor",
       "slot": "head",
       "armorValue": 12,
@@ -1948,7 +1958,7 @@
     {
       "id": "item:drasks_seal_shard",
       "name": "Drask's Seal Shard",
-      "description": "A fragment of the ancient Warden seal, found on Drask's body. The shard pulses with a deep, unsettling energy — the same power that split the plains into rifts centuries ago. Another piece of whatever the Wardens were trying to contain.",
+      "description": "A fragment of the ancient Warden seal, found on Drask's body. The shard pulses with a deep, unsettling energy \u2014 the same power that split the plains into rifts centuries ago. Another piece of whatever the Wardens were trying to contain.",
       "type": "quest",
       "slot": "none",
       "value": 0,
@@ -1991,7 +2001,7 @@
     {
       "id": "item:rift_iron_helm",
       "name": "Rift-Iron Helm",
-      "description": "A half-helm of rift-iron with a fixed nose guard. The blue-grey metal is cold to the touch even in direct sun. Reliable protection without restricting vision — the kind of gear that keeps you alive on the plains.",
+      "description": "A half-helm of rift-iron with a fixed nose guard. The blue-grey metal is cold to the touch even in direct sun. Reliable protection without restricting vision \u2014 the kind of gear that keeps you alive on the plains.",
       "type": "armor",
       "slot": "head",
       "armorValue": 9,

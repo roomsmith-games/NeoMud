@@ -164,9 +164,9 @@ class NpcManager(
     private fun aliveNpcsInZone(zoneId: String): Int =
         npcs.count { it.zoneId == zoneId && it.isAlive }
 
-    /** Returns the effective hostile NPC cap for a room: room override > zone default > 0 (unlimited). */
-    private fun effectiveMaxPerRoom(roomId: RoomId, zoneId: String): Int =
-        roomMaxHostileNpcs[roomId] ?: zoneSpawnConfigs[zoneId]?.maxPerRoom ?: 0
+    /** Returns the effective hostile NPC cap for a room: room override > zone default > null (unlimited). */
+    private fun effectiveMaxPerRoom(roomId: RoomId, zoneId: String): Int? =
+        roomMaxHostileNpcs[roomId] ?: zoneSpawnConfigs[zoneId]?.maxPerRoom
 
     /**
      * @param roomsWithVisiblePlayers rooms containing non-hidden, alive players past grace period.
@@ -188,7 +188,7 @@ class NpcManager(
 
             val canMoveTo: (RoomId) -> Boolean = { targetRoomId ->
                 val maxPerRoom = effectiveMaxPerRoom(targetRoomId, npc.zoneId)
-                val roomOk = maxPerRoom == 0 || aliveHostileNpcsInRoom(targetRoomId) < maxPerRoom
+                val roomOk = maxPerRoom == null || aliveHostileNpcsInRoom(targetRoomId) < maxPerRoom
                 val sanctuaryOk = !npc.hostile || worldGraph.getRoom(targetRoomId)?.effects?.none { it.type == "SANCTUARY" } != false
                 roomOk && sanctuaryOk
             }
@@ -260,7 +260,7 @@ class NpcManager(
             val candidates = template.spawnPoints.ifEmpty { listOf(template.startRoomId) }
             val spawnRoom = candidates.filter { roomId ->
                 val max = effectiveMaxPerRoom(roomId, zoneId)
-                max == 0 || aliveHostileNpcsInRoom(roomId) < max
+                max == null || aliveHostileNpcsInRoom(roomId) < max
             }.randomOrNull() ?: continue
 
             val instanceId = "${template.id}#${nextSpawnIndex++}"

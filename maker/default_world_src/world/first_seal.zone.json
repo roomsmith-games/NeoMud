@@ -615,24 +615,7 @@
       "imageNegativePrompt": "background, scenery, ground, shadow, multiple characters, portrait crop, modern, sci-fi, anime",
       "imageWidth": 384,
       "imageHeight": 384,
-      "shopItems": [
-        {
-          "itemId": "item:seal_ward_scroll",
-          "price": 120
-        },
-        {
-          "itemId": "item:greater_fortifying_tonic",
-          "price": 90
-        },
-        {
-          "itemId": "item:greater_health_potion",
-          "price": 60
-        },
-        {
-          "itemId": "item:greater_mana_potion",
-          "price": 55
-        }
-      ],
+      "vendorItems": ["item:seal_ward_scroll", "item:greater_fortifying_tonic", "item:greater_health_potion", "item:greater_mana_potion"],
       "lootItems": []
     }
   ]
