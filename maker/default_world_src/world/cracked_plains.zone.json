@@ -429,12 +429,13 @@
     {
       "id": "cracked_plains:bone_field",
       "name": "Bone Field",
-      "description": "A grim stretch of plateau where the remains of old battles bleach in the wind. Bones \u2014 human, animal, and things less identifiable \u2014 are scattered across the cracked stone, along with rusted weapons and scraps of armor. Drask's bandits have staked skulls on poles along the road as a warning. The war-road continues west toward the fortress approach.",
+      "description": "A grim stretch of plateau where the remains of old battles bleach in the wind. Bones \u2014 human, animal, and things less identifiable \u2014 are scattered across the cracked stone, along with rusted weapons and scraps of armor. Drask's bandits have staked skulls on poles along the road as a warning. The war-road continues west toward the fortress approach. To the south, the stone gives way to something strange \u2014 a glittering expanse of fused glass stretching to the horizon, shimmering with heat haze.",
       "x": 3,
       "y": 29,
       "exits": {
         "EAST": "cracked_plains:cliff_roost",
-        "WEST": "cracked_plains:hold_approach"
+        "WEST": "cracked_plains:hold_approach",
+        "SOUTH": "glass_desert:vitrified_threshold"
       },
       "backgroundImage": "/assets/images/rooms/cracked_plains_bone_field.webp",
       "departSound": "footstep_dirt",

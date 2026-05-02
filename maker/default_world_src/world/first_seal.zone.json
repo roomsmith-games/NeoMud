@@ -380,13 +380,14 @@
     {
       "id": "first_seal:watcher_perch",
       "name": "Watcher's Perch",
-      "description": "An elevated stone platform at the eastern end of the Pillar Walk, built as a watch post overlooking the approaches from three directions. A crumbling parapet offers some shelter from the wind. From here you can see the full extent of the Seal Approach — the ancient road, the broken arch, the sentinel grounds, the forecourt with its great warding circle. It is beautiful and terrible in its ruined grandeur.",
+      "description": "An elevated stone platform at the eastern end of the Pillar Walk, built as a watch post overlooking the approaches from three directions. A crumbling parapet offers some shelter from the wind. From here you can see the full extent of the Seal Approach — the ancient road, the broken arch, the sentinel grounds, the forecourt with its great warding circle. It is beautiful and terrible in its ruined grandeur. Above, a precarious traverse along the cliff face leads up to the Glass Desert — you can see the shimmering fused landscape on the plateau above.",
       "x": 9,
       "y": 32,
       "exits": {
-        "WEST": "first_seal:pillar_walk"
+        "WEST": "first_seal:pillar_walk",
+        "UP": "glass_desert:spire_base"
       },
-      "backgroundImage": "first_seal_watcher_perch",
+      "backgroundImage": "/assets/images/rooms/first_seal_watcher_perch.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "Elevated stone watchtower platform with crumbling parapet, panoramic view of ancient ruins below including roads and warding circles, dramatic sky, fantasy landscape, elevated vantage point",
