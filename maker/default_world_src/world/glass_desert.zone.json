@@ -174,12 +174,13 @@
     {
       "id": "glass_desert:buried_road",
       "name": "Buried Road",
-      "description": "Beneath the glass crust, a pre-cataclysm road has been partially preserved \u2014 its fitted stones warped and fused but still recognizable as deliberate construction. The underground passage follows this ancient road south, lit by a faint phosphorescent glow from mineral deposits in the glass walls. The air is cool and still. Whoever built this road did so before the glass desert existed \u2014 this was once open countryside.",
+      "description": "Beneath the glass crust, a pre-cataclysm road has been partially preserved \u2014 its fitted stones warped and fused but still recognizable as deliberate construction. The underground passage follows this ancient road, lit by a faint phosphorescent glow from mineral deposits in the glass walls. The air is cool and still. Whoever built this road did so before the glass desert existed \u2014 this was once open countryside. To the west, the glass layer thins and cracks, giving way to pale bone-strewn earth \u2014 the edge of the Bone Wastes.",
       "x": 5,
       "y": 28,
       "exits": {
         "UP": "glass_desert:fused_crater",
-        "EAST": "glass_desert:heat_haze"
+        "EAST": "glass_desert:heat_haze",
+        "WEST": "bone_wastes:glass_edge"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_buried_road.webp",
       "departSound": "footstep_stone",

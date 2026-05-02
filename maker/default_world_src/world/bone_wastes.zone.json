@@ -1,0 +1,859 @@
+{
+  "id": "bone_wastes",
+  "name": "Bone Wastes",
+  "description": "Beyond the western edge of the Glass Desert, where the vitrified layer thins and cracks, lies a vast expanse of bleached stone and fossilized bone. This was once a battlefield of the Seal Wars \u2014 the warriors who fell here were never buried, and their remains have calcified into the landscape itself. Wind-scoured ridges of compressed bone rise from the pale earth like the ribs of some impossibly vast creature. The air is dry and carries the mineral smell of ancient death. To the south, the dark entrance to the Necropolis of Vael gapes like a wound in the earth.",
+  "safe": false,
+  "bgm": "gorge_danger",
+  "levelRange": "22-25",
+  "rooms": [
+    {
+      "id": "bone_wastes:glass_edge",
+      "name": "Glass Edge",
+      "description": "The glass here is thin and brittle, shattering under your boots to reveal bleached bone beneath. Wind-scoured fragments of vitrified sand crunch with every step, mixed with splinters of something older \u2014 calcified remains from whatever civilization existed here before the cataclysm turned the land to glass. The Glass Desert stretches east, its shimmer fading as the ground transitions to pale stone and ancient bone. Westward, the glass gives way entirely to the Bone Wastes.",
+      "x": 4,
+      "y": 28,
+      "exits": {
+        "EAST": "glass_desert:buried_road",
+        "WEST": "bone_wastes:shattered_threshold",
+        "SOUTH": "bone_wastes:bleached_flats"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_glass_edge.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A desolate transition zone where thin cracked glass ground gives way to pale bone-strewn earth, fragments of vitrified sand mixed with ancient calcified remains, desert horizon on one side fading to bleached wasteland on the other, overcast sky, fantasy landscape",
+      "imageStyle": "fantasy environment, wide landscape, desolate wasteland, muted palette, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "bone_shard_eruption",
+          "label": "Fractured Glass Formation",
+          "description": "A cluster of stressed glass formations jutting from the ground at odd angles, hairline cracks webbing through them.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 19,
+          "actionData": {
+            "damage": "38",
+            "saveStat": "AGILITY",
+            "saveDC": "19",
+            "damageType": "physical",
+            "perceptionDC": "19",
+            "noticeMessage": "You spot stress fractures in the glass formation ahead \u2014 one wrong step could trigger a chain reaction.",
+            "triggerMessage": "The glass formation shatters explosively! Razor-sharp bone shards and glass splinters erupt from the ground!",
+            "saveMessage": "You throw yourself sideways as shards whistle past, embedding in the ground where you stood.",
+            "failMessage": "Bone shards and glass fragments slice across your body. You stumble clear, bleeding from a dozen cuts."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone_wastes:shattered_threshold",
+      "name": "Shattered Threshold",
+      "description": "Half the ground here is fused glass, half exposed bedrock and pale bone. The transition is jagged and irregular \u2014 the glass layer has been torn away in patches by centuries of wind, revealing the older stratum beneath. Ancient weapon fragments jut from the earth where the glass has fallen away: corroded sword hilts, shattered shield bosses, the calcified remnants of a war fought before the seals were forged. The wind carries a dry, mineral smell.",
+      "x": 3,
+      "y": 28,
+      "exits": {
+        "EAST": "bone_wastes:glass_edge",
+        "WEST": "bone_wastes:bone_ridge",
+        "SOUTH": "bone_wastes:ossuary_field"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_shattered_threshold.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A desolate landscape split between cracked glass desert and bleached bone-strewn wasteland, ancient corroded weapon fragments jutting from pale earth, irregular glass patches torn away by wind erosion, overcast sky, fantasy battlefield",
+      "imageStyle": "fantasy environment, wide landscape, ancient battlefield, muted palette, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:bone_ridge",
+      "name": "Bone Ridge",
+      "description": "A long ridge of compressed, calcified bone rises from the wasteland \u2014 the spine of some impossibly vast creature, or perhaps just centuries of remains fused together by wind and pressure. From the top, the Glass Desert glitters to the east, its shimmer alien against the pale monotony of the wastes. Westward and southward, the bone-strewn landscape stretches to the horizon, broken only by cairns of stacked skulls and the occasional rusted war standard. A precarious climb leads up to a lookout point.",
+      "x": 2,
+      "y": 28,
+      "exits": {
+        "EAST": "bone_wastes:shattered_threshold",
+        "SOUTH": "bone_wastes:fallen_standard",
+        "UP": "bone_wastes:bone_ridge_lookout"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_bone_ridge.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A massive ridge of compressed fossilized bone rising from a pale wasteland, view from the top showing glass desert glittering in distance, bleached bone landscape stretching in all directions, overcast sky, fantasy vista",
+      "imageStyle": "fantasy environment, wide landscape, bone wasteland vista, muted palette, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:bone_ridge_lookout",
+      "name": "Bone Ridge Lookout",
+      "description": "From this high point on the bone ridge, the full scope of the wastes is visible. To the east, the Glass Desert shimmers like a frozen sea. Below and to the south, the Bone Wastes spread in every direction \u2014 a pale, wind-scoured expanse dotted with cairns of stacked skulls and the dark shapes of rusted war engines. Far to the south, a dark gash in the earth marks the entrance to something underground. The wind up here is relentless, carrying dust that stings exposed skin.",
+      "x": 2,
+      "y": 29,
+      "exits": {
+        "DOWN": "bone_wastes:bone_ridge"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_bone_ridge_lookout.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A high vantage point on a ridge of fossilized bone, panoramic view of pale wasteland stretching below, glass desert glittering in the far east, skull cairns and rusted war machines visible in the distance, strong wind, overcast sky, fantasy vista",
+      "imageStyle": "fantasy environment, panoramic landscape, bone wasteland overlook, dramatic sky, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:bleached_flats",
+      "name": "Bleached Flats",
+      "description": "A wide expanse of pale, hard-packed earth littered with bone fragments and the occasional intact skeleton, still wearing corroded armor. The sun bleaches everything here to the same dead white. Movement catches your eye \u2014 skeletal shapes prowling between the bone ridges, hunting with an intelligence that suggests something more than mindless undeath.",
+      "x": 4,
+      "y": 27,
+      "exits": {
+        "NORTH": "bone_wastes:glass_edge",
+        "WEST": "bone_wastes:ossuary_field",
+        "SOUTH": "bone_wastes:dust_hollow"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_bleached_flats.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A vast flat expanse of bleached white earth covered in scattered bone fragments and intact skeletons in corroded armor, pale wasteland under harsh sun, skeletal shapes in the distance, fantasy battlefield aftermath",
+      "imageStyle": "fantasy environment, wide landscape, bleached wasteland, harsh light, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:ossuary_field",
+      "name": "Ossuary Field",
+      "description": "The dead were never buried here \u2014 they were simply left where they fell, and time did the rest. Entire skeletons lie half-embedded in the packed earth, their bones fused with the soil. In places, the ground is more bone than stone. Someone \u2014 or something \u2014 has arranged some of the skulls into low cairns, dozens of them scattered across the field in a pattern that might be meaningful. The wind whistles through empty eye sockets.",
+      "x": 3,
+      "y": 27,
+      "exits": {
+        "NORTH": "bone_wastes:shattered_threshold",
+        "EAST": "bone_wastes:bleached_flats",
+        "WEST": "bone_wastes:fallen_standard",
+        "SOUTH": "bone_wastes:war_cairns"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_ossuary_field.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A field of ancient bones embedded in pale earth, arranged skull cairns scattered across the landscape, skeletons fused with soil, wind-swept wasteland, eerie bone formations, fantasy environment",
+      "imageStyle": "fantasy environment, wide landscape, bone field, eerie atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:fallen_standard",
+      "name": "Fallen Standard",
+      "description": "A massive war standard \u2014 a spear as thick as a mast, topped with a tattered banner of some long-dead army \u2014 leans at an angle from the earth, its base buried in calcified remains. The banner is too weathered to identify, but the craftsmanship of the spear suggests a civilization of considerable skill. The ground around it is unstable, riddled with buried bones that shift and collapse without warning.",
+      "x": 2,
+      "y": 27,
+      "exits": {
+        "NORTH": "bone_wastes:bone_ridge",
+        "EAST": "bone_wastes:ossuary_field",
+        "SOUTH": "bone_wastes:rusted_palisade",
+        "WEST": "bone_wastes:bone_spire"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_fallen_standard.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A massive ancient war standard spear driven into bone-strewn earth at an angle, tattered weathered banner, calcified remains around base, pale wasteland, fantasy ancient battlefield",
+      "imageStyle": "fantasy environment, ancient war relic, desolate wasteland, muted tones, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors",
+      "interactables": [
+        {
+          "id": "rotting_pit",
+          "label": "Unstable Ground",
+          "description": "The earth around the standard's base is riddled with hollow pockets \u2014 collapsed burial chambers just beneath the surface.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 19,
+          "actionData": {
+            "damage": "40",
+            "saveStat": "AGILITY",
+            "saveDC": "19",
+            "damageType": "physical",
+            "perceptionDC": "19",
+            "noticeMessage": "The ground here sounds hollow when you step \u2014 there are cavities just beneath the surface.",
+            "triggerMessage": "The ground collapses beneath you! You plunge into a pit of jagged bone fragments!",
+            "saveMessage": "You catch the edge as the ground gives way, hauling yourself back to solid footing.",
+            "failMessage": "You fall into a pit of calcified bone shards, the jagged points driving into your legs and sides."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone_wastes:bone_spire",
+      "name": "Bone Spire",
+      "description": "A natural spire of fused bone and calcified stone rises here, its base hollowed out into a crude shelter. Someone has made camp in its shadow \u2014 a makeshift counter of stacked rib bones displays salvaged goods, and a bedroll is wedged into a niche. Weathered pack animals are tethered nearby, loaded with scavenged gear. The camp's occupant is a wiry figure with sharp eyes and a merchant's smile.",
+      "x": 1,
+      "y": 27,
+      "exits": {
+        "EAST": "bone_wastes:fallen_standard"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_bone_spire.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A tall natural spire of fused bone and calcified stone, base hollowed into a crude shelter with makeshift merchant camp, bone-counter displaying goods, pack animals, pale wasteland background, fantasy vendor location",
+      "imageStyle": "fantasy environment, merchant camp, bone formation, warm light contrast, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:dust_hollow",
+      "name": "Dust Hollow",
+      "description": "A shallow depression in the wasteland where bone dust has accumulated in drifts, stirred by the constant wind into choking clouds. Visibility drops to a few yards when the wind gusts. The dust has a chemical tang \u2014 something in the ancient remains reacts with air, producing a faintly toxic haze that stings the eyes and catches in the throat. Shapes move in the dust: skeletal predators that have adapted to hunt in the poor visibility.",
+      "x": 4,
+      "y": 26,
+      "exits": {
+        "NORTH": "bone_wastes:bleached_flats",
+        "WEST": "bone_wastes:war_cairns",
+        "SOUTH": "bone_wastes:skull_ravine_rim"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_dust_hollow.webp",
+      "departSound": "footstep_dirt",
+      "imagePrompt": "A shallow dusty depression in a bone wasteland, choking clouds of pale bone dust blown by wind, poor visibility, toxic haze, shapes moving in the dust, fantasy desolate landscape",
+      "imageStyle": "fantasy environment, dust storm, low visibility, eerie atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors",
+      "interactables": [
+        {
+          "id": "dust_cloud",
+          "label": "Toxic Dust Cloud",
+          "description": "The bone dust in this hollow is thick enough to be dangerous \u2014 each breath draws in fine particles of ancient, chemically-reactive remains.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "actionData": {
+            "damage": "42",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "20",
+            "damageType": "poison",
+            "perceptionDC": "20",
+            "noticeMessage": "The dust here has a chemical smell \u2014 breathing it deeply would be unwise.",
+            "triggerMessage": "A gust of wind drives a thick cloud of toxic bone dust directly into your face!",
+            "saveMessage": "You hold your breath and shield your face, enduring the worst of it.",
+            "failMessage": "The toxic dust burns your lungs and eyes. You retch and stumble, vision swimming."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone_wastes:war_cairns",
+      "name": "War Cairns",
+      "description": "Dozens of cairns built from stacked skulls and long bones dot this section of the wastes, arranged in concentric rings around a central mound. Each cairn is topped with a corroded weapon \u2014 a sword, an axe, a spear \u2014 driven point-down into the topmost skull. These are memorial markers, built by someone who respected the dead. The central mound is larger, its stones inscribed with weathered text in a language you don't recognize.",
+      "x": 3,
+      "y": 26,
+      "exits": {
+        "NORTH": "bone_wastes:ossuary_field",
+        "EAST": "bone_wastes:dust_hollow",
+        "SOUTH": "bone_wastes:ancient_road"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_war_cairns.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Dozens of skull cairns arranged in concentric rings on pale wasteland, each topped with a corroded ancient weapon driven into the topmost skull, central larger mound with inscribed stones, memorial battlefield, fantasy environment",
+      "imageStyle": "fantasy environment, ancient memorial, skull cairns, solemn atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors",
+      "interactables": [
+        {
+          "id": "war_cairn_collapse",
+          "label": "Unstable Cairn",
+          "description": "One of the larger cairns is leaning dangerously, its base undermined by wind erosion. The corroded war-axe on top weighs as much as a man.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "actionData": {
+            "damage": "40",
+            "saveStat": "AGILITY",
+            "saveDC": "20",
+            "damageType": "physical",
+            "perceptionDC": "20",
+            "noticeMessage": "That large cairn is leaning badly \u2014 the corroded axe on top could come down at any moment.",
+            "triggerMessage": "The cairn collapses! Skulls and the massive war-axe tumble directly toward you!",
+            "saveMessage": "You dive clear as skulls bounce past and the heavy axe buries itself in the earth beside you.",
+            "failMessage": "The avalanche of skulls and the heavy war-axe catch you squarely, driving you to the ground."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone_wastes:rusted_palisade",
+      "name": "Rusted Palisade",
+      "description": "The remains of a defensive fortification cut across the wastes here \u2014 a palisade of iron-banded wooden stakes, now rusted to brittle shells and leaning at drunken angles. Behind it, the remnants of a siege camp: fire pits choked with bone ash, collapsed tent frames, the corroded hulk of a battering ram. Whatever army camped here was large, disciplined, and ultimately unsuccessful \u2014 the bones of its soldiers lie thick among the ruins.",
+      "x": 2,
+      "y": 26,
+      "exits": {
+        "NORTH": "bone_wastes:fallen_standard",
+        "SOUTH": "bone_wastes:siege_ruins"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_rusted_palisade.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Remains of ancient iron-banded wooden palisade stakes rusted and leaning at angles, collapsed siege camp behind with bone-ash fire pits and corroded battering ram, pale wasteland, fantasy ancient military camp ruins",
+      "imageStyle": "fantasy environment, ruined fortification, ancient siege camp, muted palette, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:skull_ravine_rim",
+      "name": "Skull Ravine Rim",
+      "description": "A deep gash cuts through the wasteland here \u2014 a ravine carved by ancient water or seismic activity, its walls layered with exposed strata of compressed bone. The ravine drops thirty feet to a floor littered with skulls that have rolled down from above over centuries. A rough-cut stairway, carved into the bone-rock wall, descends to the ravine floor. The stairs are slick with mineral deposits and bone dust.",
+      "x": 4,
+      "y": 25,
+      "exits": {
+        "NORTH": "bone_wastes:dust_hollow",
+        "WEST": "bone_wastes:ancient_road",
+        "DOWN": "bone_wastes:skull_ravine"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_skull_ravine_rim.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Edge of a deep ravine cutting through bone wasteland, walls showing layers of compressed fossilized bone, rough carved stairs descending, skulls scattered on ravine floor below, pale desolate landscape, fantasy environment",
+      "imageStyle": "fantasy environment, ravine edge, bone strata, dramatic depth, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:skull_ravine",
+      "name": "Skull Ravine",
+      "description": "The floor of the ravine is carpeted with skulls \u2014 thousands of them, rolled down from the rim over centuries, now packed together in a grim mosaic. The ravine walls rise sheer on either side, layered bone-rock striated with darker deposits of ancient metal and ash. The air is still down here, sheltered from the wind above, and carries a faint sweet-rot smell that shouldn't exist in remains this old. Something about this place resists the natural order of decay.",
+      "x": 4,
+      "y": 24,
+      "exits": {
+        "UP": "bone_wastes:skull_ravine_rim",
+        "WEST": "bone_wastes:scorched_earth",
+        "SOUTH": "bone_wastes:ravine_floor"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_skull_ravine.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Floor of a deep ravine carpeted with thousands of ancient skulls, sheer bone-rock walls rising on either side with dark strata of metal and ash, still air, eerie atmosphere, fantasy underground ravine",
+      "imageStyle": "fantasy environment, ravine floor, skull carpet, claustrophobic atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors, sky",
+      "interactables": [
+        {
+          "id": "skull_shrapnel",
+          "label": "Pressurized Bone Deposit",
+          "description": "A section of the ravine wall bulges outward, the compressed bone under immense geological pressure.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 21,
+          "actionData": {
+            "damage": "44",
+            "saveStat": "AGILITY",
+            "saveDC": "21",
+            "damageType": "physical",
+            "perceptionDC": "21",
+            "noticeMessage": "A section of the ravine wall is bulging \u2014 the compressed bone is under immense pressure.",
+            "triggerMessage": "The bone wall explodes outward! Shards of calcified bone and ancient metal shrapnel blast across the ravine!",
+            "saveMessage": "You flatten against the opposite wall as shrapnel ricochets off the stone around you.",
+            "failMessage": "Bone shrapnel and fragments of ancient metal tear into you. The impact knocks you off your feet."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone_wastes:ancient_road",
+      "name": "Ancient Road",
+      "description": "A section of ancient paved road surfaces here, its flagstones cracked but still recognizable. This was a military road \u2014 wide enough for four soldiers abreast, with drainage channels cut along its edges. The road runs roughly north-south, disappearing under the bone-strewn earth in both directions. Boot prints are visible in the dust \u2014 recent ones, too fresh for the dead. Someone living has been using this road.",
+      "x": 3,
+      "y": 25,
+      "exits": {
+        "NORTH": "bone_wastes:war_cairns",
+        "EAST": "bone_wastes:skull_ravine_rim",
+        "WEST": "bone_wastes:siege_ruins",
+        "SOUTH": "bone_wastes:scorched_earth"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_ancient_road.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "An ancient cracked paved military road surfacing from bone-strewn wasteland, wide flagstones with drainage channels, road disappearing under pale earth in both directions, boot prints in dust, fantasy ancient road",
+      "imageStyle": "fantasy environment, ancient road, archaeological discovery, muted palette, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:siege_ruins",
+      "name": "Siege Ruins",
+      "description": "The skeleton of a massive siege engine rises from the bone-strewn earth \u2014 a trebuchet or catapult of enormous scale, its timbers petrified and its metal fittings fused with rust. Around it, the remains of the crew that operated it lie where they fell, still in formation. Whatever killed them did so instantaneously \u2014 there are no defensive wounds, no signs of flight. They simply died where they stood.",
+      "x": 2,
+      "y": 25,
+      "exits": {
+        "NORTH": "bone_wastes:rusted_palisade",
+        "EAST": "bone_wastes:ancient_road",
+        "SOUTH": "bone_wastes:burial_mound"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_siege_ruins.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Massive petrified siege engine skeleton rising from bone wasteland, giant trebuchet with rusted fittings, crew skeletons still in formation around it, instant death frozen in time, pale desolate landscape, fantasy ancient war ruins",
+      "imageStyle": "fantasy environment, siege engine ruins, ancient war aftermath, dramatic scale, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:scorched_earth",
+      "name": "Scorched Earth",
+      "description": "The ground here is blackened and fused \u2014 not glass like the desert to the east, but something different. This earth was burned by a different kind of fire, one that left the bone beneath carbonized rather than vitrified. Scorch marks radiate outward from a central point, as if something detonated here with tremendous force. At the epicenter, a shallow crater holds a pool of dark, oily water that reflects no light.",
+      "x": 3,
+      "y": 24,
+      "exits": {
+        "NORTH": "bone_wastes:ancient_road",
+        "EAST": "bone_wastes:skull_ravine",
+        "WEST": "bone_wastes:burial_mound",
+        "SOUTH": "bone_wastes:death_road"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_scorched_earth.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Blackened scorched earth with carbonized bone beneath, scorch marks radiating from a central blast crater, dark oily lightless pool in the center, pale wasteland surrounding, fantasy aftermath of magical explosion",
+      "imageStyle": "fantasy environment, blast crater, scorched earth, dark atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:burial_mound",
+      "name": "Burial Mound",
+      "description": "A large earthen mound rises from the wastes, its surface covered in carved bone tablets inscribed with names \u2014 hundreds of them, in neat rows. This is a mass grave, deliberately constructed, its inhabitants interred with more care than the battlefield dead that litter the surrounding wastes. At the mound's base, a stone slab bears an inscription in Old Warden script: 'Here lie the Vael Guard. They held the line.' Gas seeps from cracks in the mound's surface.",
+      "x": 2,
+      "y": 24,
+      "exits": {
+        "NORTH": "bone_wastes:siege_ruins",
+        "EAST": "bone_wastes:scorched_earth",
+        "SOUTH": "bone_wastes:necropolis_overlook"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_burial_mound.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A large earthen burial mound covered in carved bone tablets with inscribed names, mass grave in pale wasteland, stone slab inscription at base, gas seeping from cracks, solemn atmosphere, fantasy memorial",
+      "imageStyle": "fantasy environment, burial mound, ancient memorial, solemn atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors",
+      "interactables": [
+        {
+          "id": "burial_gas",
+          "label": "Gas Seep",
+          "description": "Toxic gas seeps from cracks in the burial mound \u2014 the chemical byproduct of ancient preservation compounds reacting with groundwater.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 21,
+          "actionData": {
+            "damage": "42",
+            "saveStat": "TOUGHNESS",
+            "saveDC": "21",
+            "damageType": "poison",
+            "perceptionDC": "21",
+            "noticeMessage": "A faint chemical smell rises from the cracks \u2014 the gas seeping out is not natural.",
+            "triggerMessage": "A pocket of trapped preservation gas erupts from the mound, engulfing you in noxious fumes!",
+            "saveMessage": "You hold your breath and back away quickly, eyes watering but lungs clear.",
+            "failMessage": "The toxic gas fills your lungs before you can react. Your vision blurs and your stomach heaves."
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone_wastes:ravine_floor",
+      "name": "Ravine Floor",
+      "description": "The ravine deepens here, its skull-carpeted floor descending into a narrow passage between sheer bone-rock walls. Water seeps through the walls in places, leaving dark mineral stains. The skulls underfoot shift and roll with every step, making footing treacherous. Something has been nesting here \u2014 a hollow scraped into the skull carpet, lined with scraps of leather and corroded metal. The occupant is nearby.",
+      "x": 4,
+      "y": 23,
+      "exits": {
+        "NORTH": "bone_wastes:skull_ravine",
+        "WEST": "bone_wastes:death_road"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_ravine_floor.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Deep narrow ravine floor carpeted with ancient skulls, sheer bone-rock walls with dark mineral water stains, creature nest scraped into the skull carpet, claustrophobic atmosphere, fantasy underground passage",
+      "imageStyle": "fantasy environment, ravine depths, skull carpet, dark atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, bright colors, sky"
+    },
+    {
+      "id": "bone_wastes:death_road",
+      "name": "Death Road",
+      "description": "The ancient road surfaces again here, but in worse condition \u2014 the flagstones are heaved and cracked by roots of bone that have grown up through them. This section of road was once lined with marker stones, each carved with the seal of a different unit of the Vael Guard. Most have fallen, but a few still stand, their inscriptions legible: unit names, battle honors, and the names of commanders who led them to this place and never led them home.",
+      "x": 3,
+      "y": 23,
+      "exits": {
+        "NORTH": "bone_wastes:scorched_earth",
+        "EAST": "bone_wastes:ravine_floor",
+        "WEST": "bone_wastes:necropolis_overlook",
+        "SOUTH": "bone_wastes:death_gate"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_death_road.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Ancient cracked road with bone roots growing through flagstones, fallen and standing marker stones with carved military seals and unit inscriptions, pale wasteland, solemn processional road, fantasy ancient military memorial",
+      "imageStyle": "fantasy environment, ancient memorial road, fallen markers, solemn atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:necropolis_overlook",
+      "name": "Necropolis Overlook",
+      "description": "The ground drops away here at the edge of a vast sinkhole, revealing the dark entrance to an underground complex carved into the bedrock below. Massive stone columns, carved with funerary imagery \u2014 processions of soldiers, weeping figures, the seal of the Vael Guard \u2014 frame a grand staircase that descends into darkness. This is the Necropolis of Vael, built to honor the war dead. But something has gone wrong below \u2014 a faint green luminescence pulses from the depths, and the air rising from the entrance carries the unmistakable taint of active necromancy.",
+      "x": 2,
+      "y": 23,
+      "exits": {
+        "NORTH": "bone_wastes:burial_mound",
+        "DOWN": "necropolis_of_vael:entrance_hall",
+        "SOUTH": "bone_wastes:warden_stones"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_necropolis_overlook.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Edge of a vast sinkhole revealing a grand underground entrance carved into bedrock, massive stone columns with funerary carvings, grand staircase descending into darkness with faint green glow, pale wasteland above, fantasy dungeon entrance",
+      "imageStyle": "fantasy environment, dungeon entrance, ancient necropolis, dramatic scale, green glow from below, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:death_gate",
+      "name": "Death Gate",
+      "description": "A monumental stone archway spans the road here \u2014 the ceremonial entrance to the Necropolis precinct. The arch is carved from a single piece of dark stone, inscribed with the names of every commander of the Vael Guard in a spiral that winds from base to keystone. Beyond it, the road continues south toward the edge of the wastes. A makeshift camp has been set up in the arch's shadow \u2014 a scholar's tent, overflowing with rubbings, notes, and sketches of the necropolis architecture.",
+      "x": 3,
+      "y": 22,
+      "exits": {
+        "NORTH": "bone_wastes:death_road",
+        "WEST": "bone_wastes:warden_stones",
+        "SOUTH": "bone_wastes:bone_wastes_edge"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_death_gate.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A monumental dark stone archway spanning an ancient road, carved with spiral inscriptions of names, scholar's tent camp in the arch shadow with papers and sketches, pale wasteland, fantasy ceremonial gate",
+      "imageStyle": "fantasy environment, monumental arch, scholar's camp, warm light contrast, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:warden_stones",
+      "name": "Warden Stones",
+      "description": "A ring of standing stones, each carved with the seal of the Wardens, encircles a flat area of compacted bone-earth. This was a ritual site \u2014 the Wardens performed ceremonies here to keep the dead at rest after the Seal Wars. The stones still hum faintly with residual protective energy, but their power is failing. Cracks web through the seals, and dark energy seeps from the ground like oil. Something powerful guards this place, pacing between the stones with patient menace.",
+      "x": 2,
+      "y": 22,
+      "exits": {
+        "NORTH": "bone_wastes:necropolis_overlook",
+        "EAST": "bone_wastes:death_gate"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_warden_stones.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "A ring of tall standing stones carved with Warden seals on compacted bone earth, cracks in the stones seeping dark energy, faint protective glow fading, ritual site, pale wasteland, fantasy stone circle",
+      "imageStyle": "fantasy environment, standing stone circle, fading magic, dark energy, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    },
+    {
+      "id": "bone_wastes:bone_wastes_edge",
+      "name": "Bone Wastes Edge",
+      "description": "The wastes thin here, the bone-strewn landscape giving way to rocky terrain that climbs toward distant peaks shrouded in cloud. The air is cleaner, the mineral smell of ancient death fading. To the north, the dark arch of the Death Gate frames the pale expanse of the Bone Wastes. Southward, the terrain rises sharply into foothills of dark stone \u2014 the approach to the high country beyond. The path forward is clear but the way is blocked by a rockfall. Perhaps when the stones are cleared, the road will continue.",
+      "x": 3,
+      "y": 21,
+      "exits": {
+        "NORTH": "bone_wastes:death_gate"
+      },
+      "backgroundImage": "/assets/images/rooms/bone_wastes_bone_wastes_edge.webp",
+      "departSound": "footstep_stone",
+      "imagePrompt": "Edge of a bone wasteland transitioning to rocky terrain climbing toward cloud-shrouded peaks, dark stone arch visible behind, rockfall blocking southern path, cleaner air, fantasy landscape transition",
+      "imageStyle": "fantasy environment, landscape transition, mountain approach, clearing atmosphere, game background",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:bone_stalker",
+      "name": "Bone Stalker",
+      "description": "A skeletal predator assembled from the remains of multiple creatures \u2014 four legs, a long spine, a skull that might once have been a wolf's but is now fused with something larger. It moves with eerie silence across the bone-strewn ground, its claws leaving no tracks. Pale light glows in its empty eye sockets, suggesting an animating intelligence that is decidedly unnatural.",
+      "startRoomId": "bone_wastes:bleached_flats",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 280,
+      "damage": 52,
+      "level": 22,
+      "xpReward": 420,
+      "accuracy": 24,
+      "defense": 20,
+      "evasion": 24,
+      "agility": 20,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "creature_death",
+      "spawnPoints": [
+        "bone_wastes:bleached_flats",
+        "bone_wastes:dust_hollow",
+        "bone_wastes:ravine_floor",
+        "bone_wastes:skull_ravine"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:bone_dust",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:bone_stalker_fang",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 60,
+        "minSilver": 3,
+        "maxSilver": 8
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Skeletal four-legged predator assembled from multiple creature bones, wolf-like fused skull, pale eye-socket glow, silent hunter, undead beast, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, skeletal undead beast",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 512,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:dust_wraith",
+      "name": "Dust Wraith",
+      "description": "A spectral figure rising from the bone dust \u2014 the ghost of a Seal War soldier, still wearing the translucent impression of armor and carrying a weapon of pure shadow. Its face is a blur of agony and rage, features shifting too fast to resolve. It attacks with cold precision, striking at living warmth with the hatred of something that remembers what it lost.",
+      "startRoomId": "bone_wastes:ossuary_field",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 260,
+      "damage": 54,
+      "level": 22,
+      "xpReward": 430,
+      "accuracy": 28,
+      "defense": 16,
+      "evasion": 26,
+      "agility": 22,
+      "attackSound": "claw_slash",
+      "missSound": "claw_miss",
+      "deathSound": "creature_death",
+      "spawnPoints": [
+        "bone_wastes:ossuary_field",
+        "bone_wastes:glass_edge",
+        "bone_wastes:shattered_threshold",
+        "bone_wastes:scorched_earth"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:bone_dust",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:dust_wraith_shroud",
+          "chance": 0.06,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 25,
+        "maxCopper": 55,
+        "minSilver": 4,
+        "maxSilver": 9
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Spectral ghostly soldier rising from dust, translucent impression of ancient armor, shadow weapon, blurred agonized face, pale ghostly glow, undead wraith, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, spectral undead wraith",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:risen_soldier",
+      "name": "Risen Soldier",
+      "description": "An armored skeleton still bearing the equipment it carried in life \u2014 corroded sword, dented shield, chain mail rusted to a brittle shell. Unlike the mindless bone constructs, risen soldiers retain combat training from their mortal lives. They fight in disciplined formation when multiple are present, covering each other's flanks and pressing advantages with unsettling tactical awareness.",
+      "startRoomId": "bone_wastes:ancient_road",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 300,
+      "damage": 56,
+      "level": 23,
+      "xpReward": 460,
+      "accuracy": 27,
+      "defense": 22,
+      "evasion": 20,
+      "agility": 18,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "spawnPoints": [
+        "bone_wastes:ancient_road",
+        "bone_wastes:siege_ruins",
+        "bone_wastes:war_cairns",
+        "bone_wastes:death_road"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:bone_dust",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        },
+        {
+          "itemId": "item:risen_soldiers_helm",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 40,
+        "maxCopper": 80,
+        "minSilver": 5,
+        "maxSilver": 12
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Armored skeleton warrior with corroded ancient sword and dented shield, rusted chain mail, military bearing, undead soldier, glowing eye sockets, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, undead armored skeleton",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:carrion_golem",
+      "name": "Carrion Golem",
+      "description": "A hulking construct of fused bone and compacted earth, roughly humanoid but twice the height of a man. Its body is a mosaic of skeletal remains \u2014 ribs forming its torso cage, femurs serving as arms, a cluster of skulls fused into a single massive head. It moves slowly but hits like a siege engine. Dark energy crackles between its joints, holding the impossible construction together.",
+      "startRoomId": "bone_wastes:rusted_palisade",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 330,
+      "damage": 54,
+      "level": 23,
+      "xpReward": 480,
+      "accuracy": 24,
+      "defense": 26,
+      "evasion": 16,
+      "agility": 14,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "creature_death",
+      "spawnPoints": [
+        "bone_wastes:rusted_palisade",
+        "bone_wastes:fallen_standard",
+        "bone_wastes:burial_mound"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:revenant_sinew",
+          "chance": 0.3,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 35,
+        "maxCopper": 70,
+        "minSilver": 4,
+        "maxSilver": 10
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Massive hulking golem constructed from fused bones, rib-cage torso, femur arms, cluster of skulls forming head, dark crackling energy between joints, twice human height, undead construct, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, bone golem construct",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 512,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:war_revenant",
+      "name": "War Revenant",
+      "description": "More than a risen soldier \u2014 a revenant retains fragments of its mortal identity and the burning need for vengeance that kept its spirit from passing on. This one wears the insignia of a Vael Guard officer, its armor better-preserved than the common risen, its movements faster and more purposeful. Its jaw works silently, forming words it can no longer speak. It attacks with a fury that suggests it mistakes you for whoever killed it the first time.",
+      "startRoomId": "bone_wastes:scorched_earth",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 350,
+      "damage": 58,
+      "level": 24,
+      "xpReward": 520,
+      "accuracy": 28,
+      "defense": 24,
+      "evasion": 22,
+      "agility": 20,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "spawnPoints": [
+        "bone_wastes:scorched_earth",
+        "bone_wastes:death_road",
+        "bone_wastes:necropolis_overlook"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:revenant_sinew",
+          "chance": 0.35,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 50,
+        "maxCopper": 100,
+        "minSilver": 6,
+        "maxSilver": 14
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Undead revenant officer in well-preserved ancient armor with officer insignia, furious expression, burning eye sockets, better-equipped than common skeleton, vengeful warrior, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, undead officer revenant",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:bone_warden",
+      "name": "Bone Warden",
+      "description": "A massive construct of fused bone and ancient warding magic, standing guard among the Warden Stones. Unlike the crude carrion golems, the Bone Warden was deliberately created \u2014 its skeleton is assembled from the remains of the Vael Guard's most decorated soldiers, their bones inscribed with protective runes that still pulse with failing energy. It carries a mace of solid bone as long as a man is tall. Around its neck hangs a ritual key on a chain of vertebrae \u2014 the key to something deeper in the Necropolis.",
+      "startRoomId": "bone_wastes:warden_stones",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 560,
+      "damage": 60,
+      "level": 24,
+      "xpReward": 1250,
+      "accuracy": 30,
+      "defense": 28,
+      "evasion": 16,
+      "agility": 14,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "creature_death",
+      "lootItems": [
+        {
+          "itemId": "item:khaims_ritual_key",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:bone_wardens_mace",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 80,
+        "maxCopper": 160,
+        "minSilver": 10,
+        "maxSilver": 20,
+        "minGold": 1,
+        "maxGold": 3
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Massive bone construct guardian with inscribed rune-covered skeleton, assembled from decorated warrior bones, carrying enormous bone mace, ritual key on vertebrae chain around neck, protective warding energy, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, massive bone guardian construct",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 512,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:scholar_meris",
+      "name": "Scholar Meris",
+      "description": "A middle-aged woman in ink-stained scholarly robes, her camp a chaos of rubbings, sketches, and translation notes. She's been studying the Necropolis of Vael for months, cataloguing its architecture and inscriptions from the safety of the entrance. She knows more about what's inside than anyone alive \u2014 and she knows better than to go in herself. Her eyes are sharp with intelligence and haunted by what she's read in the inscriptions.",
+      "startRoomId": "bone_wastes:death_gate",
+      "behaviorType": "quest",
+      "hostile": false,
+      "maxHp": 200,
+      "damage": 0,
+      "level": 24,
+      "xpReward": 0,
+      "interactSound": "trainer_greet",
+      "dialogueScript": "Meris looks up from her notes, adjusting spectacles that have been repaired with wire. 'Another one heading below. Let me save you some time.' She spreads a rubbing of an inscription across her makeshift desk. 'The Necropolis of Vael was built to inter the dead of the Seal Wars \u2014 thousands of soldiers who died holding the line while the Wardens forged the First Seal. Honorable burial, warding runes to keep them at rest.' She taps the rubbing. 'But when the seal fractured, the warding failed. The dead rose. And then Khaim arrived \u2014 a necromancer who saw an army waiting to be claimed. He's down there now, in the Deep Sanctum, binding them to his will.' She hands you a tablet of carved bone. 'I copied this from the processional entrance. It maps the three levels: the Processional, the Catacombs, and the Deep Sanctum where Khaim operates. The Bone Warden at the stones carries a key you'll need. Be careful \u2014 Khaim's seal shard is why the dead won't stay down.'",
+      "grantItemId": "item:necropolis_lore_tablet",
+      "grantItemFlag": "meris_tablet_given",
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Middle-aged scholarly woman in ink-stained robes, wire-repaired spectacles, holding bone tablet and notes, intelligent sharp eyes, academic bearing, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, scholar researcher",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:rask_bone_picker",
+      "name": "Rask the Bone-Picker",
+      "description": "A wiry, sun-darkened man with a gap-toothed grin and the weathered look of someone who spends his life in places the living avoid. He's made a business of scavenging the Bone Wastes \u2014 pulling serviceable equipment from the ancient dead and reselling it to adventurers foolish enough to come here. His prices are steep, but he's the only merchant within a day's walk.",
+      "startRoomId": "bone_wastes:bone_spire",
+      "behaviorType": "vendor",
+      "hostile": false,
+      "maxHp": 0,
+      "damage": 0,
+      "level": 22,
+      "xpReward": 0,
+      "interactSound": "vendor_greet",
+      "exitSound": "vendor_greet",
+      "vendorItems": [
+        "item:bone_edge_blade",
+        "item:bone_plate_cuirass",
+        "item:bone_plate_helm"
+      ],
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Wiry sun-darkened scavenger man with gap-toothed grin, weathered leather gear with bone ornaments, merchant satchels and salvaged goods, desert survivalist, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, wasteland merchant",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    }
+  ],
+  "spawnConfig": {
+    "maxEntities": 8,
+    "maxPerRoom": 2,
+    "rateTicks": 4
+  }
+}
