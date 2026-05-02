@@ -232,17 +232,17 @@ function tryRegister() {
   if (registrationSent || !registerMode) return;
   if (!catalogsReceived.classes || !catalogsReceived.races) return;
 
-  const classDef = classCatalog.find(c => c.id === registerOpts.charClass);
+  const opts = stagingMode ? platformRegisterOpts : registerOpts;
+  const classDef = classCatalog.find(c => c.id === opts.charClass);
   if (!classDef) {
-    console.error(`[relay] Unknown class: ${registerOpts.charClass}`);
+    console.error(`[relay] Unknown class: ${opts.charClass}`);
     console.error('[relay] Available classes:', classCatalog.map(c => c.id).join(', '));
     process.exit(1);
   }
-  const raceDef = raceCatalog.find(r => r.id === registerOpts.race);
+  const raceDef = raceCatalog.find(r => r.id === opts.race);
   const raceMods = raceDef?.statModifiers || { strength: 0, agility: 0, intellect: 0, willpower: 0, health: 0, charm: 0 };
   const mins = classDef.minimumStats;
 
-  // Effective minimums = class mins + race mods (min 1)
   const base = {
     strength: Math.max(1, mins.strength + raceMods.strength),
     agility: Math.max(1, mins.agility + raceMods.agility),
@@ -252,8 +252,7 @@ function tryRegister() {
     charm: Math.max(1, mins.charm + raceMods.charm),
   };
 
-  // Spread 60 CP evenly: +10 to each stat above base
-  registerOpts.stats = {
+  const stats = {
     strength: base.strength + 10,
     agility: base.agility + 10,
     intellect: base.intellect + 10,
@@ -265,48 +264,26 @@ function tryRegister() {
   registrationSent = true;
 
   if (stagingMode) {
-    // Platform register — compute stats from platformRegisterOpts
-    const opts = platformRegisterOpts;
-    const pClassDef = classCatalog.find(c => c.id === opts.charClass);
-    const pRaceDef = raceCatalog.find(r => r.id === opts.race);
-    const pRaceMods = pRaceDef?.statModifiers || { strength: 0, agility: 0, intellect: 0, willpower: 0, health: 0, charm: 0 };
-    const pMins = pClassDef?.minimumStats || { strength: 1, agility: 1, intellect: 1, willpower: 1, health: 1, charm: 1 };
-    const pBase = {
-      strength: Math.max(1, pMins.strength + pRaceMods.strength),
-      agility: Math.max(1, pMins.agility + pRaceMods.agility),
-      intellect: Math.max(1, pMins.intellect + pRaceMods.intellect),
-      willpower: Math.max(1, pMins.willpower + pRaceMods.willpower),
-      health: Math.max(1, pMins.health + pRaceMods.health),
-      charm: Math.max(1, pMins.charm + pRaceMods.charm),
-    };
-    const pStats = {
-      strength: pBase.strength + 10,
-      agility: pBase.agility + 10,
-      intellect: pBase.intellect + 10,
-      willpower: pBase.willpower + 10,
-      health: pBase.health + 10,
-      charm: pBase.charm + 10,
-    };
-    console.log('[relay] Platform registering with stats:', JSON.stringify(pStats));
+    console.log('[relay] Platform registering with stats:', JSON.stringify(stats));
     send({
       type: 'platform_register',
       characterName: opts.charName,
       characterClass: opts.charClass,
       race: opts.race,
       gender: opts.gender,
-      allocatedStats: pStats,
+      allocatedStats: stats,
     });
   } else {
-    console.log('[relay] Registering with stats:', JSON.stringify(registerOpts.stats));
+    console.log('[relay] Registering with stats:', JSON.stringify(stats));
     send({
       type: 'register',
       username,
       password,
-      characterName: registerOpts.charName,
-      characterClass: registerOpts.charClass,
-      race: registerOpts.race,
-      gender: registerOpts.gender,
-      allocatedStats: registerOpts.stats,
+      characterName: opts.charName,
+      characterClass: opts.charClass,
+      race: opts.race,
+      gender: opts.gender,
+      allocatedStats: stats,
     });
   }
 }

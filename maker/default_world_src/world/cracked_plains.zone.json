@@ -24,7 +24,7 @@
         "EAST": "cracked_plains:broken_bridge",
         "NORTH": "cracked_plains:bandit_camp"
       },
-      "backgroundImage": "cracked_plains_rift_edge_south",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_edge_south.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view standing on the edge of a cracked stone plateau, a deep dark chasm yawning ahead, wind-scoured bare rock, distant half-collapsed stone bridge spanning the gap to the right, bioluminescent blue-green moss visible far below in the shadows, overcast sky, desolate atmosphere",
@@ -64,7 +64,7 @@
         "WEST": "cracked_plains:rift_edge_south",
         "EAST": "cracked_plains:east_plateau"
       },
-      "backgroundImage": "cracked_plains_broken_bridge",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_broken_bridge.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view on a massive broken stone bridge spanning a deep chasm, half the bridge sheared away, rough wooden planks lashed with rope bridging the gap ahead, strong wind, overcast sky, vertigo-inducing drop below, fantasy digital painting",
@@ -83,7 +83,7 @@
         "WEST": "cracked_plains:broken_bridge",
         "SOUTH": "cracked_plains:collapsed_shelf"
       },
-      "backgroundImage": "cracked_plains_east_plateau",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_east_plateau.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view on a cracked barren stone plateau stretching to the horizon, pale grey rock scarred with long fissures, sparse scrub brush in crevices, collapsed ground visible to one side, overcast sky, wind-scoured desolate landscape",
@@ -102,7 +102,7 @@
         "NORTH": "cracked_plains:east_plateau",
         "DOWN": "cracked_plains:rift_floor_east"
       },
-      "backgroundImage": "cracked_plains_collapsed_shelf",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_collapsed_shelf.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view looking down a collapsed stone shelf dropping in jagged tiers into a deep rift below, broken ledges and exposed rock face, faint blue-green bioluminescent glow rising from below, cool mist, vertigo perspective, fantasy digital painting",
@@ -121,7 +121,7 @@
         "UP": "cracked_plains:rift_edge_south",
         "NORTH": "cracked_plains:rift_tunnel"
       },
-      "backgroundImage": "cracked_plains_rift_floor_south",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_floor_south.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view standing at the bottom of a deep narrow stone rift, towering layered walls rising on both sides, narrow strip of grey sky far above, bioluminescent blue-green moss on walls pulsing with light, water seeping down stone, rubble floor, claustrophobic atmospheric, fantasy digital painting",
@@ -138,9 +138,10 @@
       "y": 33,
       "exits": {
         "SOUTH": "cracked_plains:rift_floor_south",
+        "NORTH": "cracked_plains:rift_floor_north",
         "EAST": "cracked_plains:rift_junction"
       },
-      "backgroundImage": "cracked_plains_rift_tunnel",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_tunnel.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view in an extremely narrow natural stone tunnel formed by a rift whose walls nearly meet overhead, bioluminescent blue-green moss thick on walls casting eerie glow, warm gas hissing from floor vents, claustrophobic tight passage, fantasy underground",
@@ -181,7 +182,7 @@
         "SOUTH": "cracked_plains:fungal_grotto",
         "EAST": "cracked_plains:rift_floor_east"
       },
-      "backgroundImage": "cracked_plains_rift_junction",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_junction.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view in a wider underground chamber where two deep rifts intersect, high ceiling with stalactites of mineral deposits, shallow clear pool on the floor, bioluminescent moss on walls, passages branching in multiple directions, atmospheric underground cavern",
@@ -199,7 +200,7 @@
       "exits": {
         "NORTH": "cracked_plains:rift_junction"
       },
-      "backgroundImage": "cracked_plains_fungal_grotto",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_fungal_grotto.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view in an underground grotto covered in enormous bioluminescent fungi, shelf mushrooms in blue green and violet glowing intensely on every surface, walls and ceiling shimmer like a night sky, warm humid atmosphere, spore motes floating in air, fantasy underground mushroom cave",
@@ -219,7 +220,7 @@
         "NORTH": "cracked_plains:rift_spring",
         "UP": "cracked_plains:collapsed_shelf"
       },
-      "backgroundImage": "cracked_plains_rift_floor_east",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_floor_east.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view in a narrow rocky rift floor strewn with tumbled boulders from a collapse above, thick cobwebs strung between rocks, natural eroded stone staircase climbing the wall toward distant daylight, dark atmospheric underground passage",
@@ -238,7 +239,7 @@
         "SOUTH": "cracked_plains:rift_floor_east",
         "UP": "cracked_plains:east_bluffs"
       },
-      "backgroundImage": "cracked_plains_rift_spring",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_spring.webp",
       "departSound": "footstep_water",
       "maxHostileNpcs": 0,
       "imagePrompt": "First-person view of a clear underground spring pooling at the bottom of a rift, lush bioluminescent moss around the pool, a weathered lean-to shelter built against the rift wall with hanging lanterns, merchant supplies visible, fresh atmosphere, natural stone staircase ascending to daylight above",
@@ -257,7 +258,7 @@
         "SOUTH": "cracked_plains:rift_tunnel",
         "UP": "cracked_plains:north_plateau"
       },
-      "backgroundImage": "cracked_plains_rift_floor_north",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_rift_floor_north.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view at the bottom of a shallowing stone rift, rope ladder hanging from an iron ring at the top of the rift wall, pick-marks on exposed mineral seams in the stone, bioluminescent moss, strip of sky visible above, atmospheric underground passage narrowing toward the surface",
@@ -277,7 +278,7 @@
         "EAST": "cracked_plains:war_road",
         "WEST": "cracked_plains:signal_cairn"
       },
-      "backgroundImage": "cracked_plains_north_plateau",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_north_plateau.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view on a windswept stone plateau under vast grey sky, numerous hairline cracks radiating across the surface like shattered glass, packed dirt war-road cutting eastward, lone stone cairn on a rise to the left, desolate wind-scoured landscape, distant mountains on horizon",
@@ -297,7 +298,7 @@
         "WEST": "cracked_plains:war_road",
         "SOUTH": "cracked_plains:cliff_roost"
       },
-      "backgroundImage": "cracked_plains_east_bluffs",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_east_bluffs.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view on high windswept bluffs at the edge of a cracked plateau, sheer drop-off to a barren landscape of scattered bones and wreckage far below, savage wind, overcast sky, war-road approaching from the west, dramatic cliff edge perspective",
@@ -316,7 +317,7 @@
         "EAST": "cracked_plains:north_plateau",
         "SOUTH": "cracked_plains:west_ridge"
       },
-      "backgroundImage": "cracked_plains_signal_cairn",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_signal_cairn.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
       "imagePrompt": "First-person view of a tall stacked stone cairn on a windswept rise, old Warden signal station with a fire-pit beside it, bedroll in a crevice, tactical scratch-marks on stone, wide view of cracked plateau stretching in all directions, overcast sky, lonely outpost atmosphere",
@@ -336,7 +337,7 @@
         "EAST": "cracked_plains:east_bluffs",
         "SOUTH": "cracked_plains:ruined_fort"
       },
-      "backgroundImage": "cracked_plains_war_road",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_war_road.webp",
       "departSound": "footstep_dirt",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view on a wide packed-dirt road through a cracked stone plateau, boot-prints and cart wheel-ruts in the dirt, heavy traffic marks, ruined stone fort visible ahead in the distance, overcast sky, desolate military supply road atmosphere",
@@ -376,7 +377,7 @@
         "NORTH": "cracked_plains:east_bluffs",
         "WEST": "cracked_plains:bone_field"
       },
-      "backgroundImage": "cracked_plains_cliff_roost",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_cliff_roost.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view on a jutting cliff overhang with crude nests of bone and cloth, white bird droppings on stone, panoramic view of a cracked stone plateau below with dark rift-lines like veins, overcast sky, wheeling predatory birds in the distance, dramatic high vantage point",
@@ -393,10 +394,9 @@
       "y": 30,
       "exits": {
         "NORTH": "cracked_plains:war_road",
-        "WEST": "cracked_plains:hold_approach",
         "DOWN": "cracked_plains:hold_approach"
       },
-      "backgroundImage": "cracked_plains_ruined_fort",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_ruined_fort.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view inside a half-collapsed stone fort, northern walls intact but southern half fallen away into a deep chasm revealing cross-section of multiple floors, stone stairs descending through a doorway in the floor, dramatic lighting through the broken walls, ruined military architecture",
@@ -436,7 +436,7 @@
         "EAST": "cracked_plains:cliff_roost",
         "WEST": "cracked_plains:hold_approach"
       },
-      "backgroundImage": "cracked_plains_bone_field",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_bone_field.webp",
       "departSound": "footstep_dirt",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view on a barren stone plateau littered with old bones, rusted weapons, and scraps of armor, skulls on stakes lining a dirt road, bleached white bones in wind, grim battlefield aftermath, overcast sky, desolate military wasteland",
@@ -455,7 +455,7 @@
         "NORTH": "cracked_plains:signal_cairn",
         "EAST": "cracked_plains:hold_approach"
       },
-      "backgroundImage": "cracked_plains_west_ridge",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_west_ridge.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view walking along a narrow stone ridge with steep drops on both sides, rift chasm to the right, loose scree slope to the left, strong wind funneling along the ridge, grey overcast sky, precarious path with dramatic vertigo views",
@@ -472,11 +472,11 @@
       "y": 29,
       "exits": {
         "EAST": "cracked_plains:bone_field",
-        "NORTH": "cracked_plains:west_ridge",
+        "WEST": "cracked_plains:west_ridge",
         "UP": "cracked_plains:ruined_fort",
         "SOUTH": "cracked_plains:hold_gates"
       },
-      "backgroundImage": "cracked_plains_hold_approach",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_hold_approach.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view at the edge of an enormous rift chasm, looking across at a fortress carved into the far cliff face with multiple levels of stone battlements, external stairs and rope bridges connecting levels, heavy timber drawbridge spanning the gap, bandit sentries visible, dramatic vertical fortress architecture",
@@ -495,7 +495,7 @@
         "NORTH": "cracked_plains:hold_approach",
         "EAST": "warlords_hold:great_hall"
       },
-      "backgroundImage": "cracked_plains_hold_gates",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_hold_gates.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view at massive iron-banded timber fortress gates set into a cliff face, defaced Warden seals mounted as trophies around the entrance, crude bandit marks carved into stone, dark interior visible beyond the gates, smoke and torchlight from within, imposing fortified entrance",
@@ -514,7 +514,7 @@
         "SOUTH": "cracked_plains:rift_edge_south",
         "UP": "cracked_plains:bandit_watchtower"
       },
-      "backgroundImage": "cracked_plains_bandit_camp",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_bandit_camp.webp",
       "departSound": "footstep_dirt",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of a military bandit camp on a stone plateau near a rift edge, tents and lean-tos, smouldering cook-fires, crates of stolen goods, horses on a rope line, rickety wooden watchtower rising above, overcast sky, rough military encampment atmosphere",
@@ -532,7 +532,7 @@
       "exits": {
         "DOWN": "cracked_plains:bandit_camp"
       },
-      "backgroundImage": "cracked_plains_bandit_watchtower",
+      "backgroundImage": "/assets/images/rooms/cracked_plains_bandit_watchtower.webp",
       "departSound": "footstep_wood",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view from the top of a rickety wooden watchtower, lashed plank platform swaying in wind, panoramic 360-degree view of a cracked stone plateau with dark rift-lines, distant burned forest to the south, war-road leading north, signal horn hanging from a peg, dramatic high vantage point, overcast sky",

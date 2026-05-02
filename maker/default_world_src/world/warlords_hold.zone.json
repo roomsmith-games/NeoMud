@@ -26,7 +26,7 @@
         "UP": "warlords_hold:upper_gallery",
         "DOWN": "warlords_hold:underhall"
       },
-      "backgroundImage": "warlords_hold_great_hall",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_great_hall.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of a massive underground great hall carved from stone, huge stone pillars supporting a vaulted ceiling, iron torch sconces with flickering fire, black banner with clenched fist symbol hanging above a stone dais, scarred stone floor, stairs leading up visible to one side, dark passage descending on the other",
@@ -44,7 +44,7 @@
       "exits": {
         "SOUTH": "warlords_hold:great_hall"
       },
-      "backgroundImage": "warlords_hold_guard_hall",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_guard_hall.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of a low-ceilinged underground barracks carved from stone, crude wooden bunks lining both walls, weapon racks between bunks, smoldering cooking fire in stone pit, greasy smoke, military garrison atmosphere, torchlit",
@@ -62,7 +62,7 @@
       "exits": {
         "WEST": "warlords_hold:great_hall"
       },
-      "backgroundImage": "warlords_hold_trophy_room",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_trophy_room.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view of an underground trophy room, walls lined with captured shields banners and weapons many bearing an old warden sigil, heavy oak table covered in maps and food scraps, torchlit stone walls, military trophies of war",
@@ -84,7 +84,7 @@
         "EAST": "warlords_hold:battlements",
         "UP": "warlords_hold:war_room"
       },
-      "backgroundImage": "warlords_hold_upper_gallery",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_upper_gallery.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of a stone gallery in an underground fortress, murder-holes in the floor showing a great hall below, thin shafts of daylight from narrow arrow slits, stone walkway with passages branching left and right, stairs climbing upward ahead",
@@ -103,7 +103,7 @@
       "exits": {
         "EAST": "warlords_hold:upper_gallery"
       },
-      "backgroundImage": "warlords_hold_armory",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_armory.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view of a fortress armory carved from stone, racks of swords axes and crossbows lining the walls, armor stands with mismatched looted armor, central workbench with whetstone and oil, torchlit underground military armory",
@@ -122,7 +122,7 @@
       "exits": {
         "WEST": "warlords_hold:upper_gallery"
       },
-      "backgroundImage": "warlords_hold_battlements",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_battlements.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of narrow stone battlements carved into a cliff face, open sky on one side with a deep chasm below, waist-high stone parapet, crossbow emplacements, signal torches, howling wind, dramatic vertigo-inducing height over a rift",
@@ -141,7 +141,7 @@
       "exits": {
         "DOWN": "warlords_hold:upper_gallery"
       },
-      "backgroundImage": "warlords_hold_war_room",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_war_room.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
       "imagePrompt": "First-person view of a warlord's war room at the top of a cliff fortress, massive stone table covered in maps and campaign markers, stolen banners hanging from walls, narrow window slash showing a vast cracked plateau far below, imposing dark throne-like chair, torchlit, ominous atmosphere",
@@ -161,7 +161,7 @@
         "UP": "warlords_hold:great_hall",
         "NORTH": "warlords_hold:cells"
       },
-      "backgroundImage": "warlords_hold_underhall",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_underhall.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of a narrow underground corridor with smooth ancient stonework, guttering torches far apart, damp cold atmosphere, prison cell doors branching to one side, massive sealed iron door with ancient warden sigil at the far end, oppressive dungeon atmosphere",
@@ -198,7 +198,7 @@
       "exits": {
         "SOUTH": "warlords_hold:underhall"
       },
-      "backgroundImage": "warlords_hold_cells",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_cells.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
       "imagePrompt": "First-person view of underground prison corridor with iron-barred cells carved from rock, one cell containing a skeleton in rusted chains, dim torchlight, oppressive atmosphere, cold damp stone, heavy iron bars",
@@ -217,7 +217,7 @@
       "exits": {
         "NORTH": "warlords_hold:underhall"
       },
-      "backgroundImage": "warlords_hold_vault",
+      "backgroundImage": "/assets/images/rooms/warlords_hold_vault.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
       "imagePrompt": "First-person view of an ancient vault with glowing glyph-covered walls, stone shelves with scattered artifacts, a massive reinforced iron chest in the center sealed with glowing warding runes, mystical blue-gold light, sacred hidden chamber atmosphere",
