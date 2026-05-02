@@ -464,11 +464,11 @@
           "description": "A heavy door of dark iron with a keyhole shaped for a ritual key. The lock mechanism is inscribed with warding symbols.",
           "actionType": "PLACE_ITEM",
           "actionData": {
-            "requiredItemId": "item:khaims_ritual_key",
+            "acceptedItems": "item:khaims_ritual_key",
             "consumeItem": "true",
             "successMessage": "You insert the Bone Warden's ritual key into the lock. The warding symbols flare bright, then fade \u2014 the ancient mechanism recognizes its keeper. The iron door groans open, revealing a vault of unfathomable age beyond. The key crumbles to dust in the lock, its purpose fulfilled.",
-            "failMessage": "The lock rejects your offering. The warding symbols pulse with warning light. Only the ritual key carried by the Bone Warden above will open this door.",
-            "exitDirection": "EAST",
+            "failureMessage": "The lock rejects your offering. The warding symbols pulse with warning light. Only the ritual key carried by the Bone Warden above will open this door.",
+            "successDirection": "EAST",
             "exitTarget": "necropolis_of_vael:vault"
           }
         }
