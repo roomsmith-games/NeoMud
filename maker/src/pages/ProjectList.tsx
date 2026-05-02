@@ -2,10 +2,22 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import type { CSSProperties } from 'react';
+import PublishModal, { type PublishSuccess, type PublishUpsell } from '../components/PublishModal';
+import PublishSuccessModal from '../components/PublishSuccessModal';
+import UpsellModal from '../components/UpsellModal';
+
+interface PublishedInfo {
+  worldId: string;
+  slug: string;
+  status: string;
+  currentVersion: string | null;
+  serverStatus: string;
+}
 
 interface ProjectInfo {
   name: string;
   readOnly: boolean;
+  published?: PublishedInfo | null;
 }
 
 interface ProjectsResponse {
@@ -130,6 +142,15 @@ const styles: Record<string, CSSProperties> = {
     cursor: 'pointer',
     whiteSpace: 'nowrap',
   },
+  publishedBadge: {
+    fontSize: 11,
+    fontWeight: 600,
+    padding: '2px 8px',
+    borderRadius: 4,
+    backgroundColor: '#e8f5e9',
+    color: '#2e7d32',
+    whiteSpace: 'nowrap',
+  },
   deleteBtn: {
     padding: '6px 12px',
     fontSize: 12,
@@ -150,6 +171,9 @@ function ProjectList() {
   const [importName, setImportName] = useState('');
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
+  const [publishName, setPublishName] = useState<string | null>(null);
+  const [publishSuccess, setPublishSuccess] = useState<PublishSuccess | null>(null);
+  const [publishUpsell, setPublishUpsell] = useState<PublishUpsell | null>(null);
   const navigate = useNavigate();
 
   const showToast = (msg: string) => {
@@ -159,9 +183,14 @@ function ProjectList() {
 
   const loadProjects = () => {
     api
-      .get<ProjectsResponse>('/projects')
+      .get<ProjectsResponse>('/projects/enriched')
       .then((data) => setProjects(data.projects))
-      .catch(() => {});
+      .catch(() => {
+        api
+          .get<ProjectsResponse>('/projects')
+          .then((data) => setProjects(data.projects))
+          .catch(() => {});
+      });
   };
 
   useEffect(() => {
@@ -212,7 +241,7 @@ function ProjectList() {
   };
 
   const handlePublish = (name: string) => {
-    showToast(`Publishing "${name}" — coming soon!`);
+    setPublishName(name);
   };
 
   const handleImport = async (e: React.FormEvent) => {
@@ -302,6 +331,11 @@ function ProjectList() {
                     </button>
                   </>
                 )}
+                {!proj.readOnly && proj.published && (
+                  <span style={styles.publishedBadge}>
+                    Published{proj.published.currentVersion ? ` v${proj.published.currentVersion}` : ''}
+                  </span>
+                )}
                 {!proj.readOnly && (
                   <button
                     style={styles.publishBtn}
@@ -310,7 +344,7 @@ function ProjectList() {
                       handlePublish(proj.name);
                     }}
                   >
-                    Publish
+                    {proj.published ? 'Update' : 'Publish'}
                   </button>
                 )}
                 {!proj.name.startsWith('_') && (
@@ -330,6 +364,34 @@ function ProjectList() {
         )}
       </div>
       {toast && <div style={styles.toast}>{toast}</div>}
+      {publishName && (
+        <PublishModal
+          projectName={publishName}
+          onClose={() => setPublishName(null)}
+          onSuccess={(result) => {
+            setPublishName(null);
+            setPublishSuccess(result);
+          }}
+          onUpsell={(info) => {
+            setPublishName(null);
+            setPublishUpsell(info);
+          }}
+        />
+      )}
+      {publishSuccess && (
+        <PublishSuccessModal
+          slug={publishSuccess.slug}
+          publicUrl={publishSuccess.publicUrl}
+          onClose={() => setPublishSuccess(null)}
+        />
+      )}
+      {publishUpsell && (
+        <UpsellModal
+          plan={publishUpsell.plan}
+          upgradeUrl={publishUpsell.upgradeUrl}
+          onClose={() => setPublishUpsell(null)}
+        />
+      )}
     </div>
   );
 }

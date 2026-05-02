@@ -4,7 +4,7 @@ import path from 'path'
 import { listProjects, createProject, deleteProject, forkProject } from '../db.js'
 import { importNmd } from '../import.js'
 import { isValidProjectName } from '../middleware/validateInput.js'
-import { platformGetSubscription, getProjectQuota } from '../services/platformClient.js'
+import { platformGetSubscription, getProjectQuota, platformGetMyWorlds } from '../services/platformClient.js'
 import { logger } from '../lib/logger.js'
 
 /**
@@ -62,6 +62,39 @@ projectsRouter.get('/', async (req, res) => {
     const role = req.user!.role
     const projects = await listProjects(userId, role)
     res.json({ projects })
+  } catch (err) {
+    console.error('[projects] error:', err)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+// GET /enriched — local projects merged with platform published status
+projectsRouter.get('/enriched', async (req, res) => {
+  try {
+    const userId = req.user!.userId
+    const role = req.user!.role
+    const projects = await listProjects(userId, role)
+    const authHeader = forwardAuth(req)
+    const publishedWorlds = authHeader ? await platformGetMyWorlds(authHeader) : []
+
+    const slugMap = new Map(publishedWorlds.map((w) => [w.slug, w]))
+
+    const enriched = projects.map((p) => {
+      const slug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+      const world = slugMap.get(slug)
+      return {
+        ...p,
+        published: world ? {
+          worldId: world.id,
+          slug: world.slug,
+          status: world.status,
+          currentVersion: world.currentVersion,
+          serverStatus: world.serverStatus,
+        } : null,
+      }
+    })
+
+    res.json({ projects: enriched })
   } catch (err) {
     console.error('[projects] error:', err)
     res.status(500).json({ error: 'Internal server error' })

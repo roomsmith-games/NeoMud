@@ -42,3 +42,26 @@ const PROJECT_QUOTAS: Record<SubscriptionResponse['plan'], number> = {
 export function getProjectQuota(plan: SubscriptionResponse['plan']): number {
   return PROJECT_QUOTAS[plan]
 }
+
+export interface PublishedWorld {
+  id: string
+  slug: string
+  name: string
+  status: string
+  currentVersion: string | null
+  serverStatus: string
+  createdAt: string
+}
+
+export async function platformGetMyWorlds(authHeader: string): Promise<PublishedWorld[]> {
+  try {
+    const res = await fetch(`${PLATFORM_API_URL}/api/v1/users/me/worlds`, {
+      headers: { Authorization: authHeader },
+    })
+    if (!res.ok) return []
+    const data = (await res.json()) as { worlds: PublishedWorld[] }
+    return data.worlds
+  } catch {
+    return []
+  }
+}
