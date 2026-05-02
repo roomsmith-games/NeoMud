@@ -2027,8 +2027,8 @@
       "imageNegativePrompt": "background, scenery, shadow, multiple items, modern, sci-fi, anime, hands, person"
     },
     {
-      "id": "item:wraith_essence",
-      "name": "Wraith Essence",
+      "id": "item:sand_wraith_essence",
+      "name": "Sand Wraith Essence",
       "description": "A swirling mote of crystalline sand suspended in a glass vial — the residual energy of a Sand Wraith, captured at the moment of its dispersal. It hums faintly and the sand inside never settles.",
       "type": "crafting",
       "slot": "none",

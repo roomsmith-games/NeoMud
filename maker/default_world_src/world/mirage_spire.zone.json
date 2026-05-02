@@ -1,7 +1,7 @@
 {
   "id": "mirage_spire",
   "name": "Mirage Spire",
-  "description": "A crystalline tower grown from the cataclysm that created the Glass Desert. The Spire is not architecture — it is a wound in reality, a place where the seal-fracture energy crystallized into a physical structure. Inside, light bends in impossible ways, reflections show what isn't there, and at the mirror threshold the entire structure inverts. What ascends above becomes what descends below. The Mirror-Twin dwells at the Spire's heart — a being of refracted identity, neither the thing sealed nor the seal itself, but the crack between them.",
+  "description": "A crystalline tower grown from the cataclysm that created the Glass Desert. The Spire is not architecture \u2014 it is a wound in reality, a place where the seal-fracture energy crystallized into a physical structure. Inside, light bends in impossible ways, reflections show what isn't there, and at the mirror threshold the entire structure inverts. What ascends above becomes what descends below. The Mirror-Twin dwells at the Spire's heart \u2014 a being of refracted identity, neither the thing sealed nor the seal itself, but the crack between them.",
   "safe": false,
   "bgm": "boss_intense",
   "levelRange": "21-22",
@@ -16,7 +16,7 @@
     {
       "id": "mirage_spire:entry_hall",
       "name": "Entry Hall",
-      "description": "The interior of the Spire is nothing like its exterior suggested. The walls are smooth crystal, refracting light into slow-moving rainbows that crawl across every surface. The hall is circular, with a high vaulted ceiling that spirals upward into the tower's core. The air is cool and perfectly still — no wind penetrates here. A wide crystal corridor leads east, deeper into the ground floor. The entrance back to the desert lies north.",
+      "description": "The interior of the Spire is nothing like its exterior suggested. The walls are smooth crystal, refracting light into slow-moving rainbows that crawl across every surface. The hall is circular, with a high vaulted ceiling that spirals upward into the tower's core. The air is cool and perfectly still \u2014 no wind penetrates here. A wide crystal corridor leads east, deeper into the ground floor. The entrance back to the desert lies north.",
       "x": 8,
       "y": 20,
       "exits": {
@@ -35,7 +35,7 @@
     {
       "id": "mirage_spire:crystal_corridor",
       "name": "Crystal Corridor",
-      "description": "A long passage of hexagonal crystal pillars, each one humming at a slightly different pitch, creating an ambient chord that fills the air. The floor is transparent — beneath it, you can see another corridor, identical but inverted, stretching away below your feet. A trick of the light, surely. At the corridor's end, a spiral staircase of fused glass ascends through the ceiling.",
+      "description": "A long passage of hexagonal crystal pillars, each one humming at a slightly different pitch, creating an ambient chord that fills the air. The floor is transparent \u2014 beneath it, you can see another corridor, identical but inverted, stretching away below your feet. A trick of the light, surely. At the corridor's end, a spiral staircase of fused glass ascends through the ceiling.",
       "x": 9,
       "y": 20,
       "exits": {
@@ -54,7 +54,7 @@
     {
       "id": "mirage_spire:refraction_chamber",
       "name": "Refraction Chamber",
-      "description": "A domed chamber where light enters through the crystal walls and is split into its component colors, each wavelength channeled along a different crystal pathway. The effect is overwhelming — the room pulses with shifting bands of pure color, and your shadow is cast in six directions at once. The stairs continue upward through a narrow aperture in the ceiling. The staircase down leads back to the corridor below.",
+      "description": "A domed chamber where light enters through the crystal walls and is split into its component colors, each wavelength channeled along a different crystal pathway. The effect is overwhelming \u2014 the room pulses with shifting bands of pure color, and your shadow is cast in six directions at once. The stairs continue upward through a narrow aperture in the ceiling. The staircase down leads back to the corridor below.",
       "x": 9,
       "y": 19,
       "exits": {
@@ -73,7 +73,7 @@
     {
       "id": "mirage_spire:prism_gallery",
       "name": "Prism Gallery",
-      "description": "The highest accessible floor of the Spire's normal half. A gallery of crystal prisms lines the walls, each one containing what appears to be a frozen scene — a battle, a coronation, a funeral, a birth. They are not paintings or carvings; they are three-dimensional moments preserved in crystal, viewed from the inside. Some show places you recognize from the overworld below. One shows the Mirage Spire itself, whole and unblemished, before the cataclysm broke it. A passage leads east to the mirror threshold.",
+      "description": "The highest accessible floor of the Spire's normal half. A gallery of crystal prisms lines the walls, each one containing what appears to be a frozen scene \u2014 a battle, a coronation, a funeral, a birth. They are not paintings or carvings; they are three-dimensional moments preserved in crystal, viewed from the inside. Some show places you recognize from the overworld below. One shows the Mirage Spire itself, whole and unblemished, before the cataclysm broke it. A passage leads east to the mirror threshold.",
       "x": 9,
       "y": 18,
       "exits": {
@@ -83,7 +83,7 @@
       "backgroundImage": "/assets/images/rooms/mirage_spire_prism_gallery.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
-      "imagePrompt": "First-person view in a crystal gallery with large prisms along walls containing frozen 3D scenes — battles, ceremonies, landscapes — preserved in crystal like holograms, highest floor of tower, passage to shimmering mirror surface ahead, fantasy crystal museum",
+      "imagePrompt": "First-person view in a crystal gallery with large prisms along walls containing frozen 3D scenes \u2014 battles, ceremonies, landscapes \u2014 preserved in crystal like holograms, highest floor of tower, passage to shimmering mirror surface ahead, fantasy crystal museum",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, crystal gallery",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, paintings on walls",
       "imageWidth": 1024,
@@ -102,10 +102,10 @@
             "perceptionDC": "20",
             "saveDC": "20",
             "damageType": "arcane",
-            "noticeMessage": "That prism is overloaded — the scene inside is fragmenting, energy building to a discharge. You avert your eyes.",
+            "noticeMessage": "That prism is overloaded \u2014 the scene inside is fragmenting, energy building to a discharge. You avert your eyes.",
             "triggerMessage": "A prism shatters and releases a blinding flash of concentrated arcane light directly into your mind!",
             "saveMessage": "You steel your mind against the psychic assault, gritting your teeth as the flash subsides.",
-            "failMessage": "The arcane flash burns through your consciousness like a brand. Your vision whites out and your thoughts scatter — when you recover, blood drips from your nose."
+            "failMessage": "The arcane flash burns through your consciousness like a brand. Your vision whites out and your thoughts scatter \u2014 when you recover, blood drips from your nose."
           }
         }
       ]
@@ -113,7 +113,7 @@
     {
       "id": "mirage_spire:mirror_threshold",
       "name": "Mirror Threshold",
-      "description": "The gallery ends at a wall of perfect mirror — floor to ceiling, seamless, showing your reflection with uncanny clarity. But your reflection is wrong. It stands in a room that is this room, inverted — the ceiling becomes the floor, the stairs lead down instead of up. Your reflection watches you with an expression you are not wearing. Set into the wall beside the mirror is a crystal socket, shaped to receive something. The mirror hums with potential — it is not a wall, it is a door, waiting for the right key.",
+      "description": "The gallery ends at a wall of perfect mirror \u2014 floor to ceiling, seamless, showing your reflection with uncanny clarity. But your reflection is wrong. It stands in a room that is this room, inverted \u2014 the ceiling becomes the floor, the stairs lead down instead of up. Your reflection watches you with an expression you are not wearing. Set into the wall beside the mirror is a crystal socket, shaped to receive something. The mirror hums with potential \u2014 it is not a wall, it is a door, waiting for the right key.",
       "x": 10,
       "y": 18,
       "exits": {
@@ -122,7 +122,7 @@
       "backgroundImage": "/assets/images/rooms/mirage_spire_mirror_threshold.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
-      "imagePrompt": "First-person view facing a perfect floor-to-ceiling mirror wall showing a slightly wrong reflection — inverted room behind it, crystal socket set in wall beside mirror waiting for a key item, shimmering potential energy, eerie reflection showing different expression, fantasy mirror puzzle",
+      "imagePrompt": "First-person view facing a perfect floor-to-ceiling mirror wall showing a slightly wrong reflection \u2014 inverted room behind it, crystal socket set in wall beside mirror waiting for a key item, shimmering potential energy, eerie reflection showing different expression, fantasy mirror puzzle",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, mirror threshold",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, broken mirror",
       "imageWidth": 1024,
@@ -135,8 +135,8 @@
           "actionType": "PLACE_ITEM",
           "actionData": {
             "requiredItemId": "item:shard_of_true_sight",
-            "consumeItem": true,
-            "successMessage": "You place the Shard of True Sight into the crystal socket. The mirror flares with blinding light — and then it is no longer a mirror. It is a doorway. Your reflection steps aside, and beyond it the Spire continues, inverted, descending where it once ascended. The Shard dissolves into the crystal wall, its purpose fulfilled.",
+            "consumeItem": "true",
+            "successMessage": "You place the Shard of True Sight into the crystal socket. The mirror flares with blinding light \u2014 and then it is no longer a mirror. It is a doorway. Your reflection steps aside, and beyond it the Spire continues, inverted, descending where it once ascended. The Shard dissolves into the crystal wall, its purpose fulfilled.",
             "failMessage": "The socket rejects the offering. Whatever this requires, it must show things as they truly are.",
             "exitDirection": "EAST",
             "exitTarget": "mirage_spire:reflected_gallery"
@@ -147,7 +147,7 @@
     {
       "id": "mirage_spire:reflected_gallery",
       "name": "Reflected Gallery",
-      "description": "You have passed through the mirror. Everything here is the same — and reversed. The gallery prisms line the walls, but the scenes inside are wrong: victories show defeats, the living are dead, the Spire is whole where it should be broken. The light has a cold quality now, bluish and thin. The floor that was the ceiling is solid beneath your feet. Stairs descend from here — in the reflected world, down is the direction of depth.",
+      "description": "You have passed through the mirror. Everything here is the same \u2014 and reversed. The gallery prisms line the walls, but the scenes inside are wrong: victories show defeats, the living are dead, the Spire is whole where it should be broken. The light has a cold quality now, bluish and thin. The floor that was the ceiling is solid beneath your feet. Stairs descend from here \u2014 in the reflected world, down is the direction of depth.",
       "x": 10,
       "y": 17,
       "exits": {
@@ -157,7 +157,7 @@
       "backgroundImage": "/assets/images/rooms/mirage_spire_reflected_gallery.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
-      "imagePrompt": "First-person view in a mirror-reversed crystal gallery, same prisms but showing inverted scenes — victories as defeats, cold bluish thin light, everything subtly wrong and reversed, stairs descending, eerie reflected world atmosphere, fantasy mirror dimension dungeon",
+      "imagePrompt": "First-person view in a mirror-reversed crystal gallery, same prisms but showing inverted scenes \u2014 victories as defeats, cold bluish thin light, everything subtly wrong and reversed, stairs descending, eerie reflected world atmosphere, fantasy mirror dimension dungeon",
       "imageStyle": "fantasy digital painting, rich colors, cold blue atmospheric lighting, slightly painterly, fixed perspective, JRPG background, mirror dimension",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, warm colors",
       "imageWidth": 1024,
@@ -176,10 +176,10 @@
             "perceptionDC": "20",
             "saveDC": "20",
             "damageType": "physical",
-            "noticeMessage": "Cracks spider-web across a nearby prism — you dive for cover before it blows.",
+            "noticeMessage": "Cracks spider-web across a nearby prism \u2014 you dive for cover before it blows.",
             "triggerMessage": "A reflected prism detonates into a storm of razor-sharp mirror shards spinning through the corridor!",
             "saveMessage": "You flatten yourself behind a crystal pillar as mirror shards whistle past, embedding in the far wall.",
-            "failMessage": "Mirror shards slice through you from every direction — the reflected gallery becomes a lethal kaleidoscope of cutting glass."
+            "failMessage": "Mirror shards slice through you from every direction \u2014 the reflected gallery becomes a lethal kaleidoscope of cutting glass."
           }
         }
       ]
@@ -187,7 +187,7 @@
     {
       "id": "mirage_spire:shadow_corridor",
       "name": "Shadow Corridor",
-      "description": "The inverted version of the crystal corridor. The hexagonal pillars are dark here — not transparent but deeply opaque, absorbing light rather than refracting it. The ambient chord is lower, a bass drone that vibrates in your chest. Through the now-opaque floor above your head, you can see faint light from the normal corridor above — or is it below? Direction has lost meaning. A passage leads east to a sealed vault. The stairs continue down.",
+      "description": "The inverted version of the crystal corridor. The hexagonal pillars are dark here \u2014 not transparent but deeply opaque, absorbing light rather than refracting it. The ambient chord is lower, a bass drone that vibrates in your chest. Through the now-opaque floor above your head, you can see faint light from the normal corridor above \u2014 or is it below? Direction has lost meaning. A passage leads east to a sealed vault. The stairs continue down.",
       "x": 9,
       "y": 16,
       "exits": {
@@ -207,7 +207,7 @@
     {
       "id": "mirage_spire:illusion_vault",
       "name": "Illusion Vault",
-      "description": "A sealed chamber off the shadow corridor, its walls lined with alcoves — each containing an item that looks real but is a reflection, a perfect glass replica with no substance. Weapons, armor, coins, all beautifully crafted in crystal and utterly worthless. In the center of the room, a single alcove holds something different: a chest of dark iron that is solid, real, and locked. The lock is shaped like a keyhole, waiting.",
+      "description": "A sealed chamber off the shadow corridor, its walls lined with alcoves \u2014 each containing an item that looks real but is a reflection, a perfect glass replica with no substance. Weapons, armor, coins, all beautifully crafted in crystal and utterly worthless. In the center of the room, a single alcove holds something different: a chest of dark iron that is solid, real, and locked. The lock is shaped like a keyhole, waiting.",
       "x": 10,
       "y": 16,
       "exits": {
@@ -216,7 +216,7 @@
       "backgroundImage": "/assets/images/rooms/mirage_spire_illusion_vault.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
-      "imagePrompt": "First-person view of a vault chamber with wall alcoves containing crystal glass replica items — weapons, armor, coins, all fake, center alcove holds a real dark iron treasure chest with ornate lock, contrast between illusion and reality, fantasy mirror dimension vault",
+      "imagePrompt": "First-person view of a vault chamber with wall alcoves containing crystal glass replica items \u2014 weapons, armor, coins, all fake, center alcove holds a real dark iron treasure chest with ornate lock, contrast between illusion and reality, fantasy mirror dimension vault",
       "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, treasure vault",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, empty room",
       "imageWidth": 1024,
@@ -225,13 +225,13 @@
         {
           "id": "vault_chest_lock",
           "label": "Iron Chest",
-          "description": "A dark iron chest — the only real object in this room of illusions. It is locked.",
+          "description": "A dark iron chest \u2014 the only real object in this room of illusions. It is locked.",
           "actionType": "PLACE_ITEM",
           "actionData": {
             "requiredItemId": "item:mirror_key",
-            "consumeItem": true,
-            "successMessage": "The Mirror Key slides into the lock and turns with a satisfying click. The chest opens, revealing treasures that survived the reflection — real, solid, and valuable.",
-            "failMessage": "The lock doesn't budge. You need the correct key — something from deeper in the Spire."
+            "consumeItem": "true",
+            "successMessage": "The Mirror Key slides into the lock and turns with a satisfying click. The chest opens, revealing treasures that survived the reflection \u2014 real, solid, and valuable.",
+            "failMessage": "The lock doesn't budge. You need the correct key \u2014 something from deeper in the Spire."
           }
         },
         {
@@ -240,14 +240,12 @@
           "description": "The unlocked iron chest, its contents gleaming in the dim light.",
           "actionType": "TREASURE_DROP",
           "actionData": {
-            "items": [
-              "item:refracted_blade"
-            ],
-            "coins": {
-              "gold": 50,
-              "silver": 200
-            },
-            "message": "Inside the chest you find a blade that shifts between transparent and opaque as you turn it, and a considerable pile of coins — real ones, tested by biting."
+            "items": "item:refracted_blade",
+            "message": "Inside the chest you find a blade that shifts between transparent and opaque as you turn it, and a considerable pile of coins \u2014 real ones, tested by biting.",
+            "minGold": "50",
+            "maxGold": "50",
+            "minSilver": "200",
+            "maxSilver": "200"
           }
         }
       ]
@@ -255,7 +253,7 @@
     {
       "id": "mirage_spire:mirror_antechamber",
       "name": "Mirror Antechamber",
-      "description": "The deepest point of the reflected Spire — or the highest, depending on which reality you trust. The chamber is circular, its walls entirely mirrored, creating infinite reflections of yourself stretching in every direction. Some of the reflections move independently. Some are wearing different armor. One is smiling when you are not. A heavy door of dark crystal leads east, beyond which you can hear a sound like glass grinding on glass.",
+      "description": "The deepest point of the reflected Spire \u2014 or the highest, depending on which reality you trust. The chamber is circular, its walls entirely mirrored, creating infinite reflections of yourself stretching in every direction. Some of the reflections move independently. Some are wearing different armor. One is smiling when you are not. A heavy door of dark crystal leads east, beyond which you can hear a sound like glass grinding on glass.",
       "x": 9,
       "y": 15,
       "exits": {
@@ -265,7 +263,7 @@
       "backgroundImage": "/assets/images/rooms/mirage_spire_mirror_antechamber.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
-      "imagePrompt": "First-person view in a circular chamber with entirely mirrored walls creating infinite reflections, some reflections subtly wrong — different poses, different expressions, one smiling, heavy dark crystal door ahead, deeply unsettling infinite mirror room, fantasy mirror dimension",
+      "imagePrompt": "First-person view in a circular chamber with entirely mirrored walls creating infinite reflections, some reflections subtly wrong \u2014 different poses, different expressions, one smiling, heavy dark crystal door ahead, deeply unsettling infinite mirror room, fantasy mirror dimension",
       "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, infinite mirror room",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, outdoor, simple room, few reflections",
       "imageWidth": 1024,
@@ -274,7 +272,7 @@
     {
       "id": "mirage_spire:shattered_hall",
       "name": "Shattered Hall",
-      "description": "A vast hall of broken mirrors — the walls were once smooth crystal but something has smashed them, leaving jagged fragments that still reflect in broken, disjointed pieces. The floor crunches with mirror shards. At the center of the destruction stands a figure that is difficult to look at directly — it flickers between forms, each one a distorted version of something familiar. It guards the passage east with mechanical patience.",
+      "description": "A vast hall of broken mirrors \u2014 the walls were once smooth crystal but something has smashed them, leaving jagged fragments that still reflect in broken, disjointed pieces. The floor crunches with mirror shards. At the center of the destruction stands a figure that is difficult to look at directly \u2014 it flickers between forms, each one a distorted version of something familiar. It guards the passage east with mechanical patience.",
       "x": 10,
       "y": 15,
       "exits": {
@@ -293,7 +291,7 @@
     {
       "id": "mirage_spire:twin_arena",
       "name": "Twin Arena",
-      "description": "The heart of the Mirage Spire. A perfect circle of unbroken mirror surrounds an open arena — the floor is transparent glass over an infinite drop (or an infinite climb, reflected). The ceiling mirrors the floor. Between them, you exist in a column of infinite space. The Mirror-Twin is here — or rather, two of it are. They circle each other in the center of the arena, perfectly synchronized, each one a flawless reflection of the other. When they notice you, they stop. They smile. The same smile, from two faces.",
+      "description": "The heart of the Mirage Spire. A perfect circle of unbroken mirror surrounds an open arena \u2014 the floor is transparent glass over an infinite drop (or an infinite climb, reflected). The ceiling mirrors the floor. Between them, you exist in a column of infinite space. The Mirror-Twin is here \u2014 or rather, two of it are. They circle each other in the center of the arena, perfectly synchronized, each one a flawless reflection of the other. When they notice you, they stop. They smile. The same smile, from two faces.",
       "x": 11,
       "y": 15,
       "exits": {
@@ -312,7 +310,7 @@
     {
       "id": "mirage_spire:mirror_heart",
       "name": "Mirror Heart",
-      "description": "Below the arena — or above it, in the reflected world — lies the Spire's core: a small chamber of raw, unworked crystal that predates the Spire itself. This was here before the cataclysm, before the seal-fracture. This was the seed. A single crystal formation in the center pulses with light in a slow heartbeat rhythm. Beside it, on a natural ledge of glass, sits a fragment of something older — a seal shard, separated from its parent ages ago, thrumming with contained power.",
+      "description": "Below the arena \u2014 or above it, in the reflected world \u2014 lies the Spire's core: a small chamber of raw, unworked crystal that predates the Spire itself. This was here before the cataclysm, before the seal-fracture. This was the seed. A single crystal formation in the center pulses with light in a slow heartbeat rhythm. Beside it, on a natural ledge of glass, sits a fragment of something older \u2014 a seal shard, separated from its parent ages ago, thrumming with contained power.",
       "x": 11,
       "y": 14,
       "exits": {
@@ -330,17 +328,15 @@
         {
           "id": "mirror_heart_treasure",
           "label": "Crystal Formation",
-          "description": "The Spire's heart — a pulsing crystal formation with a seal shard resting beside it.",
+          "description": "The Spire's heart \u2014 a pulsing crystal formation with a seal shard resting beside it.",
           "actionType": "TREASURE_DROP",
           "actionData": {
-            "items": [
-              "item:twins_seal_fragment"
-            ],
-            "coins": {
-              "gold": 75,
-              "platinum": 5
-            },
-            "message": "You carefully lift the seal fragment from its resting place. The crystal formation's pulse stutters — then steadies. The Spire will endure without this piece. The fragment is warm in your hand, thrumming with the same contained energy as every other seal shard you've found."
+            "items": "item:twins_seal_fragment,item:mirror_twins_lore_shard",
+            "message": "You carefully lift the seal fragment from its resting place. The crystal formation's pulse stutters \u2014 then steadies. The Spire will endure without this piece. The fragment is warm in your hand, thrumming with the same contained energy as every other seal shard you've found.",
+            "minGold": "75",
+            "maxGold": "75",
+            "minPlatinum": "5",
+            "maxPlatinum": "5"
           }
         }
       ]
@@ -385,12 +381,13 @@
       "imageStyle": "fantasy creature sprite, clean edges, crystal construct, game asset, dark fantasy",
       "imageNegativePrompt": "background, scenery, shadow, modern, sci-fi, cute, cartoon, organic, flesh",
       "imageWidth": 384,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "behaviorType": "wander"
     },
     {
       "id": "npc:mirror_shade",
       "name": "Mirror Shade",
-      "description": "On the reflected side of the mirror threshold, shadows have substance. This one is yours — or someone's — a dark silhouette that moves independently, striking with hands that leave frost-burns on contact. It has no features, only a human-shaped absence of light that fights with unsettling familiarity, mimicking combat styles it has observed.",
+      "description": "On the reflected side of the mirror threshold, shadows have substance. This one is yours \u2014 or someone's \u2014 a dark silhouette that moves independently, striking with hands that leave frost-burns on contact. It has no features, only a human-shaped absence of light that fights with unsettling familiarity, mimicking combat styles it has observed.",
       "level": 21,
       "maxHp": 260,
       "damage": 52,
@@ -426,12 +423,13 @@
       "imageStyle": "fantasy creature sprite, clean edges, dark shadow figure, game asset, dark fantasy",
       "imageNegativePrompt": "background, scenery, modern, sci-fi, cute, cartoon, detailed face, armor, colorful",
       "imageWidth": 384,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "behaviorType": "wander"
     },
     {
       "id": "npc:prismatic_wisp",
       "name": "Prismatic Wisp",
-      "description": "A sphere of concentrated refracted light that drifts through the Spire's upper chambers. Beautiful and deadly — it pulses through the spectrum before discharging focused beams of colored light that burn on contact. They are drawn to movement and warmth, clustering around living things like moths to flame, except these moths are the flame.",
+      "description": "A sphere of concentrated refracted light that drifts through the Spire's upper chambers. Beautiful and deadly \u2014 it pulses through the spectrum before discharging focused beams of colored light that burn on contact. They are drawn to movement and warmth, clustering around living things like moths to flame, except these moths are the flame.",
       "level": 22,
       "maxHp": 310,
       "damage": 54,
@@ -461,12 +459,13 @@
       "imageStyle": "fantasy creature sprite, clean edges, glowing light sphere, game asset, magical fantasy",
       "imageNegativePrompt": "background, scenery, shadow, modern, sci-fi, cute, humanoid, solid body, dark",
       "imageWidth": 384,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "behaviorType": "wander"
     },
     {
       "id": "npc:reflected_guardian",
       "name": "Reflected Guardian",
-      "description": "A mirror-version of the Spire Sentinels, but corrupted by the reflection — its crystal body is dark where it should be clear, its core pulses with cold blue light instead of warm gold. It is stronger than its counterpart, its movements faster, its strikes more deliberate. It guards the deeper reflected chambers with a territorial fury.",
+      "description": "A mirror-version of the Spire Sentinels, but corrupted by the reflection \u2014 its crystal body is dark where it should be clear, its core pulses with cold blue light instead of warm gold. It is stronger than its counterpart, its movements faster, its strikes more deliberate. It guards the deeper reflected chambers with a territorial fury.",
       "level": 22,
       "maxHp": 300,
       "damage": 54,
@@ -497,16 +496,17 @@
       "attackSound": "sword_swing",
       "missSound": "sword_miss",
       "deathSound": "enemy_death",
-      "imagePrompt": "A dark crystal humanoid construct, inverted version of a sentinel — dark opaque crystal body with cold blue pulsing core, crystalline blade-arms, corrupted mirror guardian, fantasy dark golem",
+      "imagePrompt": "A dark crystal humanoid construct, inverted version of a sentinel \u2014 dark opaque crystal body with cold blue pulsing core, crystalline blade-arms, corrupted mirror guardian, fantasy dark golem",
       "imageStyle": "fantasy creature sprite, clean edges, dark crystal construct, game asset, dark fantasy",
       "imageNegativePrompt": "background, scenery, modern, sci-fi, cute, cartoon, transparent, warm colors, organic",
       "imageWidth": 384,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "behaviorType": "wander"
     },
     {
       "id": "npc:the_refracted_one",
       "name": "The Refracted One",
-      "description": "A sub-boss guarding the approach to the Mirror-Twin. It was once a Warden who entered the Spire to study the seal-fracture — the mirror threshold split them, and this is what remains: a figure that flickers between multiple identities, its form constantly shifting between the Warden it was and the dozens of reflections it has become. It carries a key of dark crystal.",
+      "description": "A sub-boss guarding the approach to the Mirror-Twin. It was once a Warden who entered the Spire to study the seal-fracture \u2014 the mirror threshold split them, and this is what remains: a figure that flickers between multiple identities, its form constantly shifting between the Warden it was and the dozens of reflections it has become. It carries a key of dark crystal.",
       "level": 22,
       "maxHp": 520,
       "damage": 56,
@@ -542,12 +542,13 @@
       "imageStyle": "fantasy creature sprite, clean edges, shifting multi-form figure, game asset, dark fantasy",
       "imageNegativePrompt": "background, scenery, modern, sci-fi, cute, cartoon, single stable form, solid body",
       "imageWidth": 384,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "behaviorType": "idle"
     },
     {
       "id": "npc:the_mirror_twin",
       "name": "The Mirror-Twin",
-      "description": "The master of the Mirage Spire — a being of refracted identity, born from the seal-fracture that created the Glass Desert. It appears as two identical figures circling each other in perfect synchronization, each a flawless mirror of the other. They attack in concert, one striking while the other defends, then reversing — an endless loop of coordinated violence. When one is wounded, the other bleeds. They are not two beings; they are one, refracted.",
+      "description": "The master of the Mirage Spire \u2014 a being of refracted identity, born from the seal-fracture that created the Glass Desert. It appears as two identical figures circling each other in perfect synchronization, each a flawless mirror of the other. They attack in concert, one striking while the other defends, then reversing \u2014 an endless loop of coordinated violence. When one is wounded, the other bleeds. They are not two beings; they are one, refracted.",
       "level": 22,
       "maxHp": 980,
       "damage": 66,
@@ -591,7 +592,8 @@
       "imageStyle": "fantasy creature sprite, clean edges, mirrored twin figures, game asset, epic boss, dark fantasy",
       "imageNegativePrompt": "background, scenery, modern, sci-fi, cute, cartoon, single figure, normal human",
       "imageWidth": 512,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "behaviorType": "idle"
     }
   ]
 }
