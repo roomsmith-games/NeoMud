@@ -1,0 +1,450 @@
+{
+  "id": "warlords_hold",
+  "name": "Warlord's Hold",
+  "description": "A fortress carved into the wall of the deepest rift on the Cracked Plains. Once a Warden outpost guarding a sealed vault, it was seized six months ago by the warlord Drask and his bandit army. The Hold is built vertically — battlements and a war room above, a great hall at ground level, and prison cells and a sealed vault below. The sounds of steel on stone and barked orders echo through the carved corridors.",
+  "safe": false,
+  "bgm": "boss_intense",
+  "levelRange": "19-20",
+  "spawnConfig": {
+    "maxEntities": 8,
+    "maxPerRoom": 2,
+    "rateTicks": 20
+  },
+  "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, underground cliff fortress, carved stone, torchlit corridors",
+  "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful, tropical",
+  "rooms": [
+    {
+      "id": "warlords_hold:great_hall",
+      "name": "Great Hall",
+      "description": "The main hall of the Hold, carved from the living rock of the rift wall. Massive stone pillars support a vaulted ceiling thirty feet overhead, and torches burn in iron sconces along the walls. Drask's banner — a clenched fist on black — hangs above a stone dais at the far end. The floor is scarred from years of heavy boots and dragged prisoners. Stairs climb upward to a gallery above, and a dark passage descends into the fortress depths.",
+      "x": 6,
+      "y": 36,
+      "exits": {
+        "WEST": "cracked_plains:hold_gates",
+        "NORTH": "warlords_hold:guard_hall",
+        "EAST": "warlords_hold:trophy_room",
+        "UP": "warlords_hold:upper_gallery",
+        "DOWN": "warlords_hold:underhall"
+      },
+      "backgroundImage": "warlords_hold_great_hall",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a massive underground great hall carved from stone, huge stone pillars supporting a vaulted ceiling, iron torch sconces with flickering fire, black banner with clenched fist symbol hanging above a stone dais, scarred stone floor, stairs leading up visible to one side, dark passage descending on the other",
+      "imageStyle": "fantasy digital painting, rich colors, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground fortress great hall",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight, outdoor",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:guard_hall",
+      "name": "Guard Hall",
+      "description": "A low-ceilinged barracks carved into the north wall of the fortress. Crude bunks line both sides, with weapon racks between them — most half-empty, the arms distributed to Drask's troops. A cooking fire smolders in a stone-lined pit, filling the room with greasy smoke. The guards rotate in shifts, and there are always fresh ones here.",
+      "x": 6,
+      "y": 37,
+      "exits": {
+        "SOUTH": "warlords_hold:great_hall"
+      },
+      "backgroundImage": "warlords_hold_guard_hall",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a low-ceilinged underground barracks carved from stone, crude wooden bunks lining both walls, weapon racks between bunks, smoldering cooking fire in stone pit, greasy smoke, military garrison atmosphere, torchlit",
+      "imageStyle": "fantasy digital painting, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground military barracks",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:trophy_room",
+      "name": "Trophy Room",
+      "description": "Drask's lieutenant keeps this room as a monument to conquest. Shields, banners, and weapons taken from defeated foes line the walls — many bearing the Warden sigil. A heavy oak table serves as both desk and dining surface, covered in maps and half-eaten food. The lieutenant sits here when not patrolling, studying Drask's campaign plans.",
+      "x": 7,
+      "y": 36,
+      "exits": {
+        "WEST": "warlords_hold:great_hall"
+      },
+      "backgroundImage": "warlords_hold_trophy_room",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of an underground trophy room, walls lined with captured shields banners and weapons many bearing an old warden sigil, heavy oak table covered in maps and food scraps, torchlit stone walls, military trophies of war",
+      "imageStyle": "fantasy digital painting, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground trophy chamber",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:upper_gallery",
+      "name": "Upper Gallery",
+      "description": "A stone gallery overlooking the great hall below through murder-holes carved in the floor. Arrow slits in the outer wall admit thin shafts of daylight from the rift outside. The gallery connects the armory to the west with the battlements to the east, and a final stair climbs to Drask's war room above.",
+      "x": 6,
+      "y": 36,
+      "z": 1,
+      "exits": {
+        "DOWN": "warlords_hold:great_hall",
+        "WEST": "warlords_hold:armory",
+        "EAST": "warlords_hold:battlements",
+        "UP": "warlords_hold:war_room"
+      },
+      "backgroundImage": "warlords_hold_upper_gallery",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a stone gallery in an underground fortress, murder-holes in the floor showing a great hall below, thin shafts of daylight from narrow arrow slits, stone walkway with passages branching left and right, stairs climbing upward ahead",
+      "imageStyle": "fantasy digital painting, atmospheric mixed lighting, slightly painterly, fixed perspective, JRPG background, fortress gallery with murder holes",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:armory",
+      "name": "Armory",
+      "description": "The Hold's original armory, expanded by Drask's forces. Racks of weapons line the walls — swords, axes, crossbows, bundles of bolts. Armor stands hold mismatched suits assembled from looted gear. A workbench with a whetstone and oil occupies the center. The air smells of metal and leather polish.",
+      "x": 5,
+      "y": 36,
+      "z": 1,
+      "exits": {
+        "EAST": "warlords_hold:upper_gallery"
+      },
+      "backgroundImage": "warlords_hold_armory",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a fortress armory carved from stone, racks of swords axes and crossbows lining the walls, armor stands with mismatched looted armor, central workbench with whetstone and oil, torchlit underground military armory",
+      "imageStyle": "fantasy digital painting, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground armory",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:battlements",
+      "name": "Battlements",
+      "description": "The Hold's upper defense — a narrow stone walkway carved into the outer rift wall, open to the sky on one side. A waist-high parapet protects against the sheer drop into the rift below. Crossbow emplacements are positioned at intervals, and signal torches stand ready for lighting. The wind howls through the gap, carrying the sounds of the rift up from the darkness below.",
+      "x": 7,
+      "y": 36,
+      "z": 1,
+      "exits": {
+        "WEST": "warlords_hold:upper_gallery"
+      },
+      "backgroundImage": "warlords_hold_battlements",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of narrow stone battlements carved into a cliff face, open sky on one side with a deep chasm below, waist-high stone parapet, crossbow emplacements, signal torches, howling wind, dramatic vertigo-inducing height over a rift",
+      "imageStyle": "fantasy digital painting, dramatic lighting, slightly painterly, fixed perspective, JRPG background, cliff fortress battlements overlooking chasm",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, indoor, cozy",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:war_room",
+      "name": "Drask's War Room",
+      "description": "The highest chamber in the Hold, carved from the very top of the rift wall. A massive stone table dominates the center, covered in hand-drawn maps, campaign markers, and stolen Warden documents. The walls are hung with the banners of every settlement Drask has raided. A single window — more of a slash in the rock — looks out over the cracked plateau far below. This is where the warlord plans, commands, and waits.",
+      "x": 6,
+      "y": 36,
+      "z": 2,
+      "exits": {
+        "DOWN": "warlords_hold:upper_gallery"
+      },
+      "backgroundImage": "warlords_hold_war_room",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a warlord's war room at the top of a cliff fortress, massive stone table covered in maps and campaign markers, stolen banners hanging from walls, narrow window slash showing a vast cracked plateau far below, imposing dark throne-like chair, torchlit, ominous atmosphere",
+      "imageStyle": "fantasy digital painting, dramatic torch lighting, slightly painterly, fixed perspective, JRPG background, warlord command center at cliff top",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful, cozy",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:underhall",
+      "name": "Underhall",
+      "description": "Below the great hall, the Hold descends into older construction — smooth Warden stonework, not the rough-hewn tunnels above. The corridor is narrow and low, with guttering torches spaced far apart. The air is damp and cold. Cells branch off to the north, and the south end terminates at a massive iron door bearing the Warden seal — the vault, still locked after all these centuries.",
+      "x": 6,
+      "y": 36,
+      "z": -1,
+      "exits": {
+        "UP": "warlords_hold:great_hall",
+        "NORTH": "warlords_hold:cells"
+      },
+      "backgroundImage": "warlords_hold_underhall",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a narrow underground corridor with smooth ancient stonework, guttering torches far apart, damp cold atmosphere, prison cell doors branching to one side, massive sealed iron door with ancient warden sigil at the far end, oppressive dungeon atmosphere",
+      "imageStyle": "fantasy digital painting, dim torch lighting, slightly painterly, fixed perspective, JRPG background, ancient underground dungeon corridor",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "vault_lock",
+          "label": "Sealed Vault Door",
+          "description": "A massive iron door bearing the Warden seal. A keyhole shaped like a clenched fist is set into the lock — clearly, this was modified by Drask's forces. The original Warden lock has been replaced.",
+          "actionType": "PLACE_ITEM",
+          "triggerType": "ON_USE",
+          "actionData": {
+            "requiredItemId": "item:drasks_war_key",
+            "consumeItem": "true",
+            "exitDirection": "SOUTH",
+            "exitTarget": "warlords_hold:vault",
+            "useMessage": "You press Drask's War-Key into the fist-shaped lock. It turns with a grinding click, and the massive iron door swings inward on ancient hinges, revealing the vault beyond.",
+            "alreadyUsedMessage": "The vault door stands open. The lock is spent.",
+            "missingItemMessage": "The lock requires a key shaped like a clenched fist — Drask's personal insignia."
+          }
+        }
+      ]
+    },
+    {
+      "id": "warlords_hold:cells",
+      "name": "Prison Cells",
+      "description": "A row of iron-barred cells carved into the rock. Most are empty now — Drask prefers to ransom or conscript his prisoners rather than keep them. One cell still holds a skeleton in rusted chains, a remnant of the Hold's original Warden garrison. War hounds patrol the corridor, trained to savage anyone who doesn't wear Drask's brand.",
+      "x": 6,
+      "y": 37,
+      "z": -1,
+      "exits": {
+        "SOUTH": "warlords_hold:underhall"
+      },
+      "backgroundImage": "warlords_hold_cells",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of underground prison corridor with iron-barred cells carved from rock, one cell containing a skeleton in rusted chains, dim torchlight, oppressive atmosphere, cold damp stone, heavy iron bars",
+      "imageStyle": "fantasy digital painting, dim grim lighting, slightly painterly, fixed perspective, JRPG background, underground prison cells",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "warlords_hold:vault",
+      "name": "Warden Vault",
+      "description": "Behind the sealed door lies the Hold's deepest secret — a Warden vault, its walls lined with faintly glowing glyphs. Stone shelves hold the remnants of Warden artifacts, most already looted by Drask's forces. But the real prize is in the center: a reinforced iron chest still sealed with warding runes, too powerful for Drask to crack. Whatever the Wardens locked away here, it was important enough to build an entire fortress around.",
+      "x": 6,
+      "y": 35,
+      "z": -1,
+      "exits": {
+        "NORTH": "warlords_hold:underhall"
+      },
+      "backgroundImage": "warlords_hold_vault",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
+      "imagePrompt": "First-person view of an ancient vault with glowing glyph-covered walls, stone shelves with scattered artifacts, a massive reinforced iron chest in the center sealed with glowing warding runes, mystical blue-gold light, sacred hidden chamber atmosphere",
+      "imageStyle": "fantasy digital painting, mystical glow lighting, slightly painterly, fixed perspective, JRPG background, ancient warden vault with magical artifacts",
+      "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, dark grim, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "warden_chest",
+          "label": "Sealed Warden Chest",
+          "description": "A reinforced iron chest covered in still-active warding runes. The lid resists opening, but the lock's power has weakened over centuries — with effort, it gives way.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:warlords_warplate",
+            "minCopper": "200",
+            "maxCopper": "500",
+            "minSilver": "10",
+            "maxSilver": "25",
+            "minGold": "2",
+            "maxGold": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:hold_berserker",
+      "name": "Hold Berserker",
+      "description": "A massive warrior stripped to the waist, covered in ritual scars and war paint. Drask recruits his berserkers from the most violent offenders — criminals, deserters, men with nothing to lose. They fight with twin axes and no regard for their own safety, working themselves into a frenzy before each engagement.",
+      "startRoomId": "warlords_hold:great_hall",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 260,
+      "damage": 48,
+      "level": 19,
+      "xpReward": 380,
+      "accuracy": 25,
+      "defense": 18,
+      "evasion": 16,
+      "agility": 18,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Massive bare-chested warrior with ritual scars and war paint, wielding twin battle axes, frenzied expression, muscular physique, leather pants and heavy boots, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, berserker warrior",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:marauders_blade",
+          "chance": 0.05,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 15,
+        "max": 32
+      }
+    },
+    {
+      "id": "npc:hold_crossbowman",
+      "name": "Hold Crossbowman",
+      "description": "A disciplined soldier in studded leather, manning the upper levels with a heavy crossbow. Unlike the berserkers, crossbowmen are professional — former militia or garrison troops who joined Drask for the pay. They fire from cover, reload methodically, and fall back when pressed.",
+      "startRoomId": "warlords_hold:battlements",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 210,
+      "damage": 44,
+      "level": 19,
+      "xpReward": 340,
+      "accuracy": 28,
+      "defense": 19,
+      "evasion": 20,
+      "agility": 19,
+      "attackSound": "bow_shot",
+      "missSound": "bow_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Disciplined soldier in studded leather armor wielding a heavy crossbow, professional military bearing, leather cap, bolt quiver at hip, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, crossbow soldier",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:war_scouts_helm",
+          "chance": 0.05,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 12,
+        "max": 26
+      }
+    },
+    {
+      "id": "npc:war_hound",
+      "name": "War Hound",
+      "description": "A massive mastiff bred for violence, its cropped ears and scarred muzzle testifying to years in the fighting pits. Drask keeps a pack of these beasts in the lower levels, trained to attack anyone without his brand. Their jaws can crush bone, and they hunt in pairs.",
+      "startRoomId": "warlords_hold:cells",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 180,
+      "damage": 42,
+      "level": 18,
+      "xpReward": 290,
+      "accuracy": 24,
+      "defense": 15,
+      "evasion": 21,
+      "agility": 22,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "creature_death",
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Massive war mastiff with cropped ears and scarred muzzle, heavy muscular build, spiked leather collar, aggressive stance showing teeth, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, war dog mastiff",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 512,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:rift_stalker_fang",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 4,
+        "max": 10
+      }
+    },
+    {
+      "id": "npc:drasks_lieutenant",
+      "name": "Drask's Lieutenant",
+      "description": "Drask's second-in-command — a scarred veteran in blackened chainmail, with a longsword and a hand-and-a-half shield. She earned her rank by killing the previous lieutenant in a dispute over loot shares. Methodical, ruthless, and loyal to Drask only because he is stronger. She carries the key to the vault on a chain around her neck.",
+      "startRoomId": "warlords_hold:trophy_room",
+      "behaviorType": "stationary",
+      "hostile": true,
+      "maxHp": 480,
+      "damage": 52,
+      "level": 19,
+      "xpReward": 950,
+      "accuracy": 28,
+      "defense": 24,
+      "evasion": 20,
+      "agility": 19,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Scarred female veteran warrior in blackened chainmail, longsword in one hand and heavy shield in the other, a key on a chain around her neck, cold ruthless expression, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, veteran lieutenant warrior",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:drasks_war_key",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:lieutenants_hauberk",
+          "chance": 0.25,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 35,
+        "max": 65
+      }
+    },
+    {
+      "id": "npc:warlord_drask",
+      "name": "Warlord Drask",
+      "description": "The warlord of the Cracked Plains — a towering man in dark iron plate, his face hidden behind a helm shaped like a clenched fist. Drask was a Warden captain before he went rogue, taking his company into the wastes and building a bandit empire. He fights with a massive cleaver that no ordinary soldier could lift one-handed. He has been excavating the Hold's lower levels, searching for something the Wardens sealed away — and the seal shard he wears around his neck suggests he found it.",
+      "startRoomId": "warlords_hold:war_room",
+      "behaviorType": "stationary",
+      "hostile": true,
+      "maxHp": 900,
+      "damage": 64,
+      "level": 20,
+      "xpReward": 2900,
+      "accuracy": 30,
+      "defense": 26,
+      "evasion": 18,
+      "agility": 16,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "enemy_death",
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Towering armored warlord in dark iron plate armor, helm shaped like a clenched fist concealing face, wielding a massive cleaver in one hand, glowing seal shard on chain around neck, imposing intimidating presence, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, dark warlord boss in heavy plate armor",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384,
+      "lootItems": [
+        {
+          "itemId": "item:warlords_cleaver",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:warlords_iron_crown",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:drasks_seal_shard",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "min": 80,
+        "max": 150
+      }
+    }
+  ]
+}

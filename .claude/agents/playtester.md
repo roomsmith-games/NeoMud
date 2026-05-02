@@ -30,12 +30,25 @@ You play the game through a WebSocket relay that exposes game state as text. You
 The relay maintains a persistent WebSocket connection to the game server. Start it in the background:
 
 ```bash
+# --- Local dev server (ws://localhost:8080/game) ---
 # Login with existing account
 node scripts/game-relay.mjs <username> <password> &
 
 # Register a new character
 node scripts/game-relay.mjs --register <username> <password> <charName> <class> [race] [gender] &
+
+# --- Staging / hosted world (wss://stage.neomud.app) ---
+# Login with existing platform character (uses admin@neomud.app JWT by default)
+node scripts/game-relay.mjs --staging default-world &
+
+# Register a new platform character on staging
+node scripts/game-relay.mjs --staging default-world --register TestChar WARRIOR HUMAN male &
+
+# Custom platform credentials
+NEOMUD_PLATFORM_EMAIL=user@example.com NEOMUD_PLATFORM_PASSWORD=pass node scripts/game-relay.mjs --staging <worldSlug> &
 ```
+
+Staging mode auto-handles: platform API login → JWT acquisition → world endpoint lookup → WebSocket connect with JWT auth → platform_login. No manual URL or token management needed.
 
 Available classes: BARD, CLERIC, DRUID, GYPSY, MAGE, MISSIONARY, MYSTIC, NINJA, PALADIN, PRIEST, RANGER, THIEF, WARLOCK, WARRIOR, WITCHHUNTER
 

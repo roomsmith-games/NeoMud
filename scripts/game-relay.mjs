@@ -9,8 +9,16 @@
  *        node scripts/game-relay.mjs --register <username> <password> <charName> <class> <race> <gender>
  *        node scripts/game-relay.mjs --guest <charName> <class> [race] [gender]
  *        node scripts/game-relay.mjs --url wss://stage.neomud.app/worlds/{worldId}/game <username> <password>
+ *        node scripts/game-relay.mjs --staging <worldSlug>              (platform JWT auth, existing character)
+ *        node scripts/game-relay.mjs --staging <worldSlug> --register <charName> <class> [race] [gender]
+ *
+ * Staging mode logs into the platform API, resolves the world's WS endpoint,
+ * and connects with JWT auth. Credentials come from NEOMUD_PLATFORM_EMAIL /
+ * NEOMUD_PLATFORM_PASSWORD env vars (or defaults to the staging admin account).
  *
  * Environment: NEOMUD_URL overrides the default ws://localhost:8080/game
+ *              NEOMUD_PLATFORM_API overrides https://stage-api.neomud.app/api/v1
+ *              NEOMUD_PLATFORM_EMAIL / NEOMUD_PLATFORM_PASSWORD for staging auth
  */
 
 import { WebSocket } from 'ws';
@@ -37,23 +45,88 @@ const rawArgs = process.argv.slice(2);
 let cliUrl = null;
 let registerMode = false;
 let guestMode = false;
+let stagingMode = false;
+let stagingSlug = null;
 let registerOpts = {};
 let guestOpts = {};
+let platformRegisterOpts = {};
+let platformAccessToken = null;
 let username, password;
 
-// Extract --url flag first (can appear before or after --register)
+// Extract --url and --staging flags first
 const args = [];
 for (let i = 0; i < rawArgs.length; i++) {
   if (rawArgs[i] === '--url' && i + 1 < rawArgs.length) {
     cliUrl = rawArgs[++i];
+  } else if (rawArgs[i] === '--staging' && i + 1 < rawArgs.length) {
+    stagingMode = true;
+    stagingSlug = rawArgs[++i];
   } else {
     args.push(rawArgs[i]);
   }
 }
 
-const SERVER_URL = cliUrl || process.env.NEOMUD_URL || 'ws://localhost:8080/game';
+let SERVER_URL = cliUrl || process.env.NEOMUD_URL || 'ws://localhost:8080/game';
 
-if (args[0] === '--register') {
+// ---------------------------------------------------------------------------
+// Staging mode: login to platform API, resolve world WS endpoint, get JWT
+// ---------------------------------------------------------------------------
+if (stagingMode) {
+  const platformApi = process.env.NEOMUD_PLATFORM_API || 'https://stage-api.neomud.app/api/v1';
+  const platformEmail = process.env.NEOMUD_PLATFORM_EMAIL || 'admin@neomud.app';
+  const platformPassword = process.env.NEOMUD_PLATFORM_PASSWORD || '2JQSAng3x7nZkbX';
+
+  console.log(`[relay] Staging mode: logging into ${platformApi}...`);
+  const loginRes = await fetch(`${platformApi}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: platformEmail, password: platformPassword }),
+  });
+  if (!loginRes.ok) {
+    console.error(`[relay] Platform login failed: ${loginRes.status} ${await loginRes.text()}`);
+    process.exit(1);
+  }
+  const { accessToken, user: platformUser } = await loginRes.json();
+  platformAccessToken = accessToken;
+  console.log(`[relay] Logged in as ${platformUser.displayName} (${platformUser.id})`);
+
+  console.log(`[relay] Resolving world '${stagingSlug}'...`);
+  const worldRes = await fetch(`${platformApi}/worlds/${stagingSlug}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!worldRes.ok) {
+    console.error(`[relay] World lookup failed: ${worldRes.status} ${await worldRes.text()}`);
+    process.exit(1);
+  }
+  const worldData = await worldRes.json();
+  if (worldData.serverStatus !== 'ONLINE') {
+    console.error(`[relay] World '${stagingSlug}' is ${worldData.serverStatus}, not ONLINE`);
+    process.exit(1);
+  }
+
+  SERVER_URL = `${worldData.serverEndpoint}?token=${accessToken}`;
+  console.log(`[relay] World '${worldData.name}' → ${worldData.serverEndpoint}`);
+
+  // In staging mode, check if --register follows for platform character creation
+  if (args[0] === '--register') {
+    registerMode = true;
+    platformRegisterOpts = {
+      charName: args[1],
+      charClass: args[2],
+      race: args[3] || 'HUMAN',
+      gender: args[4] || 'male',
+      stats: null,
+    };
+    if (!platformRegisterOpts.charName || !platformRegisterOpts.charClass) {
+      console.error('Usage: node scripts/game-relay.mjs --staging <slug> --register <charName> <class> [race] [gender]');
+      process.exit(1);
+    }
+  }
+
+  // Staging uses platform_login/platform_register, not username/password
+  username = `platform_${platformUser.id}`;
+  password = '';
+} else if (args[0] === '--register') {
   registerMode = true;
   username = args[1];
   password = args[2];
@@ -62,7 +135,7 @@ if (args[0] === '--register') {
     charClass: args[4],
     race: args[5] || 'HUMAN',
     gender: args[6] || 'male',
-    stats: null, // computed after we receive catalogs
+    stats: null,
   };
   if (!username || !password || !registerOpts.charName || !registerOpts.charClass) {
     console.error('Usage: node scripts/game-relay.mjs [--url <ws-url>] --register <user> <pass> <charName> <class> [race] [gender]');
@@ -75,16 +148,15 @@ if (args[0] === '--register') {
     charClass: args[2],
     race: args[3] || 'HUMAN',
     gender: args[4] || 'male',
-    stats: null, // computed after we receive catalogs
+    stats: null,
   };
   if (!guestOpts.charName || !guestOpts.charClass) {
     console.error('Usage: node scripts/game-relay.mjs [--url <ws-url>] --guest <charName> <class> [race] [gender]');
     process.exit(1);
   }
-  // Guest mode doesn't need username/password
   username = 'guest';
   password = 'guest';
-} else {
+} else if (!stagingMode) {
   username = args[0];
   password = args[1];
   if (!username || !password) {
@@ -190,18 +262,53 @@ function tryRegister() {
     charm: base.charm + 10,
   };
 
-  console.log('[relay] Registering with stats:', JSON.stringify(registerOpts.stats));
   registrationSent = true;
-  send({
-    type: 'register',
-    username,
-    password,
-    characterName: registerOpts.charName,
-    characterClass: registerOpts.charClass,
-    race: registerOpts.race,
-    gender: registerOpts.gender,
-    allocatedStats: registerOpts.stats,
-  });
+
+  if (stagingMode) {
+    // Platform register — compute stats from platformRegisterOpts
+    const opts = platformRegisterOpts;
+    const pClassDef = classCatalog.find(c => c.id === opts.charClass);
+    const pRaceDef = raceCatalog.find(r => r.id === opts.race);
+    const pRaceMods = pRaceDef?.statModifiers || { strength: 0, agility: 0, intellect: 0, willpower: 0, health: 0, charm: 0 };
+    const pMins = pClassDef?.minimumStats || { strength: 1, agility: 1, intellect: 1, willpower: 1, health: 1, charm: 1 };
+    const pBase = {
+      strength: Math.max(1, pMins.strength + pRaceMods.strength),
+      agility: Math.max(1, pMins.agility + pRaceMods.agility),
+      intellect: Math.max(1, pMins.intellect + pRaceMods.intellect),
+      willpower: Math.max(1, pMins.willpower + pRaceMods.willpower),
+      health: Math.max(1, pMins.health + pRaceMods.health),
+      charm: Math.max(1, pMins.charm + pRaceMods.charm),
+    };
+    const pStats = {
+      strength: pBase.strength + 10,
+      agility: pBase.agility + 10,
+      intellect: pBase.intellect + 10,
+      willpower: pBase.willpower + 10,
+      health: pBase.health + 10,
+      charm: pBase.charm + 10,
+    };
+    console.log('[relay] Platform registering with stats:', JSON.stringify(pStats));
+    send({
+      type: 'platform_register',
+      characterName: opts.charName,
+      characterClass: opts.charClass,
+      race: opts.race,
+      gender: opts.gender,
+      allocatedStats: pStats,
+    });
+  } else {
+    console.log('[relay] Registering with stats:', JSON.stringify(registerOpts.stats));
+    send({
+      type: 'register',
+      username,
+      password,
+      characterName: registerOpts.charName,
+      characterClass: registerOpts.charClass,
+      race: registerOpts.race,
+      gender: registerOpts.gender,
+      allocatedStats: registerOpts.stats,
+    });
+  }
 }
 
 function tryGuestLogin() {
@@ -313,14 +420,33 @@ const handlers = {
   // Handshake
   server_hello(msg) {
     pushEvent('system', `Server: ${msg.worldName || 'NeoMud'} v${msg.engineVersion} (protocol ${msg.protocolVersion})`);
-    send({ type: 'client_hello', clientVersion: msg.engineVersion, protocolVersion: msg.protocolVersion || 1 });
+    const hello = { type: 'client_hello', clientVersion: msg.engineVersion, protocolVersion: msg.protocolVersion || 1 };
+    if (platformAccessToken) hello.platformToken = platformAccessToken;
+    send(hello);
+  },
+
+  // Platform auth response — fires after client_hello with valid JWT
+  platform_auth_ok(msg) {
+    pushEvent('system', `Platform auth OK: ${msg.characterName || '(new character needed)'}`);
+    if (msg.needsCharacterCreation) {
+      if (registerMode && stagingMode) {
+        pushEvent('system', 'Creating platform character...');
+        // tryRegister will send platform_register once catalogs arrive
+      } else {
+        pushEvent('system', 'No character on this world. Use --register to create one.');
+        console.error('[relay] No character found. Re-run with: --staging <slug> --register <name> <class> [race] [gender]');
+        process.exit(1);
+      }
+    } else {
+      pushEvent('system', `Logging in as ${msg.characterName}...`);
+      send({ type: 'platform_login' });
+    }
   },
 
   // Auth
   register_ok() {
-    if (guestMode) {
-      // Guest flow: server auto-sends login_ok after register_ok, nothing to do
-      pushEvent('system', 'Guest registration successful. Waiting for auto-login...');
+    if (guestMode || stagingMode) {
+      pushEvent('system', 'Registration successful. Waiting for auto-login...');
     } else {
       pushEvent('system', 'Registration successful. Logging in...');
       send({ type: 'login', username, password });
@@ -792,12 +918,13 @@ function connect() {
     state.connected = true;
     scheduleStateWrite();
 
-    // Authenticate (register/guest wait for catalogs; login sends immediately)
+    // Authenticate — staging waits for platform_auth_ok after client_hello; local sends login immediately
     registrationSent = false;
-    if (!registerMode && !guestMode) {
+    if (!stagingMode && !registerMode && !guestMode) {
       send({ type: 'login', username, password });
     }
-    // If registerMode or guestMode, tryRegister()/tryGuestLogin() fires once catalogs arrive
+    // Staging: platform_login/platform_register sent after platform_auth_ok handler fires
+    // Register/Guest: tryRegister()/tryGuestLogin() fires once catalogs arrive
 
     // Keepalive ping
     pingTimer = setInterval(() => send({ type: 'ping' }), PING_INTERVAL_MS);

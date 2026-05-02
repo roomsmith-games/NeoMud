@@ -299,11 +299,12 @@
     {
       "id": "ashwood:ridge_lookout",
       "name": "Ridge Lookout",
-      "description": "The eastern end of the ridge, where a natural stone platform juts out over the burn. Someone has piled a cairn of blackened stones here — a grave marker, or a warning. The coastal wind is stronger at this height, carrying the smell of salt through the ash.",
+      "description": "The eastern end of the ridge, where a natural stone platform juts out over the burn. Someone has piled a cairn of blackened stones here — a grave marker, or a warning. The coastal wind is stronger at this height, carrying the smell of salt through the ash. Above, beyond the ridge crest, you can see a shattered landscape spreading outward — a vast cracked plateau split by deep rifts, bleached pale by wind and sun.",
       "x": -2,
       "y": 31,
       "exits": {
-        "WEST": "ashwood:burned_ridge"
+        "WEST": "ashwood:burned_ridge",
+        "UP": "cracked_plains:rift_edge_south"
       },
       "backgroundImage": "/assets/images/rooms/ashwood_ridge_lookout.webp",
       "departSound": "footstep_stone",
