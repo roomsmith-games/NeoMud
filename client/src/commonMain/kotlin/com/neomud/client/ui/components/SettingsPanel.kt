@@ -1,5 +1,6 @@
 package com.neomud.client.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.ui.zIndex
 import androidx.compose.ui.unit.sp
 import com.neomud.client.platform.PlatformAudioManager
 import com.neomud.client.ui.theme.StoneTheme
+import org.jetbrains.compose.resources.painterResource
 
 // ─────────────────────────────────────────────
 // Palette — Stone & Torchlight
@@ -113,12 +115,20 @@ fun SettingsPanel(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "\u2699 Settings",
-                        color = BurnishedGold,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(MudIcons.Settings),
+                            contentDescription = "Settings",
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            "Settings",
+                            color = BurnishedGold,
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                     // Stone close button
                     Box(
                         modifier = Modifier
@@ -335,7 +345,7 @@ private fun RunicDivider() {
                 )
         )
         Text(
-            "\u2726",
+            "*",
             fontSize = 10.sp,
             color = AshGray.copy(alpha = 0.5f),
             modifier = Modifier.padding(horizontal = 6.dp)

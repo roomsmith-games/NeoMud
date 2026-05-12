@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,6 +43,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.neomud.client.ui.theme.StoneTheme
+import org.jetbrains.compose.resources.painterResource
 import com.neomud.shared.model.EquipmentSlots
 import com.neomud.shared.model.InventoryItem
 import com.neomud.shared.model.Item
@@ -67,16 +69,16 @@ private val HighlightGold = Color(0xFFFFD700)
 
 // Slot placeholder icons — shown when slot is empty
 private val SLOT_ICONS = mapOf(
-    EquipmentSlots.HEAD to "\u2616",     // ☖ crown/helm
-    EquipmentSlots.NECK to "\u25C7",     // ◇ pendant
-    EquipmentSlots.WEAPON to "\u2694",   // ⚔ swords
-    EquipmentSlots.CHEST to "\u2666",    // ♦ chestplate
-    EquipmentSlots.SHIELD to "\u25D7",   // ◗ half-circle shield
-    EquipmentSlots.HANDS to "\u270B",    // ✋ hand
-    EquipmentSlots.RING to "\u25CB",     // ○ ring circle
-    EquipmentSlots.BACK to "\u2736",     // ✶ cloak
-    EquipmentSlots.LEGS to "\u2503",     // ┃ legs
-    EquipmentSlots.FEET to "\u25AD",     // ▭ boot
+    EquipmentSlots.HEAD to "H",
+    EquipmentSlots.NECK to "N",
+    EquipmentSlots.WEAPON to "W",
+    EquipmentSlots.CHEST to "C",
+    EquipmentSlots.SHIELD to "S",
+    EquipmentSlots.HANDS to "G",
+    EquipmentSlots.RING to "R",
+    EquipmentSlots.BACK to "B",
+    EquipmentSlots.LEGS to "L",
+    EquipmentSlots.FEET to "F",
 )
 
 private fun itemStatSummary(item: Item?): String? {
@@ -246,12 +248,20 @@ fun EquipmentPanel(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "\u2694 Equipment",
-                        color = BurnishedGold,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(MudIcons.Equipment),
+                            contentDescription = "Equipment",
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            "Equipment",
+                            color = BurnishedGold,
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
 
                     val equippedItems = equipment.values.mapNotNull { itemCatalog[it] }
                     val totalArmor = equippedItems.sumOf { it.armorValue }
@@ -264,11 +274,11 @@ fun EquipmentPanel(
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
                         if (totalArmor > 0) {
-                            StatBadge("\u26E8 $totalArmor", FrostSteel)
+                            StatBadge("ARM $totalArmor", FrostSteel)
                         }
                         if (totalDmgBonus > 0 || weaponRange > 0) {
-                            val dmgText = if (weaponRange > 0) "\u2694 +$totalDmgBonus (1-$weaponRange)"
-                            else "\u2694 +$totalDmgBonus"
+                            val dmgText = if (weaponRange > 0) "DMG +$totalDmgBonus (1-$weaponRange)"
+                            else "DMG +$totalDmgBonus"
                             StatBadge(dmgText, EmberOrange)
                         }
                         // Close button — iron rivet
@@ -512,14 +522,14 @@ fun EquipmentPanel(
                     // EQUIPPABLE BAG ITEMS
                     // ═══════════════════════════════
                     Text(
-                        "\u2727 Equippable Items",
+                        "Equippable Items",
                         color = TorchAmber,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.Start)
                     )
                     Text(
-                        "Tap to compare \u2022 tap again to deselect",
+                        "Tap to compare - tap again to deselect",
                         color = AshGray,
                         fontSize = 10.sp,
                         modifier = Modifier.align(Alignment.Start)
@@ -600,7 +610,7 @@ private fun RunicDivider() {
             Brush.horizontalGradient(listOf(Color.Transparent, AshGray.copy(alpha = 0.4f)))
         ))
         Text(
-            "\u2500\u2500 \u2726 \u2500\u2500",
+            "-- * --",
             color = AshGray.copy(alpha = 0.5f),
             fontSize = 10.sp,
             modifier = Modifier.padding(horizontal = 6.dp)
@@ -773,7 +783,7 @@ private fun EquippedItemInspectionPanel(
     ) {
         // Title
         Text(
-            "\u2692 ${slot.replaceFirstChar { it.uppercase() }} \u2014 Inspect",
+            "${slot.replaceFirstChar { it.uppercase() }} - Inspect",
             color = TorchAmber,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold
@@ -958,7 +968,7 @@ private fun ComparisonPanel(
             .padding(10.dp)
     ) {
         Text(
-            "\u2692 Compare \u2014 ${slot.replaceFirstChar { it.uppercase() }}",
+            "Compare - ${slot.replaceFirstChar { it.uppercase() }}",
             color = HighlightGold,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold
@@ -1015,7 +1025,7 @@ private fun ComparisonPanel(
                         delta < 0 -> CrimsonDowngrade
                         else -> AshGray
                     }
-                    Text("\u25B6", fontSize = 16.sp, color = deltaColor)
+                    Text(">", fontSize = 16.sp, color = deltaColor)
                     val deltaText = when {
                         delta > 0 -> "$label +$delta"
                         delta < 0 -> "$label $delta"
@@ -1220,8 +1230,8 @@ private fun EquippableBagRow(
 
         if (bagStat > 0 || equippedStat > 0) {
             val (arrow, color) = when {
-                delta > 0 -> "\u25B2+$delta" to VerdantUpgrade
-                delta < 0 -> "\u25BC$delta" to CrimsonDowngrade
+                delta > 0 -> "^+$delta" to VerdantUpgrade
+                delta < 0 -> "v$delta" to CrimsonDowngrade
                 else -> "=" to AshGray
             }
             Text(arrow, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = color)

@@ -1,6 +1,7 @@
 package com.neomud.client.ui.components
 
 import kotlin.time.Duration.Companion.milliseconds
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.animation.core.animateFloatAsState
@@ -41,6 +42,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.neomud.client.ui.theme.StoneTheme
+import org.jetbrains.compose.resources.painterResource
 import com.neomud.shared.model.Coins
 import com.neomud.shared.model.InventoryItem
 import com.neomud.shared.model.Item
@@ -146,12 +148,20 @@ fun InventoryPanel(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "\u2727 Inventory",
-                        color = BurnishedGold,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(MudIcons.Inventory),
+                            contentDescription = "Inventory",
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            "Inventory",
+                            color = BurnishedGold,
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                     // Close button — stone beveled
                     Box(
                         modifier = Modifier
@@ -232,7 +242,7 @@ private fun CoinsDisplay(playerCoins: Coins) {
                 Brush.horizontalGradient(listOf(Color.Transparent, AshGray.copy(alpha = 0.4f)))
             ))
             Text(
-                "\u2500\u2500 \u2726 \u2500\u2500",
+                "-- * --",
                 color = AshGray.copy(alpha = 0.5f),
                 fontSize = 10.sp,
                 modifier = Modifier.padding(horizontal = 6.dp)
