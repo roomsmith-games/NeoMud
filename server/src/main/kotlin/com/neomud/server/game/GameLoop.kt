@@ -410,6 +410,22 @@ class GameLoop(
                     logger.info("Guard ${event.killedNpcName} was killed by ${event.killerNpcName} in ${event.roomId}")
                 }
 
+                is CombatEvent.NpcPhaseShift -> {
+                    sessionManager.broadcastToRoom(
+                        event.roomId,
+                        ServerMessage.NpcPhaseShift(
+                            npcId = event.npcId,
+                            npcName = event.npcName,
+                            phaseName = event.phaseName,
+                            spriteId = event.spriteId,
+                            message = event.message,
+                            currentHp = event.currentHp,
+                            maxHp = event.maxHp,
+                            sound = event.sound
+                        )
+                    )
+                }
+
                 is CombatEvent.PlayerKilled -> {
                     val session = event.playerSession
                     val playerName = session.playerName ?: continue

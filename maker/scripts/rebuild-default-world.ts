@@ -51,17 +51,18 @@ async function main() {
 
   // 2. Force-delete old default world (DB, assets, mtime)
   console.log('Deleting old _default_world...')
-  try { await deleteProject('_default_world') } catch { /* wasn't open */ }
-  const dbPath = path.join(PROJECTS_DIR, '_default_world.db')
-  const assetsDir = path.join(PROJECTS_DIR, '_default_world_assets')
-  const mtimePath = path.join(PROJECTS_DIR, '_default_world.mtime')
+  try { await deleteProject('_shared', '_default_world') } catch { /* wasn't open */ }
+  const sharedDir = path.join(PROJECTS_DIR, '_shared')
+  const dbPath = path.join(sharedDir, '_default_world.db')
+  const assetsDir = path.join(sharedDir, '_default_world_assets')
+  const mtimePath = path.join(sharedDir, '_default_world.mtime')
   if (fs.existsSync(dbPath)) fs.unlinkSync(dbPath)
   if (fs.existsSync(assetsDir)) fs.rmSync(assetsDir, { recursive: true, force: true })
   if (fs.existsSync(mtimePath)) fs.unlinkSync(mtimePath)
 
   // 3. Import fresh
   console.log('Importing _default_world from .nmd...')
-  await importNmd(NMD_PATH, '_default_world', true)
+  await importNmd(NMD_PATH, '_shared', '_default_world', true)
   const nmdMtime = fs.statSync(NMD_PATH).mtimeMs.toString()
   fs.writeFileSync(mtimePath, nmdMtime)
 

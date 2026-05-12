@@ -80,7 +80,7 @@ The **game tick** resolves everything uniformly. This ensures:
 ### Key Server Types
 - `PlayerSession` — per-connection state: player data, combat state, pending skill, readied spell, cooldowns, stealth, meditation
 - `PendingSkill` — sealed class: `Bash(targetId)`, `Kick(targetId, direction)`, `Meditate`, `Track(targetId)`
-- `CombatEvent` — sealed class: `Hit`, `NpcKilled`, `NpcKnockedBack`, `PlayerKilled`
+- `CombatEvent` — sealed class: `Hit`, `NpcKilled`, `NpcKnockedBack`, `PlayerKilled`, `NpcPhaseShift`
 - `CombatManager` — resolves combat actions each tick, broadcasts `SkillEffect`/`SpellEffect`/`CombatHit` to rooms
 - `GameLoop` — orchestrates the tick, handles all `CombatEvent`s, manages NPC spawns and behaviors
 - `CommandProcessor` — routes `ClientMessage` to command handlers
@@ -97,6 +97,76 @@ Everything is JSON-defined, loaded into catalogs at startup:
 - `SkillCatalog` — 12 skills (active and passive)
 - `LootTableCatalog` — drop tables per NPC type
 - Zone JSON files — rooms, exits, coordinates, backgrounds
+
+### Interactable System
+Room interactables are JSON-defined features players can interact with (levers, traps, gates, puzzles). Each has an `actionType` that determines behavior:
+
+- `EXIT_OPEN` — unlocks a locked exit direction
+- `ROOM_EFFECT` — applies an effect to the room (heal, damage, buff)
+- `TELEPORT` — moves player to a target room
+- `DAMAGE_TRAP` — deals damage on entry (ON_ENTER trigger) with optional save check
+- `PUZZLE_STEP` — increments a player flag key toward a target value, opening an exit on completion
+- `PLACE_ITEM` — prompts player to place an inventory item (two-phase: server sends `PlaceItemPrompt`, client replies with `PlaceItem`)
+- `RIDDLE_PROMPT` — presents a riddle dialog (two-phase: server sends `RiddlePrompt`, client replies with `RiddleAnswer`)
+- `CONDITIONAL_TRIGGER` — evaluates a condition before opening a gated exit
+
+**CONDITIONAL_TRIGGER actionData schema:**
+```json
+{
+  "conditionType": "ITEM" | "FLAG" | "LEVEL",
+  "requiredItemId": "item:storm_key",       // ITEM only
+  "requiredFlagKey": "puzzle:storm:step",    // FLAG only
+  "requiredFlagValue": "5",                  // FLAG only
+  "requiredLevel": "25",                     // LEVEL only
+  "successDirection": "NORTH",
+  "successMessage": "The gate opens.",
+  "failureMessage": "You lack what is needed."
+}
+```
+
+Interactables are stored in zone JSON files as `interactables` arrays on rooms. The server validates `actionType` against the allowlist in `WorldLoader.kt`. `InteractCommand.kt` dispatches to type-specific executor methods. Two-phase actions (PLACE_ITEM, RIDDLE_PROMPT) return early from execute(); self-managed actions (PUZZLE_STEP, CONDITIONAL_TRIGGER) call `markInteractableUsed` internally and return false.
+
+### Boss Phase System
+NPCs can define phase transitions that trigger at HP thresholds during combat. When an NPC's HP drops below a phase threshold, the system clamps HP (preventing burst-skip), applies stat overrides, swaps the sprite, and broadcasts a dramatic transition message.
+
+**Zone JSON schema (on NPC definitions):**
+```json
+{
+  "phases": [
+    {
+      "name": "Lightning Form",
+      "hpThresholdPercent": 0.5,
+      "spriteId": "npc:stormcrown_phase2",
+      "damage": 85,
+      "accuracy": 65,
+      "defense": 40,
+      "evasion": 20,
+      "transitionMessage": "The Stormcrown's body cracks with lightning!",
+      "transitionSound": "boss_phase_shift"
+    }
+  ]
+}
+```
+
+**Key design decisions:**
+- **HP clamped to threshold** — `max(thresholdHp, 1)` prevents one-shot kills from skipping phases
+- **MaxHp stays constant** — no "new HP bar" complexity; phases modify combat stats only
+- **Stat overrides are nullable** — only specified stats change; `null` keeps the base value
+- **Single checkpoint method** — `CombatManager.checkPhaseTransition()` called at all 5 damage sites (melee, spell, bash, kick, guard combat), between damage application and kill check
+- **Client sprite swap** — `Npc.spriteOverride` field; `SpriteOverlay.kt` checks it before falling back to `npc.id` for the sprite URL
+- **Server message** — `ServerMessage.NpcPhaseShift` broadcasts to room with npcId, phaseName, spriteId, HP, message, and sound
+
+**Files:**
+- `server/.../world/Zone.kt` — `BossPhaseData` data class, `NpcData.phases`
+- `server/.../npc/NpcManager.kt` — `NpcState` has mutable `damage`/`accuracy`/`defense`/`evasion`, plus `phases`/`currentPhase`/`spriteOverride`
+- `server/.../combat/CombatManager.kt` — `checkPhaseTransition()` + `CombatEvent.NpcPhaseShift`
+- `server/.../game/GameLoop.kt` — broadcasts `ServerMessage.NpcPhaseShift` on phase shift events
+- `shared/.../protocol/ServerMessage.kt` — `NpcPhaseShift` message type
+- `shared/.../model/Npc.kt` — `spriteOverride: String = ""`
+- `client/.../viewmodel/GameViewModel.kt` — handles phase shift (log, sound, sprite update)
+- `client/.../components/SpriteOverlay.kt` — resolves `spriteOverride` for sprite URL
+- `maker/prisma/schema.prisma` — `phases String @default("[]")` on Npc model
+- `maker/src/pages/NpcEditor.tsx` — Boss Phases UI section (visible when hostile)
 
 ### Observability (Sentry)
 - **Game server (Kotlin)**: `io.sentry:sentry` initialized in `server/src/main/kotlin/com/neomud/server/Application.kt` (gated on `SENTRY_DSN` env). DSN forwarded into each game container by the orchestrator on the platform side — game server doesn't read it from any local config.
@@ -190,6 +260,7 @@ Test fixtures calling `Application.module(jdbcUrl = …)` continue to work witho
 - Spells broadcast `SpellEffect` to all players in the room
 - Melee attacks broadcast `CombatHit` to all players in the room
 - Room presence changes broadcast `NpcEntered`/`NpcLeft`/`PlayerEntered`/`PlayerLeft`
+- Boss phase transitions broadcast `NpcPhaseShift` to all players in the room
 
 ### Server-Authoritative State
 - **All game state is server-authoritative** — the client is a thin renderer

@@ -63,6 +63,18 @@ sealed class CombatEvent {
         val roomId: RoomId
     ) : CombatEvent()
 
+    data class NpcPhaseShift(
+        val npcId: String,
+        val npcName: String,
+        val phaseName: String,
+        val spriteId: String,
+        val message: String,
+        val currentHp: Int,
+        val maxHp: Int,
+        val sound: String,
+        val roomId: RoomId
+    ) : CombatEvent()
+
     data class NpcKnockedBack(
         val npcId: String,
         val npcName: String,
@@ -185,8 +197,8 @@ class CombatManager(
                         }
                         if (spellTarget.currentHp <= 0) continue
                         spellCommand.autoCast(session, readiedSpell, spellTarget.id, roomId)
+                        checkPhaseTransition(spellTarget, events, roomId)
 
-                        // If the spell killed the target, emit NpcKilled so GameLoop handles loot, XP, and attack-mode-disable
                         if (spellTarget.currentHp <= 0) {
                             events.add(CombatEvent.NpcKilled(
                                 npcId = spellTarget.id,
@@ -276,6 +288,7 @@ class CombatManager(
                     }
 
                     target.currentHp -= damage
+                    checkPhaseTransition(target, events, roomId)
 
                     // Track engagement for pursuit
                     target.engagedPlayerIds.add(player.name)
@@ -452,6 +465,7 @@ class CombatManager(
         val weaponRange = if (bonuses.weaponDamageRange > 0) bonuses.weaponDamageRange else GameConfig.Skills.BASH_DAMAGE_RANGE
         val damage = effStats.strength / GameConfig.Combat.MELEE_STR_DIVISOR + bonuses.totalDamageBonus + thresholds.meleeDamageBonus + session.effectiveDamageBonus() + (1..weaponRange).random()
         target.currentHp -= damage
+        checkPhaseTransition(target, events, roomId)
 
         val stunned = (1..100).random() <= GameConfig.Skills.BASH_STUN_CHANCE
         if (stunned) {
@@ -521,6 +535,7 @@ class CombatManager(
         val kickRange = if (bonuses.weaponDamageRange > 0) bonuses.weaponDamageRange else GameConfig.Skills.KICK_DAMAGE_RANGE
         val damage = effStats.strength / GameConfig.Skills.KICK_STR_DIVISOR + effStats.agility / GameConfig.Skills.KICK_AGI_DIVISOR + bonuses.totalDamageBonus + thresholds.meleeDamageBonus + session.effectiveDamageBonus() + (1..kickRange).random()
         target.currentHp -= damage
+        checkPhaseTransition(target, events, roomId)
 
         session.skillCooldowns["KICK"] = GameConfig.Skills.KICK_COOLDOWN_TICKS
 
@@ -623,6 +638,35 @@ class CombatManager(
         }
     }
 
+    private fun checkPhaseTransition(npc: NpcState, events: MutableList<CombatEvent>, roomId: RoomId) {
+        if (npc.phases.isEmpty()) return
+        if (npc.currentPhase >= npc.phases.size) return
+        val phase = npc.phases[npc.currentPhase]
+        val thresholdHp = (npc.maxHp * phase.hpThresholdPercent).toInt()
+        if (npc.currentHp > thresholdHp) return
+
+        npc.currentHp = maxOf(thresholdHp, 1)
+        phase.damage?.let { npc.damage = it }
+        phase.accuracy?.let { npc.accuracy = it }
+        phase.defense?.let { npc.defense = it }
+        phase.evasion?.let { npc.evasion = it }
+        if (phase.spriteId.isNotEmpty()) npc.spriteOverride = phase.spriteId
+        npc.currentPhase++
+
+        events.add(CombatEvent.NpcPhaseShift(
+            npcId = npc.id,
+            npcName = npc.name,
+            phaseName = phase.name,
+            spriteId = phase.spriteId,
+            message = phase.transitionMessage,
+            currentHp = npc.currentHp,
+            maxHp = npc.maxHp,
+            sound = phase.transitionSound,
+            roomId = roomId
+        ))
+        logger.info("${npc.name} transitions to phase ${npc.currentPhase}: ${phase.name}")
+    }
+
     private fun resolveTarget(session: PlayerSession, roomId: RoomId): NpcState? {
         // Try selected target first
         val selectedId = session.selectedTargetId
@@ -680,6 +724,7 @@ class CombatManager(
                 val variance = maxOf(guard.damage / GameConfig.Combat.NPC_VARIANCE_DIVISOR, 1)
                 val damage = guard.damage + (1..variance).random()
                 target.currentHp -= damage
+                checkPhaseTransition(target, events, roomId)
 
                 events.add(CombatEvent.Hit(
                     attackerName = guard.name,

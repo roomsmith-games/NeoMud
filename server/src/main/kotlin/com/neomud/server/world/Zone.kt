@@ -74,6 +74,19 @@ data class TrainerConfig(
 )
 
 @Serializable
+data class BossPhaseData(
+    val name: String,
+    val hpThresholdPercent: Double,
+    val spriteId: String = "",
+    val damage: Int? = null,
+    val accuracy: Int? = null,
+    val defense: Int? = null,
+    val evasion: Int? = null,
+    val transitionMessage: String = "",
+    val transitionSound: String = ""
+)
+
+@Serializable
 data class NpcData(
     val id: String,
     val name: String,
@@ -109,5 +122,6 @@ data class NpcData(
     val imageStyle: String = "",
     val imageNegativePrompt: String = "",
     val imageWidth: Int = 384,
-    val imageHeight: Int = 512
+    val imageHeight: Int = 512,
+    val phases: List<BossPhaseData> = emptyList()
 )

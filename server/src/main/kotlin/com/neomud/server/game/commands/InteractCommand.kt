@@ -109,6 +109,7 @@ class InteractCommand(
             "PLACE_ITEM" -> { sendPlaceItemPrompt(session, feat); return }
             "RIDDLE_PROMPT" -> { sendRiddlePrompt(session, feat); return }
             "PUZZLE_STEP" -> executePuzzleStep(session, roomId, feat)
+            "CONDITIONAL_TRIGGER" -> executeConditionalTrigger(session, roomId, feat)
             else -> {
                 session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
                 false
@@ -577,10 +578,77 @@ class InteractCommand(
         }
     }
 
+    // ─── CONDITIONAL_TRIGGER ─────────────────────────────────────────
+    // Evaluates a condition (item ownership, flag state, or level) and
+    // opens a gated exit on success.
+
+    private suspend fun executeConditionalTrigger(
+        session: PlayerSession,
+        roomId: String,
+        feat: com.neomud.shared.model.RoomInteractable
+    ): Boolean {
+        val playerName = session.playerName ?: return false
+        val player = session.player ?: return false
+        val data = feat.actionData
+        val conditionType = data["conditionType"] ?: run {
+            logger.warn("CONDITIONAL_TRIGGER missing conditionType on ${feat.id}")
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return false
+        }
+
+        val conditionMet = when (conditionType) {
+            "ITEM" -> {
+                val requiredItemId = data["requiredItemId"] ?: ""
+                if (requiredItemId.isEmpty()) {
+                    logger.warn("CONDITIONAL_TRIGGER ITEM missing requiredItemId on ${feat.id}")
+                    false
+                } else {
+                    val inv = inventoryRepository
+                    inv != null && inv.getInventory(playerName).any { it.itemId == requiredItemId }
+                }
+            }
+            "FLAG" -> {
+                val flagKey = data["requiredFlagKey"] ?: ""
+                val flagValue = data["requiredFlagValue"] ?: ""
+                if (flagKey.isEmpty()) {
+                    logger.warn("CONDITIONAL_TRIGGER FLAG missing requiredFlagKey on ${feat.id}")
+                    false
+                } else {
+                    val flags = playerFlagsRepository
+                    flags != null && flags.getFlag(playerName, flagKey) == flagValue
+                }
+            }
+            "LEVEL" -> {
+                val requiredLevel = data["requiredLevel"]?.toIntOrNull() ?: 0
+                player.level >= requiredLevel
+            }
+            else -> {
+                logger.warn("CONDITIONAL_TRIGGER unknown conditionType '$conditionType' on ${feat.id}")
+                false
+            }
+        }
+
+        if (!conditionMet) {
+            val msg = data["failureMessage"]?.takeIf { it.isNotBlank() }
+                ?: "You lack what is needed to pass."
+            session.send(ServerMessage.InteractResult(false, feat.label, msg, feat.sound))
+            return false
+        }
+
+        val msg = data["successMessage"]?.takeIf { it.isNotBlank() }
+            ?: "The way opens before you."
+        val openedExit = openSuccessExit(session, roomId, data)
+        worldGraph.markInteractableUsed(roomId, feat.id, feat.resetTicks)
+        session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
+        if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
+        return false
+    }
+
     /**
-     * Shared success-action helper for PLACE_ITEM and PUZZLE_STEP. Reads
-     * `successDirection` from actionData and unlocks that exit if present.
-     * Returns true if an exit was opened (caller should refresh room info).
+     * Shared success-action helper for PLACE_ITEM, PUZZLE_STEP, and
+     * CONDITIONAL_TRIGGER. Reads `successDirection` from actionData and
+     * unlocks that exit if present. Returns true if an exit was opened
+     * (caller should refresh room info).
      */
     private fun openSuccessExit(session: PlayerSession, roomId: String, actionData: Map<String, String>): Boolean {
         val dirStr = actionData["successDirection"]?.takeIf { it.isNotBlank() } ?: return false

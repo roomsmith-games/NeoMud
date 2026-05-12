@@ -437,6 +437,7 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           imageNegativePrompt: npc.imageNegativePrompt ?? legacyNpc?.negativePrompt ?? '',
           imageWidth: npc.imageWidth ?? legacyNpc?.width ?? 384,
           imageHeight: npc.imageHeight ?? legacyNpc?.height ?? 512,
+          phases: JSON.stringify(npc.phases ?? []),
         },
       })
     }

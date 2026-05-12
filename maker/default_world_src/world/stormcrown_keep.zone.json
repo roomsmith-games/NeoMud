@@ -1,0 +1,905 @@
+{
+  "id": "stormcrown_keep",
+  "name": "Stormcrown Keep",
+  "description": "The corrupted fortress of the Warden-Commander known as the Stormcrown. Once the seat of the Warden order's mountain garrison, it has been twisted by the fracture energy of the shattered Seal. Lightning arcs through its halls, and the Stormcrown himself sits enthroned in the highest tower, neither alive nor dead.",
+  "safe": false,
+  "bgm": "boss_intense",
+  "levelRange": "25-28",
+  "spawnConfig": {
+    "maxNpcsPerRoom": 2,
+    "spawnIntervalTicks": 18,
+    "maxTotalNpcs": 10
+  },
+  "imageStyle": "fantasy environment, dark fortress interior, corrupted stone, storm energy, game background",
+  "imageNegativePrompt": "characters, people, modern, sci-fi, bright colors, outdoor",
+  "rooms": [
+    {
+      "id": "stormcrown_keep:gatehouse",
+      "name": "Storm-Blasted Gatehouse",
+      "description": "The gatehouse of Stormcrown Keep stands open, its iron portcullis fused in place by a lightning strike that left black scorch-marks radiating across the stone. Beyond the threshold, the air changes — colder, charged, tasting of ozone. The Warden sigil above the arch has been defaced, replaced by a crude storm-bolt carved deep into the granite.",
+      "x": 3,
+      "y": 13,
+      "exits": {
+        "SOUTH": "skyveil_reach:stormcrown_gates",
+        "NORTH": "stormcrown_keep:outer_ward"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_gatehouse.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a dark fortress gatehouse, iron portcullis fused open by lightning scorch marks, cracked stone archway with defaced warden sigil replaced by carved storm bolt, cold blue-violet light beyond, ozone atmosphere, heavy stone walls",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "gatehouse_portcullis_trap",
+          "label": "Portcullis Trap",
+          "description": "The fused portcullis mechanism still holds tension. A corroded trigger plate lies beneath a thin layer of dust on the threshold.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "resetTicks": 8,
+          "sound": "trap_pressure",
+          "actionData": {
+            "damage": "42",
+            "damageType": "physical",
+            "saveStat": "AGILITY",
+            "saveDC": "20",
+            "perceptionDC": "20",
+            "noticeMessage": "You spot a corroded trigger plate beneath the dust at the threshold — the portcullis mechanism still holds deadly tension.",
+            "triggerMessage": "Your foot lands on a hidden trigger plate! The portcullis mechanism releases — a massive iron spike-bar swings down from the arch!",
+            "saveMessage": "You throw yourself sideways as the spike-bar crashes into the flagstones where you stood, sending sparks flying.",
+            "failMessage": "The iron spike-bar catches you across the shoulders, slamming you to the ground with bone-jarring force."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:outer_ward",
+      "name": "Outer Ward",
+      "description": "An open courtyard once used for mustering the garrison. The flagstones are cracked and heaved upward by the dark energy radiating from deeper within the keep. Skeletal remains of hitching posts and weapon racks line the walls. Rain lashes down from the perpetual storm overhead, pooling in the broken stones. Passages lead in every direction — west to a collapsed wing, east to the old armory.",
+      "x": 3,
+      "y": 12,
+      "exits": {
+        "SOUTH": "stormcrown_keep:gatehouse",
+        "NORTH": "stormcrown_keep:inner_ward",
+        "WEST": "stormcrown_keep:collapsed_wing",
+        "EAST": "stormcrown_keep:armory"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_outer_ward.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a dark fortress courtyard, cracked and heaved flagstones, skeletal remains of hitching posts and weapon racks along walls, rain lashing down from perpetual storm above, pooling water in broken stones, passages branching in all directions, oppressive atmosphere",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "stormcrown_keep:collapsed_wing",
+      "name": "Collapsed Wing",
+      "description": "The western wing of the keep has partially caved in, the upper floors pancaked down into a treacherous slope of rubble and shattered timber. What was once the officers' quarters is now a maze of leaning walls and precarious overhangs. A few personal effects are visible among the debris — a tarnished mirror, a child's wooden toy brought from home, a half-crushed writing desk. The collapse appears to have been caused by a single massive lightning strike.",
+      "x": 2,
+      "y": 12,
+      "exits": {
+        "EAST": "stormcrown_keep:outer_ward"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_collapsed_wing.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a collapsed fortress wing, pancaked upper floors forming rubble slope, shattered timber and leaning walls, personal effects among debris including tarnished mirror and crushed desk, massive lightning damage visible, dark oppressive atmosphere",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "collapsed_wing_rubble_trap",
+          "label": "Falling Rubble",
+          "description": "The ceiling above groans with the weight of the collapsed upper floor. Cracks spider-web across the remaining support beams.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 19,
+          "resetTicks": 10,
+          "sound": "trap_collapse",
+          "actionData": {
+            "damage": "38",
+            "damageType": "physical",
+            "saveStat": "AGILITY",
+            "saveDC": "19",
+            "perceptionDC": "19",
+            "noticeMessage": "You notice the ceiling beams are barely holding — one wrong step and tons of stone will come down.",
+            "triggerMessage": "A support beam finally gives way! Stone and timber cascade from the collapsed floor above!",
+            "saveMessage": "You hear the beam crack and dive under a leaning wall section as rubble crashes down behind you.",
+            "failMessage": "Stone and splintered timber slam into you from above, driving you to your knees under the weight."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:armory",
+      "name": "Warden Armory",
+      "description": "The keep's armory stands in eerie order, its weapon racks still filled with swords and halberds — all corroded black, as if bathed in acid. Lightning-shaped cracks run through the stone walls, and a faint violet glow pulses from the corrupted steel. The Wardens who died here left their arms behind, but something in the corruption has made the metal dangerous to touch.",
+      "x": 4,
+      "y": 12,
+      "exits": {
+        "WEST": "stormcrown_keep:outer_ward"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_armory.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a fortress armory with weapon racks still filled with corroded black swords and halberds, lightning-shaped cracks in stone walls pulsing with faint violet glow, eerie preserved order, corrupted steel weapons, dark atmospheric",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "armory_weapon_rack_trap",
+          "label": "Weapon Rack Trap",
+          "description": "One of the weapon racks is rigged with a tension wire. The corrupted blades are angled outward like a spring-loaded fan.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "resetTicks": 8,
+          "sound": "trap_dart",
+          "actionData": {
+            "damage": "44",
+            "damageType": "physical",
+            "saveStat": "AGILITY",
+            "saveDC": "20",
+            "perceptionDC": "20",
+            "noticeMessage": "You notice a tension wire connecting a weapon rack to a floor plate — the corrupted blades are angled to spring outward.",
+            "triggerMessage": "A tension wire snaps taut! The weapon rack springs open and a fan of corroded blades swings outward!",
+            "saveMessage": "You spot the wire going taut and flatten yourself against the wall as corrupted blades whistle past your face.",
+            "failMessage": "Corroded blades slash across your body, their edges still keen enough to cut deep despite centuries of neglect."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:inner_ward",
+      "name": "Inner Ward",
+      "description": "The inner courtyard of Stormcrown Keep is smaller and more oppressive than the outer ward. The walls here are higher, the stone darker, veined with the same purple energy that permeates the deeper keep. A well at the center has been sealed with iron plates, and the faint sound of something moving beneath them echoes upward. The air tastes of copper and rot.",
+      "x": 3,
+      "y": 11,
+      "exits": {
+        "SOUTH": "stormcrown_keep:outer_ward",
+        "NORTH": "stormcrown_keep:great_hall",
+        "WEST": "stormcrown_keep:dungeon_cells",
+        "EAST": "stormcrown_keep:guard_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_inner_ward.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a dark fortress inner courtyard, high walls of dark stone veined with purple energy, sealed iron-plated well at center with something audibly moving beneath, copper-tasting atmosphere, oppressive enclosed space, rain falling from storm above",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "inner_ward_lightning_ward",
+          "label": "Lightning Ward",
+          "description": "A warding sigil inscribed around the sealed well crackles with unstable storm energy, ready to discharge on anything that passes too close.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "resetTicks": 8,
+          "sound": "trap_lightning",
+          "actionData": {
+            "damage": "46",
+            "damageType": "lightning",
+            "saveStat": "AGILITY",
+            "saveDC": "20",
+            "perceptionDC": "20",
+            "noticeMessage": "You notice the warding sigil around the well crackling with unstable energy — stepping too close would be unwise.",
+            "triggerMessage": "The warding sigil around the well flares to life! A bolt of storm energy arcs from the iron plates toward you!",
+            "saveMessage": "You see the sigil brighten and leap backward as a bolt of lightning scorches the flagstones at your feet.",
+            "failMessage": "Storm energy leaps from the sealed well and strikes you square in the chest, locking your muscles in a spasm of pain."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:dungeon_cells",
+      "name": "Dungeon Cells",
+      "description": "Iron-barred cells line both sides of a narrow corridor descending into the keep's underbelly. Most doors stand open, their occupants long gone — or worse. One cell at the end still shows claw marks gouged deep into the stone walls from the inside. The drain grate in the floor is choked with something dark, and the smell is indescribable. Whatever Stormcrown kept down here was not treated kindly.",
+      "x": 2,
+      "y": 11,
+      "exits": {
+        "EAST": "stormcrown_keep:inner_ward"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_dungeon_cells.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a narrow prison corridor descending into darkness, iron-barred cells on both sides with most doors open, deep claw marks gouged into stone walls of far cell, choked drain grate in floor, oppressive dark atmosphere of forgotten horrors",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "dungeon_cell_door_trap",
+          "label": "Cell Door Swing",
+          "description": "A cell door hangs at an angle, balanced on a single rusted hinge. The slightest vibration will send it swinging.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 19,
+          "resetTicks": 10,
+          "sound": "trap_pressure",
+          "actionData": {
+            "damage": "36",
+            "damageType": "physical",
+            "saveStat": "AGILITY",
+            "saveDC": "19",
+            "perceptionDC": "19",
+            "noticeMessage": "You notice a cell door balanced precariously on a single hinge — it could swing with lethal force at any moment.",
+            "triggerMessage": "Your footsteps send vibrations through the floor! A heavy iron cell door swings free from its rusted hinge!",
+            "saveMessage": "You hear the hinge screech and duck as the iron door swings over your head, slamming into the opposite wall.",
+            "failMessage": "The heavy iron door catches you broadside, slamming you into the cell bars with enough force to see stars."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:guard_hall",
+      "name": "Guard Hall",
+      "description": "The garrison's guard hall stretches east to west, its long tables overturned and its benches splintered. Plates of petrified food still sit where they were abandoned — the corruption came mid-meal, it seems. The hearth at the center is cold and dark, filled with ash that has never been cleared. Scorch marks on the walls trace the path of something that moved through here at terrible speed, burning everything it touched.",
+      "x": 4,
+      "y": 11,
+      "exits": {
+        "WEST": "stormcrown_keep:inner_ward",
+        "EAST": "stormcrown_keep:chapel_of_storms"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_guard_hall.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a fortress guard hall with overturned long tables and splintered benches, plates of petrified food still on tables, cold dark hearth filled with ash, scorch marks tracing a path along the walls, abandoned mid-meal atmosphere, dark and oppressive",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "guard_hall_floor_spike_trap",
+          "label": "Floor Spike Trap",
+          "description": "A section of flagstone sits slightly higher than its neighbors, connected to a spring-loaded mechanism beneath the floor.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 21,
+          "resetTicks": 8,
+          "sound": "trap_pressure",
+          "actionData": {
+            "damage": "48",
+            "damageType": "physical",
+            "saveStat": "AGILITY",
+            "saveDC": "21",
+            "perceptionDC": "21",
+            "noticeMessage": "You spot a flagstone that sits too high — a pressure plate connected to something spring-loaded beneath the floor.",
+            "triggerMessage": "You step on a pressure plate! Spring-loaded iron spikes punch up through the flagstones beneath you!",
+            "saveMessage": "You feel the stone shift and leap sideways as iron spikes burst from the floor where you stood.",
+            "failMessage": "Iron spikes punch through the flagstones and drive into your legs, the spring mechanism delivering terrible force."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:chapel_of_storms",
+      "name": "Chapel of Storms",
+      "description": "The keep's chapel has been thoroughly desecrated and remade into something terrible. The altar has been cracked in half and rebuilt into a crude lightning rod that channels the storm's energy directly into the floor. The stained glass windows — once depicting the Wardens' founding oath — are shattered, and the storm howls through the gaps. Strange sigils have been burned into the stone floor in patterns that hurt to look at directly. The air here tastes of ozone and despair.",
+      "x": 5,
+      "y": 11,
+      "exits": {
+        "WEST": "stormcrown_keep:guard_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_chapel_of_storms.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a desecrated fortress chapel remade as a storm shrine, cracked altar rebuilt as a lightning rod channeling storm energy into the floor, shattered stained glass windows with storm visible outside, burned sigils on stone floor, oppressive atmosphere of corruption and ozone, cold violet-tinged light",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "chapel_unholy_ground_trap",
+          "label": "Unholy Ground",
+          "description": "The burned sigils on the chapel floor pulse with a sickly violet light, radiating corrupted energy upward in waves.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "resetTicks": 10,
+          "sound": "trap_curse",
+          "actionData": {
+            "damage": "42",
+            "damageType": "dark",
+            "saveStat": "AGILITY",
+            "saveDC": "20",
+            "perceptionDC": "20",
+            "noticeMessage": "You notice the burned sigils on the floor pulsing with corrupt energy — stepping on them would be extremely unwise.",
+            "triggerMessage": "The corrupted sigils beneath your feet flare to life! A wave of dark energy erupts upward from the desecrated ground!",
+            "saveMessage": "You see the sigils brightening and leap to a clear patch of floor as dark energy blasts upward around you.",
+            "failMessage": "Dark energy erupts through the floor and engulfs you, the corrupted chapel's power searing through your body like cold fire."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:great_hall",
+      "name": "Great Hall",
+      "description": "The keep's great hall stretches before you, its vaulted ceiling lost in shadow and storm-cloud that has seeped in through the shattered skylights. Massive iron chandeliers hang at precarious angles, their chains corroded nearly through. A long feasting table runs the length of the hall, split down the middle by what appears to have been a single devastating lightning strike. The tapestries on the walls depict the Wardens' victories, each one slashed through by something with claws.",
+      "x": 3,
+      "y": 10,
+      "exits": {
+        "SOUTH": "stormcrown_keep:inner_ward",
+        "NORTH": "stormcrown_keep:sealed_corridor",
+        "WEST": "stormcrown_keep:trophy_room",
+        "EAST": "stormcrown_keep:war_room"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_great_hall.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a vast dark fortress great hall with vaulted ceiling lost in shadow and storm cloud, massive iron chandeliers hanging at precarious angles, long feasting table split down the middle by lightning strike, slashed tapestries on walls, oppressive grandeur",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "great_hall_chandelier_trap",
+          "label": "Chandelier Drop",
+          "description": "One of the massive iron chandeliers hangs by a single corroded chain link, swaying gently. The slightest vibration could bring it crashing down.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 20,
+          "resetTicks": 10,
+          "sound": "trap_collapse",
+          "actionData": {
+            "damage": "44",
+            "damageType": "physical",
+            "saveStat": "AGILITY",
+            "saveDC": "20",
+            "perceptionDC": "20",
+            "noticeMessage": "You notice a chandelier hanging by a single corroded chain link directly above the walkway — one vibration from falling.",
+            "triggerMessage": "The last chain link snaps! A massive iron chandelier plummets from the ceiling directly toward you!",
+            "saveMessage": "You hear the chain snap and throw yourself sideways as the chandelier crashes into the flagstones with a deafening impact.",
+            "failMessage": "The chandelier crashes down on you, its iron frame and corroded candle-spikes slamming you to the ground."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:trophy_room",
+      "name": "Trophy Room",
+      "description": "A chamber lined with alcoves that once held the Wardens' proudest trophies — weapons taken from defeated enemies, banners from conquered strongholds, artifacts of historical significance. Most have been smashed or defaced, but a few remain intact behind cracked glass cases. The destruction here was deliberate, methodical — someone went through this room and systematically destroyed everything that celebrated the old Warden order.",
+      "x": 2,
+      "y": 10,
+      "exits": {
+        "EAST": "stormcrown_keep:great_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_trophy_room.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a fortress trophy room with alcoves and smashed display cases, destroyed banners and broken weapon trophies, a few intact artifacts behind cracked glass, methodical deliberate destruction, dark atmospheric lighting, corrupted military museum",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "stormcrown_keep:war_room",
+      "name": "War Room",
+      "description": "The Wardens' war room still holds its massive stone map table, carved with a relief of the surrounding mountain range and marked with tiny iron figurines representing troop positions. Someone has swept most of the figurines to the floor and replaced them with new markers — crude lightning-bolt shapes hammered from black iron, positioned in a pattern that suggests a siege rather than a defense. Scrolls and dispatch cases litter the floor around the table.",
+      "x": 4,
+      "y": 10,
+      "exits": {
+        "WEST": "stormcrown_keep:great_hall"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_war_room.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a fortress war room with massive stone map table showing carved mountain relief, tiny iron figurines and crude lightning-bolt markers, scattered scrolls and dispatch cases on the floor, dark strategic planning room, corrupted military command center",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "war_room_poison_dart_trap",
+          "label": "Poison Dart Map",
+          "description": "The map table's edge conceals a row of tiny holes. A thin wire connects one of the dispatch cases to a pressure mechanism beneath the table.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 21,
+          "resetTicks": 8,
+          "sound": "trap_dart",
+          "actionData": {
+            "damage": "46",
+            "damageType": "poison",
+            "saveStat": "AGILITY",
+            "saveDC": "21",
+            "perceptionDC": "21",
+            "noticeMessage": "You spot tiny holes along the map table's edge and a thin wire connecting a dispatch case to a pressure mechanism — a poison dart trap.",
+            "triggerMessage": "A wire goes taut as you pass the map table! Tiny darts spray from hidden holes along the table's edge, glistening with dark venom!",
+            "saveMessage": "You notice the wire and duck behind the stone table as poison darts embed themselves in the wall behind you.",
+            "failMessage": "Poison darts pepper your body from the hidden mechanism, their venom burning like liquid fire in your veins."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:sealed_corridor",
+      "name": "Sealed Corridor",
+      "description": "The corridor narrows here, its walls pressing close and its ceiling lowering to barely head height. The stone is darker than anywhere else in the keep, veined with thick lines of pulsing purple energy that converge ahead on a massive door of black iron. The door is sealed with crackling ward-lightning, and a keyhole shaped like a commander's seal glows at its center. To the west, a passage leads to what appears to be officers' quarters.",
+      "x": 3,
+      "y": 9,
+      "exits": {
+        "SOUTH": "stormcrown_keep:great_hall",
+        "WEST": "stormcrown_keep:therons_quarters"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_sealed_corridor.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a narrow dark fortress corridor with low ceiling, walls of dark stone with thick pulsing purple energy veins converging on a massive black iron door ahead sealed with crackling ward-lightning, glowing keyhole at center of door, oppressive containment architecture, passage branching west",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "sealed_door",
+          "label": "Sealed Storm Door",
+          "description": "A massive door of black iron, sealed with crackling ward-lightning. A keyhole shaped like a commander's seal glows at its center.",
+          "actionType": "CONDITIONAL_TRIGGER",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "sound": "gate_open",
+          "actionData": {
+            "conditionType": "ITEM",
+            "requiredItemId": "item:therons_key",
+            "successDirection": "NORTH",
+            "successMessage": "The commander's seal slides into the keyhole. Ward-lightning crackles and dies. The door groans open, revealing the path to the throne room beyond.",
+            "failureMessage": "The ward-lightning repels your hand. The door requires a commander's seal to open."
+          }
+        },
+        {
+          "id": "sealed_corridor_storm_ward_trap",
+          "label": "Storm Ward",
+          "description": "The converging purple energy veins form an unstable ward on the floor ahead of the sealed door, crackling with lethal intensity.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 22,
+          "resetTicks": 10,
+          "sound": "trap_lightning",
+          "actionData": {
+            "damage": "50",
+            "damageType": "lightning",
+            "saveStat": "AGILITY",
+            "saveDC": "22",
+            "perceptionDC": "22",
+            "noticeMessage": "You notice the energy veins converging into a volatile ward on the floor — the accumulated charge could be lethal.",
+            "triggerMessage": "The converging energy veins discharge! A concentrated blast of storm energy erupts from the floor ward!",
+            "saveMessage": "You see the ward brightening and press yourself against the wall as lightning blasts the center of the corridor.",
+            "failMessage": "The storm ward detonates beneath your feet, raw lightning tearing through your body with agonizing force."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:therons_quarters",
+      "name": "Theron's Quarters",
+      "description": "The lieutenant's quarters — austere even by Warden standards. A narrow cot, a weapons rack, a writing desk covered in half-finished reports. Everything is precisely arranged, as if Theron's discipline survived his corruption. The desk holds a half-written letter: 'Commander, I can no longer distinguish your voice from the storm. If you read this, I have —' The rest is obscured by a scorch mark. The room reeks of ozone and cold discipline.",
+      "x": 2,
+      "y": 9,
+      "exits": {
+        "EAST": "stormcrown_keep:sealed_corridor"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_therons_quarters.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of an austere military officer's quarters in a dark fortress, narrow cot, weapons rack, writing desk with scattered papers and one scorched letter, everything precisely arranged despite the corruption, cold blue-violet light, disciplined order in a corrupted space",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful, lavish",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "stormcrown_keep:throne_antechamber",
+      "name": "Throne Antechamber",
+      "description": "Beyond the sealed door, the keep transforms. The stone here is darker still, veined with glowing purple lines like a living circulatory system. The corridor opens into a hexagonal antechamber where six pillars ring a warding circle inlaid in bronze and silver — its runes still faintly glowing, though the light flickers and stutters with corruption. The air hums with a deep vibration that you feel in your teeth. Passages branch in every direction, and the main way north leads to the throne room itself.",
+      "x": 3,
+      "y": 8,
+      "exits": {
+        "SOUTH": "stormcrown_keep:sealed_corridor",
+        "NORTH": "stormcrown_keep:stormcrown_throne",
+        "WEST": "stormcrown_keep:lightning_gallery",
+        "EAST": "stormcrown_keep:storm_conduit"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_throne_antechamber.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a hexagonal antechamber in a dark corrupted fortress, six pillars ringing a warding circle inlaid in bronze and silver with flickering corrupted runes, dark stone veined with glowing purple lines, deep atmospheric vibration, passages branching in multiple directions, oppressive and arcane",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "antechamber_lightning_pillar_trap",
+          "label": "Lightning Pillar",
+          "description": "One of the six pillars crackles with concentrated storm energy, arcing between its surface and the warding circle on the floor.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 21,
+          "resetTicks": 8,
+          "sound": "trap_lightning",
+          "actionData": {
+            "damage": "48",
+            "damageType": "lightning",
+            "saveStat": "AGILITY",
+            "saveDC": "21",
+            "perceptionDC": "21",
+            "noticeMessage": "You notice one of the pillars crackling with dangerous intensity — the energy arc between it and the floor could strike at any moment.",
+            "triggerMessage": "A pillar discharges! Lightning arcs from the corrupted column to the warding circle, catching you in the crossfire!",
+            "saveMessage": "You see the pillar brightening and dodge behind an adjacent column as lightning blasts through the space you occupied.",
+            "failMessage": "Lightning arcs from the pillar through your body to the warding circle, the current locking your muscles in a rictus of pain."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:lightning_gallery",
+      "name": "Lightning Gallery",
+      "description": "An open gallery whose roof has been blown completely away, exposing the perpetual storm that crowns the keep. Lightning strikes the remaining columns with metronomic regularity, each bolt feeding the network of purple veins that web the walls. The floor is scorched black in overlapping blast patterns, and the air is so charged that your hair stands on end. The view from here is staggering — the entire mountain range visible through the storm, lit by continuous flashes.",
+      "x": 2,
+      "y": 8,
+      "exits": {
+        "EAST": "stormcrown_keep:throne_antechamber"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_lightning_gallery.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of an open fortress gallery with roof completely blown away exposing raging storm above, lightning striking remaining columns rhythmically, floor scorched black in overlapping blast patterns, purple energy veins webbing walls, mountain range visible through continuous lightning flashes, dramatic and terrifying",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, bright, cheerful, calm, sunny",
+      "imageWidth": 1024,
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "lightning_gallery_chain_lightning_trap",
+          "label": "Chain Lightning",
+          "description": "Lightning arcs between the gallery's columns in rapid succession, the energy building to a chain discharge with each strike.",
+          "actionType": "DAMAGE_TRAP",
+          "triggerType": "ON_ENTER",
+          "perceptionDC": 22,
+          "resetTicks": 8,
+          "sound": "trap_lightning",
+          "actionData": {
+            "damage": "52",
+            "damageType": "lightning",
+            "saveStat": "AGILITY",
+            "saveDC": "22",
+            "perceptionDC": "22",
+            "noticeMessage": "You notice the lightning building to a chain pattern between the columns — the next discharge will arc through the entire gallery.",
+            "triggerMessage": "Lightning chain-reacts between the columns! A cascade of electrical energy arcs through the gallery, striking everything in its path!",
+            "saveMessage": "You read the chain pattern and drop flat to the scorched floor as lightning screams over you from column to column.",
+            "failMessage": "Chain lightning rips through the gallery and catches you in its arc, electricity searing through your body as it leaps between columns."
+          }
+        }
+      ]
+    },
+    {
+      "id": "stormcrown_keep:storm_conduit",
+      "name": "Storm Conduit",
+      "description": "A cylindrical chamber that serves as the keep's primary lightning rod, channeling the storm's energy down through the fortress into the deep stone below. A massive iron rod runs floor to ceiling through the center of the room, crackling with continuous electrical discharge. The walls are lined with copper plates, green with age, that redirect errant bolts. The heat in here is intense, and the thunder is deafening — each strike shakes the entire room.",
+      "x": 4,
+      "y": 8,
+      "exits": {
+        "WEST": "stormcrown_keep:throne_antechamber"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_storm_conduit.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 2,
+      "imagePrompt": "First-person view of a cylindrical fortress chamber with massive iron lightning rod running floor to ceiling, continuous electrical discharge crackling, copper-plated walls green with age redirecting energy, intense heat, deafening thunder atmosphere, chamber shaking with each lightning strike",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful, calm",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    },
+    {
+      "id": "stormcrown_keep:stormcrown_throne",
+      "name": "Stormcrown Throne",
+      "description": "The heart of Stormcrown Keep — a vast circular hall beneath a domed ceiling that has been blown completely open to the storm. Rain lashes down through the gap, and lightning strikes the iron crown-shaped finial at the dome's apex with metronomic regularity, each bolt feeding the purple veins that web the walls. At the center of the hall stands a raised dais of fused black iron, and upon it, a throne wrought from the same metal. Beyond the throne, a passage has been blasted through the eastern wall — its edges scorched and vitrified by an energy discharge of incredible power. Through it, a descending stairway leads down into raw rock and darkness. The air from below carries a scent of ancient stone and something that predates the keep by millennia. But the passage is choked with rubble. Whatever lies below will have to wait.",
+      "x": 3,
+      "y": 7,
+      "exits": {
+        "SOUTH": "stormcrown_keep:throne_antechamber"
+      },
+      "backgroundImage": "/assets/images/rooms/stormcrown_keep_stormcrown_throne.webp",
+      "departSound": "footstep_stone",
+      "maxHostileNpcs": 1,
+      "imagePrompt": "First-person view of a vast circular fortress hall with domed ceiling blown open to raging storm, rain lashing down, lightning striking crown-shaped iron finial at dome apex, purple energy veins webbing walls fed by each lightning bolt, raised black iron dais with iron throne at center, blasted passage in eastern wall with vitrified edges leading to descending stairway into darkness choked with rubble, dramatic and terrifying boss arena atmosphere",
+      "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
+      "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, bright, cheerful, calm, sunny",
+      "imageWidth": 1024,
+      "imageHeight": 576
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc:warden_shade",
+      "name": "Warden Shade",
+      "description": "The ghostly remnant of a fallen warden, still wearing spectral armor that flickers between solid and translucent. Its face is a hollow mask of rage and duty corrupted beyond recognition. Lightning crackles along the edges of its phantom blade.",
+      "startRoomId": "stormcrown_keep:gatehouse",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 320,
+      "damage": 56,
+      "level": 25,
+      "xpReward": 540,
+      "accuracy": 28,
+      "defense": 24,
+      "evasion": 24,
+      "agility": 22,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "creature_death",
+      "spawnPoints": [
+        "stormcrown_keep:gatehouse",
+        "stormcrown_keep:outer_ward",
+        "stormcrown_keep:collapsed_wing",
+        "stormcrown_keep:armory",
+        "stormcrown_keep:inner_ward",
+        "stormcrown_keep:dungeon_cells"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:shade_essence",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:warden_insignia",
+          "chance": 0.08,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 45,
+        "maxCopper": 85,
+        "minSilver": 5,
+        "maxSilver": 12
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Ghostly translucent warden soldier in spectral armor that flickers between solid and translucent, hollow mask face of rage and corrupted duty, lightning crackling along edges of phantom blade, ethereal and menacing, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, ghost knight, translucent, spectral",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:dark_sentinel",
+      "name": "Dark Sentinel",
+      "description": "A massively armored corrupted warden, its black iron plate fused to its body by fracture energy. Storm-lightning arcs between the joints of its armor in continuous painful loops. It wields a greataxe that crackles with the same energy that killed and reanimated it.",
+      "startRoomId": "stormcrown_keep:guard_hall",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 400,
+      "damage": 66,
+      "level": 27,
+      "xpReward": 680,
+      "accuracy": 34,
+      "defense": 30,
+      "evasion": 20,
+      "agility": 18,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "creature_death",
+      "spawnPoints": [
+        "stormcrown_keep:guard_hall",
+        "stormcrown_keep:great_hall",
+        "stormcrown_keep:trophy_room",
+        "stormcrown_keep:war_room",
+        "stormcrown_keep:chapel_of_storms"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:dark_sentinel_plate",
+          "chance": 0.05,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:charged_crystal",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 60,
+        "maxCopper": 110,
+        "minSilver": 8,
+        "maxSilver": 18
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Massively armored corrupted warden in black iron plate fused to body, storm-lightning arcing between armor joints in continuous loops, wielding a crackling greataxe, menacing and powerful, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, corrupted armored warrior, storm energy",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:stormbound_hound",
+      "name": "Stormbound Hound",
+      "description": "A war hound whose flesh has been partially replaced by crackling storm energy. Its eyes blaze with blue-white lightning, and arcs of electricity leap between its teeth. Faster than it looks, and far more vicious.",
+      "startRoomId": "stormcrown_keep:outer_ward",
+      "behaviorType": "wander",
+      "hostile": true,
+      "maxHp": 300,
+      "damage": 60,
+      "level": 26,
+      "xpReward": 580,
+      "accuracy": 30,
+      "defense": 22,
+      "evasion": 28,
+      "agility": 26,
+      "attackSound": "beast_bite",
+      "missSound": "beast_miss",
+      "deathSound": "creature_death",
+      "spawnPoints": [
+        "stormcrown_keep:outer_ward",
+        "stormcrown_keep:inner_ward",
+        "stormcrown_keep:dungeon_cells",
+        "stormcrown_keep:gatehouse"
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:storm_essence",
+          "chance": 0.18,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 40,
+        "maxCopper": 75,
+        "minSilver": 4,
+        "maxSilver": 10
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. War hound with flesh partially replaced by crackling blue-white storm energy, blazing lightning eyes, arcs of electricity leaping between teeth, aggressive muscular stance, storm-infused beast, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, lightning-infused war hound",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 512,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:warden_cmdr_theron",
+      "name": "Warden-Commander Theron",
+      "description": "The Stormcrown's second-in-command, a hulking figure in storm-scarred plate armor. Theron was the first to fall when the corruption took the Keep. Unlike the mindless shades that patrol the halls, Theron retains a terrible intelligence — and the commander's seal that locks the path to the throne room. His eyes burn with a cold blue fire, and he fights with the precise, mechanical swordplay of a Warden who has forgotten why he draws his blade.",
+      "startRoomId": "stormcrown_keep:therons_quarters",
+      "behaviorType": "stationary",
+      "hostile": true,
+      "maxHp": 650,
+      "damage": 62,
+      "level": 26,
+      "perception": 20,
+      "xpReward": 2000,
+      "accuracy": 32,
+      "defense": 28,
+      "evasion": 22,
+      "agility": 20,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "creature_death",
+      "lootItems": [
+        {
+          "itemId": "item:therons_key",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:therons_warplate",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:therons_halberd",
+          "chance": 0.2,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 100,
+        "maxCopper": 180,
+        "minSilver": 15,
+        "maxSilver": 30,
+        "minGold": 3,
+        "maxGold": 6
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Hulking warden commander in storm-scarred plate armor, cold blue burning eyes, precise military bearing, longsword held in perfect form, signet key on chain at hip, intelligent and dangerous, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, corrupted knight commander, cold blue fire eyes",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:stormcrown",
+      "name": "Warden-Commander Stormcrown",
+      "description": "The Warden-Commander known as the Stormcrown sits upon a throne of fused lightning and black iron. His armor is immaculate despite the corruption that has claimed him — disciplined swordwork and centuries of martial training preserved even in undeath. Storm-lightning wreathes his greatsword. In his first form, he fights with precise, devastating technique.",
+      "startRoomId": "stormcrown_keep:stormcrown_throne",
+      "behaviorType": "stationary",
+      "hostile": true,
+      "maxHp": 1200,
+      "damage": 68,
+      "level": 27,
+      "perception": 25,
+      "xpReward": 4000,
+      "accuracy": 34,
+      "defense": 30,
+      "evasion": 22,
+      "agility": 20,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "deathSound": "creature_death",
+      "phases": [
+        {
+          "name": "Dark Reckoning",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:stormcrown_phase2",
+          "damage": 82,
+          "accuracy": 40,
+          "defense": 24,
+          "evasion": 28,
+          "transitionMessage": "The Stormcrown's armor shatters! Dark energy erupts from within as the corrupted warden abandons discipline for raw, chaotic power!",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:stormcrowns_seal_shard",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:stormcrowns_greatsword",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:stormcrowns_crown",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:stormcrowns_warplate",
+          "chance": 0.15,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 150,
+        "maxCopper": 250,
+        "minSilver": 25,
+        "maxSilver": 50,
+        "minGold": 8,
+        "maxGold": 15
+      },
+      "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Towering fallen warden-commander in immaculate black iron plate armor with crown-shaped helm made of lightning bolts, massive greatsword wreathed in storm-lightning in right hand, glowing purple seal shard in left hand, disciplined and terrifying, sitting or standing at a dark iron throne, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
+      "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, dark storm knight boss, violet lightning, black iron plate armor",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
+      "imageWidth": 384,
+      "imageHeight": 384
+    }
+  ]
+}

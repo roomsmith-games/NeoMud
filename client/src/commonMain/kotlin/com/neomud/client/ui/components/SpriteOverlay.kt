@@ -340,9 +340,10 @@ private fun EntitySprite(
                     )
                 }
 
+                val spriteId = npc.spriteOverride.ifEmpty { npc.id }
                 AsyncImage(
                     model = coil3.request.ImageRequest.Builder(context)
-                        .data(spriteUrl(serverBaseUrl, npc.id))
+                        .data(spriteUrl(serverBaseUrl, spriteId))
                         .crossfade(200)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)

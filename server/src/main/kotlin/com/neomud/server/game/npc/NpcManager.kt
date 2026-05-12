@@ -9,6 +9,7 @@ import com.neomud.server.game.npc.behavior.PatrolBehavior
 import com.neomud.server.game.npc.behavior.PursuitBehavior
 import com.neomud.server.game.npc.behavior.WanderBehavior
 import com.neomud.server.session.SessionManager
+import com.neomud.server.world.BossPhaseData
 import com.neomud.server.world.NpcData
 import com.neomud.server.world.SpawnConfig
 import com.neomud.server.world.TrainerConfig
@@ -27,7 +28,7 @@ data class NpcState(
     val hostile: Boolean = false,
     val maxHp: Int = 0,
     var currentHp: Int = 0,
-    val damage: Int = 0,
+    var damage: Int = 0,
     val level: Int = 1,
     val perception: Int = 0,
     val xpReward: Long = 0,
@@ -37,9 +38,9 @@ data class NpcState(
     val templateId: String = "",
     val vendorItems: List<String> = emptyList(),
     val crafterRecipes: List<String> = emptyList(),
-    val accuracy: Int = 0,
-    val defense: Int = 0,
-    val evasion: Int = 0,
+    var accuracy: Int = 0,
+    var defense: Int = 0,
+    var evasion: Int = 0,
     val agility: Int = 10,
     val attackSound: String = "",
     val missSound: String = "",
@@ -49,7 +50,10 @@ data class NpcState(
     val trainerConfig: TrainerConfig? = null,
     val dialogueScript: String = "",
     val grantItemId: String = "",
-    val grantItemFlag: String = ""
+    val grantItemFlag: String = "",
+    val phases: List<BossPhaseData> = emptyList(),
+    var currentPhase: Int = 0,
+    var spriteOverride: String = ""
 ) {
     /** Active spell effects on this NPC (DoT, HoT, etc.). */
     val activeEffects: MutableList<ActiveEffect> = mutableListOf()
@@ -151,7 +155,8 @@ class NpcManager(
             trainerConfig = data.trainerConfig,
             dialogueScript = data.dialogueScript,
             grantItemId = data.grantItemId,
-            grantItemFlag = data.grantItemFlag
+            grantItemFlag = data.grantItemFlag,
+            phases = data.phases
         )
     }
 
@@ -316,7 +321,8 @@ class NpcManager(
                 deathSound = npcState.deathSound,
                 interactSound = npcState.interactSound,
                 exitSound = npcState.exitSound,
-                activeEffects = npcState.activeEffects.toList()
+                activeEffects = npcState.activeEffects.toList(),
+                spriteOverride = npcState.spriteOverride
             )
         }
     }

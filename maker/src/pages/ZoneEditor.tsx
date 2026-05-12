@@ -334,6 +334,7 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 <option value="PLACE_ITEM">Place Item (puzzle)</option>
                 <option value="PUZZLE_STEP">Puzzle Step (sequence)</option>
                 <option value="RIDDLE_PROMPT">Riddle Prompt (text answer)</option>
+                <option value="CONDITIONAL_TRIGGER">Conditional Trigger (gated passage)</option>
               </select>
             </div>
             <div>
@@ -577,6 +578,55 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
               <div style={{ gridColumn: '1 / 4' }}>
                 <label style={{ color: '#666' }}>Reset Message (wrong step)</label>
                 <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The pillars dim. The sequence is lost." value={feat.actionData?.resetMessage || ''} onChange={(e) => setData(i, { resetMessage: e.target.value })} />
+              </div>
+            </div>
+          )}
+          {feat.actionType === 'CONDITIONAL_TRIGGER' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4, marginTop: 4, fontSize: 10 }}>
+              <div>
+                <label style={{ color: '#666' }}>Condition Type</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.conditionType || 'ITEM'} onChange={(e) => setData(i, { conditionType: e.target.value })}>
+                  <option value="ITEM">Item Owned</option>
+                  <option value="FLAG">Player Flag</option>
+                  <option value="LEVEL">Minimum Level</option>
+                </select>
+              </div>
+              {(feat.actionData?.conditionType || 'ITEM') === 'ITEM' && (
+                <div style={{ gridColumn: '2 / 4' }}>
+                  <label style={{ color: '#666' }}>Required Item ID</label>
+                  <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. item:stormcrown_sigil" value={feat.actionData?.requiredItemId || ''} onChange={(e) => setData(i, { requiredItemId: e.target.value })} />
+                </div>
+              )}
+              {feat.actionData?.conditionType === 'FLAG' && (<>
+                <div>
+                  <label style={{ color: '#666' }}>Flag Key</label>
+                  <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. puzzle:storm:step" value={feat.actionData?.requiredFlagKey || ''} onChange={(e) => setData(i, { requiredFlagKey: e.target.value })} />
+                </div>
+                <div>
+                  <label style={{ color: '#666' }}>Flag Value</label>
+                  <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. 5" value={feat.actionData?.requiredFlagValue || ''} onChange={(e) => setData(i, { requiredFlagValue: e.target.value })} />
+                </div>
+              </>)}
+              {feat.actionData?.conditionType === 'LEVEL' && (
+                <div>
+                  <label style={{ color: '#666' }}>Required Level</label>
+                  <input type="number" style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. 25" value={feat.actionData?.requiredLevel || ''} onChange={(e) => setData(i, { requiredLevel: e.target.value })} />
+                </div>
+              )}
+              <div>
+                <label style={{ color: '#666' }}>Success Direction</label>
+                <select style={{ ...styles.input, fontSize: 11 }} value={feat.actionData?.successDirection || ''} onChange={(e) => setData(i, { successDirection: e.target.value })}>
+                  <option value="">—</option>
+                  {['NORTH','SOUTH','EAST','WEST','UP','DOWN','NORTHEAST','NORTHWEST','SOUTHEAST','SOUTHWEST'].map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div style={{ gridColumn: '1 / 4' }}>
+                <label style={{ color: '#666' }}>Success Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. The seal recognizes your worth..." value={feat.actionData?.successMessage || ''} onChange={(e) => setData(i, { successMessage: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 4' }}>
+                <label style={{ color: '#666' }}>Failure Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. You lack what is needed to pass." value={feat.actionData?.failureMessage || ''} onChange={(e) => setData(i, { failureMessage: e.target.value })} />
               </div>
             </div>
           )}

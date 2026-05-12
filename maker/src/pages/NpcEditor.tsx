@@ -62,6 +62,7 @@ interface NpcRecord {
   imageNegativePrompt: string;
   imageWidth: number;
   imageHeight: number;
+  phases: string;
 }
 
 type MapMode = 'view' | 'start' | 'patrol' | 'spawns';
@@ -320,6 +321,7 @@ function NpcEditor() {
       patrolRoute: '', vendorItems: '', crafterRecipes: '', trainerConfig: '', dialogueScript: '', grantItemId: '', grantItemFlag: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
       attackSound: '', missSound: '', deathSound: '', interactSound: '', exitSound: '',
       imagePrompt: '', imageStyle: '', imageNegativePrompt: '', imageWidth: 384, imageHeight: 512,
+      phases: '[]',
     });
   };
 
@@ -858,6 +860,72 @@ function NpcEditor() {
                 </div>
               ))}
             </div>
+
+            {/* Boss Phases (only for hostile NPCs) */}
+            {form.hostile && (() => {
+              let phases: any[] = [];
+              try { phases = JSON.parse(form.phases || '[]'); } catch { phases = []; }
+              const updatePhases = (updated: any[]) => handleChange('phases', JSON.stringify(updated));
+              const updatePhase = (idx: number, key: string, value: any) => {
+                const next = [...phases];
+                next[idx] = { ...next[idx], [key]: value };
+                updatePhases(next);
+              };
+              return (
+                <>
+                  <div style={styles.sectionTitle}>Boss Phases</div>
+                  <div style={{ fontSize: 11, color: '#666', marginBottom: 8 }}>
+                    Define phase transitions at HP thresholds. Stats override the base values during that phase.
+                  </div>
+                  {phases.map((phase, i) => (
+                    <div key={i} style={{ border: '1px solid #ccc', borderRadius: 6, padding: 8, marginBottom: 8, backgroundColor: '#fff' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                        <span style={{ fontSize: 12, fontWeight: 700 }}>Phase {i + 1}</span>
+                        <button
+                          onClick={() => updatePhases(phases.filter((_, j) => j !== i))}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#d32f2f' }}
+                        >x</button>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 8px' }}>
+                        <div>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Name</label>
+                          <input style={styles.input} value={phase.name ?? ''} onChange={(e) => updatePhase(i, 'name', e.target.value)} />
+                        </div>
+                        <div>
+                          <label style={{ ...styles.label, fontSize: 11 }}>HP Threshold %</label>
+                          <input style={styles.input} type="number" step="0.05" min="0" max="1" value={phase.hpThresholdPercent ?? 0.5} onChange={(e) => updatePhase(i, 'hpThresholdPercent', parseFloat(e.target.value) || 0)} />
+                        </div>
+                        <div>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Sprite ID</label>
+                          <input style={styles.input} value={phase.spriteId ?? ''} onChange={(e) => updatePhase(i, 'spriteId', e.target.value)} placeholder="npc:phase2_id" />
+                        </div>
+                        <div>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Transition Sound</label>
+                          <input style={styles.input} value={phase.transitionSound ?? ''} onChange={(e) => updatePhase(i, 'transitionSound', e.target.value)} />
+                        </div>
+                        <div style={{ gridColumn: '1 / -1' }}>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Transition Message</label>
+                          <input style={styles.input} value={phase.transitionMessage ?? ''} onChange={(e) => updatePhase(i, 'transitionMessage', e.target.value)} />
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 11, fontWeight: 600, marginTop: 6, marginBottom: 2, color: '#555' }}>Stat Overrides (blank = keep base)</div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '4px 8px' }}>
+                        {['damage', 'accuracy', 'defense', 'evasion'].map((stat) => (
+                          <div key={stat}>
+                            <label style={{ ...styles.label, fontSize: 10 }}>{stat.charAt(0).toUpperCase() + stat.slice(1)}</label>
+                            <input style={styles.input} type="number" value={phase[stat] ?? ''} onChange={(e) => updatePhase(i, stat, e.target.value ? parseInt(e.target.value) : null)} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    style={{ ...styles.modeBtn, width: '100%', marginTop: 4 }}
+                    onClick={() => updatePhases([...phases, { name: '', hpThresholdPercent: 0.5, spriteId: '', damage: null, accuracy: null, defense: null, evasion: null, transitionMessage: '', transitionSound: '' }])}
+                  >+ Add Phase</button>
+                </>
+              );
+            })()}
 
             {/* Vendor Items (only for vendor NPCs) */}
             {form.behaviorType === 'vendor' && (() => {

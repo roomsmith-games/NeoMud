@@ -245,7 +245,8 @@ object WorldLoader {
                         }
                     }
                     "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT",
-                    "DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "RIDDLE_PROMPT" -> { /* validated at runtime */ }
+                    "DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "RIDDLE_PROMPT",
+                    "CONDITIONAL_TRIGGER" -> { /* validated at runtime */ }
                     else -> logger.warn("Room '${room.id}' interactable '${feat.id}' unknown actionType '${feat.actionType}'")
                 }
             }

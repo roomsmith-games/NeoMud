@@ -451,6 +451,21 @@ class GameViewModel(
                     _selectedTargetId.value = null
                 }
             }
+            is ServerMessage.NpcPhaseShift -> {
+                if (message.message.isNotEmpty()) {
+                    addLog(message.message, MudColors.combatEnemy)
+                }
+                addLog("${message.npcName} enters ${message.phaseName}!", MudColors.combatEnemy)
+                if (message.sound.isNotEmpty()) sfx(message.sound, "npcs")
+                _roomEntities.value = _roomEntities.value.map { npc ->
+                    if (npc.id == message.npcId) {
+                        npc.copy(
+                            currentHp = message.currentHp,
+                            spriteOverride = message.spriteId
+                        )
+                    } else npc
+                }
+            }
             is ServerMessage.PlayerDied -> {
                 addLog("You have been slain by ${message.killerName}! Respawning...", MudColors.death)
                 _deathMessage.value = "Slain by ${message.killerName}"

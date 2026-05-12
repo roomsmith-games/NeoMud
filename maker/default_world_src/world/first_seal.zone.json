@@ -471,9 +471,9 @@
       }
     },
     {
-      "id": "npc:stone_sentinel",
-      "name": "Stone Sentinel",
-      "description": "One of the ancient guardian statues has stirred to life, animated by residual warding magic. It moves with grinding deliberation, its stone fists capable of crushing bone. Cracks in its surface leak golden light. It attacks with the same mechanical precision with which it was carved.",
+      "id": "npc:gilded_warden",
+      "name": "Gilded Warden",
+      "description": "An ancient guardian statue animated by the Seal's residual warding magic. It moves with grinding deliberation, stone fists capable of crushing bone. Deep cracks in its surface leak golden light — the same radiance that once held the Seal inviolate.",
       "startRoomId": "first_seal:sentinel_grounds",
       "behaviorType": "patrol",
       "patrolRoute": [

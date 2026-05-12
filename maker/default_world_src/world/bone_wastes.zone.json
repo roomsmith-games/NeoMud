@@ -1,7 +1,7 @@
 {
   "id": "bone_wastes",
   "name": "Bone Wastes",
-  "description": "Beyond the western edge of the Glass Desert, where the vitrified layer thins and cracks, lies a vast expanse of bleached stone and fossilized bone. This was once a battlefield of the Seal Wars \u2014 the warriors who fell here were never buried, and their remains have calcified into the landscape itself. Wind-scoured ridges of compressed bone rise from the pale earth like the ribs of some impossibly vast creature. The air is dry and carries the mineral smell of ancient death. To the south, the dark entrance to the Necropolis of Vael gapes like a wound in the earth.",
+  "description": "Beyond the western edge of the Glass Desert, where the vitrified layer thins and cracks, lies a vast expanse of bleached stone and fossilized bone. This was once a battlefield of the Seal Wars — the warriors who fell here were never buried, and their remains have calcified into the landscape itself. Wind-scoured ridges of compressed bone rise from the pale earth like the ribs of some impossibly vast creature. The air is dry and carries the mineral smell of ancient death. To the south, the dark entrance to the Necropolis of Vael gapes like a wound in the earth.",
   "safe": false,
   "bgm": "gorge_danger",
   "levelRange": "22-25",
@@ -9,7 +9,7 @@
     {
       "id": "bone_wastes:glass_edge",
       "name": "Glass Edge",
-      "description": "The glass here is thin and brittle, shattering under your boots to reveal bleached bone beneath. Wind-scoured fragments of vitrified sand crunch with every step, mixed with splinters of something older \u2014 calcified remains from whatever civilization existed here before the cataclysm turned the land to glass. The Glass Desert stretches east, its shimmer fading as the ground transitions to pale stone and ancient bone. Westward, the glass gives way entirely to the Bone Wastes.",
+      "description": "The glass here is thin and brittle, shattering under your boots to reveal bleached bone beneath. Wind-scoured fragments of vitrified sand crunch with every step, mixed with splinters of something older — calcified remains from whatever civilization existed here before the cataclysm turned the land to glass. The Glass Desert stretches east, its shimmer fading as the ground transitions to pale stone and ancient bone. Westward, the glass gives way entirely to the Bone Wastes.",
       "x": 4,
       "y": 28,
       "exits": {
@@ -38,7 +38,7 @@
             "saveDC": "19",
             "damageType": "physical",
             "perceptionDC": "19",
-            "noticeMessage": "You spot stress fractures in the glass formation ahead \u2014 one wrong step could trigger a chain reaction.",
+            "noticeMessage": "You spot stress fractures in the glass formation ahead — one wrong step could trigger a chain reaction.",
             "triggerMessage": "The glass formation shatters explosively! Razor-sharp bone shards and glass splinters erupt from the ground!",
             "saveMessage": "You throw yourself sideways as shards whistle past, embedding in the ground where you stood.",
             "failMessage": "Bone shards and glass fragments slice across your body. You stumble clear, bleeding from a dozen cuts."
@@ -49,7 +49,7 @@
     {
       "id": "bone_wastes:shattered_threshold",
       "name": "Shattered Threshold",
-      "description": "Half the ground here is fused glass, half exposed bedrock and pale bone. The transition is jagged and irregular \u2014 the glass layer has been torn away in patches by centuries of wind, revealing the older stratum beneath. Ancient weapon fragments jut from the earth where the glass has fallen away: corroded sword hilts, shattered shield bosses, the calcified remnants of a war fought before the seals were forged. The wind carries a dry, mineral smell.",
+      "description": "Half the ground here is fused glass, half exposed bedrock and pale bone. The transition is jagged and irregular — the glass layer has been torn away in patches by centuries of wind, revealing the older stratum beneath. Ancient weapon fragments jut from the earth where the glass has fallen away: corroded sword hilts, shattered shield bosses, the calcified remnants of a war fought before the seals were forged. The wind carries a dry, mineral smell.",
       "x": 3,
       "y": 28,
       "exits": {
@@ -66,7 +66,7 @@
     {
       "id": "bone_wastes:bone_ridge",
       "name": "Bone Ridge",
-      "description": "A long ridge of compressed, calcified bone rises from the wasteland \u2014 the spine of some impossibly vast creature, or perhaps just centuries of remains fused together by wind and pressure. From the top, the Glass Desert glitters to the east, its shimmer alien against the pale monotony of the wastes. Westward and southward, the bone-strewn landscape stretches to the horizon, broken only by cairns of stacked skulls and the occasional rusted war standard. A precarious climb leads up to a lookout point.",
+      "description": "A long ridge of compressed, calcified bone rises from the wasteland — the spine of some impossibly vast creature, or perhaps just centuries of remains fused together by wind and pressure. From the top, the Glass Desert glitters to the east, its shimmer alien against the pale monotony of the wastes. Westward and southward, the bone-strewn landscape stretches to the horizon, broken only by cairns of stacked skulls and the occasional rusted war standard. A precarious climb leads up to a lookout point.",
       "x": 2,
       "y": 28,
       "exits": {
@@ -83,7 +83,7 @@
     {
       "id": "bone_wastes:bone_ridge_lookout",
       "name": "Bone Ridge Lookout",
-      "description": "From this high point on the bone ridge, the full scope of the wastes is visible. To the east, the Glass Desert shimmers like a frozen sea. Below and to the south, the Bone Wastes spread in every direction \u2014 a pale, wind-scoured expanse dotted with cairns of stacked skulls and the dark shapes of rusted war engines. Far to the south, a dark gash in the earth marks the entrance to something underground. The wind up here is relentless, carrying dust that stings exposed skin.",
+      "description": "From this high point on the bone ridge, the full scope of the wastes is visible. To the east, the Glass Desert shimmers like a frozen sea. Below and to the south, the Bone Wastes spread in every direction — a pale, wind-scoured expanse dotted with cairns of stacked skulls and the dark shapes of rusted war engines. Far to the south, a dark gash in the earth marks the entrance to something underground. The wind up here is relentless, carrying dust that stings exposed skin.",
       "x": 2,
       "y": 29,
       "exits": {
@@ -98,7 +98,7 @@
     {
       "id": "bone_wastes:bleached_flats",
       "name": "Bleached Flats",
-      "description": "A wide expanse of pale, hard-packed earth littered with bone fragments and the occasional intact skeleton, still wearing corroded armor. The sun bleaches everything here to the same dead white. Movement catches your eye \u2014 skeletal shapes prowling between the bone ridges, hunting with an intelligence that suggests something more than mindless undeath.",
+      "description": "A wide expanse of pale, hard-packed earth littered with bone fragments and the occasional intact skeleton, still wearing corroded armor. The sun bleaches everything here to the same dead white. Movement catches your eye — skeletal shapes prowling between the bone ridges, hunting with an intelligence that suggests something more than mindless undeath.",
       "x": 4,
       "y": 27,
       "exits": {
@@ -115,7 +115,7 @@
     {
       "id": "bone_wastes:ossuary_field",
       "name": "Ossuary Field",
-      "description": "The dead were never buried here \u2014 they were simply left where they fell, and time did the rest. Entire skeletons lie half-embedded in the packed earth, their bones fused with the soil. In places, the ground is more bone than stone. Someone \u2014 or something \u2014 has arranged some of the skulls into low cairns, dozens of them scattered across the field in a pattern that might be meaningful. The wind whistles through empty eye sockets.",
+      "description": "The dead were never buried here — they were simply left where they fell, and time did the rest. Entire skeletons lie half-embedded in the packed earth, their bones fused with the soil. In places, the ground is more bone than stone. Someone — or something — has arranged some of the skulls into low cairns, dozens of them scattered across the field in a pattern that might be meaningful. The wind whistles through empty eye sockets.",
       "x": 3,
       "y": 27,
       "exits": {
@@ -133,7 +133,7 @@
     {
       "id": "bone_wastes:fallen_standard",
       "name": "Fallen Standard",
-      "description": "A massive war standard \u2014 a spear as thick as a mast, topped with a tattered banner of some long-dead army \u2014 leans at an angle from the earth, its base buried in calcified remains. The banner is too weathered to identify, but the craftsmanship of the spear suggests a civilization of considerable skill. The ground around it is unstable, riddled with buried bones that shift and collapse without warning.",
+      "description": "A massive war standard — a spear as thick as a mast, topped with a tattered banner of some long-dead army — leans at an angle from the earth, its base buried in calcified remains. The banner is too weathered to identify, but the craftsmanship of the spear suggests a civilization of considerable skill. The ground around it is unstable, riddled with buried bones that shift and collapse without warning.",
       "x": 2,
       "y": 27,
       "exits": {
@@ -151,7 +151,7 @@
         {
           "id": "rotting_pit",
           "label": "Unstable Ground",
-          "description": "The earth around the standard's base is riddled with hollow pockets \u2014 collapsed burial chambers just beneath the surface.",
+          "description": "The earth around the standard's base is riddled with hollow pockets — collapsed burial chambers just beneath the surface.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
           "perceptionDC": 19,
@@ -161,7 +161,7 @@
             "saveDC": "19",
             "damageType": "physical",
             "perceptionDC": "19",
-            "noticeMessage": "The ground here sounds hollow when you step \u2014 there are cavities just beneath the surface.",
+            "noticeMessage": "The ground here sounds hollow when you step — there are cavities just beneath the surface.",
             "triggerMessage": "The ground collapses beneath you! You plunge into a pit of jagged bone fragments!",
             "saveMessage": "You catch the edge as the ground gives way, hauling yourself back to solid footing.",
             "failMessage": "You fall into a pit of calcified bone shards, the jagged points driving into your legs and sides."
@@ -172,7 +172,7 @@
     {
       "id": "bone_wastes:bone_spire",
       "name": "Bone Spire",
-      "description": "A natural spire of fused bone and calcified stone rises here, its base hollowed out into a crude shelter. Someone has made camp in its shadow \u2014 a makeshift counter of stacked rib bones displays salvaged goods, and a bedroll is wedged into a niche. Weathered pack animals are tethered nearby, loaded with scavenged gear. The camp's occupant is a wiry figure with sharp eyes and a merchant's smile.",
+      "description": "A natural spire of fused bone and calcified stone rises here, its base hollowed out into a crude shelter. Someone has made camp in its shadow — a makeshift counter of stacked rib bones displays salvaged goods, and a bedroll is wedged into a niche. Weathered pack animals are tethered nearby, loaded with scavenged gear. The camp's occupant is a wiry figure with sharp eyes and a merchant's smile.",
       "x": 1,
       "y": 27,
       "exits": {
@@ -187,7 +187,7 @@
     {
       "id": "bone_wastes:dust_hollow",
       "name": "Dust Hollow",
-      "description": "A shallow depression in the wasteland where bone dust has accumulated in drifts, stirred by the constant wind into choking clouds. Visibility drops to a few yards when the wind gusts. The dust has a chemical tang \u2014 something in the ancient remains reacts with air, producing a faintly toxic haze that stings the eyes and catches in the throat. Shapes move in the dust: skeletal predators that have adapted to hunt in the poor visibility.",
+      "description": "A shallow depression in the wasteland where bone dust has accumulated in drifts, stirred by the constant wind into choking clouds. Visibility drops to a few yards when the wind gusts. The dust has a chemical tang — something in the ancient remains reacts with air, producing a faintly toxic haze that stings the eyes and catches in the throat. Shapes move in the dust: skeletal predators that have adapted to hunt in the poor visibility.",
       "x": 4,
       "y": 26,
       "exits": {
@@ -204,7 +204,7 @@
         {
           "id": "dust_cloud",
           "label": "Toxic Dust Cloud",
-          "description": "The bone dust in this hollow is thick enough to be dangerous \u2014 each breath draws in fine particles of ancient, chemically-reactive remains.",
+          "description": "The bone dust in this hollow is thick enough to be dangerous — each breath draws in fine particles of ancient, chemically-reactive remains.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
           "perceptionDC": 20,
@@ -214,7 +214,7 @@
             "saveDC": "20",
             "damageType": "poison",
             "perceptionDC": "20",
-            "noticeMessage": "The dust here has a chemical smell \u2014 breathing it deeply would be unwise.",
+            "noticeMessage": "The dust here has a chemical smell — breathing it deeply would be unwise.",
             "triggerMessage": "A gust of wind drives a thick cloud of toxic bone dust directly into your face!",
             "saveMessage": "You hold your breath and shield your face, enduring the worst of it.",
             "failMessage": "The toxic dust burns your lungs and eyes. You retch and stumble, vision swimming."
@@ -225,7 +225,7 @@
     {
       "id": "bone_wastes:war_cairns",
       "name": "War Cairns",
-      "description": "Dozens of cairns built from stacked skulls and long bones dot this section of the wastes, arranged in concentric rings around a central mound. Each cairn is topped with a corroded weapon \u2014 a sword, an axe, a spear \u2014 driven point-down into the topmost skull. These are memorial markers, built by someone who respected the dead. The central mound is larger, its stones inscribed with weathered text in a language you don't recognize.",
+      "description": "Dozens of cairns built from stacked skulls and long bones dot this section of the wastes, arranged in concentric rings around a central mound. Each cairn is topped with a corroded weapon — a sword, an axe, a spear — driven point-down into the topmost skull. These are memorial markers, built by someone who respected the dead. The central mound is larger, its stones inscribed with weathered text in a language you don't recognize.",
       "x": 3,
       "y": 26,
       "exits": {
@@ -252,7 +252,7 @@
             "saveDC": "20",
             "damageType": "physical",
             "perceptionDC": "20",
-            "noticeMessage": "That large cairn is leaning badly \u2014 the corroded axe on top could come down at any moment.",
+            "noticeMessage": "That large cairn is leaning badly — the corroded axe on top could come down at any moment.",
             "triggerMessage": "The cairn collapses! Skulls and the massive war-axe tumble directly toward you!",
             "saveMessage": "You dive clear as skulls bounce past and the heavy axe buries itself in the earth beside you.",
             "failMessage": "The avalanche of skulls and the heavy war-axe catch you squarely, driving you to the ground."
@@ -263,7 +263,7 @@
     {
       "id": "bone_wastes:rusted_palisade",
       "name": "Rusted Palisade",
-      "description": "The remains of a defensive fortification cut across the wastes here \u2014 a palisade of iron-banded wooden stakes, now rusted to brittle shells and leaning at drunken angles. Behind it, the remnants of a siege camp: fire pits choked with bone ash, collapsed tent frames, the corroded hulk of a battering ram. Whatever army camped here was large, disciplined, and ultimately unsuccessful \u2014 the bones of its soldiers lie thick among the ruins.",
+      "description": "The remains of a defensive fortification cut across the wastes here — a palisade of iron-banded wooden stakes, now rusted to brittle shells and leaning at drunken angles. Behind it, the remnants of a siege camp: fire pits choked with bone ash, collapsed tent frames, the corroded hulk of a battering ram. Whatever army camped here was large, disciplined, and ultimately unsuccessful — the bones of its soldiers lie thick among the ruins.",
       "x": 2,
       "y": 26,
       "exits": {
@@ -279,7 +279,7 @@
     {
       "id": "bone_wastes:skull_ravine_rim",
       "name": "Skull Ravine Rim",
-      "description": "A deep gash cuts through the wasteland here \u2014 a ravine carved by ancient water or seismic activity, its walls layered with exposed strata of compressed bone. The ravine drops thirty feet to a floor littered with skulls that have rolled down from above over centuries. A rough-cut stairway, carved into the bone-rock wall, descends to the ravine floor. The stairs are slick with mineral deposits and bone dust.",
+      "description": "A deep gash cuts through the wasteland here — a ravine carved by ancient water or seismic activity, its walls layered with exposed strata of compressed bone. The ravine drops thirty feet to a floor littered with skulls that have rolled down from above over centuries. A rough-cut stairway, carved into the bone-rock wall, descends to the ravine floor. The stairs are slick with mineral deposits and bone dust.",
       "x": 4,
       "y": 25,
       "exits": {
@@ -296,7 +296,7 @@
     {
       "id": "bone_wastes:skull_ravine",
       "name": "Skull Ravine",
-      "description": "The floor of the ravine is carpeted with skulls \u2014 thousands of them, rolled down from the rim over centuries, now packed together in a grim mosaic. The ravine walls rise sheer on either side, layered bone-rock striated with darker deposits of ancient metal and ash. The air is still down here, sheltered from the wind above, and carries a faint sweet-rot smell that shouldn't exist in remains this old. Something about this place resists the natural order of decay.",
+      "description": "The floor of the ravine is carpeted with skulls — thousands of them, rolled down from the rim over centuries, now packed together in a grim mosaic. The ravine walls rise sheer on either side, layered bone-rock striated with darker deposits of ancient metal and ash. The air is still down here, sheltered from the wind above, and carries a faint sweet-rot smell that shouldn't exist in remains this old. Something about this place resists the natural order of decay.",
       "x": 4,
       "y": 24,
       "exits": {
@@ -323,7 +323,7 @@
             "saveDC": "21",
             "damageType": "physical",
             "perceptionDC": "21",
-            "noticeMessage": "A section of the ravine wall is bulging \u2014 the compressed bone is under immense pressure.",
+            "noticeMessage": "A section of the ravine wall is bulging — the compressed bone is under immense pressure.",
             "triggerMessage": "The bone wall explodes outward! Shards of calcified bone and ancient metal shrapnel blast across the ravine!",
             "saveMessage": "You flatten against the opposite wall as shrapnel ricochets off the stone around you.",
             "failMessage": "Bone shrapnel and fragments of ancient metal tear into you. The impact knocks you off your feet."
@@ -334,7 +334,7 @@
     {
       "id": "bone_wastes:ancient_road",
       "name": "Ancient Road",
-      "description": "A section of ancient paved road surfaces here, its flagstones cracked but still recognizable. This was a military road \u2014 wide enough for four soldiers abreast, with drainage channels cut along its edges. The road runs roughly north-south, disappearing under the bone-strewn earth in both directions. Boot prints are visible in the dust \u2014 recent ones, too fresh for the dead. Someone living has been using this road.",
+      "description": "A section of ancient paved road surfaces here, its flagstones cracked but still recognizable. This was a military road — wide enough for four soldiers abreast, with drainage channels cut along its edges. The road runs roughly north-south, disappearing under the bone-strewn earth in both directions. Boot prints are visible in the dust — recent ones, too fresh for the dead. Someone living has been using this road.",
       "x": 3,
       "y": 25,
       "exits": {
@@ -352,7 +352,7 @@
     {
       "id": "bone_wastes:siege_ruins",
       "name": "Siege Ruins",
-      "description": "The skeleton of a massive siege engine rises from the bone-strewn earth \u2014 a trebuchet or catapult of enormous scale, its timbers petrified and its metal fittings fused with rust. Around it, the remains of the crew that operated it lie where they fell, still in formation. Whatever killed them did so instantaneously \u2014 there are no defensive wounds, no signs of flight. They simply died where they stood.",
+      "description": "The skeleton of a massive siege engine rises from the bone-strewn earth — a trebuchet or catapult of enormous scale, its timbers petrified and its metal fittings fused with rust. Around it, the remains of the crew that operated it lie where they fell, still in formation. Whatever killed them did so instantaneously — there are no defensive wounds, no signs of flight. They simply died where they stood.",
       "x": 2,
       "y": 25,
       "exits": {
@@ -369,7 +369,7 @@
     {
       "id": "bone_wastes:scorched_earth",
       "name": "Scorched Earth",
-      "description": "The ground here is blackened and fused \u2014 not glass like the desert to the east, but something different. This earth was burned by a different kind of fire, one that left the bone beneath carbonized rather than vitrified. Scorch marks radiate outward from a central point, as if something detonated here with tremendous force. At the epicenter, a shallow crater holds a pool of dark, oily water that reflects no light.",
+      "description": "The ground here is blackened and fused — not glass like the desert to the east, but something different. This earth was burned by a different kind of fire, one that left the bone beneath carbonized rather than vitrified. Scorch marks radiate outward from a central point, as if something detonated here with tremendous force. At the epicenter, a shallow crater holds a pool of dark, oily water that reflects no light.",
       "x": 3,
       "y": 24,
       "exits": {
@@ -387,7 +387,7 @@
     {
       "id": "bone_wastes:burial_mound",
       "name": "Burial Mound",
-      "description": "A large earthen mound rises from the wastes, its surface covered in carved bone tablets inscribed with names \u2014 hundreds of them, in neat rows. This is a mass grave, deliberately constructed, its inhabitants interred with more care than the battlefield dead that litter the surrounding wastes. At the mound's base, a stone slab bears an inscription in Old Warden script: 'Here lie the Vael Guard. They held the line.' Gas seeps from cracks in the mound's surface.",
+      "description": "A large earthen mound rises from the wastes, its surface covered in carved bone tablets inscribed with names — hundreds of them, in neat rows. This is a mass grave, deliberately constructed, its inhabitants interred with more care than the battlefield dead that litter the surrounding wastes. At the mound's base, a stone slab bears an inscription in Old Warden script: 'Here lie the Vael Guard. They held the line.' Gas seeps from cracks in the mound's surface.",
       "x": 2,
       "y": 24,
       "exits": {
@@ -404,7 +404,7 @@
         {
           "id": "burial_gas",
           "label": "Gas Seep",
-          "description": "Toxic gas seeps from cracks in the burial mound \u2014 the chemical byproduct of ancient preservation compounds reacting with groundwater.",
+          "description": "Toxic gas seeps from cracks in the burial mound — the chemical byproduct of ancient preservation compounds reacting with groundwater.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
           "perceptionDC": 21,
@@ -414,7 +414,7 @@
             "saveDC": "21",
             "damageType": "poison",
             "perceptionDC": "21",
-            "noticeMessage": "A faint chemical smell rises from the cracks \u2014 the gas seeping out is not natural.",
+            "noticeMessage": "A faint chemical smell rises from the cracks — the gas seeping out is not natural.",
             "triggerMessage": "A pocket of trapped preservation gas erupts from the mound, engulfing you in noxious fumes!",
             "saveMessage": "You hold your breath and back away quickly, eyes watering but lungs clear.",
             "failMessage": "The toxic gas fills your lungs before you can react. Your vision blurs and your stomach heaves."
@@ -425,7 +425,7 @@
     {
       "id": "bone_wastes:ravine_floor",
       "name": "Ravine Floor",
-      "description": "The ravine deepens here, its skull-carpeted floor descending into a narrow passage between sheer bone-rock walls. Water seeps through the walls in places, leaving dark mineral stains. The skulls underfoot shift and roll with every step, making footing treacherous. Something has been nesting here \u2014 a hollow scraped into the skull carpet, lined with scraps of leather and corroded metal. The occupant is nearby.",
+      "description": "The ravine deepens here, its skull-carpeted floor descending into a narrow passage between sheer bone-rock walls. Water seeps through the walls in places, leaving dark mineral stains. The skulls underfoot shift and roll with every step, making footing treacherous. Something has been nesting here — a hollow scraped into the skull carpet, lined with scraps of leather and corroded metal. The occupant is nearby.",
       "x": 4,
       "y": 23,
       "exits": {
@@ -441,7 +441,7 @@
     {
       "id": "bone_wastes:death_road",
       "name": "Death Road",
-      "description": "The ancient road surfaces again here, but in worse condition \u2014 the flagstones are heaved and cracked by roots of bone that have grown up through them. This section of road was once lined with marker stones, each carved with the seal of a different unit of the Vael Guard. Most have fallen, but a few still stand, their inscriptions legible: unit names, battle honors, and the names of commanders who led them to this place and never led them home.",
+      "description": "The ancient road surfaces again here, but in worse condition — the flagstones are heaved and cracked by roots of bone that have grown up through them. This section of road was once lined with marker stones, each carved with the seal of a different unit of the Vael Guard. Most have fallen, but a few still stand, their inscriptions legible: unit names, battle honors, and the names of commanders who led them to this place and never led them home.",
       "x": 3,
       "y": 23,
       "exits": {
@@ -459,7 +459,7 @@
     {
       "id": "bone_wastes:necropolis_overlook",
       "name": "Necropolis Overlook",
-      "description": "The ground drops away here at the edge of a vast sinkhole, revealing the dark entrance to an underground complex carved into the bedrock below. Massive stone columns, carved with funerary imagery \u2014 processions of soldiers, weeping figures, the seal of the Vael Guard \u2014 frame a grand staircase that descends into darkness. This is the Necropolis of Vael, built to honor the war dead. But something has gone wrong below \u2014 a faint green luminescence pulses from the depths, and the air rising from the entrance carries the unmistakable taint of active necromancy.",
+      "description": "The ground drops away here at the edge of a vast sinkhole, revealing the dark entrance to an underground complex carved into the bedrock below. Massive stone columns, carved with funerary imagery — processions of soldiers, weeping figures, the seal of the Vael Guard — frame a grand staircase that descends into darkness. This is the Necropolis of Vael, built to honor the war dead. But something has gone wrong below — a faint green luminescence pulses from the depths, and the air rising from the entrance carries the unmistakable taint of active necromancy.",
       "x": 2,
       "y": 23,
       "exits": {
@@ -476,7 +476,7 @@
     {
       "id": "bone_wastes:death_gate",
       "name": "Death Gate",
-      "description": "A monumental stone archway spans the road here \u2014 the ceremonial entrance to the Necropolis precinct. The arch is carved from a single piece of dark stone, inscribed with the names of every commander of the Vael Guard in a spiral that winds from base to keystone. Beyond it, the road continues south toward the edge of the wastes. A makeshift camp has been set up in the arch's shadow \u2014 a scholar's tent, overflowing with rubbings, notes, and sketches of the necropolis architecture.",
+      "description": "A monumental stone archway spans the road here — the ceremonial entrance to the Necropolis precinct. The arch is carved from a single piece of dark stone, inscribed with the names of every commander of the Vael Guard in a spiral that winds from base to keystone. Beyond it, the road continues south toward the edge of the wastes. A makeshift camp has been set up in the arch's shadow — a scholar's tent, overflowing with rubbings, notes, and sketches of the necropolis architecture.",
       "x": 3,
       "y": 22,
       "exits": {
@@ -493,7 +493,7 @@
     {
       "id": "bone_wastes:warden_stones",
       "name": "Warden Stones",
-      "description": "A ring of standing stones, each carved with the seal of the Wardens, encircles a flat area of compacted bone-earth. This was a ritual site \u2014 the Wardens performed ceremonies here to keep the dead at rest after the Seal Wars. The stones still hum faintly with residual protective energy, but their power is failing. Cracks web through the seals, and dark energy seeps from the ground like oil. Something powerful guards this place, pacing between the stones with patient menace.",
+      "description": "A ring of standing stones, each carved with the seal of the Wardens, encircles a flat area of compacted bone-earth. This was a ritual site — the Wardens performed ceremonies here to keep the dead at rest after the Seal Wars. The stones still hum faintly with residual protective energy, but their power is failing. Cracks web through the seals, and dark energy seeps from the ground like oil. Something powerful guards this place, pacing between the stones with patient menace.",
       "x": 2,
       "y": 22,
       "exits": {
@@ -509,11 +509,12 @@
     {
       "id": "bone_wastes:bone_wastes_edge",
       "name": "Bone Wastes Edge",
-      "description": "The wastes thin here, the bone-strewn landscape giving way to rocky terrain that climbs toward distant peaks shrouded in cloud. The air is cleaner, the mineral smell of ancient death fading. To the north, the dark arch of the Death Gate frames the pale expanse of the Bone Wastes. Southward, the terrain rises sharply into foothills of dark stone \u2014 the approach to the high country beyond. The path forward is clear but the way is blocked by a rockfall. Perhaps when the stones are cleared, the road will continue.",
+      "description": "The wastes thin here, the bone-strewn landscape giving way to rocky terrain that climbs toward distant peaks shrouded in cloud. The air is cleaner, the mineral smell of ancient death fading. To the north, the dark arch of the Death Gate frames the pale expanse of the Bone Wastes. Southward, the terrain rises sharply into foothills of dark stone — the approach to the high country beyond. The path southward climbs steeply into the mountain foothills, the air growing thinner and colder with each switchback.",
       "x": 3,
       "y": 21,
       "exits": {
-        "NORTH": "bone_wastes:death_gate"
+        "NORTH": "bone_wastes:death_gate",
+        "SOUTH": "skyveil_reach:mountain_pass"
       },
       "backgroundImage": "/assets/images/rooms/bone_wastes_bone_wastes_edge.webp",
       "departSound": "footstep_stone",
@@ -526,7 +527,7 @@
     {
       "id": "npc:bone_stalker",
       "name": "Bone Stalker",
-      "description": "A skeletal predator assembled from the remains of multiple creatures \u2014 four legs, a long spine, a skull that might once have been a wolf's but is now fused with something larger. It moves with eerie silence across the bone-strewn ground, its claws leaving no tracks. Pale light glows in its empty eye sockets, suggesting an animating intelligence that is decidedly unnatural.",
+      "description": "A skeletal predator assembled from the remains of multiple creatures — four legs, a long spine, a skull that might once have been a wolf's but is now fused with something larger. It moves with eerie silence across the bone-strewn ground, its claws leaving no tracks. Pale light glows in its empty eye sockets, suggesting an animating intelligence that is decidedly unnatural.",
       "startRoomId": "bone_wastes:bleached_flats",
       "behaviorType": "wander",
       "hostile": true,
@@ -576,7 +577,7 @@
     {
       "id": "npc:dust_wraith",
       "name": "Dust Wraith",
-      "description": "A spectral figure rising from the bone dust \u2014 the ghost of a Seal War soldier, still wearing the translucent impression of armor and carrying a weapon of pure shadow. Its face is a blur of agony and rage, features shifting too fast to resolve. It attacks with cold precision, striking at living warmth with the hatred of something that remembers what it lost.",
+      "description": "A spectral figure rising from the bone dust — the ghost of a Seal War soldier, still wearing the translucent impression of armor and carrying a weapon of pure shadow. Its face is a blur of agony and rage, features shifting too fast to resolve. It attacks with cold precision, striking at living warmth with the hatred of something that remembers what it lost.",
       "startRoomId": "bone_wastes:ossuary_field",
       "behaviorType": "wander",
       "hostile": true,
@@ -626,7 +627,7 @@
     {
       "id": "npc:risen_soldier",
       "name": "Risen Soldier",
-      "description": "An armored skeleton still bearing the equipment it carried in life \u2014 corroded sword, dented shield, chain mail rusted to a brittle shell. Unlike the mindless bone constructs, risen soldiers retain combat training from their mortal lives. They fight in disciplined formation when multiple are present, covering each other's flanks and pressing advantages with unsettling tactical awareness.",
+      "description": "An armored skeleton still bearing the equipment it carried in life — corroded sword, dented shield, chain mail rusted to a brittle shell. Unlike the mindless bone constructs, risen soldiers retain combat training from their mortal lives. They fight in disciplined formation when multiple are present, covering each other's flanks and pressing advantages with unsettling tactical awareness.",
       "startRoomId": "bone_wastes:ancient_road",
       "behaviorType": "wander",
       "hostile": true,
@@ -676,7 +677,7 @@
     {
       "id": "npc:carrion_golem",
       "name": "Carrion Golem",
-      "description": "A hulking construct of fused bone and compacted earth, roughly humanoid but twice the height of a man. Its body is a mosaic of skeletal remains \u2014 ribs forming its torso cage, femurs serving as arms, a cluster of skulls fused into a single massive head. It moves slowly but hits like a siege engine. Dark energy crackles between its joints, holding the impossible construction together.",
+      "description": "A hulking construct of fused bone and compacted earth, roughly humanoid but twice the height of a man. Its body is a mosaic of skeletal remains — ribs forming its torso cage, femurs serving as arms, a cluster of skulls fused into a single massive head. It moves slowly but hits like a siege engine. Dark energy crackles between its joints, holding the impossible construction together.",
       "startRoomId": "bone_wastes:rusted_palisade",
       "behaviorType": "wander",
       "hostile": true,
@@ -719,7 +720,7 @@
     {
       "id": "npc:war_revenant",
       "name": "War Revenant",
-      "description": "More than a risen soldier \u2014 a revenant retains fragments of its mortal identity and the burning need for vengeance that kept its spirit from passing on. This one wears the insignia of a Vael Guard officer, its armor better-preserved than the common risen, its movements faster and more purposeful. Its jaw works silently, forming words it can no longer speak. It attacks with a fury that suggests it mistakes you for whoever killed it the first time.",
+      "description": "More than a risen soldier — a revenant retains fragments of its mortal identity and the burning need for vengeance that kept its spirit from passing on. This one wears the insignia of a Vael Guard officer, its armor better-preserved than the common risen, its movements faster and more purposeful. Its jaw works silently, forming words it can no longer speak. It attacks with a fury that suggests it mistakes you for whoever killed it the first time.",
       "startRoomId": "bone_wastes:scorched_earth",
       "behaviorType": "wander",
       "hostile": true,
@@ -762,7 +763,7 @@
     {
       "id": "npc:bone_warden",
       "name": "Bone Warden",
-      "description": "A massive construct of fused bone and ancient warding magic, standing guard among the Warden Stones. Unlike the crude carrion golems, the Bone Warden was deliberately created \u2014 its skeleton is assembled from the remains of the Vael Guard's most decorated soldiers, their bones inscribed with protective runes that still pulse with failing energy. It carries a mace of solid bone as long as a man is tall. Around its neck hangs a ritual key on a chain of vertebrae \u2014 the key to something deeper in the Necropolis.",
+      "description": "A massive construct of fused bone and ancient warding magic, standing guard among the Warden Stones. Unlike the crude carrion golems, the Bone Warden was deliberately created — its skeleton is assembled from the remains of the Vael Guard's most decorated soldiers, their bones inscribed with protective runes that still pulse with failing energy. It carries a mace of solid bone as long as a man is tall. Around its neck hangs a ritual key on a chain of vertebrae — the key to something deeper in the Necropolis.",
       "startRoomId": "bone_wastes:warden_stones",
       "behaviorType": "idle",
       "hostile": true,
@@ -808,7 +809,7 @@
     {
       "id": "npc:scholar_meris",
       "name": "Scholar Meris",
-      "description": "A middle-aged woman in ink-stained scholarly robes, her camp a chaos of rubbings, sketches, and translation notes. She's been studying the Necropolis of Vael for months, cataloguing its architecture and inscriptions from the safety of the entrance. She knows more about what's inside than anyone alive \u2014 and she knows better than to go in herself. Her eyes are sharp with intelligence and haunted by what she's read in the inscriptions.",
+      "description": "A middle-aged woman in ink-stained scholarly robes, her camp a chaos of rubbings, sketches, and translation notes. She's been studying the Necropolis of Vael for months, cataloguing its architecture and inscriptions from the safety of the entrance. She knows more about what's inside than anyone alive — and she knows better than to go in herself. Her eyes are sharp with intelligence and haunted by what she's read in the inscriptions.",
       "startRoomId": "bone_wastes:death_gate",
       "behaviorType": "quest",
       "hostile": false,
@@ -817,7 +818,7 @@
       "level": 24,
       "xpReward": 0,
       "interactSound": "trainer_greet",
-      "dialogueScript": "Meris looks up from her notes, adjusting spectacles that have been repaired with wire. 'Another one heading below. Let me save you some time.' She spreads a rubbing of an inscription across her makeshift desk. 'The Necropolis of Vael was built to inter the dead of the Seal Wars \u2014 thousands of soldiers who died holding the line while the Wardens forged the First Seal. Honorable burial, warding runes to keep them at rest.' She taps the rubbing. 'But when the seal fractured, the warding failed. The dead rose. And then Khaim arrived \u2014 a necromancer who saw an army waiting to be claimed. He's down there now, in the Deep Sanctum, binding them to his will.' She hands you a tablet of carved bone. 'I copied this from the processional entrance. It maps the three levels: the Processional, the Catacombs, and the Deep Sanctum where Khaim operates. The Bone Warden at the stones carries a key you'll need. Be careful \u2014 Khaim's seal shard is why the dead won't stay down.'",
+      "dialogueScript": "Meris looks up from her notes, adjusting spectacles that have been repaired with wire. 'Another one heading below. Let me save you some time.' She spreads a rubbing of an inscription across her makeshift desk. 'The Necropolis of Vael was built to inter the dead of the Seal Wars — thousands of soldiers who died holding the line while the Wardens forged the First Seal. Honorable burial, warding runes to keep them at rest.' She taps the rubbing. 'But when the seal fractured, the warding failed. The dead rose. And then Khaim arrived — a necromancer who saw an army waiting to be claimed. He's down there now, in the Deep Sanctum, binding them to his will.' She hands you a tablet of carved bone. 'I copied this from the processional entrance. It maps the three levels: the Processional, the Catacombs, and the Deep Sanctum where Khaim operates. The Bone Warden at the stones carries a key you'll need. Be careful — Khaim's seal shard is why the dead won't stay down.'",
       "grantItemId": "item:necropolis_lore_tablet",
       "grantItemFlag": "meris_tablet_given",
       "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Middle-aged scholarly woman in ink-stained robes, wire-repaired spectacles, holding bone tablet and notes, intelligent sharp eyes, academic bearing, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
@@ -829,7 +830,7 @@
     {
       "id": "npc:rask_bone_picker",
       "name": "Rask the Bone-Picker",
-      "description": "A wiry, sun-darkened man with a gap-toothed grin and the weathered look of someone who spends his life in places the living avoid. He's made a business of scavenging the Bone Wastes \u2014 pulling serviceable equipment from the ancient dead and reselling it to adventurers foolish enough to come here. His prices are steep, but he's the only merchant within a day's walk.",
+      "description": "A wiry, sun-darkened man with a gap-toothed grin and the weathered look of someone who spends his life in places the living avoid. He's made a business of scavenging the Bone Wastes — pulling serviceable equipment from the ancient dead and reselling it to adventurers foolish enough to come here. His prices are steep, but he's the only merchant within a day's walk.",
       "startRoomId": "bone_wastes:bone_spire",
       "behaviorType": "vendor",
       "hostile": false,

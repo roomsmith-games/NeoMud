@@ -128,6 +128,7 @@ model Npc {
   coinDrop            String @default("")
   imageWidth          Int    @default(384)
   imageHeight         Int    @default(512)
+  phases              String @default("[]")
 }
 
 model CharacterClass {

@@ -475,6 +475,19 @@ sealed class ServerMessage {
         val sound: String = ""
     ) : ServerMessage()
 
+    @Serializable
+    @SerialName("npc_phase_shift")
+    data class NpcPhaseShift(
+        val npcId: String,
+        val npcName: String,
+        val phaseName: String,
+        val spriteId: String = "",
+        val message: String,
+        val currentHp: Int,
+        val maxHp: Int,
+        val sound: String = ""
+    ) : ServerMessage()
+
     // Handshake — sent as the first message on WebSocket connect
     @Serializable
     @SerialName("server_hello")
