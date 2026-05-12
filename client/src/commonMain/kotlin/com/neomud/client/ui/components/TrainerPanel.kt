@@ -164,8 +164,30 @@ fun TrainerPanel(
                                 costToAdd = costToAdd,
                                 canAdd = canAdd,
                                 canRemove = canRemove,
-                                onAdd = { entry.onSet(entry.current + 1) },
-                                onRemove = { entry.onSet(entry.current - 1) }
+                                onAdd1 = { entry.onSet(entry.current + 1) },
+                                onRemove1 = { entry.onSet(entry.current - 1) },
+                                onAdd5 = {
+                                    var value = entry.current
+                                    var budget = cpRemaining
+                                    repeat(5) {
+                                        val cost = costToRaise(value, entry.base)
+                                        if (budget >= cost) { value++; budget -= cost }
+                                    }
+                                    entry.onSet(value)
+                                },
+                                onRemove5 = {
+                                    entry.onSet(maxOf(entry.current - 5, entry.base))
+                                },
+                                onMax = {
+                                    var value = entry.current
+                                    var budget = cpRemaining
+                                    while (true) {
+                                        val cost = costToRaise(value, entry.base)
+                                        if (budget < cost) break
+                                        value++; budget -= cost
+                                    }
+                                    entry.onSet(value)
+                                }
                             )
                         }
                     } else {
@@ -259,8 +281,11 @@ private fun StatAllocRow(
     costToAdd: Int,
     canAdd: Boolean,
     canRemove: Boolean,
-    onAdd: () -> Unit,
-    onRemove: () -> Unit
+    onAdd1: () -> Unit,
+    onRemove1: () -> Unit,
+    onAdd5: () -> Unit,
+    onRemove5: () -> Unit,
+    onMax: () -> Unit
 ) {
     val above = currentValue - baseValue
     val statColor = when {
@@ -269,73 +294,84 @@ private fun StatAllocRow(
         above > 0 -> Color(0xFF42A5F5)
         else -> Color(0xFFCCCCCC)
     }
+    val canRemove5 = currentValue - baseValue >= 5
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(vertical = 4.dp)
     ) {
-        // Stat name
-        Text(
-            text = statName,
-            fontSize = 14.sp,
-            color = Color(0xFFAAAAAA),
-            modifier = Modifier.width(80.dp)
-        )
-
-        // Current / base
-        Text(
-            text = "$currentValue",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = statColor,
-            modifier = Modifier.width(35.dp)
-        )
-        Text(
-            text = "(base $baseValue)",
-            fontSize = 11.sp,
-            color = Color(0xFF666666),
-            modifier = Modifier.width(65.dp)
-        )
-
-        // Cost indicator
-        Text(
-            text = "${costToAdd} CP",
-            fontSize = 12.sp,
-            color = if (canAdd) MudColors.xp else Color(0xFF555555),
-            modifier = Modifier.width(35.dp)
-        )
-
-        // Minus button
-        Button(
-            onClick = onRemove,
-            enabled = canRemove,
-            modifier = Modifier.size(32.dp),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF8B0000),
-                disabledContainerColor = Color(0xFF333333)
-            )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("-", fontSize = 14.sp, fontWeight = FontWeight.Bold)
-        }
+            // Stat name + value
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = statName,
+                    fontSize = 14.sp,
+                    color = Color(0xFFAAAAAA),
+                    modifier = Modifier.width(72.dp)
+                )
+                Text(
+                    text = "$currentValue",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = statColor,
+                    modifier = Modifier.width(30.dp)
+                )
+                Text(
+                    text = "(${baseValue})",
+                    fontSize = 11.sp,
+                    color = Color(0xFF666666),
+                    modifier = Modifier.width(36.dp)
+                )
+                Text(
+                    text = "${costToAdd}cp",
+                    fontSize = 11.sp,
+                    color = if (canAdd) MudColors.xp else Color(0xFF555555)
+                )
+            }
 
-        Spacer(modifier = Modifier.width(4.dp))
-
-        // Plus button
-        Button(
-            onClick = onAdd,
-            enabled = canAdd,
-            modifier = Modifier.size(32.dp),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF1565C0),
-                disabledContainerColor = Color(0xFF333333)
-            )
-        ) {
-            Text("+", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            // Button cluster: -5 -1 +1 +5 Max
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SmallAllocButton("-5", canRemove5, Color(0xFF8B0000), onRemove5)
+                SmallAllocButton("-1", canRemove, Color(0xFF8B0000), onRemove1)
+                SmallAllocButton("+1", canAdd, Color(0xFF1565C0), onAdd1)
+                SmallAllocButton("+5", canAdd, Color(0xFF1565C0), onAdd5)
+                SmallAllocButton("Max", canAdd, Color(0xFF2E7D32), onMax)
+            }
         }
+    }
+}
+
+@Composable
+private fun SmallAllocButton(
+    label: String,
+    enabled: Boolean,
+    color: Color,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier
+            .height(28.dp)
+            .widthIn(min = 34.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = color,
+            disabledContainerColor = Color(0xFF333333)
+        ),
+        shape = RoundedCornerShape(4.dp)
+    ) {
+        Text(label, fontSize = 11.sp, fontWeight = FontWeight.Bold)
     }
 }

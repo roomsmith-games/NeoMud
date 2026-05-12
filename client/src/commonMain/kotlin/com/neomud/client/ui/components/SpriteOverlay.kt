@@ -290,7 +290,6 @@ private fun EntitySprite(
                         ) else Modifier
                     )
                     .combinedClickable(
-                        enabled = npc.hostile,
                         onClick = {
                             if (npc.hostile) {
                                 if (readiedSpellId != null && onCastSpell != null) {
@@ -298,6 +297,8 @@ private fun EntitySprite(
                                 } else {
                                     onSelectTarget(if (isSelected) null else npc.id)
                                 }
+                            } else {
+                                onSelectTarget(npc.id)
                             }
                         },
                         onLongClick = {
