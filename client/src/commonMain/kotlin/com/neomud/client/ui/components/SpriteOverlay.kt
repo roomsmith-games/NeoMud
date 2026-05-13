@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -57,8 +58,13 @@ private fun coinSpriteUrl(serverBaseUrl: String, coinType: String): String {
 }
 
 private sealed class RoomEntity {
-    data class NpcEntity(val npc: Npc) : RoomEntity()
-    data class PcEntity(val info: PlayerInfo) : RoomEntity()
+    abstract val stableKey: String
+    data class NpcEntity(val npc: Npc) : RoomEntity() {
+        override val stableKey: String get() = "npc:${npc.id}"
+    }
+    data class PcEntity(val info: PlayerInfo) : RoomEntity() {
+        override val stableKey: String get() = "pc:${info.name}"
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -124,29 +130,31 @@ fun SpriteOverlay(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     backRow.forEach { entity ->
-                        EntitySprite(
-                            entity = entity,
-                            serverBaseUrl = serverBaseUrl,
-                            context = context,
-                            selectedTargetId = selectedTargetId,
-                            onSelectTarget = onSelectTarget,
-                            onPlayerTap = onPlayerTap,
-                            onPlayerLongPress = onPlayerLongPress,
-                            readiedSpellId = readiedSpellId,
-                            onCastSpell = onCastSpell,
-                            contextMenuNpcId = contextMenuNpcId,
-                            spellSlots = spellSlots,
-                            spellCatalog = spellCatalog,
-                            classCatalog = classCatalog,
-                            playerCharacterClass = playerCharacterClass,
-                            onAttackTarget = onAttackTarget,
-                            onTrackTarget = onTrackTarget,
-                            onKickTarget = onKickTarget,
-                            scale = 0.75f,
-                            modifier = Modifier
-                                .weight(1f, fill = false)
-                                .fillMaxHeight()
-                        )
+                        key(entity.stableKey) {
+                            EntitySprite(
+                                entity = entity,
+                                serverBaseUrl = serverBaseUrl,
+                                context = context,
+                                selectedTargetId = selectedTargetId,
+                                onSelectTarget = onSelectTarget,
+                                onPlayerTap = onPlayerTap,
+                                onPlayerLongPress = onPlayerLongPress,
+                                readiedSpellId = readiedSpellId,
+                                onCastSpell = onCastSpell,
+                                contextMenuNpcId = contextMenuNpcId,
+                                spellSlots = spellSlots,
+                                spellCatalog = spellCatalog,
+                                classCatalog = classCatalog,
+                                playerCharacterClass = playerCharacterClass,
+                                onAttackTarget = onAttackTarget,
+                                onTrackTarget = onTrackTarget,
+                                onKickTarget = onKickTarget,
+                                scale = 0.75f,
+                                modifier = Modifier
+                                    .weight(1f, fill = false)
+                                    .fillMaxHeight()
+                            )
+                        }
                     }
                 }
             }
@@ -163,29 +171,31 @@ fun SpriteOverlay(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     frontRow.forEach { entity ->
-                        EntitySprite(
-                            entity = entity,
-                            serverBaseUrl = serverBaseUrl,
-                            context = context,
-                            selectedTargetId = selectedTargetId,
-                            onSelectTarget = onSelectTarget,
-                            onPlayerTap = onPlayerTap,
-                            onPlayerLongPress = onPlayerLongPress,
-                            readiedSpellId = readiedSpellId,
-                            onCastSpell = onCastSpell,
-                            contextMenuNpcId = contextMenuNpcId,
-                            spellSlots = spellSlots,
-                            spellCatalog = spellCatalog,
-                            classCatalog = classCatalog,
-                            playerCharacterClass = playerCharacterClass,
-                            onAttackTarget = onAttackTarget,
-                            onTrackTarget = onTrackTarget,
-                            onKickTarget = onKickTarget,
-                            scale = 1.0f,
-                            modifier = Modifier
-                                .weight(1f, fill = false)
-                                .fillMaxHeight()
-                        )
+                        key(entity.stableKey) {
+                            EntitySprite(
+                                entity = entity,
+                                serverBaseUrl = serverBaseUrl,
+                                context = context,
+                                selectedTargetId = selectedTargetId,
+                                onSelectTarget = onSelectTarget,
+                                onPlayerTap = onPlayerTap,
+                                onPlayerLongPress = onPlayerLongPress,
+                                readiedSpellId = readiedSpellId,
+                                onCastSpell = onCastSpell,
+                                contextMenuNpcId = contextMenuNpcId,
+                                spellSlots = spellSlots,
+                                spellCatalog = spellCatalog,
+                                classCatalog = classCatalog,
+                                playerCharacterClass = playerCharacterClass,
+                                onAttackTarget = onAttackTarget,
+                                onTrackTarget = onTrackTarget,
+                                onKickTarget = onKickTarget,
+                                scale = 1.0f,
+                                modifier = Modifier
+                                    .weight(1f, fill = false)
+                                    .fillMaxHeight()
+                            )
+                        }
                     }
                 }
             }
@@ -227,27 +237,31 @@ fun SpriteOverlay(
                     Triple("copper", groundCoins.copper, "Copper coins")
                 )
                 coinTypes.filter { it.second > 0 }.forEach { (type, qty, desc) ->
-                    LootSprite(
-                        imageUrl = coinSpriteUrl(serverBaseUrl, type),
-                        contentDescription = desc,
-                        quantity = qty,
-                        onClick = { onPickupCoins(type) },
-                        context = context
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
+                    key("coin:$type") {
+                        LootSprite(
+                            imageUrl = coinSpriteUrl(serverBaseUrl, type),
+                            contentDescription = desc,
+                            quantity = qty,
+                            onClick = { onPickupCoins(type) },
+                            context = context
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                    }
                 }
 
                 // Item sprites
                 groundItems.take(6).forEach { groundItem ->
-                    val item = itemCatalog[groundItem.itemId]
-                    LootSprite(
-                        imageUrl = spriteUrl(serverBaseUrl, groundItem.itemId),
-                        contentDescription = item?.name ?: groundItem.itemId,
-                        quantity = groundItem.quantity,
-                        onClick = { onPickupItem(groundItem.itemId, groundItem.quantity) },
-                        context = context
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
+                    key("loot:${groundItem.itemId}") {
+                        val item = itemCatalog[groundItem.itemId]
+                        LootSprite(
+                            imageUrl = spriteUrl(serverBaseUrl, groundItem.itemId),
+                            contentDescription = item?.name ?: groundItem.itemId,
+                            quantity = groundItem.quantity,
+                            onClick = { onPickupItem(groundItem.itemId, groundItem.quantity) },
+                            context = context
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                    }
                 }
             }
         }

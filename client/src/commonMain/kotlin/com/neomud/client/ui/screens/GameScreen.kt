@@ -672,12 +672,14 @@ private fun GameScreenPortrait(
         ) {
             // Layer 1: Full-bleed background image
             val currentRoom = roomInfo?.room
-            RoomBackground(
-                imageUrl = currentRoom?.backgroundImage ?: "",
-                roomName = currentRoom?.name ?: "",
+            key(currentRoom?.id) {
+                RoomBackground(
+                    imageUrl = currentRoom?.backgroundImage ?: "",
+                    roomName = currentRoom?.name ?: "",
 
-                modifier = Modifier.fillMaxSize()
-            )
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
 
             // Layer 1.5: NPC & PC & item sprites overlaid on background
             SpriteOverlay(
@@ -940,11 +942,13 @@ private fun GameScreenLandscape(
             ) {
                 // Layer 1: Full-bleed background image
                 val currentRoom = roomInfo?.room
-                RoomBackground(
-                    imageUrl = currentRoom?.backgroundImage ?: "",
-                    roomName = currentRoom?.name ?: "",
-                    modifier = Modifier.fillMaxSize()
-                )
+                key(currentRoom?.id) {
+                    RoomBackground(
+                        imageUrl = currentRoom?.backgroundImage ?: "",
+                        roomName = currentRoom?.name ?: "",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
 
                 // Layer 1.5: NPC & PC & item sprites overlaid on background
                 SpriteOverlay(
