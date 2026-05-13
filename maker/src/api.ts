@@ -9,6 +9,12 @@ const TOKEN_KEY = 'neomud_access_token';
 // /maker-api/* back to /api/* before forwarding to this same server.
 const API_BASE = (import.meta.env.VITE_API_BASE ?? '/api').replace(/\/$/, '');
 
+// Platform login page URL. Defaults to '/' for same-domain deploys
+// (stage.neomud.app/maker shares cookies with stage.neomud.app).
+// Set to 'https://stage.neomud.app' for separate-subdomain deploys
+// (stage-maker.neomud.app) so the sign-in link actually reaches the platform.
+export const PLATFORM_URL = import.meta.env.VITE_PLATFORM_URL ?? '/';
+
 /**
  * Called when the server rejects a request with 401. Clears the local
  * token so future requests don't reuse a stale one, then sends the
@@ -17,7 +23,7 @@ const API_BASE = (import.meta.env.VITE_API_BASE ?? '/api').replace(/\/$/, '');
  */
 export function onUnauthorized() {
   localStorage.removeItem(TOKEN_KEY);
-  window.location.assign('/');
+  window.location.assign(PLATFORM_URL);
 }
 
 /** Current project scope — when set, API calls are prefixed with /projects/{name} */

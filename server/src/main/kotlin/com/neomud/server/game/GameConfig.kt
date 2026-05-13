@@ -34,6 +34,7 @@ object GameConfig {
         const val NPC_ACCURACY_LEVEL_MULTIPLIER = 2
         const val DEFENSE_AGI_DIVISOR = 2
         const val DEFENSE_ARMOR_DIVISOR = 2
+        const val ARMOR_DAMAGE_REDUCTION_DIVISOR = 2
         const val NPC_DEFENSE_LEVEL_MULTIPLIER = 1
         const val DODGE_MAX_CHANCE = 0.30
         const val DODGE_STAT_DIVISOR = 80.0

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import api from '../api';
+import api, { PLATFORM_URL } from '../api';
 import type { CSSProperties } from 'react';
 
 const styles: Record<string, CSSProperties> = {
@@ -96,7 +96,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         <p style={styles.message}>
           You must sign in on the NeoMud Platform to build worlds.
         </p>
-        <a style={styles.link} href="/">
+        <a style={styles.link} href={PLATFORM_URL}>
           Sign in with NeoMud Platform
         </a>
         {import.meta.env.DEV && (

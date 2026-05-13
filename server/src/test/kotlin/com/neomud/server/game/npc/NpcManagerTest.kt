@@ -440,6 +440,33 @@ class NpcManagerTest {
     }
 
     @Test
+    fun testHostileNpcCannotWanderIntoFriendlyNpcRoom() {
+        val world = WorldGraph()
+        world.addRoom(Room("test:a", "A", "", mapOf(Direction.EAST to "test:b"), "test", 0, 0))
+        world.addRoom(Room("test:b", "B", "", mapOf(Direction.WEST to "test:a"), "test", 1, 0))
+
+        val zoneConfigs = mapOf("test" to SpawnConfig(maxEntities = 10, maxPerRoom = 5, rateTicks = 0))
+        val manager = NpcManager(world, zoneConfigs)
+
+        val friendlyData = NpcData(
+            "npc:quest_giver", "Quest Giver", "", startRoomId = "test:b",
+            behaviorType = "idle", hostile = false, maxHp = 0, damage = 0
+        )
+        val hostileData = NpcData(
+            "npc:wolf", "Wolf", "", startRoomId = "test:a",
+            behaviorType = "wander", hostile = true, maxHp = 30, damage = 5
+        )
+        manager.loadNpcs(listOf(friendlyData to "test", hostileData to "test"))
+
+        // Run many ticks — the wolf should never enter test:b (friendly NPC room)
+        repeat(200) { manager.tick() }
+
+        val friendlyRoomHostiles = manager.getLivingHostileNpcsInRoom("test:b")
+        assertTrue(friendlyRoomHostiles.isEmpty(),
+            "Hostile NPC should not wander into room with friendly NPC")
+    }
+
+    @Test
     fun testVendorRoomBlocksHostilesInDefaultWorld() {
         val result = load()
         val npcManager = NpcManager(result.worldGraph, result.zoneSpawnConfigs, result.roomMaxHostileNpcs)

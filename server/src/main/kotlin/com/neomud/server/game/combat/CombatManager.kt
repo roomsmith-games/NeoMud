@@ -398,7 +398,8 @@ class CombatManager(
                     val variance = maxOf(npc.damage / GameConfig.Combat.NPC_VARIANCE_DIVISOR, 1)
                     val rawDamage = npc.damage + (1..variance).random()
                     val parryReduction = if (isParry) CombatUtils.parryReduction(effStats) else 0
-                    val damage = (rawDamage - playerBonuses.totalArmorValue - parryReduction).coerceAtLeast(1)
+                    val effectiveArmor = playerBonuses.totalArmorValue / GameConfig.Combat.ARMOR_DAMAGE_REDUCTION_DIVISOR
+                    val damage = (rawDamage - effectiveArmor - parryReduction).coerceAtLeast(1)
                     val newHp = (targetPlayer.currentHp - damage).coerceAtLeast(0)
                     targetSession.player = targetPlayer.copy(currentHp = newHp)
 

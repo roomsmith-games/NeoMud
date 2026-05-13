@@ -256,7 +256,7 @@
       },
       "backgroundImage": "/assets/images/rooms/foothills_ridge.webp",
       "departSound": "footstep_stone",
-      "maxHostileNpcs": 1,
+      "maxHostileNpcs": 0,
       "imagePrompt": "First-person view standing on a high windswept mountain ridge, broad view of jagged peaks all around, a small cave entrance visible in the rocks to the right, sweeping panorama, golden hour light, sense of altitude.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric mountain lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, alpine setting",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",

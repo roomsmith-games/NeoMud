@@ -180,6 +180,7 @@
       },
       "backgroundImage": "/assets/images/rooms/bone_wastes_bone_spire.webp",
       "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
       "imagePrompt": "A tall natural spire of fused bone and calcified stone, base hollowed into a crude shelter with makeshift merchant camp, bone-counter displaying goods, pack animals, pale wasteland background, fantasy vendor location",
       "imageStyle": "fantasy environment, merchant camp, bone formation, warm light contrast, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"
@@ -486,6 +487,7 @@
       },
       "backgroundImage": "/assets/images/rooms/bone_wastes_death_gate.webp",
       "departSound": "footstep_stone",
+      "maxHostileNpcs": 0,
       "imagePrompt": "A monumental dark stone archway spanning an ancient road, carved with spiral inscriptions of names, scholar's tent camp in the arch shadow with papers and sketches, pale wasteland, fantasy ceremonial gate",
       "imageStyle": "fantasy environment, monumental arch, scholar's camp, warm light contrast, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, lush vegetation, water, bright colors"

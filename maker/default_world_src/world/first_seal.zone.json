@@ -118,7 +118,7 @@
       },
       "backgroundImage": "first_seal_collapsed_arch",
       "departSound": "footstep_stone",
-      "maxHostileNpcs": 2,
+      "maxHostileNpcs": 0,
       "imagePrompt": "Massive collapsed stone archway with carved reliefs showing robed ritual figures, rubble scattered, ancient ruins beyond, overcast moody sky, fantasy landscape",
       "imageStyle": "fantasy landscape, ruins, atmospheric, carved stone reliefs, digital painting",
       "imageNegativePrompt": "modern, characters, anime, text, bright colors",

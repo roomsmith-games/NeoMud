@@ -182,6 +182,8 @@ class NpcManager(
     fun tick(roomsWithVisiblePlayers: Set<RoomId> = emptySet()): List<NpcEvent> {
         val events = mutableListOf<NpcEvent>()
 
+        val friendlyNpcRooms = npcs.filter { it.isAlive && !it.hostile }.map { it.currentRoomId }.toSet()
+
         // 1. Process living NPC behaviors
         for (npc in npcs) {
             if (!npc.isAlive) continue
@@ -197,7 +199,8 @@ class NpcManager(
                 val maxPerRoom = effectiveMaxPerRoom(targetRoomId, npc.zoneId)
                 val roomOk = maxPerRoom == null || aliveHostileNpcsInRoom(targetRoomId) < maxPerRoom
                 val sanctuaryOk = !npc.hostile || worldGraph.getRoom(targetRoomId)?.effects?.none { it.type == "SANCTUARY" } != false
-                roomOk && sanctuaryOk
+                val noFriendlyNpcs = !npc.hostile || targetRoomId !in friendlyNpcRooms
+                roomOk && sanctuaryOk && noFriendlyNpcs
             }
 
             when (val action = npc.behavior.tick(npc, worldGraph, canMoveTo)) {

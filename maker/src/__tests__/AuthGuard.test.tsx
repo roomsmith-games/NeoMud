@@ -46,6 +46,16 @@ describe('AuthGuard', () => {
     expect(clickEvent.defaultPrevented).toBe(false)
   })
 
+  it('uses VITE_PLATFORM_URL for sign-in link when set', async () => {
+    vi.stubEnv('VITE_PLATFORM_URL', 'https://stage.neomud.app')
+    // Re-import to pick up the new env value
+    vi.resetModules()
+    const { default: AuthGuardFresh } = await import('../components/AuthGuard')
+    render(<AuthGuardFresh>x</AuthGuardFresh>)
+    const link = screen.getByRole('link', { name: /sign in with neomud platform/i })
+    expect(link).toHaveAttribute('href', 'https://stage.neomud.app')
+  })
+
   it('hides the dev paste-in when build is not DEV', () => {
     vi.stubEnv('DEV', false)
     render(<AuthGuard>x</AuthGuard>)

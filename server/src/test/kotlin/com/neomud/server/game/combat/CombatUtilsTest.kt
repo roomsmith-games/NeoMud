@@ -179,4 +179,28 @@ class CombatUtilsTest {
             assertEquals(true, CombatUtils.rollEvasion(1.0))
         }
     }
+
+    // ─── Armor damage reduction formula ────────────────────────
+
+    @Test
+    fun testArmorReductionDivisorHalvesEffectiveArmor() {
+        val divisor = GameConfig.Combat.ARMOR_DAMAGE_REDUCTION_DIVISOR
+        assertEquals(2, divisor)
+
+        val totalArmor = 24
+        val rawDamage = 22
+        val effectiveArmor = totalArmor / divisor
+        val damage = (rawDamage - effectiveArmor).coerceAtLeast(1)
+        assertEquals(10, damage, "Chain armor (24) should reduce 22 damage to 10, not 1")
+    }
+
+    @Test
+    fun testArmorReductionStillClampsToMinimumOne() {
+        val divisor = GameConfig.Combat.ARMOR_DAMAGE_REDUCTION_DIVISOR
+        val totalArmor = 100
+        val rawDamage = 5
+        val effectiveArmor = totalArmor / divisor
+        val damage = (rawDamage - effectiveArmor).coerceAtLeast(1)
+        assertEquals(1, damage, "Massive armor should still clamp damage to 1")
+    }
 }
