@@ -353,6 +353,82 @@
         "minGold": 0,
         "maxGold": 1
       }
+    },
+    {
+      "id": "npc:stonehide_ambusher",
+      "name": "Stonehide Ambusher",
+      "description": "A massive predator crouches among the scattered bones, its hide encrusted with the same mineral deposits that streak the alcove walls. Copper-green and iron-red plates overlap across its shoulders and flanks like natural armor. It watches the entrance with the stillness of stone — until prey steps close enough.",
+      "startRoomId": "gorge:alcove",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 200,
+      "damage": 28,
+      "level": 7,
+      "xpReward": 220,
+      "accuracy": 32,
+      "defense": 26,
+      "evasion": 8,
+      "agility": 10,
+      "attackSound": "rock_smash",
+      "missSound": "rock_miss",
+      "deathSound": "golem_death",
+      "phases": [
+        {
+          "name": "Stone Rage",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:stonehide_ambusher_phase2",
+          "damage": 38,
+          "accuracy": 38,
+          "defense": 30,
+          "evasion": 4,
+          "transitionMessage": "The Ambusher rears back with a grinding roar! Mineral plates shift and lock across its body as it charges with reckless fury!",
+          "transitionSound": "boss_phase_shift"
+        },
+        {
+          "name": "Death Throes",
+          "hpThresholdPercent": 0.2,
+          "spriteId": "npc:stonehide_ambusher_phase3",
+          "damage": 45,
+          "accuracy": 42,
+          "defense": 18,
+          "evasion": 0,
+          "transitionMessage": "Cracks spread across the Ambusher's hide, leaking acrid mineral dust! It fights with the blind fury of a cornered beast!",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:stonehide_mantle",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:obsidian_shard",
+          "chance": 0.8,
+          "minQuantity": 2,
+          "maxQuantity": 3
+        },
+        {
+          "itemId": "item:greater_health_potion",
+          "chance": 0.4,
+          "minQuantity": 1,
+          "maxQuantity": 2
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 50,
+        "maxCopper": 99,
+        "minSilver": 5,
+        "maxSilver": 10,
+        "minGold": 1,
+        "maxGold": 2
+      },
+      "imagePrompt": "EXACTLY ONE CREATURE in the frame, centered, full-body. Massive hulking predator beast with mineral-encrusted hide, copper-green and iron-red overlapping stone-like plates across shoulders and flanks, powerful limbs, low predatory stance, amber eyes, front-facing.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background, dark mood, volcanic",
+      "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384
     }
   ]
 }

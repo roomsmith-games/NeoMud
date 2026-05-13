@@ -20,6 +20,7 @@ import com.neomud.server.world.WorldGraph
 import com.neomud.shared.model.ActiveEffect
 import com.neomud.shared.model.Direction
 import com.neomud.shared.model.EffectType
+import com.neomud.shared.model.Coins
 import com.neomud.shared.model.GroundItem
 import com.neomud.shared.protocol.ServerMessage
 import org.slf4j.LoggerFactory
@@ -159,30 +160,54 @@ class InteractCommand(
 
     private suspend fun executeTreasureDrop(session: PlayerSession, roomId: String, actionData: Map<String, String>): Boolean {
         val lootTableId = actionData["lootTableId"]
-        if (lootTableId == null) {
+
+        val lootedItems: List<GroundItem>
+        val coins: Coins
+
+        if (lootTableId != null) {
+            val lootTable = lootTableCatalog.getLootTable(lootTableId)
+            val coinDrop = lootTableCatalog.getCoinDrop(lootTableId)
+            lootedItems = lootService.rollLoot(lootTable).map { GroundItem(it.itemId, it.quantity) }
+            coins = lootService.rollCoins(coinDrop)
+        } else {
+            val itemIds = actionData["items"]?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() } ?: emptyList()
+            lootedItems = itemIds.map { GroundItem(it, 1) }
+            coins = rollInlineCoins(actionData)
+        }
+
+        if (lootedItems.isEmpty() && coins.isEmpty()) {
             session.send(ServerMessage.InteractResult(false, "", "Nothing happens."))
             return false
         }
 
-        val lootTable = lootTableCatalog.getLootTable(lootTableId)
-        val coinDrop = lootTableCatalog.getCoinDrop(lootTableId)
-        val lootedItems = lootService.rollLoot(lootTable)
-        val coins = lootService.rollCoins(coinDrop)
-
         if (lootedItems.isNotEmpty()) {
-            roomItemManager.addItems(roomId, lootedItems.map { GroundItem(it.itemId, it.quantity) })
+            roomItemManager.addItems(roomId, lootedItems)
         }
         if (!coins.isEmpty()) {
             roomItemManager.addCoins(roomId, coins)
         }
 
-        if (lootedItems.isNotEmpty() || !coins.isEmpty()) {
-            val groundItems = roomItemManager.getGroundItems(roomId)
-            val groundCoins = roomItemManager.getGroundCoins(roomId)
-            sessionManager.broadcastToRoom(roomId, ServerMessage.RoomItemsUpdate(groundItems, groundCoins))
-        }
+        val message = actionData["message"] ?: "Items clatter to the ground."
+        session.send(ServerMessage.SystemMessage(message))
+
+        val groundItems = roomItemManager.getGroundItems(roomId)
+        val groundCoins = roomItemManager.getGroundCoins(roomId)
+        sessionManager.broadcastToRoom(roomId, ServerMessage.RoomItemsUpdate(groundItems, groundCoins))
 
         return true
+    }
+
+    private fun rollInlineCoins(actionData: Map<String, String>): Coins {
+        fun roll(min: String?, max: String?): Int {
+            val lo = min?.toIntOrNull() ?: 0
+            val hi = max?.toIntOrNull() ?: 0
+            return if (hi > lo) (lo..hi).random() else lo
+        }
+        return Coins(
+            copper = roll(actionData["minCopper"], actionData["maxCopper"]),
+            silver = roll(actionData["minSilver"], actionData["maxSilver"]),
+            gold = roll(actionData["minGold"], actionData["maxGold"])
+        )
     }
 
     private suspend fun executeMonsterSpawn(session: PlayerSession, roomId: String, actionData: Map<String, String>): Boolean {

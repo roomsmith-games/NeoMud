@@ -97,6 +97,25 @@
       },
       "backgroundImage": "/assets/images/rooms/marsh_island.webp",
       "departSound": "footstep_dirt",
+      "interactables": [
+        {
+          "id": "campfire_stash",
+          "label": "half-buried leather pack",
+          "description": "A leather pack lies half-buried beside the old campfire, its straps rotted through. Whoever camped here left in a hurry — or never left at all.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:greater_health_potion,item:marsh_hide_boots,item:antivenom_vial",
+            "message": "You pull the pack free from the mud. Inside: a stoppered vial, sturdy marsh-hide boots, and a phial of antivenom — a swamp traveler's essentials.",
+            "minCopper": "30",
+            "maxCopper": "70",
+            "minSilver": "1",
+            "maxSilver": "3"
+          }
+        }
+      ],
       "imagePrompt": "First-person view standing on a small island of solid ground in the middle of a vast swamp. Packed earth and moss-covered stones filling the lower third. Remains of a campfire in the mid-ground. Swamp water surrounding the island in all directions. Fog-shrouded vista. No people or creatures.",
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",

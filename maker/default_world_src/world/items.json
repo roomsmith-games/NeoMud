@@ -2680,6 +2680,37 @@
       "imagePrompt": "A single suit of black iron warplate armor inlaid with glowing silver ward-runes, storm energy residue, the finest warden armor ever forged, ornate and powerful. Isolated object centered, no surface, no hands.",
       "imageStyle": "fantasy item sprite, game icon, clean edges, solid white background, detailed",
       "imageNegativePrompt": "background, surface, table, hands, person, multiple items, modern, sci-fi"
+    },
+    {
+      "id": "item:silverscale_fang",
+      "name": "Silverscale Fang",
+      "description": "A curved fang from the Silverscale Guardian, its edge shimmers with an iridescent gleam. The tooth is harder than steel and holds a razor edge without sharpening.",
+      "type": "weapon",
+      "slot": "weapon",
+      "damageBonus": 10,
+      "damageRange": 4,
+      "value": 80,
+      "weight": 2,
+      "levelRequirement": 3,
+      "attackSound": "sword_swing",
+      "missSound": "sword_miss",
+      "imagePrompt": "A single large curved serpent fang dagger, iridescent silver-blue shimmering surface, razor-sharp edge, natural tooth shape with slight curve, mounted in a simple leather grip. Isolated object centered, no surface, no hands.",
+      "imageStyle": "fantasy item sprite, game icon, clean edges, solid white background, detailed",
+      "imageNegativePrompt": "background, surface, table, hands, person, multiple items, modern, sci-fi"
+    },
+    {
+      "id": "item:stonehide_mantle",
+      "name": "Stonehide Mantle",
+      "description": "A heavy cloak of overlapping stone-like scales shed by the Stonehide Ambusher. The mineral deposits that encrust its hide are harder than forged plate and surprisingly light.",
+      "type": "armor",
+      "slot": "chest",
+      "armorValue": 14,
+      "value": 350,
+      "weight": 8,
+      "levelRequirement": 7,
+      "imagePrompt": "A single heavy chest armor mantle made of overlapping grey-brown mineral scales, natural stone-like texture with copper-green and iron-red mineral veins, rugged organic armor piece. Isolated object centered, no surface, no hands.",
+      "imageStyle": "fantasy item sprite, game icon, clean edges, solid white background, detailed",
+      "imageNegativePrompt": "background, surface, table, hands, person, multiple items, modern, sci-fi, metal plate armor"
     }
   ]
 }

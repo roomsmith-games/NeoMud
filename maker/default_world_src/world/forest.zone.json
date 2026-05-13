@@ -122,6 +122,25 @@
       },
       "backgroundImage": "/assets/images/rooms/forest_cave.webp",
       "departSound": "footstep_stone",
+      "interactables": [
+        {
+          "id": "cave_chest",
+          "label": "moss-covered stone chest",
+          "description": "A small stone chest half-buried in damp earth, its surface covered in the same bioluminescent moss that lines the walls. It looks untouched for years.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "actionData": {
+            "items": "item:health_potion,item:spider_silk_gloves",
+            "message": "You pry open the mossy lid. Inside: a glass vial and a pair of silk gloves, preserved by the cave's cool air.",
+            "minCopper": "15",
+            "maxCopper": "40",
+            "minSilver": "0",
+            "maxSilver": "1"
+          }
+        }
+      ],
       "imagePrompt": "First-person view standing inside a small natural cave. Rough stone floor filling the lower third. Low ceiling with water droplets. Bioluminescent moss on walls casting blue-green glow. Narrow entrance visible behind with vines. Damp and mysterious atmosphere. No people or creatures.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
@@ -348,6 +367,62 @@
         "minCopper": 8,
         "maxCopper": 25
       }
+    },
+    {
+      "id": "npc:silverscale_guardian",
+      "name": "Silverscale Guardian",
+      "description": "A large serpentine creature coiled among the streambed stones, its iridescent silver scales catching the dappled light. It watches the water with unblinking amber eyes, territorial and patient — this stream is its domain, and it does not share.",
+      "startRoomId": "forest:stream",
+      "behaviorType": "idle",
+      "hostile": true,
+      "maxHp": 75,
+      "damage": 10,
+      "level": 3,
+      "xpReward": 60,
+      "accuracy": 22,
+      "defense": 12,
+      "evasion": 14,
+      "agility": 16,
+      "attackSound": "creature_attack",
+      "missSound": "creature_miss",
+      "deathSound": "creature_death",
+      "phases": [
+        {
+          "name": "Thrashing Fury",
+          "hpThresholdPercent": 0.4,
+          "spriteId": "npc:silverscale_guardian_phase2",
+          "damage": 14,
+          "accuracy": 26,
+          "evasion": 18,
+          "transitionMessage": "The Silverscale Guardian thrashes violently, churning the stream to white foam! Its movements become faster, more desperate!",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
+      "lootItems": [
+        {
+          "itemId": "item:silverscale_fang",
+          "chance": 1.0,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        },
+        {
+          "itemId": "item:health_potion",
+          "chance": 0.5,
+          "minQuantity": 1,
+          "maxQuantity": 1
+        }
+      ],
+      "coinDrop": {
+        "minCopper": 30,
+        "maxCopper": 60,
+        "minSilver": 1,
+        "maxSilver": 3
+      },
+      "imagePrompt": "EXACTLY ONE CREATURE in the frame, centered, full-body. Large serpentine water creature with iridescent silver scales, coiled muscular body, amber eyes, subtle fins along spine, wet glistening scales, front-facing predatory stance.",
+      "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, solid white background",
+      "imageNegativePrompt": "background, scenery, water, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
+      "imageWidth": 512,
+      "imageHeight": 384
     }
   ]
 }
