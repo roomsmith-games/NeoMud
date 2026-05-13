@@ -79,7 +79,7 @@
     {
       "id": "forest:deep",
       "name": "Deep Forest",
-      "description": "The forest grows thick and primeval here. Gnarled roots break through the earth like the fingers of buried giants, and the canopy is so dense that only a dim green twilight reaches the forest floor. The air is cool and damp, heavy with the scent of earth and decay.",
+      "description": "The forest grows thick and primeval here. Gnarled roots break through the earth like the fingers of buried giants, and the canopy is so dense that only a dim green twilight reaches the forest floor. The air is cool and damp, heavy with the scent of earth and decay. To the west, the ground turns soft and waterlogged, and a faint mist clings to the undergrowth.",
       "x": 0,
       "y": 4,
       "exits": {
@@ -90,21 +90,15 @@
       },
       "hiddenExits": {
         "EAST": {
-          "perceptionDC": 75,
+          "perceptionDC": 14,
           "lockDifficulty": 0,
           "hiddenResetTicks": 40,
           "lockResetTicks": 0
         },
         "NORTH": {
-          "perceptionDC": 25,
+          "perceptionDC": 12,
           "lockDifficulty": 0,
           "hiddenResetTicks": 50,
-          "lockResetTicks": 0
-        },
-        "WEST": {
-          "perceptionDC": 88,
-          "lockDifficulty": 0,
-          "hiddenResetTicks": 60,
           "lockResetTicks": 0
         }
       },
