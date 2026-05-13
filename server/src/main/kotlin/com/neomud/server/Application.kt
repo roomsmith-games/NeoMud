@@ -312,7 +312,7 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
     val craftingService = CraftingService(recipeCatalog, itemCatalog, inventoryRepository, coinRepository)
     val craftCommand = CraftCommand(npcManager, craftingService, recipeCatalog, inventoryCommand, sessionManager, inventoryRepository, coinRepository)
     val playerFlagsRepository = com.neomud.server.persistence.repository.PlayerFlagsRepository()
-    val dialogueCommand = DialogueCommand(npcManager, sessionManager, inventoryRepository, playerFlagsRepository, inventoryCommand)
+    val dialogueCommand = DialogueCommand(npcManager, sessionManager, inventoryRepository, playerFlagsRepository, inventoryCommand, itemCatalog)
     val adminUsernames = adminUsernamesOverride ?: (System.getenv("NEOMUD_ADMINS")
         ?.split(",")
         ?.map { it.trim().lowercase() }

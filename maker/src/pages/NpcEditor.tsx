@@ -49,6 +49,7 @@ interface NpcRecord {
   dialogueScript: string;
   grantItemId: string;
   grantItemFlag: string;
+  repeatDialogueScript: string;
   spawnPoints: string;
   lootItems: string;
   coinDrop: string;
@@ -318,7 +319,7 @@ function NpcEditor() {
       id: '', name: '', description: '', zoneId: zones[0]?.id || '', startRoomId: '',
       behaviorType: 'idle', hostile: false, level: 1, maxHp: 10, damage: 1,
       accuracy: 0, defense: 0, evasion: 0, agility: 10, perception: 0, xpReward: 0,
-      patrolRoute: '', vendorItems: '', crafterRecipes: '', trainerConfig: '', dialogueScript: '', grantItemId: '', grantItemFlag: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
+      patrolRoute: '', vendorItems: '', crafterRecipes: '', trainerConfig: '', dialogueScript: '', grantItemId: '', grantItemFlag: '', repeatDialogueScript: '', spawnPoints: '[]', lootItems: '', coinDrop: '',
       attackSound: '', missSound: '', deathSound: '', interactSound: '', exitSound: '',
       imagePrompt: '', imageStyle: '', imageNegativePrompt: '', imageWidth: 384, imageHeight: 512,
       phases: '[]',
@@ -1122,8 +1123,15 @@ function NpcEditor() {
                   placeholder="e.g. warden_token_received"
                 />
                 <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>
-                  Both fields are required to grant. Empty flag = no grant. The player gets the item once per character; subsequent interactions repeat the dialogue without re-granting.
+                  Both fields are required to grant. Empty flag = no grant. The player gets the item once per character; subsequent interactions use the repeat dialogue below.
                 </div>
+                <label style={styles.label}>Repeat Visit Dialogue (optional)</label>
+                <textarea
+                  style={styles.textarea}
+                  value={form.repeatDialogueScript ?? ''}
+                  onChange={(e) => handleChange('repeatDialogueScript', e.target.value)}
+                  placeholder="Shown on subsequent visits after the item has been granted. Falls back to the main dialogue if blank."
+                />
               </>
             )}
 

@@ -157,6 +157,7 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
         ...(npc.dialogueScript ? { dialogueScript: npc.dialogueScript } : {}),
         ...(npc.grantItemId ? { grantItemId: npc.grantItemId } : {}),
         ...(npc.grantItemFlag ? { grantItemFlag: npc.grantItemFlag } : {}),
+        ...(npc.repeatDialogueScript ? { repeatDialogueScript: npc.repeatDialogueScript } : {}),
         ...((() => { const ph = parseJsonField(npc.phases, []); return ph.length > 0 ? { phases: ph } : {}; })()),
       })),
     }
@@ -499,6 +500,7 @@ exportRouter.get('/json', async (req, res) => {
           ...(npc.dialogueScript ? { dialogueScript: npc.dialogueScript } : {}),
           ...(npc.grantItemId ? { grantItemId: npc.grantItemId } : {}),
           ...(npc.grantItemFlag ? { grantItemFlag: npc.grantItemFlag } : {}),
+          ...(npc.repeatDialogueScript ? { repeatDialogueScript: npc.repeatDialogueScript } : {}),
           ...((() => { const ph = parseJsonField(npc.phases, []); return ph.length > 0 ? { phases: ph } : {}; })()),
         }
       }

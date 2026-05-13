@@ -8,32 +8,17 @@ import com.neomud.server.persistence.repository.InventoryRepository
 import com.neomud.server.persistence.repository.PlayerFlagsRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.world.ItemCatalog
 import com.neomud.shared.protocol.ServerMessage
 import org.slf4j.LoggerFactory
 
-/**
- * Handles `/interact <npcId>` for lore/quest NPCs that have a `dialogueScript`
- * configured. Trainer/vendor/crafter NPCs continue to use their existing
- * dedicated handlers ([TrainerCommand], [VendorCommand], [CraftCommand]) —
- * this is the path for everything else.
- *
- * **Dialogue is repeatable**: every interaction re-sends the same blocking
- * dialogue. The client renders [ServerMessage.NpcDialogue] in its tutorial
- * modal slot, but the server does NOT persist via `PlayerDiscoveryTable` so
- * subsequent interactions still fire.
- *
- * **Item grant is one-time**: if the NPC has `grantItemId` and `grantItemFlag`
- * configured, the first successful interaction grants the item and sets the
- * flag in [PlayerFlagsRepository]. Subsequent interactions still send the
- * dialogue but skip the grant. If the inventory add fails (no slot, stack
- * overflow), the flag is NOT set so the player can retry.
- */
 class DialogueCommand(
     private val npcManager: NpcManager,
     private val sessionManager: SessionManager,
     private val inventoryRepository: InventoryRepository,
     private val playerFlagsRepository: PlayerFlagsRepository,
-    private val inventoryCommand: InventoryCommand
+    private val inventoryCommand: InventoryCommand,
+    private val itemCatalog: ItemCatalog
 ) {
     private val logger = LoggerFactory.getLogger(DialogueCommand::class.java)
 
@@ -42,7 +27,6 @@ class DialogueCommand(
         val player = session.player ?: return
         val playerName = session.playerName ?: return
 
-        // Same etiquette as other interact commands.
         MeditationUtils.breakMeditation(session, "You stop meditating.")
         RestUtils.breakRest(session, "You stop resting.")
         StealthUtils.breakStealth(session, sessionManager, "Talking reveals your presence!")
@@ -57,18 +41,25 @@ class DialogueCommand(
             return
         }
 
-        // Always send the dialogue first — the player's expectation is "click NPC, see dialogue".
+        val isRepeatVisit = npc.grantItemId.isNotBlank() && npc.grantItemFlag.isNotBlank() &&
+            playerFlagsRepository.getFlag(playerName, npc.grantItemFlag) != null
+
+        val dialogueContent = if (isRepeatVisit && npc.repeatDialogueScript.isNotBlank()) {
+            npc.repeatDialogueScript
+        } else {
+            npc.dialogueScript
+        }
+
         session.send(ServerMessage.NpcDialogue(
             npcId = npc.id,
             npcName = npc.name,
-            content = npc.dialogueScript
+            content = dialogueContent
         ))
+
+        if (isRepeatVisit) return
 
         // One-time item grant.
         if (npc.grantItemId.isNotBlank() && npc.grantItemFlag.isNotBlank()) {
-            val alreadyGranted = playerFlagsRepository.getFlag(playerName, npc.grantItemFlag) != null
-            if (alreadyGranted) return
-
             val granted = try {
                 inventoryRepository.addItem(playerName, npc.grantItemId, 1)
             } catch (e: Exception) {
@@ -76,9 +67,6 @@ class DialogueCommand(
                 false
             }
             if (!granted) {
-                // Covers both "inventory cap hit" and "grantItemId not in catalog" — InventoryRepository.addItem
-                // returns false for either. The neutral wording avoids misleading the player when the real cause
-                // is a content-author typo on the NPC's grantItemId.
                 session.send(ServerMessage.SystemMessage("${npc.name}'s gift slips away — there is no room for it."))
                 return
             }
@@ -86,11 +74,11 @@ class DialogueCommand(
             try {
                 playerFlagsRepository.setFlag(playerName, npc.grantItemFlag, "1")
             } catch (e: Exception) {
-                // Flag-set failure means re-interaction will re-grant — log loudly so it's caught
-                // before the duplicate is exploited.
                 logger.warn("Failed to persist grant flag ${npc.grantItemFlag} for $playerName: ${e.message}")
             }
 
+            val itemName = itemCatalog.getItem(npc.grantItemId)?.name ?: npc.grantItemId
+            session.send(ServerMessage.SystemMessage("${npc.name} gives you $itemName."))
             inventoryCommand.sendInventoryUpdate(session)
         }
     }

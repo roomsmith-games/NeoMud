@@ -118,6 +118,7 @@ data class NpcData(
     val dialogueScript: String = "",
     val grantItemId: String = "",
     val grantItemFlag: String = "",
+    val repeatDialogueScript: String = "",
     val imagePrompt: String = "",
     val imageStyle: String = "",
     val imageNegativePrompt: String = "",

@@ -115,6 +115,7 @@ model Npc {
   dialogueScript  String  @default("")
   grantItemId     String  @default("")
   grantItemFlag   String  @default("")
+  repeatDialogueScript String @default("")
   spawnPoints     String  @default("[]")
   attackSound  String  @default("")
   missSound    String  @default("")

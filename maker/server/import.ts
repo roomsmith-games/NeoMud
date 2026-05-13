@@ -424,6 +424,7 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           dialogueScript: npc.dialogueScript ?? '',
           grantItemId: npc.grantItemId ?? '',
           grantItemFlag: npc.grantItemFlag ?? '',
+          repeatDialogueScript: npc.repeatDialogueScript ?? '',
           spawnPoints: JSON.stringify(npc.spawnPoints ?? []),
           attackSound: npc.attackSound ?? '',
           missSound: npc.missSound ?? '',

@@ -5,8 +5,10 @@ import com.neomud.server.persistence.repository.InventoryRepository
 import com.neomud.server.persistence.repository.PlayerFlagsRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.world.ItemCatalog
 import com.neomud.server.world.NpcData
 import com.neomud.server.world.WorldGraph
+import com.neomud.shared.model.Item
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
 import com.neomud.shared.protocol.MessageSerializer
@@ -117,7 +119,8 @@ class DialogueCommandTest {
         npcManager: NpcManager,
         dialogueScript: String,
         grantItemId: String = "",
-        grantItemFlag: String = ""
+        grantItemFlag: String = "",
+        repeatDialogueScript: String = ""
     ) {
         npcManager.loadNpcs(
             listOf(
@@ -129,7 +132,8 @@ class DialogueCommandTest {
                     behaviorType = "quest",
                     dialogueScript = dialogueScript,
                     grantItemId = grantItemId,
-                    grantItemFlag = grantItemFlag
+                    grantItemFlag = grantItemFlag,
+                    repeatDialogueScript = repeatDialogueScript
                 ) to "town"
             )
         )
@@ -139,8 +143,9 @@ class DialogueCommandTest {
         npcManager: NpcManager,
         flags: PlayerFlagsRepository = FakePlayerFlagsRepository(),
         inv: InventoryRepository = FakeInventoryRepository(),
-        invCmd: InventoryCommand = FakeInventoryCommand()
-    ): DialogueCommand = DialogueCommand(npcManager, SessionManager(), inv, flags, invCmd)
+        invCmd: InventoryCommand = FakeInventoryCommand(),
+        itemCatalog: ItemCatalog = ItemCatalog(emptyList())
+    ): DialogueCommand = DialogueCommand(npcManager, SessionManager(), inv, flags, invCmd, itemCatalog)
 
     // --- Basic dialogue dispatch ---
 
@@ -218,6 +223,9 @@ class DialogueCommandTest {
         assertEquals(testPlayerName to "item:warden_token", inv.addedItems[0])
         assertEquals("1", flags.getFlag(testPlayerName, "warden_token_received"))
         assertEquals(1, invCmd.sendCount, "InventoryUpdate should be sent")
+        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        assertTrue(sysMessages.any { it.message.contains("gives you") },
+            "Grant notification should be sent")
     }
 
     @Test
@@ -276,5 +284,88 @@ class DialogueCommandTest {
 
         assertEquals(0, inv.addedItems.size, "No item should be granted when grantItemId is blank")
         assertEquals(0, invCmd.sendCount, "InventoryUpdate should not be sent for dialogue-only NPCs")
+    }
+
+    // --- Repeat-visit dialogue ---
+
+    @Test
+    fun repeatVisitUsesRepeatDialogueScript() = runBlocking {
+        val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
+        loadNpc(
+            npcManager,
+            dialogueScript = "Take this.",
+            grantItemId = "item:warden_token",
+            grantItemFlag = "warden_token_received",
+            repeatDialogueScript = "You already have the token."
+        )
+        val flags = FakePlayerFlagsRepository()
+        val inv = FakeInventoryRepository()
+        val invCmd = FakeInventoryCommand()
+        val command = buildCommand(npcManager, flags, inv, invCmd)
+        val session = newSession()
+
+        command.execute(session, "npc:test_lore")
+        command.execute(session, "npc:test_lore")
+
+        val dialogues = drainMessages(session).filterIsInstance<ServerMessage.NpcDialogue>()
+        assertEquals(2, dialogues.size)
+        assertEquals("Take this.", dialogues[0].content)
+        assertEquals("You already have the token.", dialogues[1].content)
+    }
+
+    @Test
+    fun repeatVisitFallsBackWhenRepeatBlank() = runBlocking {
+        val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
+        loadNpc(
+            npcManager,
+            dialogueScript = "Take this.",
+            grantItemId = "item:warden_token",
+            grantItemFlag = "warden_token_received",
+            repeatDialogueScript = ""
+        )
+        val flags = FakePlayerFlagsRepository()
+        val inv = FakeInventoryRepository()
+        val invCmd = FakeInventoryCommand()
+        val command = buildCommand(npcManager, flags, inv, invCmd)
+        val session = newSession()
+
+        command.execute(session, "npc:test_lore")
+        command.execute(session, "npc:test_lore")
+
+        val dialogues = drainMessages(session).filterIsInstance<ServerMessage.NpcDialogue>()
+        assertEquals(2, dialogues.size)
+        assertEquals("Take this.", dialogues[0].content)
+        assertEquals("Take this.", dialogues[1].content)
+    }
+
+    @Test
+    fun grantSendsItemNameNotification() = runBlocking {
+        val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
+        loadNpc(npcManager, "Take this.", grantItemId = "item:warden_token", grantItemFlag = "warden_token_received")
+        val catalog = ItemCatalog(listOf(
+            Item(id = "item:warden_token", name = "Warden's Token", description = "A glowing token.", type = "quest")
+        ))
+        val command = buildCommand(npcManager, itemCatalog = catalog)
+        val session = newSession()
+
+        command.execute(session, "npc:test_lore")
+
+        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        assertTrue(sysMessages.any { it.message.contains("gives you Warden's Token") },
+            "Grant notification should include the item's display name")
+    }
+
+    @Test
+    fun grantNotificationUsesRawIdWhenItemNotInCatalog() = runBlocking {
+        val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
+        loadNpc(npcManager, "Take this.", grantItemId = "item:unknown_thing", grantItemFlag = "unknown_received")
+        val command = buildCommand(npcManager)
+        val session = newSession()
+
+        command.execute(session, "npc:test_lore")
+
+        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        assertTrue(sysMessages.any { it.message.contains("gives you item:unknown_thing") },
+            "Grant notification should fall back to raw item ID when not in catalog")
     }
 }

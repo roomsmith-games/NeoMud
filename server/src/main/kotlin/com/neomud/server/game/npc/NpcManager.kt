@@ -51,6 +51,7 @@ data class NpcState(
     val dialogueScript: String = "",
     val grantItemId: String = "",
     val grantItemFlag: String = "",
+    val repeatDialogueScript: String = "",
     val phases: List<BossPhaseData> = emptyList(),
     var currentPhase: Int = 0,
     var spriteOverride: String = ""
@@ -156,6 +157,7 @@ class NpcManager(
             dialogueScript = data.dialogueScript,
             grantItemId = data.grantItemId,
             grantItemFlag = data.grantItemFlag,
+            repeatDialogueScript = data.repeatDialogueScript,
             phases = data.phases
         )
     }
