@@ -155,33 +155,26 @@ class WorldLoaderTest {
         assertEquals("forest:ruins", deep.exits[com.neomud.shared.model.Direction.NORTH])
         assertEquals("forest:cave", deep.exits[com.neomud.shared.model.Direction.WEST])
 
-        // All three hidden exits are hidden-only (no locks)
+        // Hidden exits are hidden-only (no locks)
         assertTrue(deep.lockedExits.isEmpty(), "forest:deep should have no locked exits")
 
-        // Hidden exit defs should be stored for all three
+        // Hidden exit defs should be stored for EAST and NORTH (WEST is now visible)
         val hiddenDefs = world.getHiddenExitDefs("forest:deep")
-        assertEquals(3, hiddenDefs.size, "forest:deep should have 3 hidden exit defs")
+        assertEquals(2, hiddenDefs.size, "forest:deep should have 2 hidden exit defs")
 
         val eastDef = hiddenDefs[com.neomud.shared.model.Direction.EAST]
         assertNotNull(eastDef)
-        assertEquals(75, eastDef.perceptionDC)
+        assertEquals(14, eastDef.perceptionDC)
         assertEquals(0, eastDef.lockDifficulty)
         assertEquals(40, eastDef.hiddenResetTicks)
         assertEquals(0, eastDef.lockResetTicks)
 
         val northDef = hiddenDefs[com.neomud.shared.model.Direction.NORTH]
         assertNotNull(northDef)
-        assertEquals(25, northDef.perceptionDC)
+        assertEquals(12, northDef.perceptionDC)
         assertEquals(0, northDef.lockDifficulty)
         assertEquals(50, northDef.hiddenResetTicks)
         assertEquals(0, northDef.lockResetTicks)
-
-        val westDef = hiddenDefs[com.neomud.shared.model.Direction.WEST]
-        assertNotNull(westDef)
-        assertEquals(88, westDef.perceptionDC)
-        assertEquals(0, westDef.lockDifficulty)
-        assertEquals(60, westDef.hiddenResetTicks)
-        assertEquals(0, westDef.lockResetTicks)
     }
 
     @Test
