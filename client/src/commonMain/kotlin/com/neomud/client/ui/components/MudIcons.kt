@@ -50,6 +50,7 @@ object MudIcons {
     val Crafter: DrawableResource = Res.drawable.icon_crafter
 
     // ── Toolbar (cont.) ──
+    val CharacterSheet: DrawableResource = Res.drawable.icon_character_sheet
     val Help: DrawableResource = Res.drawable.icon_help
 
     // ── Room Overlay / Interactables ──

@@ -860,6 +860,7 @@ private fun GameScreenPortrait(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    CharacterSheetIconButton(onClick = { gameViewModel.toggleCharacterSheet() })
                     SpellUtilityButton(classCatalog, player?.characterClass) {
                         gameViewModel.openSpellPicker(0)
                     }
@@ -1100,6 +1101,7 @@ private fun GameScreenLandscape(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
+                            CharacterSheetIconButton(onClick = { gameViewModel.toggleCharacterSheet() })
                             SpellUtilityButton(classCatalog, player?.characterClass) {
                                 gameViewModel.openSpellPicker(0)
                             }
@@ -1405,6 +1407,25 @@ private fun SpellUtilityButton(
         Image(
             painter = painterResource(MudIcons.schoolIcon(primarySchool)),
             contentDescription = "Spells",
+            modifier = Modifier.size(22.dp)
+        )
+    }
+}
+
+@Composable
+private fun CharacterSheetIconButton(onClick: () -> Unit) {
+    val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    Box(
+        modifier = Modifier
+            .size(28.dp)
+            .background(stoneBg, RoundedCornerShape(4.dp))
+            .border(1.dp, StoneTheme.frameMid, RoundedCornerShape(4.dp))
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(MudIcons.CharacterSheet),
+            contentDescription = "Character Sheet",
             modifier = Modifier.size(22.dp)
         )
     }
