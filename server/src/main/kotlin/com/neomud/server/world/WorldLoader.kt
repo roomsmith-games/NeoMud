@@ -2,8 +2,10 @@ package com.neomud.server.world
 
 import com.neomud.shared.NeoMudVersion
 import com.neomud.shared.model.EquipmentSlots
+import com.neomud.shared.model.Direction
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.RoomEffect
+import com.neomud.shared.model.RoomInteractable
 import com.neomud.server.game.GameConfig
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
@@ -229,7 +231,7 @@ object WorldLoader {
                             logger.warn("Room '${room.id}' interactable '${feat.id}' EXIT_OPEN missing 'direction'")
                         } else {
                             try {
-                                val dir = com.neomud.shared.model.Direction.valueOf(dirStr)
+                                val dir = Direction.valueOf(dirStr)
                                 if (dir !in room.exits) {
                                     logger.warn("Room '${room.id}' interactable '${feat.id}' EXIT_OPEN direction '$dirStr' not in room exits")
                                 }
@@ -245,8 +247,40 @@ object WorldLoader {
                         }
                     }
                     "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT",
-                    "DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "RIDDLE_PROMPT",
-                    "CONDITIONAL_TRIGGER" -> { /* validated at runtime */ }
+                    "RIDDLE_PROMPT" -> { /* validated at runtime */ }
+                    "DAMAGE_TRAP" -> {
+                        val saveStat = feat.actionData["saveStat"]
+                        if (!saveStat.isNullOrBlank()) {
+                            val validStats = setOf("STRENGTH", "AGILITY", "TOUGHNESS", "INTELLECT", "WILLPOWER", "HEALTH", "CHARM")
+                            if (saveStat.uppercase() !in validStats) {
+                                logger.warn("Room '${room.id}' interactable '${feat.id}' DAMAGE_TRAP unknown saveStat '$saveStat'")
+                            }
+                        }
+                    }
+                    "PLACE_ITEM" -> {
+                        val accepted = feat.actionData["acceptedItems"]
+                        if (accepted != null) {
+                            for (itemId in accepted.split(",").map { it.trim() }.filter { it.isNotEmpty() }) {
+                                if (itemCatalog.getItem(itemId) == null) {
+                                    logger.warn("Room '${room.id}' interactable '${feat.id}' PLACE_ITEM acceptedItem '$itemId' not found in ItemCatalog")
+                                }
+                            }
+                        }
+                        validateSuccessDirection(room, feat, "PLACE_ITEM")
+                    }
+                    "PUZZLE_STEP" -> {
+                        validateSuccessDirection(room, feat, "PUZZLE_STEP")
+                    }
+                    "CONDITIONAL_TRIGGER" -> {
+                        val conditionType = feat.actionData["conditionType"]
+                        if (conditionType == "ITEM") {
+                            val requiredItemId = feat.actionData["requiredItemId"]
+                            if (requiredItemId != null && itemCatalog.getItem(requiredItemId) == null) {
+                                logger.warn("Room '${room.id}' interactable '${feat.id}' CONDITIONAL_TRIGGER requiredItemId '$requiredItemId' not found in ItemCatalog")
+                            }
+                        }
+                        validateSuccessDirection(room, feat, "CONDITIONAL_TRIGGER")
+                    }
                     else -> logger.warn("Room '${room.id}' interactable '${feat.id}' unknown actionType '${feat.actionType}'")
                 }
             }
@@ -378,5 +412,17 @@ object WorldLoader {
         }
 
         return LoadResult(worldGraph, allNpcData, classCatalog, itemCatalog, lootTableCatalog, skillCatalog, raceCatalog, spellCatalog, pcSpriteCatalog, recipeCatalog, zoneSpawnConfigs, roomMaxHostileNpcs, manifest)
+    }
+
+    private fun validateSuccessDirection(room: Room, feat: RoomInteractable, actionType: String) {
+        val dirStr = feat.actionData["successDirection"] ?: return
+        try {
+            val dir = Direction.valueOf(dirStr)
+            if (dir !in room.exits) {
+                logger.warn("Room '${room.id}' interactable '${feat.id}' $actionType successDirection '$dirStr' not in room exits")
+            }
+        } catch (_: IllegalArgumentException) {
+            logger.warn("Room '${room.id}' interactable '${feat.id}' $actionType invalid successDirection '$dirStr'")
+        }
     }
 }
