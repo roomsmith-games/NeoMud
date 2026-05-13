@@ -218,7 +218,7 @@
             "puzzleGroupId": "steppe_cairns",
             "puzzleStepIndex": "3",
             "puzzleTotalSteps": "5",
-            "advanceMessage": "You press your palm to the Star Cairn of the South. The carved star catches a low gleam — the last of the four watchers has answered. Now, whatever gate they kept will open to you.",
+            "advanceMessage": "You press your palm to the Star Cairn of the South. The carved star catches a low gleam — all four watchers have spoken. The gate they keep is the one inside the barrow itself; go and open it.",
             "resetMessage": "You touch the Star Cairn but it stays cold. The litany has slipped. You will have to begin again with the Sentinel.",
             "alreadySolvedMessage": "The Star Cairn is silent. Its watch is given."
           }

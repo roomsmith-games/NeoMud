@@ -409,7 +409,7 @@
       "lootItems": [
         {
           "itemId": "item:watchers_honor_stone",
-          "chance": 1.0,
+          "chance": 0.5,
           "minQuantity": 1,
           "maxQuantity": 1
         },
