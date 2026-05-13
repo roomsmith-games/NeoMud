@@ -38,9 +38,6 @@ import com.neomud.shared.model.Item
 import com.neomud.shared.model.VendorItem
 import com.neomud.shared.protocol.ServerMessage
 
-// TODO: Show item stats (DMG/ARM) and comparison indicators on vendor buy/sell lists,
-//  matching the EquipmentPanel's comparison UI so players can evaluate purchases at a glance.
-
 // ─────────────────────────────────────────────
 // Palette — shared medieval aesthetic
 // ─────────────────────────────────────────────
@@ -52,6 +49,16 @@ private val EmberOrange = Color(0xFFAA6B3A)
 private val BoneWhite = Color(0xFFD8CCAA)
 private val AshGray = Color(0xFF5A5040)
 private val VerdantUpgrade = Color(0xFF44CC55)
+private val CrimsonDowngrade = Color(0xFFCC4444)
+
+private fun primaryStatValue(item: Item?, slot: String): Int {
+    if (item == null) return 0
+    return if (slot == EquipmentSlots.WEAPON) item.damageBonus else item.armorValue
+}
+
+private fun primaryStatLabel(slot: String): String {
+    return if (slot == EquipmentSlots.WEAPON) "DMG" else "ARM"
+}
 
 // ─────────────────────────────────────────────
 // Stone frame drawing
@@ -220,6 +227,10 @@ fun VendorPanel(
                         .verticalScroll(rememberScrollState())
                 ) {
                     if (selectedTab == 0) {
+                        val equippedBySlot = vendorInfo.playerInventory
+                            .filter { it.equipped && it.slot.isNotEmpty() }
+                            .mapNotNull { inv -> itemCatalog[inv.itemId]?.let { inv.slot to it } }
+                            .toMap()
                         for (vendorItem in vendorInfo.items) {
                             val ownedQty = vendorInfo.playerInventory
                                 .filter { it.itemId == vendorItem.item.id }
@@ -229,6 +240,7 @@ fun VendorPanel(
                                 playerCoins = vendorInfo.playerCoins,
                                 playerLevel = playerLevel,
                                 ownedCount = ownedQty,
+                                equippedItem = equippedBySlot[vendorItem.item.slot],
                                 onBuy = { onBuy(vendorItem.item.id) }
                             )
                         }
@@ -304,6 +316,7 @@ private fun BuyItemRow(
     playerCoins: Coins,
     playerLevel: Int,
     ownedCount: Int,
+    equippedItem: Item? = null,
     onBuy: () -> Unit
 ) {
     val item = vendorItem.item
@@ -405,6 +418,25 @@ private fun BuyItemRow(
                         )
                     }
                 }
+            }
+            // Comparison indicator vs equipped gear
+            if (item.slot.isNotEmpty()) {
+                val label = primaryStatLabel(item.slot)
+                val vendorStat = primaryStatValue(item, item.slot)
+                val equippedStat = primaryStatValue(equippedItem, item.slot)
+                val delta = vendorStat - equippedStat
+                val (compText, compColor) = when {
+                    equippedItem == null -> "No gear equipped" to AshGray
+                    delta > 0 -> "$label +$delta upgrade" to VerdantUpgrade
+                    delta < 0 -> "$label $delta downgrade" to CrimsonDowngrade
+                    else -> "$label same as equipped" to AshGray
+                }
+                Text(
+                    text = compText,
+                    fontSize = 10.sp,
+                    color = compColor,
+                    modifier = Modifier.testTag("comparison_indicator")
+                )
             }
         }
 

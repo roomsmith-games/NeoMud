@@ -181,4 +181,124 @@ class VendorPanelTest : ComposeTestBase() {
 
         onNodeWithText("Haggle Active", substring = true).assertDoesNotExist()
     }
+
+    @Test
+    fun upgrade_indicator_shown_when_vendor_item_is_better() = runComposeUiTest {
+        val equippedArmor = TestData.item(id = "old_chest", name = "Old Chestplate", type = "armor", slot = "chest", armorValue = 8, damageBonus = 0)
+        val vendorArmor = TestData.item(id = "new_chest", name = "New Chestplate", type = "armor", slot = "chest", armorValue = 12, damageBonus = 0)
+        val vendorItem = TestData.vendorItem(item = vendorArmor, price = Coins(gold = 1))
+        val equipped = TestData.inventoryItem(itemId = "old_chest", equipped = true, slot = "chest")
+
+        setContent {
+            TestThemeWrapper {
+                VendorPanel(
+                    vendorInfo = TestData.vendorInfo(
+                        items = listOf(vendorItem),
+                        playerInventory = listOf(equipped),
+                        playerCoins = Coins(gold = 100)
+                    ),
+                    playerLevel = 10,
+                    itemCatalog = catalog + mapOf("old_chest" to equippedArmor, "new_chest" to vendorArmor),
+                    onBuy = {}, onSell = {}, onClose = {}
+                )
+            }
+        }
+
+        onNodeWithText("ARM +4 upgrade", substring = true).assertIsDisplayed()
+    }
+
+    @Test
+    fun downgrade_indicator_shown_when_vendor_item_is_worse() = runComposeUiTest {
+        val equippedWeapon = TestData.item(id = "great_sword", name = "Great Sword", damageBonus = 15, damageRange = 5)
+        val vendorWeapon = TestData.item(id = "rusty_sword", name = "Rusty Sword", damageBonus = 5, damageRange = 2)
+        val vendorItem = TestData.vendorItem(item = vendorWeapon, price = Coins(copper = 50))
+        val equipped = TestData.inventoryItem(itemId = "great_sword", equipped = true, slot = "weapon")
+
+        setContent {
+            TestThemeWrapper {
+                VendorPanel(
+                    vendorInfo = TestData.vendorInfo(
+                        items = listOf(vendorItem),
+                        playerInventory = listOf(equipped),
+                        playerCoins = Coins(gold = 100)
+                    ),
+                    playerLevel = 10,
+                    itemCatalog = catalog + mapOf("great_sword" to equippedWeapon, "rusty_sword" to vendorWeapon),
+                    onBuy = {}, onSell = {}, onClose = {}
+                )
+            }
+        }
+
+        onNodeWithText("DMG -10 downgrade", substring = true).assertIsDisplayed()
+    }
+
+    @Test
+    fun sidegrade_indicator_shown_when_stats_are_equal() = runComposeUiTest {
+        val equippedArmor = TestData.item(id = "armor_a", name = "Armor A", type = "armor", slot = "chest", armorValue = 10, damageBonus = 0)
+        val vendorArmor = TestData.item(id = "armor_b", name = "Armor B", type = "armor", slot = "chest", armorValue = 10, damageBonus = 0)
+        val vendorItem = TestData.vendorItem(item = vendorArmor, price = Coins(silver = 5))
+        val equipped = TestData.inventoryItem(itemId = "armor_a", equipped = true, slot = "chest")
+
+        setContent {
+            TestThemeWrapper {
+                VendorPanel(
+                    vendorInfo = TestData.vendorInfo(
+                        items = listOf(vendorItem),
+                        playerInventory = listOf(equipped),
+                        playerCoins = Coins(gold = 100)
+                    ),
+                    playerLevel = 10,
+                    itemCatalog = catalog + mapOf("armor_a" to equippedArmor, "armor_b" to vendorArmor),
+                    onBuy = {}, onSell = {}, onClose = {}
+                )
+            }
+        }
+
+        onNodeWithText("ARM same as equipped", substring = true).assertIsDisplayed()
+    }
+
+    @Test
+    fun empty_slot_indicator_shown_when_nothing_equipped() = runComposeUiTest {
+        val vendorArmor = TestData.item(id = "new_helm", name = "New Helm", type = "armor", slot = "head", armorValue = 6, damageBonus = 0)
+        val vendorItem = TestData.vendorItem(item = vendorArmor, price = Coins(silver = 2))
+
+        setContent {
+            TestThemeWrapper {
+                VendorPanel(
+                    vendorInfo = TestData.vendorInfo(
+                        items = listOf(vendorItem),
+                        playerInventory = emptyList(),
+                        playerCoins = Coins(gold = 100)
+                    ),
+                    playerLevel = 10,
+                    itemCatalog = catalog + mapOf("new_helm" to vendorArmor),
+                    onBuy = {}, onSell = {}, onClose = {}
+                )
+            }
+        }
+
+        onNodeWithText("No gear equipped", substring = true).assertIsDisplayed()
+    }
+
+    @Test
+    fun no_comparison_shown_for_consumable_items() = runComposeUiTest {
+        val potion = TestData.item(id = "mana_pot", name = "Mana Potion", type = "consumable", slot = "", damageBonus = 0, armorValue = 0, value = 25)
+        val vendorItem = TestData.vendorItem(item = potion, price = Coins(copper = 25))
+
+        setContent {
+            TestThemeWrapper {
+                VendorPanel(
+                    vendorInfo = TestData.vendorInfo(
+                        items = listOf(vendorItem),
+                        playerCoins = Coins(gold = 100)
+                    ),
+                    playerLevel = 10,
+                    itemCatalog = catalog + mapOf("mana_pot" to potion),
+                    onBuy = {}, onSell = {}, onClose = {}
+                )
+            }
+        }
+
+        onAllNodesWithTag("comparison_indicator").assertCountEquals(0)
+    }
 }
