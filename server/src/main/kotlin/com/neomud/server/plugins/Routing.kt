@@ -85,7 +85,7 @@ fun Application.configureRouting(
                 return@get
             }
             call.response.header("ETag", etag)
-            call.response.header("Cache-Control", "no-cache")
+            call.response.header("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400")
 
             call.respondBytes(bytes, contentType)
         }

@@ -48,6 +48,18 @@ window.NeoMudAudio = (() => {
   function effectiveVol() { return masterVol * sfxVol; }
   function effectiveBgmVol() { return masterVol * bgmVol; }
 
+  async function fetchWithRetry(url, maxRetries = 3) {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      const r = await fetch(url);
+      if (r.status !== 429) return r;
+      if (attempt < maxRetries) {
+        const delay = Math.min(500 * Math.pow(2, attempt), 4000);
+        await new Promise(res => setTimeout(res, delay));
+      }
+    }
+    throw new Error('Rate limited after ' + (maxRetries + 1) + ' attempts');
+  }
+
   return {
     init() {
       ensureContext();
@@ -85,7 +97,7 @@ window.NeoMudAudio = (() => {
       if (sfxLoading.has(url)) return;
       sfxLoading.add(url);
 
-      fetch(url)
+      fetchWithRetry(url)
         .then(r => r.arrayBuffer())
         .then(buf => audioCtx.decodeAudioData(buf))
         .then(decoded => {
@@ -136,7 +148,7 @@ window.NeoMudAudio = (() => {
       if (sfxLoading.has(url)) return;
       sfxLoading.add(url);
 
-      fetch(url)
+      fetchWithRetry(url)
         .then(r => r.arrayBuffer())
         .then(buf => audioCtx.decodeAudioData(buf))
         .then(decoded => {
