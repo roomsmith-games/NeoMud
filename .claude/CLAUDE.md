@@ -178,19 +178,19 @@ NPCs can define phase transitions that trigger at HP thresholds during combat. W
 - SQLite + Exposed ORM
 - Tables: `PlayersTable`, `InventoryTable`, `PlayerCoinsTable`, `PlayerDiscoveryTable`
 - Repositories: `PlayerRepository`, `InventoryRepository`, `CoinRepository`, `DiscoveryRepository`
-- SHA-256 password hashing (MVP, not production-grade)
+- Auth is passwordless — character name is the sole identity. Legacy password column retained (new registrations store a random UUID hash) for backward compatibility with old clients. Platform users authenticate via JWT on a separate code path.
 - Discovery system tracks visited rooms, hidden/locked exits, interactables, and tutorials per player
 
 ### Admin Model
 
 Admin promotion has two paths, both checked at every login (composable):
 
-1. **Username allowlist** — `NEOMUD_ADMINS` env var (or `--admins` CLI flag, or `adminUsernamesOverride` test param) is a comma-separated list of usernames. A character whose username matches is promoted to admin. **This is the local-dev / OSS path** — Gradle's `:server:run` injects `NEOMUD_ADMINS=bob` by default so a fresh `git clone` boot has `bob` as admin out of the box.
+1. **Character name allowlist** — `NEOMUD_ADMINS` env var (or `--admins` CLI flag, or `adminUsernamesOverride` test param) is a comma-separated list of character names (case-insensitive). A character whose name matches is promoted to admin. The check also matches against the internal DB username for backward compatibility with legacy password-based accounts. **This is the local-dev / OSS path** — Gradle's `:server:run` injects `NEOMUD_ADMINS=bob` by default so a fresh `git clone` boot has a character named "Bob" as admin out of the box.
 2. **World-owner platform JWT** — `WORLD_OWNER_PLATFORM_USER_ID` env var (or `worldOwnerPlatformUserIdOverride` test param) holds the platform `userId` of the world's owner. The platform user whose verified JWT `userId` claim matches gets admin in this world only. **This is the platform-marketplace path** — the orchestrator injects this per-container from `World.ownerUserId`.
 
 Both env vars are optional and additive. Either being unset is silent (no warn log spam, no startup error). The code-path enforces a strict null guard on `worldOwnerPlatformUserId != null && session.platformUserId != null` to avoid the `null == null` trap that would otherwise grant admin to unauthenticated connections in a misconfigured setup. If `WORLD_OWNER_PLATFORM_USER_ID` is set but `PLATFORM_JWKS_URL`/`PLATFORM_JWT_SECRET` are not, the server emits a single startup warn (the world-owner path is inert without a verifier — pure misconfig signal).
 
-Test fixtures calling `Application.module(jdbcUrl = …)` continue to work without supplying any override — both paths default to "no admin". See `AdminCommandTest` (username path), `AdminOwnershipTest` (world-owner path), `BootSmokeTest` (zero-override boot contract).
+Test fixtures calling `Application.module(jdbcUrl = …)` continue to work without supplying any override — both paths default to "no admin". See `AdminCommandTest` (username path), `AdminOwnershipTest` (world-owner path), `SecurityHardeningTest` (characterName path), `BootSmokeTest` (zero-override boot contract).
 
 ### Tutorial System
 - `TutorialService` (`server/.../game/TutorialService.kt`) — centralized service with all tutorial definitions and `trySend()` for dedup + persist + send
