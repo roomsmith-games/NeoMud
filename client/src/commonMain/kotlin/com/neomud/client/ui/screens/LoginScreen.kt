@@ -87,7 +87,7 @@ fun LoginScreen(
     authState: AuthState,
     connectionError: String?,
     onConnect: (String, Int) -> Unit,
-    onLogin: (String, String) -> Unit,
+    onLogin: (String) -> Unit,
     onNavigateToRegister: () -> Unit,
     onClearError: () -> Unit,
     onPlatformLogin: () -> Unit = {},
@@ -96,8 +96,7 @@ fun LoginScreen(
     var host by remember { mutableStateOf(serverConfig.defaultHost) }
     var port by remember { mutableStateOf(serverConfig.defaultPort.toString()) }
     var showGuestWarning by remember { mutableStateOf(false) }
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var characterName by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
     Box(
@@ -303,26 +302,15 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     if (!isPlatformNewPlayer) {
-                        // Standard username/password login
                         StoneTextField(
-                            value = username,
-                            onValueChange = { username = it },
-                            label = "Username",
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        StoneTextField(
-                            value = password,
-                            onValueChange = { password = it },
-                            label = "Password",
-                            isPassword = true,
+                            value = characterName,
+                            onValueChange = { characterName = it },
+                            label = "Character Name",
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                             keyboardActions = KeyboardActions(onDone = {
                                 focusManager.clearFocus()
-                                if (username.isNotBlank() && password.isNotBlank()) {
-                                    onLogin(username, password)
+                                if (characterName.isNotBlank()) {
+                                    onLogin(characterName)
                                 }
                             })
                         )
@@ -330,8 +318,8 @@ fun LoginScreen(
 
                         StoneActionButton(
                             text = "Login",
-                            onClick = { onLogin(username, password) },
-                            enabled = authState !is AuthState.Loading && username.isNotBlank() && password.isNotBlank()
+                            onClick = { onLogin(characterName) },
+                            enabled = authState !is AuthState.Loading && characterName.isNotBlank()
                         ) {
                             if (authState is AuthState.Loading) {
                                 CircularProgressIndicator(
@@ -343,9 +331,8 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        // Create Account link
                         Text(
-                            text = "Create Account",
+                            text = "Create Character",
                             fontSize = 13.sp,
                             color = BurnishedGold,
                             modifier = Modifier

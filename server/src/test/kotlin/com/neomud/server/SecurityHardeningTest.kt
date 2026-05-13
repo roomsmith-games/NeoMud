@@ -242,4 +242,106 @@ class SecurityHardeningTest {
         assertEquals(16, id.length, "Guest ID should be 16 hex chars (64 bits of entropy)")
         assertTrue(id.all { it in '0'..'9' || it in 'a'..'f' }, "Guest ID should be hex chars only")
     }
+
+    // ── Passwordless Auth ──
+
+    @Test
+    fun `passwordless registration creates player`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register(characterName = "NoPassHero", characterClass = "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+    }
+
+    @Test
+    fun `passwordless login by characterName works`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register(characterName = "PasslessHero", characterClass = "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Login(characterName = "PasslessHero")))
+            val response = receiveServerMessage()
+            assertIs<ServerMessage.LoginOk>(response)
+            assertEquals("PasslessHero", response.player.name)
+        }
+    }
+
+    @Test
+    fun `duplicate passwordless login is blocked`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register(characterName = "DupPassless", characterClass = "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+
+        val client1 = createClient { install(WebSockets) }
+        client1.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Login(characterName = "DupPassless")))
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+
+            val client2 = createClient { install(WebSockets) }
+            client2.webSocket("/game") {
+                consumeCatalogSync()
+                send(sendMsg(ClientMessage.Login(characterName = "DupPassless")))
+                val response = receiveServerMessage()
+                assertIs<ServerMessage.AuthError>(response)
+                assertTrue(response.reason.contains("already logged in"))
+            }
+        }
+    }
+
+    @Test
+    fun `legacy password login still works`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register("legacyuser", "pass1234", "LegacyHero", "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Login("legacyuser", "pass1234")))
+            val response = receiveServerMessage()
+            assertIs<ServerMessage.LoginOk>(response)
+            assertEquals("LegacyHero", response.player.name)
+        }
+    }
+
+    @Test
+    fun `admin promotion by characterName match`() = testApplication {
+        val dbUrl = testDbUrl()
+        application { module(jdbcUrl = dbUrl, adminUsernamesOverride = setOf("adminhero")) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register(characterName = "AdminHero", characterClass = "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Login(characterName = "AdminHero")))
+            val response = receiveServerMessage()
+            assertIs<ServerMessage.LoginOk>(response)
+            assertTrue(response.player.isAdmin, "Character name 'AdminHero' should match admin list 'adminhero'")
+        }
+    }
 }

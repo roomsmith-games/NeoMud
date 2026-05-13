@@ -95,7 +95,7 @@ fun parseArgs(args: Array<String>): ServerConfig {
                 i++
                 val value = args.getOrNull(i)
                 if (value == null) {
-                    System.err.println("Error: --admins requires a comma-separated list of usernames")
+                    System.err.println("Error: --admins requires a comma-separated list of character names")
                     exitProcess(1)
                 }
                 admins = value.split(",").map { it.trim().lowercase() }.filter { it.isNotEmpty() }.toSet()
@@ -128,7 +128,7 @@ Options:
   --port, -p <port>       Server port (default: ${GameConfig.Server.PORT}, env: NEOMUD_PORT)
   --world, -w <path>      World bundle .nmd file (default: bundled world, env: NEOMUD_WORLD)
   --db <path>             SQLite database path (default: neomud.db, env: NEOMUD_DB)
-  --admins <users>        Comma-separated admin usernames (env: NEOMUD_ADMINS)
+  --admins <names>        Comma-separated admin character names (env: NEOMUD_ADMINS)
   --help, -h              Show this help message
 
 Examples:

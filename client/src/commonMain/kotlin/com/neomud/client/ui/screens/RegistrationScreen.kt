@@ -19,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -105,16 +104,14 @@ fun RegistrationScreen(
     serverBaseUrl: String = "",
     nameAvailability: AuthViewModel.NameAvailability? = null,
     isGuestMode: Boolean = false,
-    onRegister: (String, String, String, String, String, String, Stats) -> Unit,
-    onCheckName: (String, String) -> Unit = { _, _ -> },
+    onRegister: (String, String, String, String, Stats) -> Unit,
+    onCheckName: (String) -> Unit = { },
     onClearNameCheck: () -> Unit = {},
     onBack: () -> Unit,
     onClearError: () -> Unit
 ) {
     var showGuestWarning by rememberSaveable { mutableStateOf(isGuestMode) }
     var currentStep by rememberSaveable { mutableIntStateOf(0) }
-    var username by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
     var characterName by rememberSaveable { mutableStateOf("") }
     var selectedGender by rememberSaveable { mutableStateOf("neutral") }
     var selectedRaceId by rememberSaveable { mutableStateOf("HUMAN") }
@@ -221,10 +218,7 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Step indicator
-                val stepLabels = if (isGuestMode)
-                    listOf("Name", "Gender", "Race", "Class", "Stats", "Review")
-                else
-                    listOf("Acct", "Gender", "Race", "Class", "Stats", "Review")
+                val stepLabels = listOf("Name", "Gender", "Race", "Class", "Stats", "Review")
                 StoneStepIndicator(currentStep = currentStep, totalSteps = 6, stepLabels = stepLabels)
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -232,25 +226,13 @@ fun RegistrationScreen(
                 // Step content
                 Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                     when (currentStep) {
-                        0 -> if (isGuestMode) {
-                            GuestNameStep(
-                                characterName = characterName,
-                                nameAvailability = nameAvailability,
-                                onCharacterNameChange = { characterName = it; onClearNameCheck() },
-                                onCheckName = { onCheckName("", it) }
-                            )
-                        } else {
-                            CredentialsStep(
-                                username = username,
-                                password = password,
-                                characterName = characterName,
-                                nameAvailability = nameAvailability,
-                                onUsernameChange = { username = it; onClearNameCheck() },
-                                onPasswordChange = { password = it },
-                                onCharacterNameChange = { characterName = it; onClearNameCheck() },
-                                onCheckName = onCheckName
-                            )
-                        }
+                        0 -> GuestNameStep(
+                            characterName = characterName,
+                            nameAvailability = nameAvailability,
+                            isGuestMode = isGuestMode,
+                            onCharacterNameChange = { characterName = it; onClearNameCheck() },
+                            onCheckName = { onCheckName(it) }
+                        )
                         1 -> GenderSelectionStep(
                             selectedGender = selectedGender,
                             onGenderSelected = { selectedGender = it }
@@ -326,8 +308,7 @@ fun RegistrationScreen(
 
                     if (currentStep < 5) {
                         val canAdvance = when (currentStep) {
-                            0 -> if (isGuestMode) characterName.isNotBlank()
-                                 else username.isNotBlank() && password.isNotBlank() && characterName.isNotBlank()
+                            0 -> characterName.isNotBlank()
                             1 -> true
                             2 -> availableRaces.isNotEmpty()
                             3 -> availableClasses.isNotEmpty()
@@ -339,18 +320,16 @@ fun RegistrationScreen(
                             else -> true
                         }
                         StoneNavButton(
-                            text = if (!isGuestMode && currentStep == 0 && nameAvailability == null && username.isNotBlank()) "Check & Next" else "Next",
+                            text = if (currentStep == 0 && nameAvailability == null && characterName.isNotBlank()) "Check & Next" else "Next",
                             onClick = {
-                                if (currentStep == 0 && !isGuestMode) {
-                                    // Check name availability before advancing
+                                if (currentStep == 0) {
                                     if (nameAvailability == null) {
-                                        onCheckName(username, characterName)
+                                        onCheckName(characterName)
                                         return@StoneNavButton
                                     }
-                                    if (nameAvailability.usernameAvailable && nameAvailability.characterNameAvailable) {
+                                    if (nameAvailability.characterNameAvailable) {
                                         currentStep++
                                     }
-                                    // If names aren't available, the feedback shows inline — don't advance
                                 } else {
                                     currentStep++
                                 }
@@ -365,15 +344,14 @@ fun RegistrationScreen(
                         val cpUsed = StatAllocator.totalCpUsed(stats, effMin)
                         val createEnabled = authState !is AuthState.Loading &&
                                 cpUsed == StatAllocator.CP_POOL &&
-                                characterName.isNotBlank() &&
-                                (isGuestMode || (username.isNotBlank() && password.isNotBlank()))
+                                characterName.isNotBlank()
 
                         StoneNavButton(
                             text = if (authState is AuthState.Loading) "Creating..."
                                    else if (isGuestMode) "Play as Guest"
                                    else "Create Character",
                             onClick = {
-                                onRegister(username, password, characterName, selectedClassId, selectedRaceId, selectedGender, stats)
+                                onRegister(characterName, selectedClassId, selectedRaceId, selectedGender, stats)
                             },
                             modifier = Modifier.weight(1f),
                             enabled = createEnabled,
@@ -786,6 +764,7 @@ private fun RunicDivider(modifier: Modifier = Modifier) {
 private fun GuestNameStep(
     characterName: String,
     nameAvailability: AuthViewModel.NameAvailability? = null,
+    isGuestMode: Boolean = true,
     onCharacterNameChange: (String) -> Unit,
     onCheckName: (String) -> Unit = {}
 ) {
@@ -826,101 +805,14 @@ private fun GuestNameStep(
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            "Guest characters are temporary.\nYour progress will not be saved.",
-            fontSize = 11.sp,
-            color = AshGray,
-            textAlign = TextAlign.Center,
-            lineHeight = 16.sp
-        )
-    }
-}
-
-// ─────────────────────────────────────────────
-// Step 1: Credentials
-// ─────────────────────────────────────────────
-@Composable
-private fun CredentialsStep(
-    username: String,
-    password: String,
-    characterName: String,
-    nameAvailability: AuthViewModel.NameAvailability? = null,
-    onUsernameChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onCharacterNameChange: (String) -> Unit,
-    onCheckName: (String, String) -> Unit = { _, _ -> }
-) {
-    val focusManager = LocalFocusManager.current
-    // Track what was last checked to avoid redundant server calls
-    var lastCheckedUsername by remember { mutableStateOf("") }
-    var lastCheckedCharName by remember { mutableStateOf("") }
-
-    fun triggerCheck() {
-        if (username.isNotBlank() && characterName.isNotBlank() &&
-            (username != lastCheckedUsername || characterName != lastCheckedCharName)) {
-            lastCheckedUsername = username
-            lastCheckedCharName = characterName
-            onCheckName(username, characterName)
-        }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            "Step 1: Account Details",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = TorchAmber
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-
-        StoneTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            label = "Username",
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-            onFocusLost = { triggerCheck() }
-        )
-        // Username availability feedback
-        if (nameAvailability != null && username.isNotBlank()) {
+        if (isGuestMode) {
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = if (nameAvailability.usernameAvailable) "Username available" else "Username already taken",
+                "Guest characters are temporary.\nYour progress will not be saved.",
                 fontSize = 11.sp,
-                color = if (nameAvailability.usernameAvailable) VerdantUpgrade else CrimsonError,
-                modifier = Modifier.fillMaxWidth().padding(start = 4.dp, top = 2.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        StoneTextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            label = "Password",
-            isPassword = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        StoneTextField(
-            value = characterName,
-            onValueChange = onCharacterNameChange,
-            label = "Character Name",
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-            onFocusLost = { triggerCheck() }
-        )
-        // Character name availability feedback
-        if (nameAvailability != null && characterName.isNotBlank()) {
-            Text(
-                text = if (nameAvailability.characterNameAvailable) "Character name available" else "Character name already taken",
-                fontSize = 11.sp,
-                color = if (nameAvailability.characterNameAvailable) VerdantUpgrade else CrimsonError,
-                modifier = Modifier.fillMaxWidth().padding(start = 4.dp, top = 2.dp)
+                color = AshGray,
+                textAlign = TextAlign.Center,
+                lineHeight = 16.sp
             )
         }
     }

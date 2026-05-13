@@ -41,7 +41,7 @@ sealed class ServerMessage {
     @Serializable
     @SerialName("name_check_result")
     data class NameCheckResult(
-        val usernameAvailable: Boolean,
+        val usernameAvailable: Boolean = true,
         val characterNameAvailable: Boolean
     ) : ServerMessage()
 

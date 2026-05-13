@@ -120,9 +120,15 @@ class PlayerRepository {
             val initialImageStyle = spriteDef?.imageStyle ?: ""
             val initialImageNegativePrompt = spriteDef?.imageNegativePrompt ?: ""
 
+            val effectiveHash = if (password.isBlank()) {
+                hashPassword(java.util.UUID.randomUUID().toString())
+            } else {
+                hashPassword(password)
+            }
+
             PlayersTable.insert {
                 it[PlayersTable.username] = username
-                it[passwordHash] = hashPassword(password)
+                it[passwordHash] = effectiveHash
                 it[PlayersTable.characterName] = characterName
                 it[PlayersTable.characterClass] = characterClass
                 it[PlayersTable.race] = race
@@ -228,6 +234,15 @@ class PlayerRepository {
         }
     }
 
+    fun authenticateByCharacterName(characterName: String): Result<Player> = runCatching {
+        transaction {
+            val row = PlayersTable.selectAll().where {
+                PlayersTable.characterName eq characterName
+            }.firstOrNull() ?: error("Character not found")
+            rowToPlayer(row)
+        }
+    }
+
     fun getBaseStats(characterName: String): Stats? = transaction {
         PlayersTable.selectAll().where {
             PlayersTable.characterName eq characterName
@@ -279,9 +294,9 @@ class PlayerRepository {
         }
     }
 
-    fun promoteAdmin(username: String) {
+    fun promoteAdmin(characterName: String) {
         transaction {
-            PlayersTable.update({ PlayersTable.username eq username }) {
+            PlayersTable.update({ PlayersTable.characterName eq characterName }) {
                 it[isAdmin] = true
             }
         }

@@ -47,8 +47,7 @@ class AuthViewModel(
     private val _availableSkills = MutableStateFlow<List<SkillDef>>(emptyList())
     val availableSkills: StateFlow<List<SkillDef>> = _availableSkills
 
-    private var pendingLoginUsername: String? = null
-    private var pendingLoginPassword: String? = null
+    private var pendingLoginCharacterName: String? = null
     private var pendingGuestLogin: Boolean = false
 
     private val _initialRoomInfo = MutableStateFlow<ServerMessage.RoomInfo?>(null)
@@ -93,8 +92,7 @@ class AuthViewModel(
                 try {
                     when (message) {
                         is ServerMessage.LoginOk -> {
-                            pendingLoginUsername = null
-                            pendingLoginPassword = null
+                            pendingLoginCharacterName = null
                             _initialRoomInfo.value = null
                             _initialMapData.value = null
                             _initialTutorials.value = emptyList()
@@ -119,22 +117,19 @@ class AuthViewModel(
                         }
                         is ServerMessage.RegisterOk -> {
                             if (pendingGuestLogin) {
-                                // Guest: server auto-sends LoginOk after RegisterOk, just wait
                                 pendingGuestLogin = false
                             } else {
-                                // Standard registration: auto-login with saved credentials
-                                val username = pendingLoginUsername
-                                val password = pendingLoginPassword
-                                if (username != null && password != null) {
-                                    wsClient.send(ClientMessage.Login(username, password))
+                                val charName = pendingLoginCharacterName
+                                if (charName != null) {
+                                    wsClient.send(ClientMessage.Login(characterName = charName))
+                                    pendingLoginCharacterName = null
                                 } else {
                                     _authState.value = AuthState.Registered
                                 }
                             }
                         }
                         is ServerMessage.AuthError -> {
-                            pendingLoginUsername = null
-                            pendingLoginPassword = null
+                            pendingLoginCharacterName = null
                             _authState.value = AuthState.Error(message.reason)
                         }
                         is ServerMessage.NameCheckResult -> {
@@ -237,36 +232,34 @@ class AuthViewModel(
         wsClient.connect(host, port, useTls, viewModelScope, pathWithToken)
     }
 
-    fun login(username: String, password: String) {
+    fun login(characterName: String) {
         _authState.value = AuthState.Loading
         viewModelScope.launch {
-            val sent = wsClient.send(ClientMessage.Login(username, password))
+            val sent = wsClient.send(ClientMessage.Login(characterName = characterName))
             if (!sent) {
                 _authState.value = AuthState.Error("Not connected to server")
             }
         }
     }
 
-    fun register(username: String, password: String, characterName: String, characterClass: String, race: String = "", gender: String = "neutral", allocatedStats: Stats = Stats()) {
+    fun register(characterName: String, characterClass: String, race: String = "", gender: String = "neutral", allocatedStats: Stats = Stats()) {
         _authState.value = AuthState.Loading
-        pendingLoginUsername = username
-        pendingLoginPassword = password
+        pendingLoginCharacterName = characterName
         viewModelScope.launch {
             val sent = wsClient.send(
-                ClientMessage.Register(username, password, characterName, characterClass, race, gender, allocatedStats)
+                ClientMessage.Register(characterName = characterName, characterClass = characterClass, race = race, gender = gender, allocatedStats = allocatedStats)
             )
             if (!sent) {
-                pendingLoginUsername = null
-                pendingLoginPassword = null
+                pendingLoginCharacterName = null
                 _authState.value = AuthState.Error("Not connected to server")
             }
         }
     }
 
-    fun checkName(username: String, characterName: String) {
-        _nameAvailability.value = null // reset while checking
+    fun checkName(characterName: String) {
+        _nameAvailability.value = null
         viewModelScope.launch {
-            wsClient.send(ClientMessage.CheckName(username, characterName))
+            wsClient.send(ClientMessage.CheckName(characterName = characterName))
         }
     }
 

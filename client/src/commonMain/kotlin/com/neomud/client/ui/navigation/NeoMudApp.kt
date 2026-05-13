@@ -217,7 +217,7 @@ fun NeoMudApp(
                         authViewModel.connect(host, port, serverConfig.useTls, serverConfig.serverPath)
                     }
                 },
-                onLogin = { username, password -> authViewModel.login(username, password) },
+                onLogin = { characterName -> authViewModel.login(characterName) },
                 onNavigateToRegister = {
                     authViewModel.clearError()
                     navController.navigate("register")
@@ -235,7 +235,7 @@ fun NeoMudApp(
                 availableRaces = availableRaces,
                 serverBaseUrl = authViewModel.serverBaseUrl,
                 isGuestMode = true,
-                onRegister = { _, _, characterName, characterClass, race, gender, allocatedStats ->
+                onRegister = { characterName, characterClass, race, gender, allocatedStats ->
                     authViewModel.guestLogin(characterName, characterClass, race, gender, allocatedStats)
                 },
                 onBack = {
@@ -264,11 +264,11 @@ fun NeoMudApp(
                 availableRaces = availableRaces,
                 serverBaseUrl = authViewModel.serverBaseUrl,
                 nameAvailability = nameAvailability,
-                onRegister = { username, password, characterName, characterClass, race, gender, allocatedStats ->
-                    authViewModel.register(username, password, characterName, characterClass, race, gender, allocatedStats)
+                onRegister = { characterName, characterClass, race, gender, allocatedStats ->
+                    authViewModel.register(characterName, characterClass, race, gender, allocatedStats)
                 },
-                onCheckName = { username, characterName ->
-                    authViewModel.checkName(username, characterName)
+                onCheckName = { characterName ->
+                    authViewModel.checkName(characterName)
                 },
                 onClearNameCheck = { authViewModel.clearNameCheck() },
                 onBack = { navController.popBackStack() },

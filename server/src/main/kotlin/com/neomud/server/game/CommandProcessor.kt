@@ -122,12 +122,13 @@ class CommandProcessor(
      * the `null == null` trap that would otherwise grant admin to every unauthenticated
      * connection in a misconfigured setup.
      */
-    private fun shouldPromoteAdmin(session: PlayerSession, dbUsername: String): Boolean {
+    private fun shouldPromoteAdmin(session: PlayerSession, dbUsername: String, characterName: String = ""): Boolean {
         val isUsernameAdmin = dbUsername.lowercase() in adminUsernames
+        val isCharNameAdmin = characterName.isNotBlank() && characterName.lowercase() in adminUsernames
         val isOwnerAdmin = worldOwnerPlatformUserId != null
             && session.platformUserId != null
             && session.platformUserId == worldOwnerPlatformUserId
-        return isUsernameAdmin || isOwnerAdmin
+        return isUsernameAdmin || isCharNameAdmin || isOwnerAdmin
     }
 
     private val adminCommand = AdminCommand(
@@ -347,10 +348,13 @@ class CommandProcessor(
     }
 
     private suspend fun handleCheckName(session: PlayerSession, msg: ClientMessage.CheckName) {
+        val effectiveUsername = msg.username.ifBlank {
+            msg.characterName.lowercase().replace(" ", "_").replace(Regex("[^a-z0-9_]"), "")
+        }
         val (usernameAvailable, characterNameAvailable) = playerRepository.checkNameAvailability(
-            msg.username, msg.characterName
+            effectiveUsername, msg.characterName
         )
-        session.send(ServerMessage.NameCheckResult(usernameAvailable, characterNameAvailable))
+        session.send(ServerMessage.NameCheckResult(characterNameAvailable = characterNameAvailable))
     }
 
     private suspend fun handleRegister(session: PlayerSession, msg: ClientMessage.Register) {
@@ -359,22 +363,31 @@ class CommandProcessor(
             return
         }
 
-        val nameRegex = Regex("^[a-zA-Z0-9_]{3,20}$")
-        if (!nameRegex.matches(msg.username)) {
-            session.send(ServerMessage.AuthError("Username must be 3-20 alphanumeric characters or underscores."))
-            return
-        }
-        if (msg.password.length < GameConfig.Security.MIN_PASSWORD_LENGTH || msg.password.length > GameConfig.Security.MAX_PASSWORD_LENGTH) {
-            session.send(ServerMessage.AuthError("Password must be ${GameConfig.Security.MIN_PASSWORD_LENGTH}-${GameConfig.Security.MAX_PASSWORD_LENGTH} characters."))
-            return
-        }
         if (!Regex("^[a-zA-Z][a-zA-Z0-9_ ]{1,19}$").matches(msg.characterName)) {
             session.send(ServerMessage.AuthError("Character name must be 2-20 characters, start with a letter, and contain only letters, numbers, spaces, or underscores."))
             return
         }
 
+        val effectiveUsername = msg.username.ifBlank {
+            msg.characterName.lowercase().replace(" ", "_").replace(Regex("[^a-z0-9_]"), "")
+        }
+
+        if (msg.username.isNotBlank()) {
+            val nameRegex = Regex("^[a-zA-Z0-9_]{3,20}$")
+            if (!nameRegex.matches(msg.username)) {
+                session.send(ServerMessage.AuthError("Username must be 3-20 alphanumeric characters or underscores."))
+                return
+            }
+        }
+        if (msg.password.isNotBlank()) {
+            if (msg.password.length < GameConfig.Security.MIN_PASSWORD_LENGTH || msg.password.length > GameConfig.Security.MAX_PASSWORD_LENGTH) {
+                session.send(ServerMessage.AuthError("Password must be ${GameConfig.Security.MIN_PASSWORD_LENGTH}-${GameConfig.Security.MAX_PASSWORD_LENGTH} characters."))
+                return
+            }
+        }
+
         val result = playerRepository.createPlayer(
-            username = msg.username,
+            username = effectiveUsername,
             password = msg.password,
             characterName = msg.characterName,
             characterClass = msg.characterClass,
@@ -413,130 +426,63 @@ class CommandProcessor(
             return
         }
 
-        if (sessionManager.isUsernameLoggedIn(msg.username)) {
-            session.send(ServerMessage.AuthError("Account already logged in"))
-            return
-        }
+        val player: com.neomud.shared.model.Player
+        val internalUsername: String
 
-        if (!checkLoginRateLimit(msg.username)) {
-            session.send(ServerMessage.AuthError("Too many failed attempts. Try again in a minute."))
-            return
-        }
-
-        val result = playerRepository.authenticate(msg.username, msg.password)
-
-        result.fold(
-            onSuccess = { player ->
-                clearFailedLogins(msg.username)
-                // Auto-promote admin via username allowlist or world-owner platform JWT.
-                // See shouldPromoteAdmin for the two paths.
-                val effectivePlayer = if (!player.isAdmin && shouldPromoteAdmin(session, msg.username)) {
-                    playerRepository.promoteAdmin(msg.username)
-                    player.copy(isAdmin = true)
-                } else {
-                    player
-                }
-
-                // Auto-link platform account on password login if platform session exists
-                val platformId = session.platformUserId
-                if (platformId != null && playerRepository.findByPlatformUserId(platformId) == null) {
-                    playerRepository.linkPlatformUser(effectivePlayer.name, platformId)
-                    logger.info("Linked platform user $platformId to character ${effectivePlayer.name}")
-                }
-
-                session.player = effectivePlayer
-                session.playerName = effectivePlayer.name
-                session.currentRoomId = effectivePlayer.currentRoomId
-
-                // Load persisted discovery data
-                val discovery = discoveryRepository.loadPlayerDiscovery(effectivePlayer.name)
-                session.visitedRooms.addAll(discovery.visitedRooms)
-                session.discoveredHiddenExits.addAll(discovery.discoveredHiddenExits)
-                session.discoveredLockedExits.addAll(discovery.discoveredLockedExits)
-                session.discoveredInteractables.addAll(discovery.discoveredInteractables)
-                session.seenTutorials.addAll(discovery.tutorials)
-                session.visitedRooms.add(effectivePlayer.currentRoomId)
-
-                val added = sessionManager.addSession(effectivePlayer.name, session, username = msg.username)
-                if (!added) {
-                    session.send(ServerMessage.AuthError("Account already logged in"))
-                    return
-                }
-                session.combatGraceTicks = GameConfig.Combat.GRACE_TICKS
-
-                session.send(ServerMessage.LoginOk(effectivePlayer))
-
-                // First-time welcome tutorial for new characters (sent right after LoginOk for predictable ordering).
-                // Per-world intro (#272) fires BEFORE welcome so worlds can set the scene before the generic onboarding.
-                if (tutorialService != null) {
-                    tutorialService.trySendWorldIntro(session)
-                    tutorialService.trySend(session, "welcome",
-                        contentOverride = "Greetings, ${effectivePlayer.name}!\n\n" +
-                            "Use the directional pad to move between rooms. " +
-                            "Tap hostile NPCs to select a target, then toggle attack mode (crossed swords) to fight.\n\n" +
-                            "Open the Adventurer's Tome (\u2753) in the toolbar for a full guide to all game systems.\n\n" +
-                            "May your blade stay sharp and your mana never run dry!"
-                    )
-                } else if ("welcome" !in session.seenTutorials) {
-                    // Fallback for tests without TutorialService
-                    session.seenTutorials.add("welcome")
-                    discoveryRepository.markTutorialSeen(effectivePlayer.name, "welcome")
-                    session.send(ServerMessage.Tutorial(
-                        key = "welcome",
-                        title = "Welcome to NeoMud!",
-                        content = "Greetings, ${effectivePlayer.name}!\n\n" +
-                            "Use the directional pad to move between rooms. " +
-                            "Tap hostile NPCs to select a target, then toggle attack mode (crossed swords) to fight.\n\n" +
-                            "Open the Adventurer's Tome (\u2753) in the toolbar for a full guide to all game systems.\n\n" +
-                            "May your blade stay sharp and your mana never run dry!"
-                    ))
-                }
-
-                // Send initial room info
-                val room = worldGraph.getRoom(effectivePlayer.currentRoomId)
-                if (room != null) {
-                    val playersInRoom = sessionManager.getVisiblePlayerInfosInRoom(effectivePlayer.currentRoomId)
-                        .filter { it.name != effectivePlayer.name }
-                    val npcsInRoom = npcManager.getNpcsInRoom(effectivePlayer.currentRoomId)
-                    session.send(ServerMessage.RoomInfo(room, playersInRoom, npcsInRoom))
-
-                    val mapRooms = MapRoomFilter.enrichForPlayer(
-                        worldGraph.getRoomsNear(effectivePlayer.currentRoomId), session, worldGraph, sessionManager, npcManager
-                    )
-                    session.send(ServerMessage.MapData(mapRooms, effectivePlayer.currentRoomId, session.visitedRooms.toSet()))
-
-                    // Broadcast to others in room
-                    sessionManager.broadcastToRoom(
-                        effectivePlayer.currentRoomId,
-                        ServerMessage.PlayerEntered(effectivePlayer.name, effectivePlayer.currentRoomId, session.toPlayerInfo()),
-                        exclude = effectivePlayer.name
-                    )
-                }
-
-                // Send initial inventory
-                inventoryCommand.sendInventoryUpdate(session)
-
-                // Send ground items for current room
-                val groundItems = roomItemManager.getGroundItems(effectivePlayer.currentRoomId)
-                val groundCoins = roomItemManager.getGroundCoins(effectivePlayer.currentRoomId)
-                session.send(ServerMessage.RoomItemsUpdate(groundItems, groundCoins))
-
-                logger.info("Player logged in: ${effectivePlayer.name}${if (effectivePlayer.isAdmin) " [ADMIN]" else ""}")
-            },
-            onFailure = {
-                recordFailedLogin(msg.username)
-                session.send(ServerMessage.AuthError(it.message ?: "Login failed"))
+        if (msg.password.isNotBlank() && msg.username.isNotBlank()) {
+            // Legacy password-based auth
+            internalUsername = msg.username
+            if (sessionManager.isUsernameLoggedIn(internalUsername)) {
+                session.send(ServerMessage.AuthError("Account already logged in"))
+                return
             }
-        )
+            if (!checkLoginRateLimit(internalUsername)) {
+                session.send(ServerMessage.AuthError("Too many failed attempts. Try again in a minute."))
+                return
+            }
+            val result = playerRepository.authenticate(msg.username, msg.password)
+            if (result.isFailure) {
+                recordFailedLogin(internalUsername)
+                session.send(ServerMessage.AuthError(result.exceptionOrNull()?.message ?: "Login failed"))
+                return
+            }
+            clearFailedLogins(internalUsername)
+            player = result.getOrThrow()
+        } else {
+            // Passwordless auth by character name
+            val charName = msg.characterName.ifBlank { msg.username }
+            if (charName.isBlank()) {
+                session.send(ServerMessage.AuthError("Character name is required"))
+                return
+            }
+            val result = playerRepository.authenticateByCharacterName(charName)
+            if (result.isFailure) {
+                session.send(ServerMessage.AuthError("Character not found"))
+                return
+            }
+            player = result.getOrThrow()
+            internalUsername = player.name.lowercase().replace(" ", "_").replace(Regex("[^a-z0-9_]"), "")
+            if (sessionManager.isUsernameLoggedIn(internalUsername)) {
+                session.send(ServerMessage.AuthError("Character already logged in"))
+                return
+            }
+        }
+
+        completeLogin(session, player, internalUsername)
     }
 
     /** Shared post-authentication setup: load discovery, send LoginOk, room info, inventory. */
     private suspend fun completeLogin(session: PlayerSession, player: com.neomud.shared.model.Player, username: String) {
-        // Promote to admin if either path matches (username allowlist or world-owner JWT match).
-        // Shadows the param so the rest of the function uses the post-promotion player.
+        // Auto-link platform account if platform session exists and not yet linked
+        val platformId = session.platformUserId
+        if (platformId != null && playerRepository.findByPlatformUserId(platformId) == null) {
+            playerRepository.linkPlatformUser(player.name, platformId)
+            logger.info("Linked platform user $platformId to character ${player.name}")
+        }
+
         @Suppress("NAME_SHADOWING")
-        val player = if (!player.isAdmin && shouldPromoteAdmin(session, username)) {
-            playerRepository.promoteAdmin(username)
+        val player = if (!player.isAdmin && shouldPromoteAdmin(session, username, player.name)) {
+            playerRepository.promoteAdmin(player.name)
             player.copy(isAdmin = true)
         } else player
 

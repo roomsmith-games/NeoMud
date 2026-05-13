@@ -10,8 +10,8 @@ sealed class ClientMessage {
     @Serializable
     @SerialName("register")
     data class Register(
-        val username: String,
-        val password: String,
+        val username: String = "",
+        val password: String = "",
         val characterName: String,
         val characterClass: String,
         val race: String = "",
@@ -22,14 +22,15 @@ sealed class ClientMessage {
     @Serializable
     @SerialName("login")
     data class Login(
-        val username: String,
-        val password: String
+        val username: String = "",
+        val password: String = "",
+        val characterName: String = ""
     ) : ClientMessage()
 
     @Serializable
     @SerialName("check_name")
     data class CheckName(
-        val username: String,
+        val username: String = "",
         val characterName: String
     ) : ClientMessage()
 
