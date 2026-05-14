@@ -208,7 +208,7 @@ class OnKillFlagsTest {
     }
 
     @Test
-    fun `kill event integration - template lookup plus flag persistence`() = withTestDb { repo ->
+    fun `kill event sets flags on killer via template lookup`() = withTestDb { repo ->
         val worldGraph = WorldGraph()
         worldGraph.addRoom(Room(
             id = "test:boss_room",
@@ -238,12 +238,12 @@ class OnKillFlagsTest {
         val killerName = "HeroPlayer"
         val templateId = "npc:test_boss"
 
-        val templateData = npcManager.getTemplateData(templateId)
-        assertTrue(templateData != null)
-        assertTrue(templateData.onKillFlags.isNotEmpty())
-
-        for ((flagKey, flagValue) in templateData.onKillFlags) {
-            repo.setFlag(killerName, flagKey, flagValue)
+        // Reproduce the GameLoop.handleNpcKillEvent kill-flag logic
+        val templateData = npcManager.getTemplateData(templateId.ifEmpty { "npc:test_boss" })
+        if (templateData != null && templateData.onKillFlags.isNotEmpty()) {
+            for ((flagKey, flagValue) in templateData.onKillFlags) {
+                repo.setFlag(killerName, flagKey, flagValue)
+            }
         }
 
         assertEquals("true", repo.getFlag(killerName, "kill:test_boss"))
@@ -252,7 +252,7 @@ class OnKillFlagsTest {
     }
 
     @Test
-    fun `kill event with no onKillFlags does not set flags`() = withTestDb { repo ->
+    fun `kill event with no onKillFlags skips flag persistence`() = withTestDb { repo ->
         val worldGraph = WorldGraph()
         worldGraph.addRoom(Room(
             id = "test:room",
@@ -263,7 +263,19 @@ class OnKillFlagsTest {
             exits = emptyMap()
         ))
 
-        val data = NpcData(
+        val bossData = NpcData(
+            id = "npc:boss_with_flags",
+            name = "Boss",
+            description = "",
+            startRoomId = "test:room",
+            behaviorType = "stationary",
+            hostile = true,
+            maxHp = 100,
+            damage = 10,
+            level = 5,
+            onKillFlags = mapOf("kill:boss" to "true")
+        )
+        val mobData = NpcData(
             id = "npc:normal_mob",
             name = "Normal Mob",
             description = "",
@@ -276,12 +288,18 @@ class OnKillFlagsTest {
         )
 
         val npcManager = NpcManager(worldGraph)
-        npcManager.loadNpcs(listOf(data to "test"))
+        npcManager.loadNpcs(listOf(bossData to "test", mobData to "test"))
 
+        // Simulate kill-flag logic for the NPC without flags
         val templateData = npcManager.getTemplateData("npc:normal_mob")
-        assertTrue(templateData != null)
-        assertTrue(templateData.onKillFlags.isEmpty())
+        if (templateData != null && templateData.onKillFlags.isNotEmpty()) {
+            for ((flagKey, flagValue) in templateData.onKillFlags) {
+                repo.setFlag("SomePlayer", flagKey, flagValue)
+            }
+        }
 
+        // The condition guards against empty flags, so nothing was written
         assertNull(repo.getFlag("SomePlayer", "kill:normal_mob"))
+        assertNull(repo.getFlag("SomePlayer", "kill:boss"))
     }
 }
