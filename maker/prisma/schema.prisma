@@ -130,6 +130,8 @@ model Npc {
   imageWidth          Int    @default(384)
   imageHeight         Int    @default(512)
   phases              String @default("[]")
+  onKillFlags         String @default("{}")
+  onSpawnRelockExits  String @default("[]")
 }
 
 model CharacterClass {

@@ -159,6 +159,8 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
         ...(npc.grantItemFlag ? { grantItemFlag: npc.grantItemFlag } : {}),
         ...(npc.repeatDialogueScript ? { repeatDialogueScript: npc.repeatDialogueScript } : {}),
         ...((() => { const ph = parseJsonField(npc.phases, []); return ph.length > 0 ? { phases: ph } : {}; })()),
+        ...((() => { const okf = parseJsonField(npc.onKillFlags, {}); return Object.keys(okf).length > 0 ? { onKillFlags: okf } : {}; })()),
+        ...((() => { const osre = parseJsonField(npc.onSpawnRelockExits, []); return osre.length > 0 ? { onSpawnRelockExits: osre } : {}; })()),
       })),
     }
     zip.addFile(`world/${zone.id}.zone.json`, Buffer.from(JSON.stringify(zoneOut, null, 2)))
@@ -502,6 +504,8 @@ exportRouter.get('/json', async (req, res) => {
           ...(npc.grantItemFlag ? { grantItemFlag: npc.grantItemFlag } : {}),
           ...(npc.repeatDialogueScript ? { repeatDialogueScript: npc.repeatDialogueScript } : {}),
           ...((() => { const ph = parseJsonField(npc.phases, []); return ph.length > 0 ? { phases: ph } : {}; })()),
+          ...((() => { const okf = parseJsonField(npc.onKillFlags, {}); return Object.keys(okf).length > 0 ? { onKillFlags: okf } : {}; })()),
+          ...((() => { const osre = parseJsonField(npc.onSpawnRelockExits, []); return osre.length > 0 ? { onSpawnRelockExits: osre } : {}; })()),
         }
       }
 

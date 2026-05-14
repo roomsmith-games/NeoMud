@@ -206,4 +206,82 @@ class OnKillFlagsTest {
         assertEquals("done", repo.getFlag(playerName, "quest:threshold_complete"))
         assertNull(repo.getFlag("OtherPlayer", "kill:sealed_one_seal"))
     }
+
+    @Test
+    fun `kill event integration - template lookup plus flag persistence`() = withTestDb { repo ->
+        val worldGraph = WorldGraph()
+        worldGraph.addRoom(Room(
+            id = "test:boss_room",
+            name = "Boss Room",
+            description = "",
+            zoneId = "test",
+            x = 0, y = 0,
+            exits = emptyMap()
+        ))
+
+        val data = NpcData(
+            id = "npc:test_boss",
+            name = "Test Boss",
+            description = "",
+            startRoomId = "test:boss_room",
+            behaviorType = "stationary",
+            hostile = true,
+            maxHp = 100,
+            damage = 10,
+            level = 5,
+            onKillFlags = mapOf("kill:test_boss" to "true", "quest:dungeon_clear" to "done")
+        )
+
+        val npcManager = NpcManager(worldGraph)
+        npcManager.loadNpcs(listOf(data to "test"))
+
+        val killerName = "HeroPlayer"
+        val templateId = "npc:test_boss"
+
+        val templateData = npcManager.getTemplateData(templateId)
+        assertTrue(templateData != null)
+        assertTrue(templateData.onKillFlags.isNotEmpty())
+
+        for ((flagKey, flagValue) in templateData.onKillFlags) {
+            repo.setFlag(killerName, flagKey, flagValue)
+        }
+
+        assertEquals("true", repo.getFlag(killerName, "kill:test_boss"))
+        assertEquals("done", repo.getFlag(killerName, "quest:dungeon_clear"))
+        assertNull(repo.getFlag("OtherPlayer", "kill:test_boss"))
+    }
+
+    @Test
+    fun `kill event with no onKillFlags does not set flags`() = withTestDb { repo ->
+        val worldGraph = WorldGraph()
+        worldGraph.addRoom(Room(
+            id = "test:room",
+            name = "Test Room",
+            description = "",
+            zoneId = "test",
+            x = 0, y = 0,
+            exits = emptyMap()
+        ))
+
+        val data = NpcData(
+            id = "npc:normal_mob",
+            name = "Normal Mob",
+            description = "",
+            startRoomId = "test:room",
+            behaviorType = "stationary",
+            hostile = true,
+            maxHp = 50,
+            damage = 5,
+            level = 1
+        )
+
+        val npcManager = NpcManager(worldGraph)
+        npcManager.loadNpcs(listOf(data to "test"))
+
+        val templateData = npcManager.getTemplateData("npc:normal_mob")
+        assertTrue(templateData != null)
+        assertTrue(templateData.onKillFlags.isEmpty())
+
+        assertNull(repo.getFlag("SomePlayer", "kill:normal_mob"))
+    }
 }

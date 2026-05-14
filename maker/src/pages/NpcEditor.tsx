@@ -64,6 +64,8 @@ interface NpcRecord {
   imageWidth: number;
   imageHeight: number;
   phases: string;
+  onKillFlags: string;
+  onSpawnRelockExits: string;
 }
 
 type MapMode = 'view' | 'start' | 'patrol' | 'spawns';
@@ -323,6 +325,8 @@ function NpcEditor() {
       attackSound: '', missSound: '', deathSound: '', interactSound: '', exitSound: '',
       imagePrompt: '', imageStyle: '', imageNegativePrompt: '', imageWidth: 384, imageHeight: 512,
       phases: '[]',
+      onKillFlags: '{}',
+      onSpawnRelockExits: '[]',
     });
   };
 
@@ -924,6 +928,87 @@ function NpcEditor() {
                     style={{ ...styles.modeBtn, width: '100%', marginTop: 4 }}
                     onClick={() => updatePhases([...phases, { name: '', hpThresholdPercent: 0.5, spriteId: '', damage: null, accuracy: null, defense: null, evasion: null, transitionMessage: '', transitionSound: '' }])}
                   >+ Add Phase</button>
+                </>
+              );
+            })()}
+
+            {/* Kill Flags (only for hostile NPCs) */}
+            {form.hostile && (() => {
+              let flags: Record<string, string> = {};
+              try { flags = JSON.parse(form.onKillFlags || '{}'); } catch { flags = {}; }
+              const flagEntries = Object.entries(flags);
+              const updateFlags = (updated: Record<string, string>) => handleChange('onKillFlags', JSON.stringify(updated));
+              return (
+                <>
+                  <div style={styles.sectionTitle}>Kill Flags</div>
+                  <div style={{ fontSize: 11, color: '#666', marginBottom: 8 }}>
+                    Player flags set when this NPC is killed. Used with CONDITIONAL_TRIGGER gating.
+                  </div>
+                  {flagEntries.map(([key, value], i) => (
+                    <div key={i} style={{ display: 'flex', gap: 4, marginBottom: 4, alignItems: 'center' }}>
+                      <input style={{ ...styles.input, flex: 2 }} value={key} placeholder="kill:boss_name" onChange={(e) => {
+                        const next = { ...flags };
+                        delete next[key];
+                        next[e.target.value] = value;
+                        updateFlags(next);
+                      }} />
+                      <input style={{ ...styles.input, flex: 1 }} value={value} placeholder="true" onChange={(e) => {
+                        updateFlags({ ...flags, [key]: e.target.value });
+                      }} />
+                      <button onClick={() => { const next = { ...flags }; delete next[key]; updateFlags(next); }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#d32f2f' }}>x</button>
+                    </div>
+                  ))}
+                  <button style={{ ...styles.modeBtn, width: '100%', marginTop: 4 }}
+                    onClick={() => updateFlags({ ...flags, '': 'true' })}>+ Add Kill Flag</button>
+                </>
+              );
+            })()}
+
+            {/* Spawn Relock Exits (only for hostile NPCs) */}
+            {form.hostile && (() => {
+              let relocks: any[] = [];
+              try { relocks = JSON.parse(form.onSpawnRelockExits || '[]'); } catch { relocks = []; }
+              const updateRelocks = (updated: any[]) => handleChange('onSpawnRelockExits', JSON.stringify(updated));
+              const updateRelock = (idx: number, key: string, value: string) => {
+                const next = [...relocks];
+                next[idx] = { ...next[idx], [key]: value };
+                updateRelocks(next);
+              };
+              return (
+                <>
+                  <div style={styles.sectionTitle}>Spawn Relock Exits</div>
+                  <div style={{ fontSize: 11, color: '#666', marginBottom: 8 }}>
+                    Exits to re-lock when this NPC spawns or respawns. Pairs with kill flags for boss gating.
+                  </div>
+                  {relocks.map((relock, i) => (
+                    <div key={i} style={{ border: '1px solid #ccc', borderRadius: 6, padding: 8, marginBottom: 8, backgroundColor: '#fff' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                        <span style={{ fontSize: 12, fontWeight: 700 }}>Relock {i + 1}</span>
+                        <button onClick={() => updateRelocks(relocks.filter((_, j) => j !== i))}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#d32f2f' }}>x</button>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 8px' }}>
+                        <div>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Room ID</label>
+                          <input style={styles.input} value={relock.roomId ?? ''} placeholder="zone:room_id" onChange={(e) => updateRelock(i, 'roomId', e.target.value)} />
+                        </div>
+                        <div>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Direction</label>
+                          <select style={styles.input} value={relock.direction ?? ''} onChange={(e) => updateRelock(i, 'direction', e.target.value)}>
+                            <option value="">Select...</option>
+                            {['NORTH', 'SOUTH', 'EAST', 'WEST', 'UP', 'DOWN'].map(d => <option key={d} value={d}>{d}</option>)}
+                          </select>
+                        </div>
+                        <div style={{ gridColumn: '1 / -1' }}>
+                          <label style={{ ...styles.label, fontSize: 11 }}>Interactable ID</label>
+                          <input style={styles.input} value={relock.interactableId ?? ''} placeholder="gate_interactable_id" onChange={(e) => updateRelock(i, 'interactableId', e.target.value)} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <button style={{ ...styles.modeBtn, width: '100%', marginTop: 4 }}
+                    onClick={() => updateRelocks([...relocks, { roomId: '', direction: '', interactableId: '' }])}>+ Add Relock Exit</button>
                 </>
               );
             })()}
