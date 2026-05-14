@@ -124,5 +124,14 @@ data class NpcData(
     val imageNegativePrompt: String = "",
     val imageWidth: Int = 384,
     val imageHeight: Int = 512,
-    val phases: List<BossPhaseData> = emptyList()
+    val phases: List<BossPhaseData> = emptyList(),
+    val onKillFlags: Map<String, String> = emptyMap(),
+    val onSpawnRelockExits: List<RelockExitData> = emptyList()
+)
+
+@Serializable
+data class RelockExitData(
+    val roomId: RoomId,
+    val direction: String,
+    val interactableId: String = ""
 )

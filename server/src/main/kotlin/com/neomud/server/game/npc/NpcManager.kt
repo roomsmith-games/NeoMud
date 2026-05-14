@@ -54,7 +54,9 @@ data class NpcState(
     val repeatDialogueScript: String = "",
     val phases: List<BossPhaseData> = emptyList(),
     var currentPhase: Int = 0,
-    var spriteOverride: String = ""
+    var spriteOverride: String = "",
+    val onKillFlags: Map<String, String> = emptyMap(),
+    val onSpawnRelockExits: List<com.neomud.server.world.RelockExitData> = emptyList()
 ) {
     /** Active spell effects on this NPC (DoT, HoT, etc.). */
     val activeEffects: MutableList<ActiveEffect> = mutableListOf()
@@ -114,7 +116,19 @@ class NpcManager(
         }
 
         for ((data, zoneId) in npcDataList) {
-            npcs.add(createNpcState(data, zoneId, data.id))
+            val state = createNpcState(data, zoneId, data.id)
+            npcs.add(state)
+            applySpawnRelocks(state)
+        }
+    }
+
+    private fun applySpawnRelocks(npc: NpcState) {
+        for (relock in npc.onSpawnRelockExits) {
+            val dir = try { Direction.valueOf(relock.direction) } catch (_: IllegalArgumentException) { continue }
+            worldGraph.relockExit(relock.roomId, dir)
+            if (relock.interactableId.isNotEmpty()) {
+                worldGraph.resetInteractable(relock.roomId, relock.interactableId)
+            }
         }
     }
 
@@ -158,7 +172,9 @@ class NpcManager(
             grantItemId = data.grantItemId,
             grantItemFlag = data.grantItemFlag,
             repeatDialogueScript = data.repeatDialogueScript,
-            phases = data.phases
+            phases = data.phases,
+            onKillFlags = data.onKillFlags,
+            onSpawnRelockExits = data.onSpawnRelockExits
         )
     }
 
@@ -280,6 +296,7 @@ class NpcManager(
                 spawned.spawnGraceTicks = GameConfig.Combat.NPC_SPAWN_GRACE_TICKS
             }
             npcs.add(spawned)
+            applySpawnRelocks(spawned)
             logger.info("Spawned ${spawned.name} ($instanceId) at $spawnRoom")
 
             events.add(
@@ -371,6 +388,9 @@ class NpcManager(
 
     fun getCrafterInRoom(roomId: RoomId): NpcState? =
         npcs.find { it.currentRoomId == roomId && it.behaviorType == "crafter" && it.isAlive }
+
+    fun getTemplateData(templateId: String): NpcData? =
+        allTemplates[templateId]?.first
 
     fun spawnAdminNpc(templateId: String, roomId: RoomId): NpcState? {
         val (data, zoneId) = allTemplates[templateId] ?: return null

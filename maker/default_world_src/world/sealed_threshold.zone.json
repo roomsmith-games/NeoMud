@@ -442,6 +442,9 @@
         "NORTH": "sealed_threshold:seal_antechamber",
         "SOUTH": "sealed_threshold:seal_epilogue"
       },
+      "lockedExits": {
+        "SOUTH": 99
+      },
       "backgroundImage": "/assets/images/rooms/sealed_threshold_seal_sanctum.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
@@ -450,7 +453,26 @@
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, dark, chaotic",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "interactables": []
+      "interactables": [
+        {
+          "id": "seal_sanctum_gate",
+          "label": "Ward-Sealed Passage",
+          "description": "The southern passage is sealed behind layers of compressed golden ward-energy. The containment circle's power holds the way shut — only proof of the Sealed One's defeat could break the ward.",
+          "actionType": "CONDITIONAL_TRIGGER",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "sound": "gate_open",
+          "actionData": {
+            "conditionType": "FLAG",
+            "requiredFlagKey": "kill:sealed_one_seal",
+            "requiredFlagValue": "true",
+            "successDirection": "SOUTH",
+            "successMessage": "With the Sealed One vanquished, the compressed seal energy dissipates in a cascade of golden light. The southern passage stands open, revealing a chamber of fading warmth beyond.",
+            "failureMessage": "A wall of compressed seal energy blocks the passage south. The Sealed One's power sustains it — only its defeat could release this barrier."
+          }
+        }
+      ]
     },
     {
       "id": "sealed_threshold:seal_epilogue",
@@ -627,6 +649,9 @@
         "NORTH": "sealed_threshold:sunder_antechamber",
         "SOUTH": "sealed_threshold:sunder_epilogue"
       },
+      "lockedExits": {
+        "SOUTH": 99
+      },
       "backgroundImage": "/assets/images/rooms/sealed_threshold_sunder_sanctum.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
@@ -635,7 +660,26 @@
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, golden, peaceful",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "interactables": []
+      "interactables": [
+        {
+          "id": "sunder_sanctum_gate",
+          "label": "Chaos Barrier",
+          "description": "The southern passage is blocked by a maelstrom of unchecked fracture energy. The chaotic barrier pulses with the same power the Sealed One wields — only its destruction could calm this storm.",
+          "actionType": "CONDITIONAL_TRIGGER",
+          "triggerType": "ON_ACTION",
+          "perceptionDC": 0,
+          "resetTicks": 0,
+          "sound": "gate_open",
+          "actionData": {
+            "conditionType": "FLAG",
+            "requiredFlagKey": "kill:sealed_one_sunder",
+            "requiredFlagValue": "true",
+            "successDirection": "SOUTH",
+            "successMessage": "With the Sealed One destroyed, the fracture maelstrom collapses inward and dissipates. The southern passage opens onto a chamber of vitrified silence.",
+            "failureMessage": "A maelstrom of unchecked fracture energy seals the passage south. The Sealed One's chaotic power sustains it — only its destruction could end this storm."
+          }
+        }
+      ]
     },
     {
       "id": "sealed_threshold:sunder_epilogue",
@@ -1042,7 +1086,17 @@
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, ancient sealed entity, golden ward-barriers, defensive boss form",
       "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
       "imageWidth": 512,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "onKillFlags": {
+        "kill:sealed_one_seal": "true"
+      },
+      "onSpawnRelockExits": [
+        {
+          "roomId": "sealed_threshold:seal_sanctum",
+          "direction": "SOUTH",
+          "interactableId": "seal_sanctum_gate"
+        }
+      ]
     },
     {
       "id": "npc:sealed_one_sunder",
@@ -1131,7 +1185,17 @@
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, ancient sealed entity, red-black chaos energy, aggressive boss form",
       "imageNegativePrompt": "background, scenery, ground, shadow, multiple figures, portrait crop, modern, sci-fi, anime, multiple poses, character sheet, turnaround",
       "imageWidth": 512,
-      "imageHeight": 384
+      "imageHeight": 384,
+      "onKillFlags": {
+        "kill:sealed_one_sunder": "true"
+      },
+      "onSpawnRelockExits": [
+        {
+          "roomId": "sealed_threshold:sunder_sanctum",
+          "direction": "SOUTH",
+          "interactableId": "sunder_sanctum_gate"
+        }
+      ]
     },
     {
       "id": "npc:seal_warden_spirit",

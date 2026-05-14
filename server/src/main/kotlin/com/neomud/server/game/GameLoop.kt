@@ -48,7 +48,8 @@ class GameLoop(
     private val movementTrailManager: MovementTrailManager? = null,
     private val spellCommand: SpellCommand? = null,
     private val spellCatalog: SpellCatalog? = null,
-    private val tutorialService: TutorialService? = null
+    private val tutorialService: TutorialService? = null,
+    private val playerFlagsRepository: com.neomud.server.persistence.repository.PlayerFlagsRepository? = null
 ) {
     private val logger = LoggerFactory.getLogger(GameLoop::class.java)
 
@@ -1141,6 +1142,16 @@ class GameLoop(
                         tutorialService.trySend(killerSession, "tut_first_kill")
                     }
                 } catch (_: Exception) { }
+            }
+        }
+
+        // Set kill flags on the killer (e.g., boss-gated exits).
+        // Uses event.killerName directly — no session lookup — so flags persist
+        // even if the killer disconnects between the kill and tick resolution.
+        val templateData = npcManager.getTemplateData(event.templateId.ifEmpty { event.npcId })
+        if (templateData != null && templateData.onKillFlags.isNotEmpty() && playerFlagsRepository != null) {
+            for ((flagKey, flagValue) in templateData.onKillFlags) {
+                playerFlagsRepository.setFlag(event.killerName, flagKey, flagValue)
             }
         }
 
