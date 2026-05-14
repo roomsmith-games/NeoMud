@@ -103,9 +103,9 @@ echo '[{"type": "select_target", "npcId": "npc:wolf_0"}, {"type": "attack_toggle
 | Interact vendor | `{"type": "interact_vendor"}` | Opens shop at current room's vendor |
 | Interact trainer | `{"type": "interact_trainer"}` | Opens trainer at current room |
 | Interact feature | `{"type": "interact_feature", "featureId": "cave_chest"}` | Interact with room feature — use `id` from `room.interactables` |
-| Make choice | `{"type": "make_choice", "featureId": "seal_sunder_choice", "choiceId": "seal"}` | Reply to a `choice_prompt` — use ids from `pendingPrompt.options` |
-| Place item | `{"type": "place_item", "featureId": "vault_door", "itemId": "item:vault_key"}` | Reply to a `place_item_prompt` — use `acceptedItems` from `pendingPrompt` |
-| Answer riddle | `{"type": "answer_riddle", "featureId": "sphinx_riddle", "answer": "time"}` | Reply to a `riddle_prompt` |
+| Make choice | `{"type": "make_choice", "feature_id": "seal_sunder_choice", "choice_id": "seal"}` | Reply to a `choice_prompt` — use ids from `pendingPrompt.options` |
+| Place item | `{"type": "place_item", "feature_id": "vault_door", "item_id": "item:vault_key"}` | Reply to a `place_item_prompt` — use `acceptedItems` from `pendingPrompt` |
+| Answer riddle | `{"type": "answer_riddle", "feature_id": "sphinx_riddle", "answer": "time"}` | Reply to a `riddle_prompt` |
 | Look | `{"type": "look"}` | Refresh room state |
 
 ### Waiting for Results
