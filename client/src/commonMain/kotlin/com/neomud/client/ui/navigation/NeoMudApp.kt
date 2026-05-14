@@ -229,15 +229,19 @@ fun NeoMudApp(
         }
 
         composable("guestRegister") {
+            val nameAvailability by authViewModel.nameAvailability.collectAsState()
             RegistrationScreen(
                 authState = authState,
                 availableClasses = availableClasses,
                 availableRaces = availableRaces,
                 serverBaseUrl = authViewModel.serverBaseUrl,
+                nameAvailability = nameAvailability,
                 isGuestMode = true,
                 onRegister = { characterName, characterClass, race, gender, allocatedStats ->
                     authViewModel.guestLogin(characterName, characterClass, race, gender, allocatedStats)
                 },
+                onCheckName = { authViewModel.checkName(it) },
+                onClearNameCheck = { authViewModel.clearNameCheck() },
                 onBack = {
                     // Auto-guest from the marketplace pops `login` inclusively when it
                     // navigates to `guestRegister`, so the back stack is empty here —
