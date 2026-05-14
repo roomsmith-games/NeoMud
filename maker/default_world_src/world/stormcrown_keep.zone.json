@@ -612,11 +612,15 @@
     {
       "id": "stormcrown_keep:stormcrown_throne",
       "name": "Stormcrown Throne",
-      "description": "The heart of Stormcrown Keep — a vast circular hall beneath a domed ceiling that has been blown completely open to the storm. Rain lashes down through the gap, and lightning strikes the iron crown-shaped finial at the dome's apex with metronomic regularity, each bolt feeding the purple veins that web the walls. At the center of the hall stands a raised dais of fused black iron, and upon it, a throne wrought from the same metal. Beyond the throne, a passage has been blasted through the eastern wall — its edges scorched and vitrified by an energy discharge of incredible power. Through it, a descending stairway leads down into raw rock and darkness. The air from below carries a scent of ancient stone and something that predates the keep by millennia. But the passage is choked with rubble. Whatever lies below will have to wait.",
+      "description": "The heart of Stormcrown Keep — a vast circular hall beneath a domed ceiling that has been blown completely open to the storm. Rain lashes down through the gap, and lightning strikes the iron crown-shaped finial at the dome's apex with metronomic regularity, each bolt feeding the purple veins that web the walls. At the center of the hall stands a raised dais of fused black iron, and upon it, a throne wrought from the same metal. Beyond the throne, a passage has been blasted through the eastern wall — its edges scorched and vitrified by an energy discharge of incredible power. Through it, a descending stairway leads down into raw rock and darkness. The air from below carries a scent of ancient stone and something that predates the keep by millennia. The rubble could be cleared with sufficient strength.",
       "x": 3,
       "y": 7,
       "exits": {
-        "SOUTH": "stormcrown_keep:throne_antechamber"
+        "SOUTH": "stormcrown_keep:throne_antechamber",
+        "NORTH": "sealed_threshold:descent"
+      },
+      "lockedExits": {
+        "NORTH": 99
       },
       "backgroundImage": "/assets/images/rooms/stormcrown_keep_stormcrown_throne.webp",
       "departSound": "footstep_stone",
@@ -625,7 +629,27 @@
       "imageStyle": "fantasy digital painting, dark atmospheric lighting, slightly painterly, fixed perspective, JRPG background, corrupted fortress interior",
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, bright, cheerful, calm, sunny",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "collapsed_passage",
+          "label": "Collapsed Passage",
+          "description": "The descending passage behind the throne is choked with rubble from the ceiling collapse. The stones are heavy but could be moved with sufficient strength.",
+          "actionType": "EXIT_OPEN",
+          "triggerType": "ON_ACTION",
+          "difficulty": 22,
+          "difficultyCheck": "STRENGTH",
+          "failureMessage": "You strain against the rubble, but it refuses to budge. You'll need more strength.",
+          "perceptionDC": 0,
+          "cooldownTicks": 3,
+          "resetTicks": 0,
+          "sound": "gate_open",
+          "icon": "",
+          "actionData": {
+            "direction": "NORTH"
+          }
+        }
+      ]
     }
   ],
   "npcs": [

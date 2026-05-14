@@ -1273,4 +1273,28 @@ class MessageSerializerTest {
         val decoded = MessageSerializer.decodeServerMessage(json) as ServerMessage.LoginOk
         assertTrue(!decoded.player.isGuest, "Default player should not be guest")
     }
+
+    @Test
+    fun testChoicePromptRoundTrip() {
+        val original = ServerMessage.ChoicePrompt(
+            featureId = "fracture_choice",
+            label = "The First Seal",
+            question = "Choose your path.",
+            options = listOf(
+                ServerMessage.ChoiceOption("seal", "Restore the Seal"),
+                ServerMessage.ChoiceOption("sunder", "Shatter the Seal")
+            )
+        )
+        val json = MessageSerializer.encodeServerMessage(original)
+        val decoded = MessageSerializer.decodeServerMessage(json)
+        assertEquals(original, decoded)
+    }
+
+    @Test
+    fun testMakeChoiceRoundTrip() {
+        val original = ClientMessage.MakeChoice(featureId = "fracture_choice", choiceId = "seal")
+        val json = MessageSerializer.encodeClientMessage(original)
+        val decoded = MessageSerializer.decodeClientMessage(json)
+        assertEquals(original, decoded)
+    }
 }

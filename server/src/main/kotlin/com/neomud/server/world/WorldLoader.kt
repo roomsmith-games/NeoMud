@@ -247,7 +247,7 @@ object WorldLoader {
                         }
                     }
                     "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT",
-                    "RIDDLE_PROMPT" -> { /* validated at runtime */ }
+                    "RIDDLE_PROMPT", "CHOICE_PROMPT" -> { /* validated at runtime */ }
                     "DAMAGE_TRAP" -> {
                         val saveStat = feat.actionData["saveStat"]
                         if (!saveStat.isNullOrBlank()) {

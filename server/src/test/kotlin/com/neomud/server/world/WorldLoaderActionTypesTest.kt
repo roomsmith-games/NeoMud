@@ -17,13 +17,14 @@ class WorldLoaderActionTypesTest {
 
         val allowlist = setOf(
             "EXIT_OPEN", "TELEPORT", "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT",
-            "DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "RIDDLE_PROMPT", "CONDITIONAL_TRIGGER"
+            "DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "RIDDLE_PROMPT", "CONDITIONAL_TRIGGER",
+            "CHOICE_PROMPT"
         )
         for (type in actionTypes) {
             assertTrue(type in allowlist, "Unknown actionType '$type' — not in WorldLoader allowlist")
         }
 
-        for (type in listOf("DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "CONDITIONAL_TRIGGER")) {
+        for (type in listOf("DAMAGE_TRAP", "PLACE_ITEM", "PUZZLE_STEP", "CONDITIONAL_TRIGGER", "CHOICE_PROMPT")) {
             assertTrue(type in actionTypes, "Expected actionType '$type' in world data")
         }
     }

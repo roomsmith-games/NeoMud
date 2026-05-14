@@ -224,6 +224,18 @@ sealed class ServerMessage {
     ) : ServerMessage()
 
     @Serializable
+    data class ChoiceOption(val id: String, val label: String)
+
+    @Serializable
+    @SerialName("choice_prompt")
+    data class ChoicePrompt(
+        @SerialName("feature_id") val featureId: String,
+        val label: String,
+        val question: String,
+        val options: List<ChoiceOption>
+    ) : ServerMessage()
+
+    @Serializable
     @SerialName("pong")
     data object Pong : ServerMessage()
 

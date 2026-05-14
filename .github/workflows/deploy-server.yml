@@ -113,10 +113,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          MANIFEST_VER=$(jq -r .version maker/default_world_src/manifest.json)
-          MAJOR=$(echo "$MANIFEST_VER" | cut -d. -f1)
-          MINOR=$(echo "$MANIFEST_VER" | cut -d. -f2)
-          VERSION="${MAJOR}.${MINOR}.${{ github.run_number }}"
+          VERSION=$(jq -r .version maker/default_world_src/manifest.json)
           CHANGELOG="CI publish from $(echo '${{ github.sha }}' | head -c 7)"
 
           echo "Publishing default-world v${VERSION}..."

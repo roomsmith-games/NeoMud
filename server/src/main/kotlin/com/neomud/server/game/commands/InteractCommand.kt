@@ -109,6 +109,7 @@ class InteractCommand(
             "DAMAGE_TRAP" -> executeDamageTrap(session, feat)
             "PLACE_ITEM" -> { sendPlaceItemPrompt(session, feat); return }
             "RIDDLE_PROMPT" -> { sendRiddlePrompt(session, feat); return }
+            "CHOICE_PROMPT" -> { sendChoicePrompt(session, feat); return }
             "PUZZLE_STEP" -> executePuzzleStep(session, roomId, feat)
             "CONDITIONAL_TRIGGER" -> executeConditionalTrigger(session, roomId, feat)
             else -> {
@@ -533,6 +534,102 @@ class InteractCommand(
         }
         val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "Correct. Something shifts."
         val openedExit = openSuccessExit(session, roomId, feat.actionData)
+        worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
+        session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))
+        if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
+    }
+
+    // ─── CHOICE_PROMPT ──────────────────────────────────────────────
+    // Two-phase: tap interactable → server sends ChoicePrompt with button options;
+    // client shows dialog → ClientMessage.MakeChoice → handleMakeChoice.
+
+    private suspend fun sendChoicePrompt(session: PlayerSession, feat: com.neomud.shared.model.RoomInteractable) {
+        val playerName = session.playerName ?: return
+        val flags = playerFlagsRepository
+        val flagKey = feat.actionData["flagKey"] ?: ""
+        if (flagKey.isNotBlank() && flags != null) {
+            val existing = flags.getFlag(playerName, flagKey)
+            if (!existing.isNullOrBlank()) {
+                val msg = feat.actionData["alreadyChosenMessage"]?.takeIf { it.isNotBlank() }
+                    ?: "Your choice has already been made."
+                session.send(ServerMessage.InteractResult(false, feat.label, msg))
+                return
+            }
+        }
+
+        val optionsJson = feat.actionData["options"] ?: "[]"
+        val options = try {
+            kotlinx.serialization.json.Json.decodeFromString<List<ServerMessage.ChoiceOption>>(optionsJson)
+        } catch (e: Exception) {
+            logger.warn("CHOICE_PROMPT invalid options JSON on ${feat.id}: ${e.message}")
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return
+        }
+        if (options.isEmpty()) {
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return
+        }
+
+        session.send(ServerMessage.ChoicePrompt(
+            featureId = feat.id,
+            label = feat.label,
+            question = feat.actionData["question"]?.takeIf { it.isNotBlank() } ?: "Make your choice.",
+            options = options
+        ))
+        val roomId = session.currentRoomId ?: return
+        session.interactableCooldowns["$roomId::${feat.id}"] = 1
+    }
+
+    suspend fun handleMakeChoice(session: PlayerSession, featureId: String, choiceId: String) {
+        val roomId = session.currentRoomId ?: return
+        val playerName = session.playerName ?: return
+        val feat = worldGraph.getInteractableDefs(roomId).find { it.id == featureId }
+        if (feat == null || feat.actionType != "CHOICE_PROMPT") {
+            session.send(ServerMessage.SystemMessage("There is nothing to choose here."))
+            return
+        }
+        if (worldGraph.isInteractableUsed(roomId, featureId)) {
+            session.send(ServerMessage.InteractResult(false, feat.label, "It doesn't seem to do anything more."))
+            return
+        }
+
+        val optionsJson = feat.actionData["options"] ?: "[]"
+        val options = try {
+            kotlinx.serialization.json.Json.decodeFromString<List<ServerMessage.ChoiceOption>>(optionsJson)
+        } catch (_: Exception) {
+            session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
+            return
+        }
+        if (options.none { it.id == choiceId }) {
+            session.send(ServerMessage.InteractResult(false, feat.label, "That is not a valid choice."))
+            return
+        }
+
+        val flags = playerFlagsRepository
+        val flagKey = feat.actionData["flagKey"] ?: ""
+        if (flagKey.isNotBlank() && flags != null) {
+            val existing = flags.getFlag(playerName, flagKey)
+            if (!existing.isNullOrBlank()) {
+                val msg = feat.actionData["alreadyChosenMessage"]?.takeIf { it.isNotBlank() }
+                    ?: "Your choice has already been made."
+                session.send(ServerMessage.InteractResult(false, feat.label, msg))
+                return
+            }
+            flags.setFlag(playerName, flagKey, choiceId)
+        }
+
+        val dirStr = feat.actionData["exitDirection_$choiceId"]
+        var openedExit = false
+        if (!dirStr.isNullOrBlank()) {
+            val direction = try { Direction.valueOf(dirStr) } catch (_: IllegalArgumentException) { null }
+            if (direction != null) {
+                worldGraph.unlockExit(roomId, direction)
+                openedExit = true
+            }
+        }
+
+        val msg = feat.actionData["successMessage_$choiceId"]?.takeIf { it.isNotBlank() }
+            ?: "Your choice has been sealed."
         worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
         session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))
         if (openedExit) resendRoomInfoToPlayersInRoom(roomId)

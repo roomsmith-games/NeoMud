@@ -328,6 +328,9 @@ class CommandProcessor(
             is ClientMessage.AnswerRiddle -> {
                 requireAuth(session) { interactCommand.handleRiddleAnswer(session, message.featureId, message.answer) }
             }
+            is ClientMessage.MakeChoice -> {
+                requireAuth(session) { interactCommand.handleMakeChoice(session, message.featureId, message.choiceId) }
+            }
             is ClientMessage.ReadySpell -> {
                 requireAuth(session) { handleReadySpell(session, message) }
             }

@@ -335,6 +335,7 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
                 <option value="PUZZLE_STEP">Puzzle Step (sequence)</option>
                 <option value="RIDDLE_PROMPT">Riddle Prompt (text answer)</option>
                 <option value="CONDITIONAL_TRIGGER">Conditional Trigger (gated passage)</option>
+                <option value="CHOICE_PROMPT">Choice Prompt (branching dialog)</option>
               </select>
             </div>
             <div>
@@ -627,6 +628,26 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
               <div style={{ gridColumn: '1 / 4' }}>
                 <label style={{ color: '#666' }}>Failure Message</label>
                 <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. You lack what is needed to pass." value={feat.actionData?.failureMessage || ''} onChange={(e) => setData(i, { failureMessage: e.target.value })} />
+              </div>
+            </div>
+          )}
+          {feat.actionType === 'CHOICE_PROMPT' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, marginTop: 4, fontSize: 10 }}>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Question (shown to player)</label>
+                <textarea style={{ ...styles.input, fontSize: 11, minHeight: 40 }} placeholder="e.g. The First Seal hangs before you..." value={feat.actionData?.question || ''} onChange={(e) => setData(i, { question: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Flag Key (permanent per-character flag set to chosen option ID)</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. choice:sealed_one_ending" value={feat.actionData?.flagKey || ''} onChange={(e) => setData(i, { flagKey: e.target.value })} />
+              </div>
+              <div style={{ gridColumn: '1 / 3' }}>
+                <label style={{ color: '#666' }}>Options JSON (array of {'{id, label}'})</label>
+                <textarea style={{ ...styles.input, fontSize: 11, minHeight: 40, fontFamily: 'monospace' }} placeholder='[{"id":"seal","label":"Restore the Seal"},{"id":"sunder","label":"Shatter the Seal"}]' value={feat.actionData?.options || '[]'} onChange={(e) => setData(i, { options: e.target.value })} />
+              </div>
+              <div>
+                <label style={{ color: '#666' }}>Already Chosen Message</label>
+                <input style={{ ...styles.input, fontSize: 11 }} placeholder="e.g. Your choice has already been made." value={feat.actionData?.alreadyChosenMessage || ''} onChange={(e) => setData(i, { alreadyChosenMessage: e.target.value })} />
               </div>
             </div>
           )}
