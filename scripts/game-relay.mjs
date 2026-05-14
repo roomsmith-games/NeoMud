@@ -757,6 +757,14 @@ const handlers = {
     pushEvent('interact', `${msg.featureName}: ${msg.message}`);
   },
 
+  npc_phase_shift(msg) {
+    pushEvent('phase_shift', `⚡ ${msg.npcName} — ${msg.phaseName}: ${msg.message} (${msg.currentHp}/${msg.maxHp} HP)`);
+  },
+  choice_prompt(msg) {
+    const opts = (msg.options || []).map(o => `[${o.id}] ${o.label}`).join(', ');
+    pushEvent('choice_prompt', `${msg.label}: ${msg.question} — Options: ${opts}`);
+  },
+
   // System
   system_message(msg) {
     pushEvent('system_message', msg.message);
