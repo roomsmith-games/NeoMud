@@ -1,12 +1,15 @@
 package com.neomud.server.game.npc
 
+import com.neomud.server.defaultWorldSource
 import com.neomud.server.game.npc.behavior.IdleBehavior
 import com.neomud.server.world.BossPhaseData
 import com.neomud.server.world.NpcData
 import com.neomud.server.world.WorldGraph
+import com.neomud.server.world.WorldLoader
 import com.neomud.shared.model.Room
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class NpcManagerPhaseTest {
@@ -85,6 +88,32 @@ class NpcManagerPhaseTest {
         val npcs = manager.getNpcsInRoom("keep:throne")
         assertEquals(1, npcs.size)
         assertEquals("", npcs[0].spriteOverride)
+    }
+
+    @Test
+    fun `sealed threshold bosses have phases in default world`() {
+        val result = WorldLoader.load(defaultWorldSource())
+        val manager = NpcManager(result.worldGraph)
+        manager.loadNpcs(result.npcDataList)
+
+        val sealBoss = manager.getNpcState("npc:sealed_one_seal")
+        assertNotNull(sealBoss, "Seal variant boss should be loaded")
+        assertEquals(2, sealBoss.phases.size, "Seal boss should have 2 phases")
+        assertEquals(0.66, sealBoss.phases[0].hpThresholdPercent)
+        assertEquals(0.33, sealBoss.phases[1].hpThresholdPercent)
+        assertEquals(72, sealBoss.phases[0].damage)
+        assertEquals(84, sealBoss.phases[1].damage)
+
+        val sunderBoss = manager.getNpcState("npc:sealed_one_sunder")
+        assertNotNull(sunderBoss, "Sunder variant boss should be loaded")
+        assertEquals(2, sunderBoss.phases.size, "Sunder boss should have 2 phases")
+        assertEquals(100, sunderBoss.phases[0].damage)
+        assertEquals(110, sunderBoss.phases[1].damage)
+
+        val guardian = manager.getNpcState("npc:threshold_guardian")
+        assertNotNull(guardian, "Threshold Guardian should be loaded")
+        assertEquals(1, guardian.phases.size, "Guardian should have 1 phase")
+        assertEquals(0.5, guardian.phases[0].hpThresholdPercent)
     }
 
     @Test

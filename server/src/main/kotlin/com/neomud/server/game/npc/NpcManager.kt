@@ -421,6 +421,7 @@ class NpcManager(
     ) {
         val npc = npcs.find { it.id == npcId && it.isAlive } ?: return
         if (npc.originalBehavior != null) return // already pursuing
+        if (npc.behaviorType !in listOf("wander", "patrol")) return
         npc.originalBehavior = npc.behavior
         npc.behavior = PursuitBehavior(
             targetPlayerId = targetPlayerId,

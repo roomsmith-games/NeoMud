@@ -8,7 +8,7 @@
   "spawnConfig": {
     "maxNpcsPerRoom": 2,
     "spawnIntervalTicks": 20,
-    "maxTotalNpcs": 8
+    "maxTotalNpcs": 14
   },
   "imageStyle": "fantasy environment, ancient underground ruins, fracture energy, game background",
   "imageNegativePrompt": "characters, people, modern, sci-fi, bright colors, outdoor",
@@ -252,6 +252,9 @@
             "failureMessage": "The gate is sealed with ancient ward-glyphs. It requires a key bearing the guardian's mark."
           }
         }
+      ],
+      "unpickableExits": [
+        "NORTH"
       ]
     },
     {
@@ -298,6 +301,10 @@
             "alreadyChosenMessage": "Your choice has already been made. The path you chose remains open."
           }
         }
+      ],
+      "unpickableExits": [
+        "WEST",
+        "EAST"
       ]
     },
     {
@@ -340,6 +347,9 @@
             "failureMessage": "The ward-light burns at your approach. This path is not yours."
           }
         }
+      ],
+      "unpickableExits": [
+        "WEST"
       ]
     },
     {
@@ -522,6 +532,9 @@
             "failureMessage": "The fracture energy lashes at your approach. This path is not yours."
           }
         }
+      ],
+      "unpickableExits": [
+        "EAST"
       ]
     },
     {

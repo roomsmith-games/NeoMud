@@ -313,9 +313,7 @@ class NpcManagerTest {
     }
 
     @Test
-    fun testIdleNpcDoesNotEngagePursuitOnDetection() {
-        // Idle hostile NPCs (bosses) should accept engagePursuit calls (they're still hostile),
-        // but MoveCommand filters them out by behaviorType — verify the NpcState field is correct
+    fun testIdleNpcDoesNotEngagePursuit() {
         val world = WorldGraph()
         world.addRoom(Room("test:a", "A", "", mapOf(Direction.EAST to "test:b"), "test", 0, 0))
         world.addRoom(Room("test:b", "B", "", mapOf(Direction.WEST to "test:a"), "test", 1, 0))
@@ -333,21 +331,43 @@ class NpcManagerTest {
         )
         manager.loadNpcs(listOf(bossData to "test", wandererData to "test"))
 
-        // Verify behaviorType is preserved on NpcState for filtering
-        val allHostiles = manager.getLivingHostileNpcsInRoom("test:a")
-        val boss = allHostiles.find { it.id == "npc:boss" }
-        val wolf = allHostiles.find { it.id == "npc:wolf" }
-        assertNotNull(boss)
-        assertNotNull(wolf)
-        assertEquals("idle", boss!!.behaviorType, "Boss should have idle behaviorType")
-        assertEquals("wander", wolf!!.behaviorType, "Wolf should have wander behaviorType")
+        val sessionManager = SessionManager()
+        val trailManager = MovementTrailManager()
+        trailManager.recordTrail("test:a", TrailEntry("Hero", "Hero", Direction.EAST, System.currentTimeMillis(), isPlayer = true))
 
-        // Simulate MoveCommand's detection filter: only non-idle NPCs pursue
-        val detectingHostiles = manager.getLivingHostileNpcsInRoom("test:a")
-            .filter { it.behaviorType != "idle" && it.originalBehavior == null }
+        manager.engagePursuit("npc:boss", "Hero", trailManager, sessionManager)
+        manager.engagePursuit("npc:wolf", "Hero", trailManager, sessionManager)
 
-        assertEquals(1, detectingHostiles.size, "Only non-idle NPCs should be in the detection list")
-        assertEquals("npc:wolf", detectingHostiles[0].id, "Wolf should be the one detecting, not boss")
+        val boss = manager.getLivingHostileNpcsInRoom("test:a").find { it.id == "npc:boss" }!!
+        val wolf = manager.getLivingHostileNpcsInRoom("test:a").find { it.id == "npc:wolf" }!!
+
+        assertIs<PursuitBehavior>(wolf.behavior, "Wander NPC should enter pursuit")
+        assertFalse(boss.behavior is PursuitBehavior, "Idle NPC should not enter pursuit")
+    }
+
+    @Test
+    fun testStationaryNpcDoesNotEngagePursuit() {
+        val world = WorldGraph()
+        world.addRoom(Room("test:a", "A", "", mapOf(Direction.EAST to "test:b"), "test", 0, 0))
+        world.addRoom(Room("test:b", "B", "", mapOf(Direction.WEST to "test:a"), "test", 1, 0))
+
+        val zoneConfigs = mapOf("test" to SpawnConfig(maxEntities = 10, maxPerRoom = 5, rateTicks = 0))
+        val manager = NpcManager(world, zoneConfigs)
+
+        val guardianData = NpcData(
+            "npc:guardian", "Threshold Guardian", "", startRoomId = "test:a",
+            behaviorType = "stationary", hostile = true, maxHp = 800, damage = 66
+        )
+        manager.loadNpcs(listOf(guardianData to "test"))
+
+        val sessionManager = SessionManager()
+        val trailManager = MovementTrailManager()
+        trailManager.recordTrail("test:a", TrailEntry("Hero", "Hero", Direction.EAST, System.currentTimeMillis(), isPlayer = true))
+
+        manager.engagePursuit("npc:guardian", "Hero", trailManager, sessionManager)
+
+        val guardian = manager.getLivingHostileNpcsInRoom("test:a").find { it.id == "npc:guardian" }!!
+        assertFalse(guardian.behavior is PursuitBehavior, "Stationary NPC should not enter pursuit")
     }
 
     @Test
