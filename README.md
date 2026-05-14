@@ -19,7 +19,7 @@ A love letter to the MUDs of the '90s, built with modern tools and vibes. 100% v
 
 NeoMud is a multiplayer dungeon game inspired by the text-based MUDs (Multi-User Dungeons) that consumed countless hours on dial-up connections in the 1990s. Games like MajorMUD, Legends of Kesmai, and the countless DikuMUD derivatives that ran on BBSes and early internet servers — where imagination filled in what pixels couldn't.
 
-This project is a tribute to that era, but it doesn't try to be a museum piece. It takes the core of what made MUDs great — exploration, combat, character progression, and shared worlds — and wraps it in a modern mobile client with room art, sprite overlays, and a real-time WebSocket backbone. The text log is still there. The direction pad is still there. But now you can *see* the tavern you're drinking in.
+This project is a tribute to that era, but it doesn't try to be a museum piece. It takes the core of what made MUDs great — exploration, combat, character progression, and shared worlds — and wraps it in a modern client with room art, sprite overlays, and a real-time WebSocket backbone. The text log is still there. The direction pad is still there. But now you can *see* the tavern you're drinking in.
 
 ## Why Vibe Code a MUD?
 
@@ -31,18 +31,37 @@ Because MUDs were the original MMOs, and they got a lot of things right that mod
 
 This project is vibe-coded — built iteratively with AI assistance, following intuition over architecture docs, letting the design emerge from play. It's not production software. It's a playground.
 
-## The World
+## The World: Warden's Reckoning
 
-The default world ships with **4 zones, 25 rooms, and 17 NPCs** across a progression from safe town to dangerous gorge:
+The default world ships with **23 zones, 335 rooms, and 139 NPCs** across a full story arc from safe starting town to branching endgame finale:
 
-| Zone | Level | Rooms | NPCs | Description |
-|------|-------|-------|------|-------------|
-| Millhaven | Safe | 7 | 5 | Starting town — vendors, trainers, temple, tavern |
-| Whispering Forest | 1-3 | 7 | 4 | First combat zone — wolves, bandits, skeletons |
-| Thornveil Marsh | 4-5 | 6 | 4 | Swamp zone — lizardfolk, bog horrors |
-| Blackstone Gorge | 6-7 | 5 | 4 | End-game — gorge stalkers, cave trolls |
+| Zone | Level | Rooms | Theme |
+|------|-------|-------|-------|
+| Millhaven | Safe | 8 | Starting town — vendors, trainers, temple, tavern |
+| Whispering Forest | 1–3 | 7 | First combat — wolves, bandits, skeletons |
+| Thornveil Marsh | 4–5 | 6 | Swamp — lizardfolk, bog horrors |
+| Blackstone Gorge | 6–7 | 5 | Gorge stalkers, cave trolls |
+| Cracked Plains | 6–8 | 23 | Open wasteland with crafting vendor |
+| Foothill Pass | 8–10 | 15 | Mountain approach |
+| Iron Vein Mine | 9–11 | 13 | Underground mine with puzzles |
+| Highmoor Steppes | 10–12 | 22 | Highland steppes |
+| Watcher's Barrow | 11–12 | 10 | Burial chambers with mini-boss |
+| Salt Coast | 13–15 | 20 | Coastal cliffs |
+| Drowned Chapel | 14–15 | 10 | Sunken ruins with riddle puzzles |
+| First Seal Approach | 15–17 | 16 | Dense forest approach |
+| Cradle of the Seal | 16–17 | 10 | Ancient seal site |
+| Skyveil Reach | 17–20 | 20 | High-altitude peaks |
+| Ashwood Burn | 19–22 | 19 | Volcanic wasteland |
+| Pyromancer's Folly | 20–22 | 9 | Fire dungeon |
+| Glass Desert | 21–24 | 21 | Shimmering desert |
+| Mirage Spire | 22–24 | 12 | Illusory tower |
+| Bone Wastes | 22–25 | 23 | Undead wasteland |
+| Necropolis of Vael | 23–25 | 17 | Necropolis dungeon |
+| Warlord's Hold | 25–27 | 10 | Fortified stronghold |
+| Stormcrown Keep | 25–27 | 17 | Boss keep with phase-shifting boss |
+| The Sealed Threshold | 28–30 | 22 | **Branching finale** — permanent choice, two boss variants |
 
-Every room has hand-prompted AI-generated background art. Every NPC and item has a sprite with proper alpha transparency. Every zone has background music and every action has sound effects — **460 assets** in total (357 images, 103 audio files).
+Every room has AI-generated background art. Every NPC and item has a sprite with proper alpha transparency. Every zone has background music and every action has sound effects — **1,081 assets** in total (955 images, 124 audio files).
 
 ## Features
 
@@ -50,6 +69,7 @@ Every room has hand-prompted AI-generated background art. Every NPC and item has
 - **6 races** (Human, Dwarf, Elf, Halfling, Gnome, Half-Orc) with stat modifiers and XP scaling
 - **15 classes** (Warrior, Paladin, Mage, Thief, Cleric, Druid, Ranger, Bard, and more) with unique skill/spell access
 - 6-stat system with 60 CP allocation at creation and CP gains per level for ongoing training
+- 5-tier trainer system gating level caps: T1(5) → T2(10) → T3(18) → T4(25) → T5(30)
 - 9 equipment slots with paperdoll equip/unequip UI
 - 270 unique player sprites (race/gender/class combinations)
 - Starter equipment granted on character creation
@@ -58,31 +78,43 @@ Every room has hand-prompted AI-generated background art. Every NPC and item has
 - **Tick-based** (1.5s) — all actions resolve in initiative order each tick
 - Weapon damage = Strength + bonus + random roll; armor reduces incoming (min 1)
 - **12 skills**: Bash (stun), Kick (knockback with direction picker), Backstab (from stealth), Parry, Dodge, Hide, Sneak, Meditate, Perception, Pick Lock, Track, Haggle
-- **23 spells** across 5 schools (Mage, Priest, Druid, Kai, Bard) — damage, heal, buff, DoT, HoT
+- **26 spells** across 5 schools (Mage, Priest, Druid, Kai, Bard) — damage, heal, buff, DoT, HoT
 - Spell auto-cast — ready a spell once, it fires each tick until cancelled or out of MP
-- Hostile NPC pursuit — engaged NPCs chase fleeing players
+- **Boss phase system** — HP-threshold phase transitions with stat changes, sprite swaps, and dramatic broadcasts
+- Hostile NPC pursuit — engaged NPCs chase fleeing players (wander/patrol types only)
 - Death respawns at temple with XP penalty
 
 ### NPCs & AI
-- 5 behavior types: idle, wander, patrol, vendor, trainer
+- 6 behavior types: idle, stationary, wander, patrol, vendor, trainer
 - Wander NPCs traverse connected rooms in their zone via random walks
 - Patrol NPCs walk fixed routes (configurable in the maker with click-to-build route editor)
 - Per-room and per-zone spawn caps with continuous respawn system
-- Vendors with charm-based pricing and Haggle skill discounts
-- Trainers for stat allocation and level-up
+- Vendors with charm-based pricing, equipped gear comparison, and Haggle skill discounts
+- Trainers for stat allocation and level-up (5 tiers)
+- Boss encounters with multi-phase HP-threshold transitions
+
+### Interactable System
+Room interactables are JSON-defined features: levers, traps, gates, puzzles, and branching choices.
+
+- **EXIT_OPEN** — strength/skill check to open a locked exit
+- **DAMAGE_TRAP** — deals damage on entry with stat-based save checks
+- **PUZZLE_STEP** — multi-step puzzles that unlock exits on completion
+- **PLACE_ITEM** — exchange an inventory item to open a path
+- **RIDDLE_PROMPT** — dialog riddle that must be answered correctly
+- **CONDITIONAL_TRIGGER** — gates exits on items, flags, or level requirements
+- **CHOICE_PROMPT** — permanent per-character branching dialog with path-specific consequences
 
 ### Items & Economy
-- 41 data-driven items: weapons, armor sets, consumables, scrolls, crafting materials
+- **206 data-driven items**: weapons, armor sets, consumables, scrolls, crafting materials, quest items
+- **22 crafting recipes** with crafting station NPCs
 - 4-tier coin system: Copper, Silver, Gold, Platinum
 - Loot tables per NPC type with weighted drop rates
-- 3 town vendors: tavern (potions), blacksmith (weapons/armor), enchantress (scrolls/enchanted gear)
+- Town vendors with buy/sell and equipped gear comparison indicators
 - Ground loot rendered as clickable sprites
 
 ### Client
-- **Stone & Torchlight UI** — custom dark medieval forge aesthetic across all screens: stone-framed panels with beveled edges, corner rivets, runic inner glow, and torchlight-gold typography (no Material3 defaults)
-- **Cross-platform icons** — all UI icons (skills, spells, toolbar, status effects) use Material Icons `ImageVector` objects via a centralized `MudIcons` registry — vector-drawn by Compose on every platform, no emoji or font dependencies
-- Login/registration splash screen with embedded forge background art and cinematic intro BGM
-- Equipment paperdoll with tap-to-inspect flow (stats, description, unequip) instead of instant unequip
+- **Stone & Torchlight UI** — custom dark medieval forge aesthetic across all screens: stone-framed panels with beveled edges, corner rivets, runic inner glow, and torchlight-gold typography
+- **Cross-platform** — Android, Desktop (JVM), iOS, and Web (WASM)
 - Room scene: background art + NPC sprites + item sprites + player sprites
 - BFS-based minimap with fog-of-war, zone color-coding, locked/hidden/interactable exit indicators
 - 10-direction navigation (cardinal, diagonal, up/down)
@@ -91,12 +123,12 @@ Every room has hand-prompted AI-generated background art. Every NPC and item has
 - Icon grid inventory with item sprites and tap-to-use
 - Per-zone background music with crossfade on zone transitions
 - Sound effects for combat, spells, movement, and interactions
-- Configurable volume controls for BGM and SFX
+- **Tutorial system** — blocking modal dialogs and passive coach marks for new players
+- **Help panel** — 10-section "Adventurer's Tome" accessible from toolbar
 
 ### Audio
-- AI-generated sound effects via ElevenLabs — 104 audio files across combat, spells, items, NPCs, and ambient categories
-- AI-composed background music via ElevenLabs — 5 BGM tracks including cinematic login theme
-- Per-zone background music with crossfade transitions
+- AI-generated sound effects via ElevenLabs — 124 audio files across combat, spells, items, NPCs, and ambient categories
+- AI-composed background music — per-zone BGM with crossfade transitions
 - Embedded intro theme plays on login screen without server connection
 - Per-NPC attack, miss, death, and interaction sounds
 - Per-weapon attack and miss sounds
@@ -108,12 +140,13 @@ The Maker is a full-featured web-based world editor for building and managing ga
 
 ### Editors
 - **Zone Editor** — visual room placement on a shared global coordinate grid, click-to-connect exits, room properties (effects, hidden exits, interactables, spawn caps), and a **world map view** showing all zones simultaneously with per-zone coloring
-- **NPC Editor** — 3-panel layout with NPC list, zone map visualization (BFS-based wander reachability, patrol route rendering, spawn point markers), and full property editing
+- **NPC Editor** — 3-panel layout with NPC list, zone map visualization (BFS-based wander reachability, patrol route rendering, spawn point markers), and full property editing including boss phases
 - **Item Editor** — weapons, armor, consumables, scrolls with type-specific fields
 - **Class Editor** — stat minimums, allowed skills/spells per class
 - **Race Editor** — stat modifiers and XP scaling
 - **Spell Editor** — damage, heal, buff, DoT/HoT with school and level requirements
 - **Skill Editor** — active/passive skills with class restrictions and cooldowns
+- **Recipe Editor** — crafting recipes with ingredient lists and station requirements
 - **PC Sprite Editor** — manage 270 player sprites with race/gender/class filtering
 - **Default SFX Editor** — assign and preview sounds across all entity types
 - **Settings** — API keys for AI generation services
@@ -131,15 +164,15 @@ The Maker is a full-featured web-based world editor for building and managing ga
 NeoMud/
 ├── shared/     Kotlin Multiplatform — models and protocol shared between client and server
 ├── server/     Ktor 3.x + Netty — WebSocket game server with SQLite persistence
-├── client/     Compose Multiplatform — game client (Android + Desktop + iOS)
+├── client/     Compose Multiplatform — game client (Android + Desktop + iOS + WASM)
 ├── maker/      React 18 + Express — web-based world editor and GM toolkit
 ├── scripts/    Utility scripts (background removal, game relay, etc.)
 └── .claude/    AI agents, skills, and memory for Claude Code tooling
 ```
 
-**Server** runs a 1.5-second tick-based game loop. Combat actions queue on the player session and resolve each tick in initiative order: bash, kick, readied spell, then melee. NPC behaviors (wander, patrol, pursuit, attack) execute after combat. All NPC kills flow through a single handler for loot, XP, and state cleanup. The world is loaded from a `.nmd` bundle at startup — a self-contained ZIP archive, similar to DOOM's WAD files.
+**Server** runs a 1.5-second tick-based game loop. Combat actions queue on the player session and resolve each tick in initiative order: bash, kick, readied spell, then melee. NPC behaviors (wander, patrol, pursuit, attack) execute after combat. All NPC kills flow through a single handler for loot, XP, and state cleanup. Boss encounters use an HP-threshold phase system that clamps HP, overrides stats, and swaps sprites at transition points. The world is loaded from a `.nmd` bundle at startup — a self-contained ZIP archive, similar to DOOM's WAD files.
 
-**Client** is a Compose Multiplatform application — 89% of the code (UI components, screens, viewmodels, networking) lives in a shared `commonMain` source set, with only platform-specific glue (entry point, audio, logging) in `androidMain`, `desktopMain`, and `iosMain`. Runs on Android, Desktop (JVM), and iOS today, with Web planned. All UI icons use Material Icons (`ImageVector`) for guaranteed cross-platform rendering — no emoji, no platform font dependencies. The client connects over WebSocket and renders the game as a layered scene. The protocol is type-safe sealed classes with `kotlinx.serialization` — client and server share the same Kotlin types at compile time via the shared module.
+**Client** is a Compose Multiplatform application — 89% of the code (UI components, screens, viewmodels, networking) lives in a shared `commonMain` source set, with only platform-specific glue (entry point, audio, logging) in `androidMain`, `desktopMain`, `iosMain`, and `wasmJsMain`. Runs on Android, Desktop (JVM), iOS, and Web (WASM/Kotlin). All UI icons use Material Icons (`ImageVector`) for guaranteed cross-platform rendering. The client connects over WebSocket and renders the game as a layered scene. The protocol is type-safe sealed classes with `kotlinx.serialization` — client and server share the same Kotlin types at compile time via the shared module.
 
 **Maker** is a separate web application for world authoring. It has its own database, its own API, and exports `.nmd` bundles that the server consumes. The zone editor renders all zones on a single shared coordinate grid, enforcing global spatial consistency.
 
@@ -150,26 +183,27 @@ NeoMud/
 | Language | Kotlin 2.3 (JVM 21) |
 | Server | Ktor 3.4 + Netty |
 | Database | SQLite + Exposed ORM |
-| Client | Compose Multiplatform (Android + Desktop + iOS, Web planned) |
+| Client | Compose Multiplatform (Android + Desktop + iOS + WASM) |
 | Images | Coil 3 (WebP with transparency, multiplatform) |
-| Audio | Android MediaPlayer + SoundPool; Desktop JavaFX Media; iOS AVFoundation (via expect/actual `PlatformAudioManager`) |
+| Audio | Android MediaPlayer + SoundPool; Desktop JavaFX Media; iOS AVFoundation; WASM Howler.js (via expect/actual `PlatformAudioManager`) |
 | Protocol | kotlinx.serialization over WebSocket |
 | Navigation | JetBrains Navigation Compose (multiplatform) |
 | Lifecycle | JetBrains Lifecycle ViewModel (multiplatform) |
 | Shared Code | Kotlin Multiplatform |
 | Build | Gradle 9.2 with configuration cache |
 | Maker | React 18 + Express + Prisma + SQLite |
+| CI/CD | GitHub Actions — test, build Docker images, deploy to staging |
+| Observability | Sentry (server + WASM client) |
 
 ## By the Numbers
 
 | Metric | Count |
 |--------|-------|
-| Lines of code | ~46,700 (35.8k Kotlin, 10.9k TypeScript) |
-| Commits | 321 |
-| Tests | 1,364 (439 server, 392 shared, 203 client, 330 maker) |
-| Assets | 461 (357 images, 104 audio) |
+| Lines of code | ~67,000 (53k Kotlin, 14k TypeScript) |
+| Commits | 602 |
+| Assets | 1,081 (955 images, 124 audio) |
 | Player sprites | 270 (6 races x 3 genders x 15 classes) |
-| World content | 4 zones, 25 rooms, 17 NPCs, 41 items, 23 spells, 12 skills, 15 classes, 6 races |
+| World content | 23 zones, 335 rooms, 139 NPCs, 206 items, 26 spells, 12 skills, 22 recipes, 15 classes, 6 races |
 
 ## Running It
 
@@ -229,6 +263,7 @@ For building from source, running clients, or working on the Maker.
 | Server | JDK 21 (e.g., Amazon Corretto) |
 | Android client | JDK 21 + Android SDK (platform 34+) + emulator or device (min SDK 26) |
 | Desktop client | JDK 21 (no extra dependencies) |
+| WASM client | JDK 21 (built by Gradle, served as static files) |
 | Maker | Node.js 18+ |
 
 #### macOS
@@ -321,6 +356,14 @@ To build native installers:
 ./gradlew :client:packageDeb    # Linux .deb
 ```
 
+#### Client (Web/WASM)
+
+```bash
+./gradlew :client:wasmJsBrowserDistribution   # Build production WASM bundle
+```
+
+Output goes to `client/build/dist/wasmJs/productionExecutable/`. Serve with any static file server. The WASM client is also deployed automatically to staging via CI.
+
 #### Client (iOS)
 
 Requires macOS with Xcode 15+ installed. The iOS client is built via Kotlin Multiplatform's iOS framework embedding.
@@ -344,23 +387,24 @@ On first run, it auto-imports the default world. The Maker is a standalone web a
 #### Tests
 
 ```bash
-./gradlew :shared:jvmTest :server:test              # Server + shared tests (831 tests)
-./gradlew :client:testDebugUnitTest :client:desktopTest  # Client tests — Android + Desktop (203 tests)
-cd maker && npx vitest run                           # Maker tests (330 tests)
+./gradlew :shared:jvmTest :server:test                   # Server + shared tests
+./gradlew :client:testDebugUnitTest :client:desktopTest   # Client tests — Android + Desktop
+cd maker && npx vitest run                                # Maker tests
 ```
 
-Client UI tests live in `commonTest` and run on both Android (via Robolectric) and Desktop (via Skiko). Paparazzi screenshot tests remain Android-only. iOS tests compile-check on all platforms and run on macOS with a simulator.
+Client UI tests live in `commonTest` and run on both Android (via Robolectric) and Desktop (via Skiko). Paparazzi screenshot tests remain Android-only.
 
 #### Creating a Release
 
-Tag a version and push — GitHub Actions builds the fat JAR, runs tests, and publishes a release with the artifact attached.
+Tag a version and push — GitHub Actions builds the fat JAR, WASM client, and world bundle, runs tests, publishes a GitHub release with artifacts, and pushes Docker images to GHCR.
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+# 1. Bump version in maker/default_world_src/manifest.json
+# 2. Commit and push to master (deploys to staging automatically)
+# 3. Tag and push
+git tag v1.0.1
+git push origin v1.0.1
 ```
-
-The version number bakes into the JAR automatically via `./gradlew updateVersion` (called by the workflow). Format: `NeoMud alpha 0.1.0.0`.
 
 ## AI Tooling
 
@@ -371,6 +415,7 @@ This project is built entirely with [Claude Code](https://claude.com/claude-code
 | `/game-designer` | RPG balance analysis — models combat math, audits data files, proposes tuning changes |
 | `/playtest` | AI playtester — plays the game via WebSocket relay, files GitHub issues for bugs |
 | `/worldmaker` | Browser-based QA agent — tests the Maker UI through Playwright interaction |
+| `/web-uat-test` | End-to-end browser testing of the WASM client and marketplace |
 | `/bugfixer` | Automated issue triage — works through the GitHub backlog |
 | `/elevenlabs-sfx` | Sound effect and BGM generation via ElevenLabs AI |
 | `/rebuild-world` | Rebuilds the `.nmd` bundle after asset changes |
@@ -379,29 +424,25 @@ Agent memory in `.claude/agent-memory/` persists findings across sessions — th
 
 ## Roadmap
 
-### Near Term
-- [ ] Game balance pass — L4 equipment tier, T3 damage spells for Priest/Kai/Bard, class viability fixes ([#188](https://github.com/roomsmith-games/NeoMud/issues/188)-[#196](https://github.com/roomsmith-games/NeoMud/issues/196))
-- [ ] Fill dead-end rooms with content (Forest Cave, Marsh Island, Gorge Alcove) ([#194](https://github.com/roomsmith-games/NeoMud/issues/194))
-- [ ] BGM seamless looping ([#113](https://github.com/roomsmith-games/NeoMud/issues/113))
-- [x] Replace raw JSON fields in maker editors with structured UI controls
-- [x] Multiplatform UI test infrastructure — client tests run on Android, Desktop, and iOS
+### Completed
+- [x] **Warden's Reckoning** — full story arc across 23 zones, 335 rooms (L1–30)
+- [x] Boss phase system with HP-threshold transitions
+- [x] Interactable system (traps, puzzles, riddles, branching choices)
+- [x] Crafting system with 22 recipes
+- [x] WASM web client — zero-install browser play
+- [x] Desktop (JVM) and iOS clients with full feature parity
+- [x] Tutorial system for new players
+- [x] CI/CD pipeline with automated staging deployment
+- [x] Sentry observability (server + WASM client)
 
-### Medium Term
-- [ ] Quest system — kill quests, fetch quests, quest log, NPC dialogue trees
-- [ ] Crafting system — use the crafting materials that currently drop with no purpose
-- [ ] Boss encounters with special mechanics
-- [ ] Multiplayer stress testing — concurrent combat, reconnection, edge cases
-
-### Multiplatform Clients
-- [x] Desktop (JVM) client — JavaFX audio, Ktor CIO networking, full feature parity ([#140](https://github.com/roomsmith-games/NeoMud/issues/140))
-- [x] iOS client — Kotlin/Native + AVFoundation audio, Material Icons for cross-platform icon rendering ([#141](https://github.com/roomsmith-games/NeoMud/issues/141))
-- [ ] Web (Wasm) client — zero-install browser play ([#142](https://github.com/roomsmith-games/NeoMud/issues/142))
-
-### Future Vision
+### Future
+- [ ] Endless Spire — procedural endgame dungeon
 - [ ] Party system with shared XP and group combat
 - [ ] PvP — dueling, arenas, or PvP zones
 - [ ] World events — timed spawns, invasions
 - [ ] Player guilds and social features
+- [ ] Disarm skill
+- [ ] Chat UI improvements
 
 ## The Spirit of the Thing
 
