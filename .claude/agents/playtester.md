@@ -59,7 +59,7 @@ Available races: DWARF, ELF, GNOME, HALFLING, HALF_ORC, HUMAN
 Read `scripts/relay-state.json` to see everything about the current game state:
 
 - **player** — name, class, race, level, hp/maxHp, mp/maxMp, xp, stats
-- **room** — id, name, description, exits (direction → roomId)
+- **room** — id, name, description, exits (direction → roomId), interactables (id, label, description, actionType, triggerType)
 - **npcsInRoom** — list of NPCs with id, name, hostile flag, hp/maxHp
 - **playersInRoom** — other players present
 - **groundItems** / **groundCoins** — loot on the ground
@@ -69,6 +69,7 @@ Read `scripts/relay-state.json` to see everything about the current game state:
 - **attackMode** / **selectedTarget** — combat state
 - **isHidden** / **isMeditating** — stealth and meditation state
 - **activeEffects** — buffs, debuffs, DoTs, HoTs
+- **pendingPrompt** — if non-null, a two-phase interactable is waiting for your response (type: choice/place_item/riddle, featureId, plus type-specific fields)
 - **recentEvents** — timestamped log of everything that happened (combat hits, kills, loot, movement, chat, system messages)
 
 ### Sending Commands
@@ -101,6 +102,10 @@ echo '[{"type": "select_target", "npcId": "npc:wolf_0"}, {"type": "attack_toggle
 | Say | `{"type": "say", "message": "Hello!"}` | Chat in current room |
 | Interact vendor | `{"type": "interact_vendor"}` | Opens shop at current room's vendor |
 | Interact trainer | `{"type": "interact_trainer"}` | Opens trainer at current room |
+| Interact feature | `{"type": "interact_feature", "featureId": "cave_chest"}` | Interact with room feature — use `id` from `room.interactables` |
+| Make choice | `{"type": "make_choice", "featureId": "seal_sunder_choice", "choiceId": "seal"}` | Reply to a `choice_prompt` — use ids from `pendingPrompt.options` |
+| Place item | `{"type": "place_item", "featureId": "vault_door", "itemId": "item:vault_key"}` | Reply to a `place_item_prompt` — use `acceptedItems` from `pendingPrompt` |
+| Answer riddle | `{"type": "answer_riddle", "featureId": "sphinx_riddle", "answer": "time"}` | Reply to a `riddle_prompt` |
 | Look | `{"type": "look"}` | Refresh room state |
 
 ### Waiting for Results

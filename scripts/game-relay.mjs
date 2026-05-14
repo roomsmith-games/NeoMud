@@ -355,6 +355,7 @@ const state = {
   activeEffects: [],
   availableSkills: [],
   availableSpells: [],
+  pendingPrompt: null,
   recentEvents: [],
 };
 
@@ -755,6 +756,8 @@ const handlers = {
   // World features
   interact_result(msg) {
     pushEvent('interact', `${msg.featureName}: ${msg.message}`);
+    state.pendingPrompt = null;
+    scheduleStateWrite();
   },
 
   npc_phase_shift(msg) {
@@ -763,6 +766,20 @@ const handlers = {
   choice_prompt(msg) {
     const opts = (msg.options || []).map(o => `[${o.id}] ${o.label}`).join(', ');
     pushEvent('choice_prompt', `${msg.label}: ${msg.question} — Options: ${opts}`);
+    state.pendingPrompt = { type: 'choice', featureId: msg.featureId, label: msg.label, question: msg.question, options: msg.options };
+    scheduleStateWrite();
+  },
+  place_item_prompt(msg) {
+    const accepted = (msg.acceptedItems || []).join(', ');
+    pushEvent('place_item_prompt', `${msg.label}: ${msg.prompt} — Accepted items: ${accepted}`);
+    state.pendingPrompt = { type: 'place_item', featureId: msg.featureId, label: msg.label, prompt: msg.prompt, acceptedItems: msg.acceptedItems };
+    scheduleStateWrite();
+  },
+  riddle_prompt(msg) {
+    const hint = msg.hint ? ` (Hint: ${msg.hint})` : '';
+    pushEvent('riddle_prompt', `${msg.label}: ${msg.question}${hint}`);
+    state.pendingPrompt = { type: 'riddle', featureId: msg.featureId, label: msg.label, question: msg.question, hint: msg.hint };
+    scheduleStateWrite();
   },
 
   // System
@@ -832,6 +849,13 @@ function updateRoom(room, players, npcs) {
     name: room.name,
     description: room.description || '',
     exits: room.exits || {},
+    interactables: (room.interactables || []).map(i => ({
+      id: i.id,
+      label: i.label || i.id,
+      description: i.description || '',
+      actionType: i.actionType || '',
+      triggerType: i.triggerType || 'ON_ACTION',
+    })),
   };
   state.playersInRoom = (players || []).map(formatPlayerInfo);
   state.npcsInRoom = (npcs || []).map(n => ({
@@ -842,9 +866,10 @@ function updateRoom(room, players, npcs) {
     hp: n.currentHp ?? n.hp ?? 0,
     maxHp: n.maxHp ?? 0,
   }));
-  // Reset ground items — server will send room_items_update separately
+  // Reset ground items and pending prompts — server will send room_items_update separately
   state.groundItems = [];
   state.groundCoins = { copper: 0, silver: 0, gold: 0 };
+  state.pendingPrompt = null;
   scheduleStateWrite();
 }
 
