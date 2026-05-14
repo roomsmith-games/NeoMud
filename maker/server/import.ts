@@ -439,6 +439,8 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           imageWidth: npc.imageWidth ?? legacyNpc?.width ?? 384,
           imageHeight: npc.imageHeight ?? legacyNpc?.height ?? 512,
           phases: JSON.stringify(npc.phases ?? []),
+          onKillFlags: JSON.stringify(npc.onKillFlags ?? {}),
+          onSpawnRelockExits: JSON.stringify(npc.onSpawnRelockExits ?? []),
         },
       })
     }

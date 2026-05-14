@@ -341,7 +341,7 @@ function NpcEditor() {
     if (!form.zoneId) { setError('Zone is required'); return; }
 
     // Validate JSON fields
-    for (const key of ['vendorItems', 'crafterRecipes', 'trainerConfig', 'lootItems', 'coinDrop']) {
+    for (const key of ['vendorItems', 'crafterRecipes', 'trainerConfig', 'lootItems', 'coinDrop', 'onKillFlags', 'onSpawnRelockExits']) {
       const val = form[key];
       if (val && val.trim()) {
         try { JSON.parse(val); } catch { setError(`Invalid JSON in ${key}`); return; }
@@ -960,7 +960,10 @@ function NpcEditor() {
                     </div>
                   ))}
                   <button style={{ ...styles.modeBtn, width: '100%', marginTop: 4 }}
-                    onClick={() => updateFlags({ ...flags, '': 'true' })}>+ Add Kill Flag</button>
+                    onClick={() => {
+                      if ('' in flags) return;
+                      updateFlags({ ...flags, '': 'true' });
+                    }}>+ Add Kill Flag</button>
                 </>
               );
             })()}
