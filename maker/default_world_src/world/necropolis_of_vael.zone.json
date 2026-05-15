@@ -542,6 +542,14 @@
           "chance": 0.3,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:bone_edge_blade",
+          "chance": 0.05
+        },
+        {
+          "itemId": "item:bone_plate_helm",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -586,6 +594,10 @@
           "chance": 0.25,
           "minQuantity": 1,
           "maxQuantity": 3
+        },
+        {
+          "itemId": "item:bone_stalker_fang",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -629,6 +641,14 @@
           "chance": 0.4,
           "minQuantity": 2,
           "maxQuantity": 4
+        },
+        {
+          "itemId": "item:bone_plate_cuirass",
+          "chance": 0.04
+        },
+        {
+          "itemId": "item:bone_wardens_mace",
+          "chance": 0.03
         }
       ],
       "coinDrop": {
@@ -672,6 +692,10 @@
           "chance": 0.2,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:death_speakers_robes",
+          "chance": 0.02
         }
       ],
       "coinDrop": {
@@ -750,6 +774,6 @@
   "spawnConfig": {
     "maxEntities": 6,
     "maxPerRoom": 2,
-    "rateTicks": 5
+    "rateTicks": 20
   }
 }

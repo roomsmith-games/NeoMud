@@ -405,7 +405,7 @@
       "maxHp": 175,
       "damage": 35,
       "level": 14,
-      "xpReward": 250,
+      "xpReward": 380,
       "accuracy": 20,
       "defense": 16,
       "evasion": 18,
@@ -424,6 +424,10 @@
           "chance": 0.35,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:scorched_hide_boots",
+          "chance": 0.08
         }
       ],
       "coinDrop": {
@@ -443,7 +447,7 @@
       "maxHp": 155,
       "damage": 33,
       "level": 14,
-      "xpReward": 230,
+      "xpReward": 350,
       "accuracy": 19,
       "defense": 14,
       "evasion": 20,
@@ -462,6 +466,10 @@
           "chance": 0.5,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:ashweave_gloves",
+          "chance": 0.08
         }
       ],
       "coinDrop": {
@@ -479,7 +487,7 @@
       "maxHp": 220,
       "damage": 38,
       "level": 15,
-      "xpReward": 300,
+      "xpReward": 420,
       "accuracy": 18,
       "defense": 20,
       "evasion": 10,
@@ -504,6 +512,10 @@
           "chance": 0.3,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:charred_bark_shield",
+          "chance": 0.06
         }
       ],
       "coinDrop": {
@@ -523,7 +535,7 @@
       "maxHp": 185,
       "damage": 37,
       "level": 15,
-      "xpReward": 280,
+      "xpReward": 400,
       "accuracy": 20,
       "defense": 15,
       "evasion": 19,
@@ -542,6 +554,10 @@
           "chance": 0.45,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:cinder_cloak",
+          "chance": 0.06
         }
       ],
       "coinDrop": {
@@ -561,7 +577,7 @@
       "maxHp": 200,
       "damage": 39,
       "level": 15,
-      "xpReward": 310,
+      "xpReward": 440,
       "accuracy": 21,
       "defense": 17,
       "evasion": 17,
@@ -586,6 +602,10 @@
           "chance": 0.3,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:ember_scored_greaves",
+          "chance": 0.06
         }
       ],
       "coinDrop": {
@@ -605,7 +625,7 @@
       "maxHp": 160,
       "damage": 34,
       "level": 14,
-      "xpReward": 240,
+      "xpReward": 360,
       "accuracy": 19,
       "defense": 15,
       "evasion": 17,
@@ -636,6 +656,10 @@
           "chance": 0.3,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:ashweave_gloves",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -680,7 +704,7 @@
       "hostile": false,
       "interactSound": "vendor_greet",
       "exitSound": "vendor_farewell",
-      "vendorItems": ["item:fire_ward_scroll", "item:ash_salve", "item:health_potion", "item:mana_potion"],
+      "vendorItems": ["item:fire_ward_scroll", "item:ash_salve", "item:health_potion", "item:mana_potion", "item:charred_bark_shield", "item:ember_scored_greaves", "item:ashweave_gloves", "item:cinder_cloak", "item:scorched_hide_boots"],
       "imagePrompt": "Full-body stocky soot-blackened dwarf merchant with permanent squint, gravel-rough expression, heavy leather apron over work-clothes, surrounded by goods and wares, facing the viewer. Single character, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, dwarf merchant, soot and earth tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, tall, slender",

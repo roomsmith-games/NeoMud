@@ -397,6 +397,10 @@
           "chance": 0.85,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:cliff_hawk_longbow",
+          "chance": 0.1
         }
       ],
       "coinDrop": {
@@ -466,6 +470,21 @@
       "imagePrompt": "Full-body stoic middle-aged human warden standing upright facing the viewer on a windswept ridge, plain weathered leather armor without insignia, leaning on a gnarled wooden staff, far-seeing patient eyes, no weapon visible. Single character, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background, weighted and watchful",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, young, glamorous, ornate armor",
+      "imageWidth": 384,
+      "imageHeight": 384
+    },
+    {
+      "id": "npc:hilga_trader",
+      "name": "Hilga the Wandering Trader",
+      "description": "A broad-shouldered dwarven woman with sun-darkened skin and a pack mule's worth of gear strapped to her back. She trades up and down the mountain passes, selling serviceable arms and armor to anyone with coin. Her prices are fair and her advice blunt.",
+      "startRoomId": "foothills:crossroads",
+      "behaviorType": "vendor",
+      "vendorItems": ["item:steel_greatsword", "item:plated_chest", "item:plated_helm", "item:plated_legs", "item:plated_gauntlets", "item:plated_boots", "item:tower_shield", "item:mystic_staff", "item:health_potion", "item:mana_potion", "item:greater_health_potion"],
+      "interactSound": "vendor_greet",
+      "dialogueScript": "Looking to gear up before the mine? Smart. The Cavemother's brood has been picking off the unprepared for months. Take a look — everything I sell has been tested on the trail.",
+      "imagePrompt": "Full-body broad-shouldered female dwarf trader with sun-darkened skin, heavy pack of goods strapped to her back, practical traveling clothes with leather apron, coin purse at hip, sturdy boots, confident stance, facing viewer. Single character, isolated on solid white background, no ground, no scenery.",
+      "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, dwarven merchant, earth tones, practical",
+      "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime, tall, slender, ornate",
       "imageWidth": 384,
       "imageHeight": 384
     }

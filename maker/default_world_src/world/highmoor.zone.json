@@ -547,6 +547,7 @@
       "exitSound": "barkeep_exit",
       "vendorItems": [
         "item:steppe_blade",
+        "item:tidecallers_staff",
         "item:moor_charm_ring",
         "item:health_potion",
         "item:greater_health_potion",
@@ -555,7 +556,9 @@
         "item:wolf_pelt_cloak",
         "item:fang_pendant",
         "item:chain_coif",
-        "item:chainmail_vest"
+        "item:chainmail_vest",
+        "item:steppe_leather_greaves",
+        "item:steppe_leather_bracers"
       ],
       "imagePrompt": "Full-body wide-shouldered human trader standing upright facing the viewer, oiled brown leather coat patched at the shoulders, large careful hands, closed neutral face, simple wool tunic underneath, no weapon held but a knife at the belt. Single character, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background, working trader, muted earth tones",
@@ -598,6 +601,10 @@
           "chance": 0.2,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:steppe_leather_greaves",
+          "chance": 0.08
         }
       ],
       "coinDrop": {
@@ -636,6 +643,10 @@
           "chance": 0.85,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:steppe_leather_bracers",
+          "chance": 0.08
         }
       ],
       "coinDrop": {

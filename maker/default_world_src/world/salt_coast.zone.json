@@ -599,6 +599,10 @@
           "chance": 0.85,
           "minQuantity": 1,
           "maxQuantity": 2
+        },
+        {
+          "itemId": "item:salt_spray_bow",
+          "chance": 0.06
         }
       ],
       "coinDrop": {
@@ -691,6 +695,10 @@
           "chance": 0.35,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:riptide_dagger",
+          "chance": 0.06
         }
       ],
       "coinDrop": {

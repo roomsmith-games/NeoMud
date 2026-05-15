@@ -285,6 +285,118 @@
       "outputItemId": "item:scroll_of_flame_shield",
       "outputQuantity": 2,
       "levelRequirement": 4
+    },
+    {
+      "id": "recipe:steppe_leather_greaves",
+      "name": "Steppe Leather Greaves",
+      "description": "Hardened leather leg guards treated with wolf tallow.",
+      "category": "armor",
+      "materials": [
+        { "itemId": "item:steppe_wolf_pelt", "quantity": 3 },
+        { "itemId": "item:cliff_hawk_talon", "quantity": 2 }
+      ],
+      "cost": { "silver": 8 },
+      "outputItemId": "item:steppe_leather_greaves",
+      "outputQuantity": 1,
+      "levelRequirement": 10
+    },
+    {
+      "id": "recipe:steppe_leather_bracers",
+      "name": "Steppe Leather Bracers",
+      "description": "Forearm guards of thick steppe leather.",
+      "category": "armor",
+      "materials": [
+        { "itemId": "item:steppe_wolf_pelt", "quantity": 2 },
+        { "itemId": "item:cliff_hawk_talon", "quantity": 1 }
+      ],
+      "cost": { "silver": 6 },
+      "outputItemId": "item:steppe_leather_bracers",
+      "outputQuantity": 1,
+      "levelRequirement": 10
+    },
+    {
+      "id": "recipe:cliff_hawk_longbow",
+      "name": "Cliff Hawk Longbow",
+      "description": "A recurve bow crafted from hawk talon-cores and mountain ash.",
+      "category": "weapon",
+      "materials": [
+        { "itemId": "item:cliff_hawk_talon", "quantity": 3 },
+        { "itemId": "item:hawk_feather", "quantity": 2 }
+      ],
+      "cost": { "silver": 8 },
+      "outputItemId": "item:cliff_hawk_longbow",
+      "outputQuantity": 1,
+      "levelRequirement": 10
+    },
+    {
+      "id": "recipe:riptide_dagger",
+      "name": "Riptide Dagger",
+      "description": "A dagger forged from coastal iron and crab carapace.",
+      "category": "weapon",
+      "materials": [
+        { "itemId": "item:riptide_carapace", "quantity": 3 },
+        { "itemId": "item:drift_wight_ectoplasm", "quantity": 2 }
+      ],
+      "cost": { "silver": 12 },
+      "outputItemId": "item:riptide_dagger",
+      "outputQuantity": 1,
+      "levelRequirement": 12
+    },
+    {
+      "id": "recipe:ember_scored_greaves",
+      "name": "Ember-Scored Greaves",
+      "description": "Leg guards forged from salvaged iron and scored with ember-lines.",
+      "category": "armor",
+      "materials": [
+        { "itemId": "item:ember_fang", "quantity": 3 },
+        { "itemId": "item:cinder_dust", "quantity": 2 }
+      ],
+      "cost": { "silver": 16 },
+      "outputItemId": "item:ember_scored_greaves",
+      "outputQuantity": 1,
+      "levelRequirement": 14
+    },
+    {
+      "id": "recipe:cinder_cloak",
+      "name": "Cinder Cloak",
+      "description": "A cloak of ash-wraith essence-infused fabric.",
+      "category": "armor",
+      "materials": [
+        { "itemId": "item:ash_wraith_essence", "quantity": 3 },
+        { "itemId": "item:cinder_dust", "quantity": 2 }
+      ],
+      "cost": { "silver": 14 },
+      "outputItemId": "item:cinder_cloak",
+      "outputQuantity": 1,
+      "levelRequirement": 14
+    },
+    {
+      "id": "recipe:rift_iron_greaves",
+      "name": "Rift-Iron Greaves",
+      "description": "Leg armor forged from rift-iron and seal essence.",
+      "category": "armor",
+      "materials": [
+        { "itemId": "item:iron_ore", "quantity": 3 },
+        { "itemId": "item:seal_essence", "quantity": 2 }
+      ],
+      "cost": { "gold": 1 },
+      "outputItemId": "item:rift_iron_greaves",
+      "outputQuantity": 1,
+      "levelRequirement": 18
+    },
+    {
+      "id": "recipe:bone_plate_greaves",
+      "name": "Bone Plate Greaves",
+      "description": "Leg armor assembled from bone plates and necromantic sinew.",
+      "category": "armor",
+      "materials": [
+        { "itemId": "item:bone_dust", "quantity": 4 },
+        { "itemId": "item:prowler_fang", "quantity": 2 }
+      ],
+      "cost": { "gold": 2 },
+      "outputItemId": "item:bone_plate_greaves",
+      "outputQuantity": 1,
+      "levelRequirement": 22
     }
   ]
 }

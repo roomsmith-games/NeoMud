@@ -562,6 +562,10 @@
           "chance": 0.08,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:bone_plate_greaves",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -612,6 +616,10 @@
           "chance": 0.06,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:bone_gauntlets",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -792,6 +800,10 @@
           "chance": 0.25,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:bone_warden_shield",
+          "chance": 0.04
         }
       ],
       "coinDrop": {
@@ -845,7 +857,10 @@
       "vendorItems": [
         "item:bone_edge_blade",
         "item:bone_plate_cuirass",
-        "item:bone_plate_helm"
+        "item:bone_plate_helm",
+        "item:bone_plate_greaves",
+        "item:bone_gauntlets",
+        "item:bone_warden_shield"
       ],
       "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Wiry sun-darkened scavenger man with gap-toothed grin, weathered leather gear with bone ornaments, merchant satchels and salvaged goods, desert survivalist, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",
       "imageStyle": "fantasy humanoid sprite, full body, front-facing, clean edges, game asset, wasteland merchant",
@@ -857,6 +872,6 @@
   "spawnConfig": {
     "maxEntities": 8,
     "maxPerRoom": 2,
-    "rateTicks": 4
+    "rateTicks": 18
   }
 }

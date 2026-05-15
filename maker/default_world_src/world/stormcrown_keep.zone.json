@@ -880,7 +880,7 @@
           "name": "Dark Reckoning",
           "hpThresholdPercent": 0.5,
           "spriteId": "npc:stormcrown_phase2",
-          "damage": 82,
+          "damage": 76,
           "accuracy": 40,
           "defense": 24,
           "evasion": 28,

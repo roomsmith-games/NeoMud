@@ -355,7 +355,23 @@
       "imageStyle": "fantasy digital painting, warm light against dark stone, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "interactables": [
+        {
+          "id": "cavemothers_hoard",
+          "label": "pile of plundered gear",
+          "description": "Weapons, armor, and coin purses from the Cavemother's victims.",
+          "actionType": "TREASURE_DROP",
+          "triggerType": "ON_ACTION",
+          "actionData": {
+            "items": "item:fang_carved_blade,item:venom_silk_robes,item:greater_health_potion,item:iron_ore,item:iron_vein_wand",
+            "minCopper": "200",
+            "maxCopper": "500",
+            "minSilver": "5",
+            "maxSilver": "12"
+          }
+        }
+      ]
     }
   ],
   "npcs": [
@@ -486,6 +502,10 @@
           "chance": 0.25,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:iron_vein_wand",
+          "chance": 0.06
         }
       ],
       "coinDrop": {

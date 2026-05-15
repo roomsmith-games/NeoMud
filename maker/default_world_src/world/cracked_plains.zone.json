@@ -16,7 +16,7 @@
     {
       "id": "cracked_plains:rift_edge_south",
       "name": "Southern Rift Edge",
-      "description": "You stand on the edge of a shattered plateau, wind screaming across bare stone. A deep rift yawns before you \u2014 fifty feet across at its narrowest, dropping into blue-shadowed darkness. To the east, a half-collapsed stone bridge spans the gap. Below, the rift floor is dimly visible, streaked with bioluminescent moss. Behind you, a precarious descent leads back down to the Ashwood ridge.",
+      "description": "You stand on the edge of a shattered plateau, wind screaming across bare stone. A deep rift yawns before you — fifty feet across at its narrowest, dropping into blue-shadowed darkness. To the east, a half-collapsed stone bridge spans the gap. Below, the rift floor is dimly visible, streaked with bioluminescent moss. Behind you, a precarious descent leads back down to the Ashwood ridge.",
       "x": 2,
       "y": 35,
       "exits": {
@@ -46,7 +46,7 @@
             "perceptionDC": "16",
             "saveDC": "16",
             "damageType": "physical",
-            "noticeMessage": "You spot the fracture lines in the stone \u2014 one wrong step and the whole ledge gives way.",
+            "noticeMessage": "You spot the fracture lines in the stone — one wrong step and the whole ledge gives way.",
             "triggerMessage": "The stone crumbles beneath your feet! You scramble as the edge drops away into the rift!",
             "saveMessage": "You throw yourself backward as the ledge collapses, catching solid ground by inches.",
             "failMessage": "The stone gives way and you tumble, slamming against the rift wall before catching a handhold. Bruised and bleeding, you haul yourself back up."
@@ -57,7 +57,7 @@
     {
       "id": "cracked_plains:broken_bridge",
       "name": "Broken Bridge",
-      "description": "A massive stone bridge once spanned the rift here \u2014 now only half remains, the far end sheared clean away and dropped into the chasm below. Someone has laid rough-hewn planks across the gap, lashed together with rope. The crossing is narrow and the wind is merciless.",
+      "description": "A massive stone bridge once spanned the rift here — now only half remains, the far end sheared clean away and dropped into the chasm below. Someone has laid rough-hewn planks across the gap, lashed together with rope. The crossing is narrow and the wind is merciless.",
       "x": 3,
       "y": 35,
       "exits": {
@@ -76,7 +76,7 @@
     {
       "id": "cracked_plains:east_plateau",
       "name": "East Plateau",
-      "description": "Beyond the bridge, the plateau stretches eastward \u2014 cracked and barren, dotted with scrub brush clinging to crevices. The stone is pale grey, scarred with long fissures running roughly north-south. To the south, the ground slopes toward a collapsed shelf where a secondary rift cuts in from the east.",
+      "description": "Beyond the bridge, the plateau stretches eastward — cracked and barren, dotted with scrub brush clinging to crevices. The stone is pale grey, scarred with long fissures running roughly north-south. To the south, the ground slopes toward a collapsed shelf where a secondary rift cuts in from the east.",
       "x": 4,
       "y": 35,
       "exits": {
@@ -95,7 +95,7 @@
     {
       "id": "cracked_plains:collapsed_shelf",
       "name": "Collapsed Shelf",
-      "description": "A section of the plateau has sheared away here, forming a jagged shelf that drops in broken tiers toward the rift floor far below. The descent looks possible \u2014 barely \u2014 down a series of fractured ledges and exposed rock faces. The air rising from the rift is cool and damp, carrying the faint glow of fungal light.",
+      "description": "A section of the plateau has sheared away here, forming a jagged shelf that drops in broken tiers toward the rift floor far below. The descent looks possible — barely — down a series of fractured ledges and exposed rock faces. The air rising from the rift is cool and damp, carrying the faint glow of fungal light.",
       "x": 4,
       "y": 34,
       "exits": {
@@ -113,8 +113,8 @@
     },
     {
       "id": "cracked_plains:rift_floor_south",
-      "name": "Rift Floor \u2014 South",
-      "description": "The bottom of the rift. Towering walls of layered stone rise on either side, narrowing the sky to a strip of grey light far above. The floor is uneven \u2014 a mix of fallen rubble, mineral deposits, and patches of bioluminescent moss that pulses with a slow blue-green rhythm. Water seeps down the walls in thin rivulets.",
+      "name": "Rift Floor — South",
+      "description": "The bottom of the rift. Towering walls of layered stone rise on either side, narrowing the sky to a strip of grey light far above. The floor is uneven — a mix of fallen rubble, mineral deposits, and patches of bioluminescent moss that pulses with a slow blue-green rhythm. Water seeps down the walls in thin rivulets.",
       "x": 2,
       "y": 34,
       "exits": {
@@ -163,7 +163,7 @@
             "perceptionDC": "17",
             "saveDC": "17",
             "damageType": "poison",
-            "noticeMessage": "You catch the acrid tang of rift-gas before you step into the worst of it \u2014 you can hold your breath and move quickly.",
+            "noticeMessage": "You catch the acrid tang of rift-gas before you step into the worst of it — you can hold your breath and move quickly.",
             "triggerMessage": "A geyser of hot, caustic gas erupts from the rift floor! The fumes burn your lungs!",
             "saveMessage": "You hold your breath and push through the gas cloud, eyes watering but otherwise unharmed.",
             "failMessage": "The toxic fumes sear your throat and lungs. You stagger, retching, vision blurring."
@@ -174,7 +174,7 @@
     {
       "id": "cracked_plains:rift_junction",
       "name": "Rift Junction",
-      "description": "Two rifts intersect here, creating a wider chamber at the bottom of the earth. The ceiling is high \u2014 thirty feet of open air before the walls close in again above. Stalactites of mineral deposit hang from the overhang, and a shallow pool of clear water has collected where the floors meet. Side passages branch in several directions.",
+      "description": "Two rifts intersect here, creating a wider chamber at the bottom of the earth. The ceiling is high — thirty feet of open air before the walls close in again above. Stalactites of mineral deposit hang from the overhang, and a shallow pool of clear water has collected where the floors meet. Side passages branch in several directions.",
       "x": 3,
       "y": 33,
       "exits": {
@@ -194,7 +194,7 @@
     {
       "id": "cracked_plains:fungal_grotto",
       "name": "Fungal Grotto",
-      "description": "A side-chamber off the main rift, thick with enormous shelf fungi growing from every surface. The bioluminescence here is intense \u2014 clusters of glowing mushrooms in blues, greens, and pale violet carpet the walls and ceiling, making the grotto shimmer like a subterranean night sky. The air is warm and humid, rich with spores.",
+      "description": "A side-chamber off the main rift, thick with enormous shelf fungi growing from every surface. The bioluminescence here is intense — clusters of glowing mushrooms in blues, greens, and pale violet carpet the walls and ceiling, making the grotto shimmer like a subterranean night sky. The air is warm and humid, rich with spores.",
       "x": 3,
       "y": 32,
       "exits": {
@@ -211,7 +211,7 @@
     },
     {
       "id": "cracked_plains:rift_floor_east",
-      "name": "Rift Floor \u2014 East",
+      "name": "Rift Floor — East",
       "description": "The eastern arm of the rift, narrower and rougher than the south. Fallen stone from the collapsed shelf above has created a field of tumbled boulders, and rift crawlers have strung webs between them. A natural staircase of eroded rock climbs the north wall toward daylight.",
       "x": 4,
       "y": 33,
@@ -250,8 +250,8 @@
     },
     {
       "id": "cracked_plains:rift_floor_north",
-      "name": "Rift Floor \u2014 North",
-      "description": "The northern end of the main rift, where it begins to shallow out. A rope ladder has been staked into the rock here, dangling from an iron ring hammered into the plateau above \u2014 someone uses this route regularly. The walls are scarred with old pick-marks, as if miners once worked the exposed mineral seams.",
+      "name": "Rift Floor — North",
+      "description": "The northern end of the main rift, where it begins to shallow out. A rope ladder has been staked into the rock here, dangling from an iron ring hammered into the plateau above — someone uses this route regularly. The walls are scarred with old pick-marks, as if miners once worked the exposed mineral seams.",
       "x": 2,
       "y": 32,
       "exits": {
@@ -270,7 +270,7 @@
     {
       "id": "cracked_plains:north_plateau",
       "name": "North Plateau",
-      "description": "Back on the surface, the plateau stretches northward under a vast grey sky. The rifts are narrower here but more numerous \u2014 hairline cracks radiating outward like a shattered mirror. A war-road of packed dirt and crushed stone cuts east through the wasteland, and a lone signal cairn stands on a rise to the west.",
+      "description": "Back on the surface, the plateau stretches northward under a vast grey sky. The rifts are narrower here but more numerous — hairline cracks radiating outward like a shattered mirror. A war-road of packed dirt and crushed stone cuts east through the wasteland, and a lone signal cairn stands on a rise to the west.",
       "x": 2,
       "y": 31,
       "exits": {
@@ -290,7 +290,7 @@
     {
       "id": "cracked_plains:east_bluffs",
       "name": "East Bluffs",
-      "description": "High ground on the eastern edge of the cracked plateau, where the stone drops away in sheer bluffs. Far below, a dead landscape of scattered bones and sun-bleached wreckage stretches to the horizon. The wind is savage here \u2014 it howls across the bluffs with enough force to stagger you. A war-road comes in from the west.",
+      "description": "High ground on the eastern edge of the cracked plateau, where the stone drops away in sheer bluffs. Far below, a dead landscape of scattered bones and sun-bleached wreckage stretches to the horizon. The wind is savage here — it howls across the bluffs with enough force to stagger you. A war-road comes in from the west.",
       "x": 4,
       "y": 31,
       "exits": {
@@ -310,7 +310,7 @@
     {
       "id": "cracked_plains:signal_cairn",
       "name": "Signal Cairn",
-      "description": "A tall cairn of stacked stones stands on a rise in the plateau \u2014 one of the old Warden signal stations, used to relay fire-warnings across the plains before the rifts shattered the network. Someone has been here recently: fresh ashes in a fire-pit, a bedroll stashed in a crevice, and scratch-marks in the stone that look like tactical notes.",
+      "description": "A tall cairn of stacked stones stands on a rise in the plateau — one of the old Warden signal stations, used to relay fire-warnings across the plains before the rifts shattered the network. Someone has been here recently: fresh ashes in a fire-pit, a bedroll stashed in a crevice, and scratch-marks in the stone that look like tactical notes.",
       "x": 1,
       "y": 31,
       "exits": {
@@ -359,7 +359,7 @@
             "perceptionDC": "17",
             "saveDC": "17",
             "damageType": "physical",
-            "noticeMessage": "You spot the tripwire stretched across the road \u2014 a crude but effective bandit alarm rigged to spring-loaded crossbow bolts.",
+            "noticeMessage": "You spot the tripwire stretched across the road — a crude but effective bandit alarm rigged to spring-loaded crossbow bolts.",
             "triggerMessage": "Your foot catches a wire! Spring-loaded crossbow bolts fire from concealed positions on both sides of the road!",
             "saveMessage": "You dive flat as bolts whistle overhead, rolling clear of the kill zone.",
             "failMessage": "A crossbow bolt catches you in the side before you can react. The impact spins you and drops you to one knee."
@@ -370,7 +370,7 @@
     {
       "id": "cracked_plains:cliff_roost",
       "name": "Cliff Roost",
-      "description": "A jutting overhang on the bluffs where cliff harpies have nested \u2014 the stone is streaked white with droppings, and the nests are crude tangles of bone, cloth, and stolen equipment. The harpies wheel and shriek overhead, territorial and aggressive. The view from here is staggering: the entire cracked plateau spreads north and west, rift-lines visible as dark veins in the pale stone.",
+      "description": "A jutting overhang on the bluffs where cliff harpies have nested — the stone is streaked white with droppings, and the nests are crude tangles of bone, cloth, and stolen equipment. The harpies wheel and shriek overhead, territorial and aggressive. The view from here is staggering: the entire cracked plateau spreads north and west, rift-lines visible as dark veins in the pale stone.",
       "x": 4,
       "y": 30,
       "exits": {
@@ -389,7 +389,7 @@
     {
       "id": "cracked_plains:ruined_fort",
       "name": "Ruined Fort",
-      "description": "An old Warden wayfort, half-collapsed into the rift it once guarded. The walls still stand on the north side, but the southern half has fallen away into the chasm, and you can see the levels of the fort exposed in cross-section \u2014 like a doll's house split open. Stone stairs descend from a doorway in the floor, leading down toward the approach to Drask's Hold far below.",
+      "description": "An old Warden wayfort, half-collapsed into the rift it once guarded. The walls still stand on the north side, but the southern half has fallen away into the chasm, and you can see the levels of the fort exposed in cross-section — like a doll's house split open. Stone stairs descend from a doorway in the floor, leading down toward the approach to Drask's Hold far below.",
       "x": 3,
       "y": 30,
       "exits": {
@@ -408,7 +408,7 @@
         {
           "id": "collapsing_floor_trap",
           "label": "Weakened Floor",
-          "description": "The floor here is patchwork \u2014 original stone mixed with crude repairs over the void below.",
+          "description": "The floor here is patchwork — original stone mixed with crude repairs over the void below.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
           "perceptionDC": 18,
@@ -418,7 +418,7 @@
             "perceptionDC": "18",
             "saveDC": "18",
             "damageType": "physical",
-            "noticeMessage": "You can see where the floor has been patched with loose stone over a void \u2014 stepping around the weak spots should be easy enough.",
+            "noticeMessage": "You can see where the floor has been patched with loose stone over a void — stepping around the weak spots should be easy enough.",
             "triggerMessage": "The floor gives way! You plunge through rotten timber and loose stone toward the level below!",
             "saveMessage": "You catch the edge as the floor collapses, swinging yourself clear of the drop.",
             "failMessage": "You crash through two levels of rotten flooring before slamming into solid stone below. Everything hurts."
@@ -429,7 +429,7 @@
     {
       "id": "cracked_plains:bone_field",
       "name": "Bone Field",
-      "description": "A grim stretch of plateau where the remains of old battles bleach in the wind. Bones \u2014 human, animal, and things less identifiable \u2014 are scattered across the cracked stone, along with rusted weapons and scraps of armor. Drask's bandits have staked skulls on poles along the road as a warning. The war-road continues west toward the fortress approach. To the south, the stone gives way to something strange \u2014 a glittering expanse of fused glass stretching to the horizon, shimmering with heat haze.",
+      "description": "A grim stretch of plateau where the remains of old battles bleach in the wind. Bones — human, animal, and things less identifiable — are scattered across the cracked stone, along with rusted weapons and scraps of armor. Drask's bandits have staked skulls on poles along the road as a warning. The war-road continues west toward the fortress approach. To the south, the stone gives way to something strange — a glittering expanse of fused glass stretching to the horizon, shimmering with heat haze.",
       "x": 3,
       "y": 29,
       "exits": {
@@ -449,7 +449,7 @@
     {
       "id": "cracked_plains:west_ridge",
       "name": "West Ridge",
-      "description": "A narrow ridge of unbroken stone running along the western edge of the plateau. The ground drops away steeply on both sides \u2014 the rift to the east, and a long slope of loose scree to the west. Wind funnels along the ridge with enough force to make walking difficult. Ahead, the ridge connects to the war-road near the fortress approach.",
+      "description": "A narrow ridge of unbroken stone running along the western edge of the plateau. The ground drops away steeply on both sides — the rift to the east, and a long slope of loose scree to the west. Wind funnels along the ridge with enough force to make walking difficult. Ahead, the ridge connects to the war-road near the fortress approach.",
       "x": 1,
       "y": 30,
       "exits": {
@@ -468,7 +468,7 @@
     {
       "id": "cracked_plains:hold_approach",
       "name": "Hold Approach",
-      "description": "The war-road ends at the lip of the deepest rift on the plateau \u2014 a chasm two hundred feet deep, its far wall carved into a fortress. The Warlord's Hold. Stone battlements jut from the cliff face at three levels, connected by external stairs and rope bridges. A heavy timber drawbridge spans the gap to the fortress gates. Bandit sentries watch from the battlements above.",
+      "description": "The war-road ends at the lip of the deepest rift on the plateau — a chasm two hundred feet deep, its far wall carved into a fortress. The Warlord's Hold. Stone battlements jut from the cliff face at three levels, connected by external stairs and rope bridges. A heavy timber drawbridge spans the gap to the fortress gates. Bandit sentries watch from the battlements above.",
       "x": 2,
       "y": 29,
       "exits": {
@@ -489,7 +489,7 @@
     {
       "id": "cracked_plains:hold_gates",
       "name": "Hold Gates",
-      "description": "The far end of the drawbridge, where iron-banded timber gates open into the cliff face. The stone around the entrance is carved with crude trophies \u2014 old Warden seals defaced with bandit marks, hammered flat and mounted as mockeries. The air changes as you step inside: cooler, still, and heavy with the smell of smoke and unwashed bodies.",
+      "description": "The far end of the drawbridge, where iron-banded timber gates open into the cliff face. The stone around the entrance is carved with crude trophies — old Warden seals defaced with bandit marks, hammered flat and mounted as mockeries. The air changes as you step inside: cooler, still, and heavy with the smell of smoke and unwashed bodies.",
       "x": 2,
       "y": 28,
       "exits": {
@@ -527,7 +527,7 @@
     {
       "id": "cracked_plains:bandit_watchtower",
       "name": "Bandit Watchtower",
-      "description": "The top of the rickety watchtower \u2014 a platform of lashed planks swaying in the wind. From up here you can see for miles in every direction: the cracked plateau, the rift-lines cutting through it like dark veins, the distant smudge of the Ashwood Burn to the south, and to the north, the war-road leading to the Hold. A signal horn hangs from a peg, ready to sound an alarm.",
+      "description": "The top of the rickety watchtower — a platform of lashed planks swaying in the wind. From up here you can see for miles in every direction: the cracked plateau, the rift-lines cutting through it like dark veins, the distant smudge of the Ashwood Burn to the south, and to the north, the war-road leading to the Hold. A signal horn hangs from a peg, ready to sound an alarm.",
       "x": 2,
       "y": 37,
       "exits": {
@@ -547,7 +547,7 @@
     {
       "id": "npc:rift_stalker",
       "name": "Rift Stalker",
-      "description": "A lean, eyeless predator adapted to the perpetual darkness of the rifts. Its pale hide is tough as leather, and it navigates by echolocation \u2014 clicking sounds echo off the rift walls as it hunts. Six clawed legs carry it silently across the stone.",
+      "description": "A lean, eyeless predator adapted to the perpetual darkness of the rifts. Its pale hide is tough as leather, and it navigates by echolocation — clicking sounds echo off the rift walls as it hunts. Six clawed legs carry it silently across the stone.",
       "startRoomId": "cracked_plains:rift_floor_south",
       "behaviorType": "wander",
       "hostile": true,
@@ -573,6 +573,10 @@
           "chance": 0.35,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:rift_iron_greaves",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -585,7 +589,7 @@
     {
       "id": "npc:plains_marauder",
       "name": "Plains Marauder",
-      "description": "One of Drask's outriders \u2014 a hardened bandit in mismatched armor cobbled from looted gear. A scarred face peers from under a dented helm, and a heavy blade rests easy in a calloused hand. These are not desperate men; they are professionals who chose violence as a trade.",
+      "description": "One of Drask's outriders — a hardened bandit in mismatched armor cobbled from looted gear. A scarred face peers from under a dented helm, and a heavy blade rests easy in a calloused hand. These are not desperate men; they are professionals who chose violence as a trade.",
       "startRoomId": "cracked_plains:north_plateau",
       "behaviorType": "wander",
       "hostile": true,
@@ -611,6 +615,10 @@
           "chance": 0.08,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:rift_iron_gauntlets",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -655,6 +663,10 @@
           "chance": 0.06,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:warlords_buckler",
+          "chance": 0.04
         }
       ],
       "coinDrop": {
@@ -667,7 +679,7 @@
     {
       "id": "npc:war_scout",
       "name": "War Scout",
-      "description": "A light-armored scout in Drask's service, carrying a hand crossbow and a short blade. Faster and warier than the marauders, scouts patrol the war-road and signal approaches. They fight dirty \u2014 feinting, withdrawing, and using terrain to advantage.",
+      "description": "A light-armored scout in Drask's service, carrying a hand crossbow and a short blade. Faster and warier than the marauders, scouts patrol the war-road and signal approaches. They fight dirty — feinting, withdrawing, and using terrain to advantage.",
       "startRoomId": "cracked_plains:war_road",
       "behaviorType": "wander",
       "hostile": true,
@@ -711,7 +723,7 @@
     {
       "id": "npc:cliff_harpy",
       "name": "Cliff Harpy",
-      "description": "A monstrous bird with a wingspan of eight feet and talons like curved daggers. Its feathers are the same pale grey as the plateau stone \u2014 perfect camouflage until it strikes. Harpies nest on the high bluffs and attack anything that enters their territory, diving from above with lethal speed.",
+      "description": "A monstrous bird with a wingspan of eight feet and talons like curved daggers. Its feathers are the same pale grey as the plateau stone — perfect camouflage until it strikes. Harpies nest on the high bluffs and attack anything that enters their territory, diving from above with lethal speed.",
       "startRoomId": "cracked_plains:cliff_roost",
       "behaviorType": "wander",
       "hostile": true,
@@ -761,7 +773,7 @@
       "defense": 0,
       "evasion": 0,
       "agility": 0,
-      "dialogueScript": "You stop mid-step \u2014 a voice from the cairn's shadow, quiet and firm. 'Easy. I'm Haela. Warden scout \u2014 or what's left of one.' She steps into view, grey leathers blending with the stone. 'Drask took the old Hold six months ago. He's got an army in there \u2014 deserters, killers, the worst of the plains. They've been raiding the lowlands, and nobody stops them because nobody wants to cross these rifts.' She holds out a tarnished metal brand. 'This is a War-Brand \u2014 Warden issue. I took it off one of his officers. Drask collects them as trophies. If he has this many Warden relics, then he's found something in the Hold's lower levels. Something the Wardens sealed away.' She presses the brand into your hand. 'Find out what he's sitting on. And if you can end him \u2014 all the better.'",
+      "dialogueScript": "You stop mid-step — a voice from the cairn's shadow, quiet and firm. 'Easy. I'm Haela. Warden scout — or what's left of one.' She steps into view, grey leathers blending with the stone. 'Drask took the old Hold six months ago. He's got an army in there — deserters, killers, the worst of the plains. They've been raiding the lowlands, and nobody stops them because nobody wants to cross these rifts.' She holds out a tarnished metal brand. 'This is a War-Brand — Warden issue. I took it off one of his officers. Drask collects them as trophies. If he has this many Warden relics, then he's found something in the Hold's lower levels. Something the Wardens sealed away.' She presses the brand into your hand. 'Find out what he's sitting on. And if you can end him — all the better.'",
       "grantItemId": "item:drasks_war_brand",
       "grantItemFlag": "haela_war_brand_given",
       "imagePrompt": "EXACTLY ONE FIGURE in the frame, centered, full-body. Weathered female scout in faded grey leather armor, grappling hook at belt, sun-dark lined face, sharp eyes, standing confident, Warden order scout, front-facing. NO multiple figures, NO multiple poses, NO character sheet. Isolated on solid white background.",

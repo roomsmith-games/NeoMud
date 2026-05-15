@@ -763,6 +763,6 @@
   "spawnConfig": {
     "maxEntities": 8,
     "maxPerRoom": 2,
-    "rateTicks": 4
+    "rateTicks": 18
   }
 }

@@ -1,7 +1,7 @@
 {
   "id": "warlords_hold",
   "name": "Warlord's Hold",
-  "description": "A fortress carved into the wall of the deepest rift on the Cracked Plains. Once a Warden outpost guarding a sealed vault, it was seized six months ago by the warlord Drask and his bandit army. The Hold is built vertically \u2014 battlements and a war room above, a great hall at ground level, and prison cells and a sealed vault below. The sounds of steel on stone and barked orders echo through the carved corridors.",
+  "description": "A fortress carved into the wall of the deepest rift on the Cracked Plains. Once a Warden outpost guarding a sealed vault, it was seized six months ago by the warlord Drask and his bandit army. The Hold is built vertically — battlements and a war room above, a great hall at ground level, and prison cells and a sealed vault below. The sounds of steel on stone and barked orders echo through the carved corridors.",
   "safe": false,
   "bgm": "boss_intense",
   "levelRange": "19-20",
@@ -16,7 +16,7 @@
     {
       "id": "warlords_hold:great_hall",
       "name": "Great Hall",
-      "description": "The main hall of the Hold, carved from the living rock of the rift wall. Massive stone pillars support a vaulted ceiling thirty feet overhead, and torches burn in iron sconces along the walls. Drask's banner \u2014 a clenched fist on black \u2014 hangs above a stone dais at the far end. The floor is scarred from years of heavy boots and dragged prisoners. Stairs climb upward to a gallery above, and a dark passage descends into the fortress depths.",
+      "description": "The main hall of the Hold, carved from the living rock of the rift wall. Massive stone pillars support a vaulted ceiling thirty feet overhead, and torches burn in iron sconces along the walls. Drask's banner — a clenched fist on black — hangs above a stone dais at the far end. The floor is scarred from years of heavy boots and dragged prisoners. Stairs climb upward to a gallery above, and a dark passage descends into the fortress depths.",
       "x": 6,
       "y": 36,
       "exits": {
@@ -38,7 +38,7 @@
     {
       "id": "warlords_hold:guard_hall",
       "name": "Guard Hall",
-      "description": "A low-ceilinged barracks carved into the north wall of the fortress. Crude bunks line both sides, with weapon racks between them \u2014 most half-empty, the arms distributed to Drask's troops. A cooking fire smolders in a stone-lined pit, filling the room with greasy smoke. The guards rotate in shifts, and there are always fresh ones here.",
+      "description": "A low-ceilinged barracks carved into the north wall of the fortress. Crude bunks line both sides, with weapon racks between them — most half-empty, the arms distributed to Drask's troops. A cooking fire smolders in a stone-lined pit, filling the room with greasy smoke. The guards rotate in shifts, and there are always fresh ones here.",
       "x": 6,
       "y": 37,
       "exits": {
@@ -56,7 +56,7 @@
     {
       "id": "warlords_hold:trophy_room",
       "name": "Trophy Room",
-      "description": "Drask's lieutenant keeps this room as a monument to conquest. Shields, banners, and weapons taken from defeated foes line the walls \u2014 many bearing the Warden sigil. A heavy oak table serves as both desk and dining surface, covered in maps and half-eaten food. The lieutenant sits here when not patrolling, studying Drask's campaign plans.",
+      "description": "Drask's lieutenant keeps this room as a monument to conquest. Shields, banners, and weapons taken from defeated foes line the walls — many bearing the Warden sigil. A heavy oak table serves as both desk and dining surface, covered in maps and half-eaten food. The lieutenant sits here when not patrolling, studying Drask's campaign plans.",
       "x": 7,
       "y": 36,
       "exits": {
@@ -96,7 +96,7 @@
     {
       "id": "warlords_hold:armory",
       "name": "Armory",
-      "description": "The Hold's original armory, expanded by Drask's forces. Racks of weapons line the walls \u2014 swords, axes, crossbows, bundles of bolts. Armor stands hold mismatched suits assembled from looted gear. A workbench with a whetstone and oil occupies the center. The air smells of metal and leather polish.",
+      "description": "The Hold's original armory, expanded by Drask's forces. Racks of weapons line the walls — swords, axes, crossbows, bundles of bolts. Armor stands hold mismatched suits assembled from looted gear. A workbench with a whetstone and oil occupies the center. The air smells of metal and leather polish.",
       "x": 5,
       "y": 36,
       "z": 1,
@@ -115,7 +115,7 @@
     {
       "id": "warlords_hold:battlements",
       "name": "Battlements",
-      "description": "The Hold's upper defense \u2014 a narrow stone walkway carved into the outer rift wall, open to the sky on one side. A waist-high parapet protects against the sheer drop into the rift below. Crossbow emplacements are positioned at intervals, and signal torches stand ready for lighting. The wind howls through the gap, carrying the sounds of the rift up from the darkness below.",
+      "description": "The Hold's upper defense — a narrow stone walkway carved into the outer rift wall, open to the sky on one side. A waist-high parapet protects against the sheer drop into the rift below. Crossbow emplacements are positioned at intervals, and signal torches stand ready for lighting. The wind howls through the gap, carrying the sounds of the rift up from the darkness below.",
       "x": 7,
       "y": 36,
       "z": 1,
@@ -134,7 +134,7 @@
     {
       "id": "warlords_hold:war_room",
       "name": "Drask's War Room",
-      "description": "The highest chamber in the Hold, carved from the very top of the rift wall. A massive stone table dominates the center, covered in hand-drawn maps, campaign markers, and stolen Warden documents. The walls are hung with the banners of every settlement Drask has raided. A single window \u2014 more of a slash in the rock \u2014 looks out over the cracked plateau far below. This is where the warlord plans, commands, and waits.",
+      "description": "The highest chamber in the Hold, carved from the very top of the rift wall. A massive stone table dominates the center, covered in hand-drawn maps, campaign markers, and stolen Warden documents. The walls are hung with the banners of every settlement Drask has raided. A single window — more of a slash in the rock — looks out over the cracked plateau far below. This is where the warlord plans, commands, and waits.",
       "x": 6,
       "y": 36,
       "z": 2,
@@ -153,7 +153,7 @@
     {
       "id": "warlords_hold:underhall",
       "name": "Underhall",
-      "description": "Below the great hall, the Hold descends into older construction \u2014 smooth Warden stonework, not the rough-hewn tunnels above. The corridor is narrow and low, with guttering torches spaced far apart. The air is damp and cold. Cells branch off to the north, and the south end terminates at a massive iron door bearing the Warden seal \u2014 the vault, still locked after all these centuries.",
+      "description": "Below the great hall, the Hold descends into older construction — smooth Warden stonework, not the rough-hewn tunnels above. The corridor is narrow and low, with guttering torches spaced far apart. The air is damp and cold. Cells branch off to the north, and the south end terminates at a massive iron door bearing the Warden seal — the vault, still locked after all these centuries.",
       "x": 6,
       "y": 36,
       "z": -1,
@@ -162,7 +162,9 @@
         "NORTH": "warlords_hold:cells",
         "SOUTH": "warlords_hold:vault"
       },
-      "lockedExits": {"SOUTH": 99},
+      "lockedExits": {
+        "SOUTH": 99
+      },
       "backgroundImage": "/assets/images/rooms/warlords_hold_underhall.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
@@ -175,7 +177,7 @@
         {
           "id": "vault_lock",
           "label": "Sealed Vault Door",
-          "description": "A massive iron door bearing the Warden seal. A keyhole shaped like a clenched fist is set into the lock \u2014 clearly, this was modified by Drask's forces. The original Warden lock has been replaced.",
+          "description": "A massive iron door bearing the Warden seal. A keyhole shaped like a clenched fist is set into the lock — clearly, this was modified by Drask's forces. The original Warden lock has been replaced.",
           "actionType": "PLACE_ITEM",
           "triggerType": "ON_USE",
           "actionData": {
@@ -183,7 +185,7 @@
             "consumeItem": "true",
             "successDirection": "SOUTH",
             "successMessage": "You press Drask's War-Key into the fist-shaped lock. It turns with a grinding click, and the massive iron door swings inward on ancient hinges, revealing the vault beyond.",
-            "failureMessage": "The lock requires a key shaped like a clenched fist \u2014 Drask's personal insignia."
+            "failureMessage": "The lock requires a key shaped like a clenched fist — Drask's personal insignia."
           }
         }
       ]
@@ -191,7 +193,7 @@
     {
       "id": "warlords_hold:cells",
       "name": "Prison Cells",
-      "description": "A row of iron-barred cells carved into the rock. Most are empty now \u2014 Drask prefers to ransom or conscript his prisoners rather than keep them. One cell still holds a skeleton in rusted chains, a remnant of the Hold's original Warden garrison. War hounds patrol the corridor, trained to savage anyone who doesn't wear Drask's brand.",
+      "description": "A row of iron-barred cells carved into the rock. Most are empty now — Drask prefers to ransom or conscript his prisoners rather than keep them. One cell still holds a skeleton in rusted chains, a remnant of the Hold's original Warden garrison. War hounds patrol the corridor, trained to savage anyone who doesn't wear Drask's brand.",
       "x": 6,
       "y": 37,
       "z": -1,
@@ -210,7 +212,7 @@
     {
       "id": "warlords_hold:vault",
       "name": "Warden Vault",
-      "description": "Behind the sealed door lies the Hold's deepest secret \u2014 a Warden vault, its walls lined with faintly glowing glyphs. Stone shelves hold the remnants of Warden artifacts, most already looted by Drask's forces. But the real prize is in the center: a reinforced iron chest still sealed with warding runes, too powerful for Drask to crack. Whatever the Wardens locked away here, it was important enough to build an entire fortress around.",
+      "description": "Behind the sealed door lies the Hold's deepest secret — a Warden vault, its walls lined with faintly glowing glyphs. Stone shelves hold the remnants of Warden artifacts, most already looted by Drask's forces. But the real prize is in the center: a reinforced iron chest still sealed with warding runes, too powerful for Drask to crack. Whatever the Wardens locked away here, it was important enough to build an entire fortress around.",
       "x": 6,
       "y": 35,
       "z": -1,
@@ -229,7 +231,7 @@
         {
           "id": "warden_chest",
           "label": "Sealed Warden Chest",
-          "description": "A reinforced iron chest covered in still-active warding runes. The lid resists opening, but the lock's power has weakened over centuries \u2014 with effort, it gives way.",
+          "description": "A reinforced iron chest covered in still-active warding runes. The lid resists opening, but the lock's power has weakened over centuries — with effort, it gives way.",
           "actionType": "TREASURE_DROP",
           "triggerType": "ON_ACTION",
           "perceptionDC": 0,
@@ -251,7 +253,7 @@
     {
       "id": "npc:hold_berserker",
       "name": "Hold Berserker",
-      "description": "A massive warrior stripped to the waist, covered in ritual scars and war paint. Drask recruits his berserkers from the most violent offenders \u2014 criminals, deserters, men with nothing to lose. They fight with twin axes and no regard for their own safety, working themselves into a frenzy before each engagement.",
+      "description": "A massive warrior stripped to the waist, covered in ritual scars and war paint. Drask recruits his berserkers from the most violent offenders — criminals, deserters, men with nothing to lose. They fight with twin axes and no regard for their own safety, working themselves into a frenzy before each engagement.",
       "startRoomId": "warlords_hold:great_hall",
       "behaviorType": "wander",
       "hostile": true,
@@ -277,6 +279,10 @@
           "chance": 0.05,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:rift_iron_greaves",
+          "chance": 0.04
         }
       ],
       "coinDrop": {
@@ -289,7 +295,7 @@
     {
       "id": "npc:hold_crossbowman",
       "name": "Hold Crossbowman",
-      "description": "A disciplined soldier in studded leather, manning the upper levels with a heavy crossbow. Unlike the berserkers, crossbowmen are professional \u2014 former militia or garrison troops who joined Drask for the pay. They fire from cover, reload methodically, and fall back when pressed.",
+      "description": "A disciplined soldier in studded leather, manning the upper levels with a heavy crossbow. Unlike the berserkers, crossbowmen are professional — former militia or garrison troops who joined Drask for the pay. They fire from cover, reload methodically, and fall back when pressed.",
       "startRoomId": "warlords_hold:battlements",
       "behaviorType": "wander",
       "hostile": true,
@@ -315,6 +321,10 @@
           "chance": 0.05,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:rift_iron_gauntlets",
+          "chance": 0.04
         }
       ],
       "coinDrop": {
@@ -365,7 +375,7 @@
     {
       "id": "npc:drasks_lieutenant",
       "name": "Drask's Lieutenant",
-      "description": "Drask's second-in-command \u2014 a scarred veteran in blackened chainmail, with a longsword and a hand-and-a-half shield. She earned her rank by killing the previous lieutenant in a dispute over loot shares. Methodical, ruthless, and loyal to Drask only because he is stronger. She carries the key to the vault on a chain around her neck.",
+      "description": "Drask's second-in-command — a scarred veteran in blackened chainmail, with a longsword and a hand-and-a-half shield. She earned her rank by killing the previous lieutenant in a dispute over loot shares. Methodical, ruthless, and loyal to Drask only because he is stronger. She carries the key to the vault on a chain around her neck.",
       "startRoomId": "warlords_hold:trophy_room",
       "behaviorType": "stationary",
       "hostile": true,
@@ -397,6 +407,10 @@
           "chance": 0.25,
           "minQuantity": 1,
           "maxQuantity": 1
+        },
+        {
+          "itemId": "item:warlords_buckler",
+          "chance": 0.05
         }
       ],
       "coinDrop": {
@@ -409,7 +423,7 @@
     {
       "id": "npc:warlord_drask",
       "name": "Warlord Drask",
-      "description": "The warlord of the Cracked Plains \u2014 a towering man in dark iron plate, his face hidden behind a helm shaped like a clenched fist. Drask was a Warden captain before he went rogue, taking his company into the wastes and building a bandit empire. He fights with a massive cleaver that no ordinary soldier could lift one-handed. He has been excavating the Hold's lower levels, searching for something the Wardens sealed away \u2014 and the seal shard he wears around his neck suggests he found it.",
+      "description": "The warlord of the Cracked Plains — a towering man in dark iron plate, his face hidden behind a helm shaped like a clenched fist. Drask was a Warden captain before he went rogue, taking his company into the wastes and building a bandit empire. He fights with a massive cleaver that no ordinary soldier could lift one-handed. He has been excavating the Hold's lower levels, searching for something the Wardens sealed away — and the seal shard he wears around his neck suggests he found it.",
       "startRoomId": "warlords_hold:war_room",
       "behaviorType": "stationary",
       "hostile": true,
