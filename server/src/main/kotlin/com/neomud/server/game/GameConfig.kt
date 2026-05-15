@@ -181,8 +181,39 @@ object GameConfig {
                 upper in DAGGER_CLASSES -> "item:rustic_dagger"
                 upper in STAFF_CLASSES -> "item:wooden_staff"
                 upper in BOW_CLASSES -> "item:short_bow"
-                else -> "item:rustic_dagger" // fallback
+                else -> "item:rustic_dagger"
             }
+        }
+
+        private fun weaponCategory(classId: String): String {
+            val upper = classId.uppercase()
+            return when {
+                upper in SWORD_CLASSES -> "sword"
+                upper in DAGGER_CLASSES -> "dagger"
+                upper in STAFF_CLASSES -> "staff"
+                upper in BOW_CLASSES -> "bow"
+                else -> "dagger"
+            }
+        }
+
+        fun resolveWeapon(classId: String, itemCatalog: com.neomud.server.world.ItemCatalog): String? {
+            val defaultId = weaponForClass(classId)
+            if (itemCatalog.getItem(defaultId) != null) return defaultId
+            val category = weaponCategory(classId)
+            return itemCatalog.getAllItems()
+                .filter { it.slot == "weapon" && it.levelRequirement <= 1 && it.value > 0 }
+                .filter { it.name.lowercase().contains(category) }
+                .minByOrNull { it.value }?.id
+                ?: itemCatalog.getAllItems()
+                    .filter { it.slot == "weapon" && it.levelRequirement <= 1 && it.value > 0 }
+                    .minByOrNull { it.value }?.id
+        }
+
+        fun resolveArmor(itemCatalog: com.neomud.server.world.ItemCatalog): String? {
+            if (itemCatalog.getItem(ARMOR_ITEM_ID) != null) return ARMOR_ITEM_ID
+            return itemCatalog.getAllItems()
+                .filter { it.slot == ARMOR_SLOT && it.levelRequirement <= 1 && it.value > 0 }
+                .minByOrNull { it.value }?.id
         }
     }
     object Vendor {

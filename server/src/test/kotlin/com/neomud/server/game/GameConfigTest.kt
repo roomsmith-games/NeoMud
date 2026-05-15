@@ -1,7 +1,11 @@
 package com.neomud.server.game
 
+import com.neomud.server.world.ItemCatalog
+import com.neomud.shared.model.Item
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class GameConfigTest {
@@ -112,6 +116,65 @@ class GameConfigTest {
         assertEquals(25, GameConfig.StarterEquipment.STARTING_COPPER)
         assertEquals("item:leather_chest", GameConfig.StarterEquipment.ARMOR_ITEM_ID)
         assertEquals("chest", GameConfig.StarterEquipment.ARMOR_SLOT)
+    }
+
+    @Test
+    fun testResolveWeapon_defaultWorldItems() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:iron_sword", "Iron Sword", "", "weapon", slot = "weapon", damageBonus = 8, value = 50, levelRequirement = 1),
+            Item("item:rustic_dagger", "Rustic Dagger", "", "weapon", slot = "weapon", damageBonus = 5, value = 25, levelRequirement = 1)
+        ))
+        assertEquals("item:iron_sword", GameConfig.StarterEquipment.resolveWeapon("WARRIOR", catalog))
+        assertEquals("item:rustic_dagger", GameConfig.StarterEquipment.resolveWeapon("THIEF", catalog))
+    }
+
+    @Test
+    fun testResolveWeapon_fallbackToCheapestByCategory() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:iron_pipe", "Iron Pipe", "", "weapon", slot = "weapon", damageBonus = 7, value = 40, levelRequirement = 1),
+            Item("item:brass_dagger", "Brass Dagger", "", "weapon", slot = "weapon", damageBonus = 5, value = 20, levelRequirement = 1),
+            Item("item:scrap_staff", "Scrap Staff", "", "weapon", slot = "weapon", damageBonus = 3, value = 15, levelRequirement = 1)
+        ))
+        assertEquals("item:brass_dagger", GameConfig.StarterEquipment.resolveWeapon("THIEF", catalog))
+        assertEquals("item:scrap_staff", GameConfig.StarterEquipment.resolveWeapon("MAGE", catalog))
+    }
+
+    @Test
+    fun testResolveWeapon_fallbackToCheapestAny() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:iron_pipe", "Iron Pipe", "", "weapon", slot = "weapon", damageBonus = 7, value = 40, levelRequirement = 1)
+        ))
+        assertEquals("item:iron_pipe", GameConfig.StarterEquipment.resolveWeapon("WARRIOR", catalog),
+            "When no sword-category weapon exists, fall back to cheapest weapon")
+    }
+
+    @Test
+    fun testResolveWeapon_emptyReturnsNull() {
+        val catalog = ItemCatalog(emptyList())
+        assertNull(GameConfig.StarterEquipment.resolveWeapon("WARRIOR", catalog))
+    }
+
+    @Test
+    fun testResolveArmor_defaultWorldItems() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:leather_chest", "Leather Chest", "", "armor", slot = "chest", armorValue = 3, value = 30, levelRequirement = 1)
+        ))
+        assertEquals("item:leather_chest", GameConfig.StarterEquipment.resolveArmor(catalog))
+    }
+
+    @Test
+    fun testResolveArmor_fallbackToCheapestChest() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:scrap_vest", "Scrap Vest", "", "armor", slot = "chest", armorValue = 2, value = 20, levelRequirement = 1),
+            Item("item:tempered_cuirass", "Tempered Cuirass", "", "armor", slot = "chest", armorValue = 8, value = 200, levelRequirement = 5)
+        ))
+        assertEquals("item:scrap_vest", GameConfig.StarterEquipment.resolveArmor(catalog))
+    }
+
+    @Test
+    fun testResolveArmor_emptyReturnsNull() {
+        val catalog = ItemCatalog(emptyList())
+        assertNull(GameConfig.StarterEquipment.resolveArmor(catalog))
     }
 
     @Test

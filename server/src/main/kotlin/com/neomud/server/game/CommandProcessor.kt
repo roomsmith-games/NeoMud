@@ -96,6 +96,25 @@ class CommandProcessor(
         return count < GameConfig.Security.MAX_FAILED_LOGINS
     }
 
+    private fun grantStarterEquipment(playerName: String, classId: String) {
+        val weapon = GameConfig.StarterEquipment.resolveWeapon(classId, itemCatalog)
+        if (weapon != null) {
+            inventoryRepository.addItem(playerName, weapon)
+            inventoryRepository.equipItem(playerName, weapon, "weapon")
+        } else {
+            logger.warn("No starter weapon found for class $classId in item catalog")
+        }
+        val armor = GameConfig.StarterEquipment.resolveArmor(itemCatalog)
+        if (armor != null) {
+            inventoryRepository.addItem(playerName, armor)
+            inventoryRepository.equipItem(playerName, armor, GameConfig.StarterEquipment.ARMOR_SLOT)
+        } else {
+            logger.warn("No starter armor found in item catalog")
+        }
+        coinRepository.addCoins(playerName, Coins(copper = GameConfig.StarterEquipment.STARTING_COPPER))
+        logger.info("Granted starter equipment to $playerName: weapon=$weapon, armor=$armor, copper=${GameConfig.StarterEquipment.STARTING_COPPER}")
+    }
+
     private fun recordFailedLogin(username: String) {
         val key = username.lowercase()
         val now = System.currentTimeMillis()
@@ -405,15 +424,7 @@ class CommandProcessor(
 
         result.fold(
             onSuccess = {
-                // Grant starter equipment
-                val starterWeapon = GameConfig.StarterEquipment.weaponForClass(msg.characterClass)
-                inventoryRepository.addItem(msg.characterName, starterWeapon)
-                inventoryRepository.equipItem(msg.characterName, starterWeapon, "weapon")
-                inventoryRepository.addItem(msg.characterName, GameConfig.StarterEquipment.ARMOR_ITEM_ID)
-                inventoryRepository.equipItem(msg.characterName, GameConfig.StarterEquipment.ARMOR_ITEM_ID, GameConfig.StarterEquipment.ARMOR_SLOT)
-                coinRepository.addCoins(msg.characterName, Coins(copper = GameConfig.StarterEquipment.STARTING_COPPER))
-                logger.info("Granted starter equipment to ${msg.characterName}: $starterWeapon + ${GameConfig.StarterEquipment.ARMOR_ITEM_ID} + ${GameConfig.StarterEquipment.STARTING_COPPER} copper")
-
+                grantStarterEquipment(msg.characterName, msg.characterClass)
                 session.send(ServerMessage.RegisterOk)
                 logger.info("Player registered: ${msg.characterName}")
             },
@@ -640,6 +651,7 @@ class CommandProcessor(
 
         result.fold(
             onSuccess = { player ->
+                grantStarterEquipment(msg.characterName, msg.characterClass)
                 session.send(ServerMessage.RegisterOk)
                 // Auto-login after registration
                 completeLogin(session, player, username = internalUsername)
@@ -698,14 +710,7 @@ class CommandProcessor(
 
         result.fold(
             onSuccess = { player ->
-                // Grant starter equipment (same as Register)
-                val starterWeapon = GameConfig.StarterEquipment.weaponForClass(msg.characterClass)
-                inventoryRepository.addItem(msg.characterName, starterWeapon)
-                inventoryRepository.equipItem(msg.characterName, starterWeapon, "weapon")
-                inventoryRepository.addItem(msg.characterName, GameConfig.StarterEquipment.ARMOR_ITEM_ID)
-                inventoryRepository.equipItem(msg.characterName, GameConfig.StarterEquipment.ARMOR_ITEM_ID, GameConfig.StarterEquipment.ARMOR_SLOT)
-                coinRepository.addCoins(msg.characterName, Coins(copper = GameConfig.StarterEquipment.STARTING_COPPER))
-
+                grantStarterEquipment(msg.characterName, msg.characterClass)
                 session.isGuest = true
                 session.send(ServerMessage.RegisterOk)
                 completeLogin(session, player, username = internalUsername)

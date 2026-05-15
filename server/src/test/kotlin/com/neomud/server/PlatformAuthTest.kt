@@ -16,6 +16,7 @@ import io.ktor.server.testing.*
 import io.ktor.websocket.*
 import java.io.File
 import java.util.Date
+import com.neomud.server.game.GameConfig
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -129,6 +130,41 @@ class PlatformAuthTest {
             assertIs<ServerMessage.LoginOk>(loginOk)
             assertEquals("Alerion", loginOk.player.name)
             assertFalse(loginOk.player.isGuest)
+        }
+    }
+
+    @Test
+    fun testPlatformRegisterGrantsStarterEquipment() = testApplication {
+        val dbUrl = testDbUrl()
+        application { module(jdbcUrl = dbUrl, platformVerifierOverride = testVerifier()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            val token = makeToken("user-starter-gear")
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+            assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.PlatformRegister("GearCheck", "WARRIOR", "HUMAN", gender = "male", allocatedStats = warriorStats)
+            )))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+
+            receiveServerMessage() // Tutorial
+            receiveServerMessage() // SystemMessage (welcome)
+            receiveServerMessage() // RoomInfo
+            receiveServerMessage() // MapData
+
+            val invUpdate = receiveServerMessage()
+            assertIs<ServerMessage.InventoryUpdate>(invUpdate)
+
+            val expectedWeapon = GameConfig.StarterEquipment.weaponForClass("WARRIOR")
+            assertEquals(expectedWeapon, invUpdate.equipment["weapon"], "Platform-registered character should have starter weapon equipped")
+            assertEquals(GameConfig.StarterEquipment.ARMOR_ITEM_ID, invUpdate.equipment["chest"], "Platform-registered character should have starter armor equipped")
+            assertEquals(GameConfig.StarterEquipment.STARTING_COPPER, invUpdate.coins.copper, "Platform-registered character should have starting copper")
         }
     }
 
