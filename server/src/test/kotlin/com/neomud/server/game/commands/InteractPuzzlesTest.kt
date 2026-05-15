@@ -387,7 +387,7 @@ class InteractPuzzlesTest {
             actionType = "PUZZLE_STEP",
             actionData = mapOf(
                 "puzzleGroupId" to "tide_bells", "puzzleStepIndex" to "0", "puzzleTotalSteps" to "2",
-                "requiredFlagKey" to "mara_hymn_given", "requiredFlagValue" to "true",
+                "requiredFlagKey" to "mara_hymn_given", "requiredFlagValue" to "1",
                 "requiredFlagMessage" to "You don't know the hymn.",
                 "advanceMessage" to "The bell sings.",
                 "successDirection" to "NORTH"
@@ -410,13 +410,13 @@ class InteractPuzzlesTest {
     @Test
     fun puzzle_requiredFlagPresent_allowsNormalProgress() = runBlocking {
         val flags = FakePlayerFlagsRepository()
-        flags.setFlag(testPlayerName, "mara_hymn_given", "true")
+        flags.setFlag(testPlayerName, "mara_hymn_given", "1")
         val step = RoomInteractable(
             id = "bell_dawn", label = "tide-bell of Dawn", description = "A bell.",
             actionType = "PUZZLE_STEP",
             actionData = mapOf(
                 "puzzleGroupId" to "tide_bells", "puzzleStepIndex" to "0", "puzzleTotalSteps" to "2",
-                "requiredFlagKey" to "mara_hymn_given", "requiredFlagValue" to "true",
+                "requiredFlagKey" to "mara_hymn_given", "requiredFlagValue" to "1",
                 "requiredFlagMessage" to "You don't know the hymn.",
                 "advanceMessage" to "The bell sings."
             )

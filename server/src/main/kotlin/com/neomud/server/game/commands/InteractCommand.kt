@@ -649,16 +649,6 @@ class InteractCommand(
             session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
             return false
         }
-        val requiredFlagKey = feat.actionData["requiredFlagKey"]?.takeIf { it.isNotBlank() }
-        if (requiredFlagKey != null) {
-            val requiredFlagValue = feat.actionData["requiredFlagValue"]?.takeIf { it.isNotBlank() } ?: "true"
-            val currentValue = flags.getFlag(playerName, requiredFlagKey)
-            if (currentValue != requiredFlagValue) {
-                val msg = feat.actionData["requiredFlagMessage"]?.takeIf { it.isNotBlank() } ?: "Nothing happens."
-                session.send(ServerMessage.InteractResult(false, feat.label, msg, feat.sound))
-                return false
-            }
-        }
         val groupId = feat.actionData["puzzleGroupId"]?.takeIf { it.isNotBlank() } ?: run {
             logger.warn("PUZZLE_STEP missing puzzleGroupId on ${feat.id}")
             session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
@@ -678,14 +668,22 @@ class InteractCommand(
         val flagKey = "puzzle:$groupId:step"
         val currentStep = flags.getFlag(playerName, flagKey)?.toIntOrNull() ?: 0
 
-        // Already-solved guard: once the puzzle is complete the flag holds totalSteps.
-        // Re-tapping any step in the group should be an idempotent no-op (no message
-        // spam, no accidental reset).
         if (currentStep >= totalSteps) {
             val msg = feat.actionData["alreadySolvedMessage"]?.takeIf { it.isNotBlank() }
                 ?: "You've already solved this."
             session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
-            return false  // skip global mark-used; the puzzle is done per-character
+            return false
+        }
+
+        val requiredFlagKey = feat.actionData["requiredFlagKey"]?.takeIf { it.isNotBlank() }
+        if (requiredFlagKey != null) {
+            val requiredFlagValue = feat.actionData["requiredFlagValue"]?.takeIf { it.isNotBlank() } ?: "true"
+            val currentValue = flags.getFlag(playerName, requiredFlagKey)
+            if (currentValue != requiredFlagValue) {
+                val msg = feat.actionData["requiredFlagMessage"]?.takeIf { it.isNotBlank() } ?: "Nothing happens."
+                session.send(ServerMessage.InteractResult(false, feat.label, msg, feat.sound))
+                return false
+            }
         }
 
         return if (currentStep == expectedIndex) {

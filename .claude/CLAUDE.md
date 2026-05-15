@@ -105,10 +105,29 @@ Room interactables are JSON-defined features players can interact with (levers, 
 - `ROOM_EFFECT` — applies an effect to the room (heal, damage, buff)
 - `TELEPORT` — moves player to a target room
 - `DAMAGE_TRAP` — deals damage on entry (ON_ENTER trigger) with optional save check
-- `PUZZLE_STEP` — increments a player flag key toward a target value, opening an exit on completion
-- `PLACE_ITEM` — prompts player to place an inventory item (two-phase: server sends `PlaceItemPrompt`, client replies with `PlaceItem`)
-- `RIDDLE_PROMPT` — presents a riddle dialog (two-phase: server sends `RiddlePrompt`, client replies with `RiddleAnswer`)
+- `PUZZLE_STEP` — increments a player flag key toward a target value, opening an exit on completion. Supports optional `requiredFlagKey` prerequisite gate and `completionFlagKey` per-player completion tracking.
+- `PLACE_ITEM` — prompts player to place an inventory item (two-phase: server sends `PlaceItemPrompt`, client replies with `PlaceItem`). Supports optional `completionFlagKey`.
+- `RIDDLE_PROMPT` — presents a riddle dialog (two-phase: server sends `RiddlePrompt`, client replies with `RiddleAnswer`). Supports optional `completionFlagKey`.
 - `CONDITIONAL_TRIGGER` — evaluates a condition before opening a gated exit
+
+**PUZZLE_STEP actionData schema:**
+```json
+{
+  "puzzleGroupId": "tide_bells",
+  "puzzleStepIndex": "0",
+  "puzzleTotalSteps": "5",
+  "advanceMessage": "Progress...",
+  "successMessage": "Puzzle solved!",
+  "resetMessage": "Wrong order.",
+  "alreadySolvedMessage": "Already done.",
+  "successDirection": "NORTH",
+  "requiredFlagKey": "mara_hymn_given",      // optional — gate: player must have this flag to attempt
+  "requiredFlagValue": "1",                   // optional — defaults to "true"
+  "requiredFlagMessage": "You can't do this yet.", // optional — shown when gate fails
+  "completionFlagKey": "puzzle:bells:complete",   // optional — set on solving player (per-party change point)
+  "completionFlagValue": "true"                   // optional — defaults to "true"
+}
+```
 
 **CONDITIONAL_TRIGGER actionData schema:**
 ```json

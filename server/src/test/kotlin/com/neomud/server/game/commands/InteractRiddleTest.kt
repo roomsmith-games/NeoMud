@@ -97,7 +97,10 @@ class InteractRiddleTest {
         return msgs
     }
 
-    private fun buildCommand(worldGraph: WorldGraph): InteractCommand {
+    private fun buildCommand(
+        worldGraph: WorldGraph,
+        flags: PlayerFlagsRepository = FakePlayerFlagsRepository()
+    ): InteractCommand {
         val sessionManager = SessionManager()
         val npcManager = NpcManager(worldGraph, emptyMap(), emptyMap())
         val itemCatalog = ItemCatalog(emptyList())
@@ -108,7 +111,7 @@ class InteractRiddleTest {
             worldGraph, sessionManager, npcManager, roomItemManager, lootService, lootTableCatalog,
             inventoryRepository = FakeInventoryRepository(),
             inventoryCommand = FakeInventoryCommand(),
-            playerFlagsRepository = FakePlayerFlagsRepository()
+            playerFlagsRepository = flags
         )
     }
 
@@ -273,5 +276,31 @@ class InteractRiddleTest {
         val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success, "Whitespace-trimmed answer should match")
+    }
+
+    @Test
+    fun riddle_completionFlagSet_onCorrectAnswer() = runBlocking {
+        val flags = FakePlayerFlagsRepository()
+        val feat = RoomInteractable(
+            id = "gate_riddle", label = "gate inscription", description = "Runes on a gate.",
+            actionType = "RIDDLE_PROMPT",
+            actionData = mapOf(
+                "question" to "What walks on four legs?",
+                "acceptedAnswers" to "man,human",
+                "successDirection" to "NORTH",
+                "successMessage" to "The gate opens.",
+                "failureMessage" to "Wrong.",
+                "completionFlagKey" to "riddle:gate:solved",
+                "completionFlagValue" to "done"
+            )
+        )
+        val wg = setupWorld(feat)
+        val cmd = buildCommand(wg, flags = flags)
+        val session = newSession()
+
+        cmd.handleRiddleAnswer(session, "gate_riddle", "man")
+
+        assertEquals("done", flags.getFlag(testPlayerName, "riddle:gate:solved"),
+            "Completion flag should be set after correct riddle answer")
     }
 }
