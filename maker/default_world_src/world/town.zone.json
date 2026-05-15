@@ -223,6 +223,13 @@
       "description": "A weathered veteran in ornate armor, bearing the scars of countless battles. His keen eyes assess you with the practiced gaze of someone who has trained hundreds of warriors. He serves as the guild trainer for all adventurers.",
       "startRoomId": "town:square",
       "behaviorType": "trainer",
+      "trainerConfig": {
+        "tier": 1,
+        "maxLevel": 5,
+        "maxStatValue": 40,
+        "nextTierTrainerName": "Master Aldric",
+        "nextTierLocationHint": "the Foothill Pass, beyond the Whispering Forest"
+      },
       "interactSound": "guildmaster_intro",
       "exitSound": "guildmaster_exit",
       "imagePrompt": "Full-body weathered veteran warrior standing upright facing the viewer, ornate plate armor with battle scars, keen assessing eyes, short grey hair, broad shoulders, guild emblem on breastplate. Single character, isolated on solid white background, no ground, no scenery.",
