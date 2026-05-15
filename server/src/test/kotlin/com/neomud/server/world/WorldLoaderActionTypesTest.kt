@@ -62,6 +62,58 @@ class WorldLoaderActionTypesTest {
     }
 
     @Test
+    fun testPuzzleStepGroupCompleteness() {
+        val puzzleGroups = mutableMapOf<String, MutableList<Map<String, String>>>()
+        for (room in result.worldGraph.getAllRooms()) {
+            for (feat in room.interactables) {
+                if (feat.actionType == "PUZZLE_STEP") {
+                    val groupId = feat.actionData["puzzleGroupId"] ?: continue
+                    puzzleGroups.getOrPut(groupId) { mutableListOf() }.add(feat.actionData)
+                }
+            }
+        }
+        assertTrue(puzzleGroups.isNotEmpty(), "World should have at least one PUZZLE_STEP group")
+        for ((groupId, members) in puzzleGroups) {
+            val totalStepsSet = members.mapNotNull { it["puzzleTotalSteps"]?.toIntOrNull() }.toSet()
+            assertTrue(
+                totalStepsSet.size == 1,
+                "PUZZLE_STEP group '$groupId' has inconsistent puzzleTotalSteps: $totalStepsSet"
+            )
+            val totalSteps = totalStepsSet.first()
+            val stepIndices = members.mapNotNull { it["puzzleStepIndex"]?.toIntOrNull() }.sorted()
+            val expected = (0 until totalSteps).toList()
+            assertTrue(
+                stepIndices == expected,
+                "PUZZLE_STEP group '$groupId' expected steps $expected but found $stepIndices"
+            )
+        }
+    }
+
+    @Test
+    fun testOnSpawnRelockExitsReferenceValidRooms() {
+        for ((npcData, _) in result.npcDataList) {
+            for (relock in npcData.onSpawnRelockExits) {
+                val targetRoom = result.worldGraph.getRoom(relock.roomId)
+                assertTrue(
+                    targetRoom != null,
+                    "NPC '${npcData.id}' onSpawnRelockExits roomId '${relock.roomId}' not found"
+                )
+                val validDir = try { com.neomud.shared.model.Direction.valueOf(relock.direction); true } catch (_: IllegalArgumentException) { false }
+                assertTrue(
+                    validDir,
+                    "NPC '${npcData.id}' onSpawnRelockExits invalid direction '${relock.direction}'"
+                )
+                if (relock.interactableId.isNotBlank() && targetRoom != null) {
+                    assertTrue(
+                        targetRoom.interactables.any { it.id == relock.interactableId },
+                        "NPC '${npcData.id}' onSpawnRelockExits interactableId '${relock.interactableId}' not found on room '${relock.roomId}'"
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
     fun testAllDamageTrapSaveStatsResolveToNonZero() {
         val defaultStats = Stats(
             strength = 30, agility = 30, intellect = 30,

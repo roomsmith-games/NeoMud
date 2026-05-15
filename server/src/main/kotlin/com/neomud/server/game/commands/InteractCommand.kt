@@ -489,6 +489,7 @@ class InteractCommand(
         // Fire success: open the configured exit, broadcast room refresh.
         val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "It fits. Something shifts."
         val openedExit = openSuccessExit(session, roomId, feat.actionData)
+        setCompletionFlag(playerName, feat.actionData)
         worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
         session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))
         if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
@@ -534,6 +535,8 @@ class InteractCommand(
         }
         val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "Correct. Something shifts."
         val openedExit = openSuccessExit(session, roomId, feat.actionData)
+        val playerName = session.playerName
+        if (playerName != null) setCompletionFlag(playerName, feat.actionData)
         worldGraph.markInteractableUsed(roomId, featureId, feat.resetTicks)
         session.send(ServerMessage.InteractResult(success = true, featureName = feat.label, message = msg, sound = feat.sound))
         if (openedExit) resendRoomInfoToPlayersInRoom(roomId)
@@ -646,6 +649,16 @@ class InteractCommand(
             session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
             return false
         }
+        val requiredFlagKey = feat.actionData["requiredFlagKey"]?.takeIf { it.isNotBlank() }
+        if (requiredFlagKey != null) {
+            val requiredFlagValue = feat.actionData["requiredFlagValue"]?.takeIf { it.isNotBlank() } ?: "true"
+            val currentValue = flags.getFlag(playerName, requiredFlagKey)
+            if (currentValue != requiredFlagValue) {
+                val msg = feat.actionData["requiredFlagMessage"]?.takeIf { it.isNotBlank() } ?: "Nothing happens."
+                session.send(ServerMessage.InteractResult(false, feat.label, msg, feat.sound))
+                return false
+            }
+        }
         val groupId = feat.actionData["puzzleGroupId"]?.takeIf { it.isNotBlank() } ?: run {
             logger.warn("PUZZLE_STEP missing puzzleGroupId on ${feat.id}")
             session.send(ServerMessage.InteractResult(false, feat.label, "Nothing happens."))
@@ -681,6 +694,7 @@ class InteractCommand(
                 // Puzzle solved! Mark the flag at totalSteps so future taps see the
                 // already-solved guard above and stay idempotent.
                 flags.setFlag(playerName, flagKey, totalSteps.toString())
+                setCompletionFlag(playerName, feat.actionData)
                 val msg = feat.actionData["successMessage"]?.takeIf { it.isNotBlank() } ?: "The puzzle yields. Something opens."
                 val openedExit = openSuccessExit(session, roomId, feat.actionData)
                 session.send(ServerMessage.InteractResult(true, feat.label, msg, feat.sound))
@@ -777,6 +791,12 @@ class InteractCommand(
         val direction = try { Direction.valueOf(dirStr) } catch (_: IllegalArgumentException) { return false }
         worldGraph.unlockExit(roomId, direction)
         return true
+    }
+
+    private fun setCompletionFlag(playerName: String, actionData: Map<String, String>) {
+        val key = actionData["completionFlagKey"]?.takeIf { it.isNotBlank() } ?: return
+        val value = actionData["completionFlagValue"]?.takeIf { it.isNotBlank() } ?: "true"
+        playerFlagsRepository?.setFlag(playerName, key, value)
     }
 
 }

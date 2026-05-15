@@ -376,4 +376,114 @@ class InteractPuzzlesTest {
         val northLock = wg.getRoom(testRoom)!!.lockedExits[Direction.NORTH]
         assertEquals(99, northLock, "NORTH exit should remain locked after wrong step")
     }
+
+    // ─── PUZZLE_STEP requiredFlagKey ────────────────────────────────
+
+    @Test
+    fun puzzle_requiredFlagMissing_rejectsWithMessage() = runBlocking {
+        val flags = FakePlayerFlagsRepository()
+        val step = RoomInteractable(
+            id = "bell_dawn", label = "tide-bell of Dawn", description = "A bell.",
+            actionType = "PUZZLE_STEP",
+            actionData = mapOf(
+                "puzzleGroupId" to "tide_bells", "puzzleStepIndex" to "0", "puzzleTotalSteps" to "2",
+                "requiredFlagKey" to "mara_hymn_given", "requiredFlagValue" to "true",
+                "requiredFlagMessage" to "You don't know the hymn.",
+                "advanceMessage" to "The bell sings.",
+                "successDirection" to "NORTH"
+            )
+        )
+        val wg = setupWorld(step)
+        val cmd = buildCommand(wg, flags = flags)
+        val session = newSession()
+
+        cmd.execute(session, "bell_dawn")
+
+        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        assertNotNull(res)
+        assertEquals(false, res.success)
+        assertTrue(res.message.contains("don't know the hymn"))
+        assertEquals(null, flags.getFlag(testPlayerName, "puzzle:tide_bells:step"),
+            "Progress should not advance when requiredFlag is missing")
+    }
+
+    @Test
+    fun puzzle_requiredFlagPresent_allowsNormalProgress() = runBlocking {
+        val flags = FakePlayerFlagsRepository()
+        flags.setFlag(testPlayerName, "mara_hymn_given", "true")
+        val step = RoomInteractable(
+            id = "bell_dawn", label = "tide-bell of Dawn", description = "A bell.",
+            actionType = "PUZZLE_STEP",
+            actionData = mapOf(
+                "puzzleGroupId" to "tide_bells", "puzzleStepIndex" to "0", "puzzleTotalSteps" to "2",
+                "requiredFlagKey" to "mara_hymn_given", "requiredFlagValue" to "true",
+                "requiredFlagMessage" to "You don't know the hymn.",
+                "advanceMessage" to "The bell sings."
+            )
+        )
+        val wg = setupWorld(step)
+        val cmd = buildCommand(wg, flags = flags)
+        val session = newSession()
+
+        cmd.execute(session, "bell_dawn")
+
+        assertEquals("1", flags.getFlag(testPlayerName, "puzzle:tide_bells:step"),
+            "Progress should advance when requiredFlag is present")
+        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        assertNotNull(res)
+        assertTrue(res.success)
+        assertTrue(res.message.contains("bell sings"))
+    }
+
+    // ─── completionFlagKey ──────────────────────────────────────────
+
+    @Test
+    fun puzzle_completionFlagSet_onSolve() = runBlocking {
+        val flags = FakePlayerFlagsRepository()
+        val step0 = RoomInteractable(
+            id = "lever_a", label = "lever A", description = "Lever.",
+            actionType = "PUZZLE_STEP",
+            actionData = mapOf(
+                "puzzleGroupId" to "gate_seq", "puzzleStepIndex" to "0", "puzzleTotalSteps" to "1",
+                "completionFlagKey" to "puzzle:gate_seq:complete", "completionFlagValue" to "done",
+                "successMessage" to "The gate grinds open.",
+                "successDirection" to "NORTH"
+            )
+        )
+        val wg = setupWorld(step0)
+        val cmd = buildCommand(wg, flags = flags)
+        val session = newSession()
+
+        cmd.execute(session, "lever_a")
+
+        assertEquals("done", flags.getFlag(testPlayerName, "puzzle:gate_seq:complete"),
+            "Completion flag should be set after solving the puzzle")
+        assertEquals("1", flags.getFlag(testPlayerName, "puzzle:gate_seq:step"),
+            "Puzzle step flag should also be set")
+    }
+
+    @Test
+    fun placeItem_completionFlagSet_onSuccess() = runBlocking {
+        val flags = FakePlayerFlagsRepository()
+        val feat = RoomInteractable(
+            id = "altar", label = "altar", description = "An altar.",
+            actionType = "PLACE_ITEM",
+            actionData = mapOf(
+                "acceptedItems" to "item:warden_token",
+                "consumeItem" to "true",
+                "completionFlagKey" to "altar:offering_placed",
+                "successDirection" to "NORTH",
+                "successMessage" to "The altar accepts."
+            )
+        )
+        val wg = setupWorld(feat)
+        val inv = FakeInventoryRepository(mutableSetOf("item:warden_token"))
+        val cmd = buildCommand(wg, inv = inv, flags = flags)
+        val session = newSession()
+
+        cmd.handlePlaceItem(session, "altar", "item:warden_token")
+
+        assertEquals("true", flags.getFlag(testPlayerName, "altar:offering_placed"),
+            "Completion flag should be set after successful placement")
+    }
 }

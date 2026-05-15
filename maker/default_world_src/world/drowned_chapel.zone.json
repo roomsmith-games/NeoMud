@@ -114,7 +114,7 @@
     {
       "id": "drowned_chapel:side_chapel_north",
       "name": "North Side Chapel",
-      "description": "A small side chapel off the nave, drier than the rest of the temple, dedicated by the carving above its lintel to the Watcher of Dawn. A bronze tide-bell hangs at the chapel's heart, salt-greened but intact, the pull-rope still sound. This is the first bell of the hymn.",
+      "description": "A small side chapel off the nave, drier than the rest of the temple, dedicated by the carving above its lintel to the Watcher of Dawn. A bronze tide-bell hangs at the chapel's heart, salt-greened but intact.",
       "x": -1,
       "y": 2,
       "exits": {
@@ -132,7 +132,7 @@
         {
           "id": "north_tide_bell",
           "label": "bronze tide-bell of Dawn",
-          "description": "The first bell of the Mariner's Hymn. Pull the rope.",
+          "description": "A bronze tide-bell dedicated to the Watcher of Dawn. Pull the rope.",
           "actionType": "PUZZLE_STEP",
           "triggerType": "ON_ACTION",
           "perceptionDC": 0,
@@ -141,6 +141,9 @@
             "puzzleGroupId": "tide_bells",
             "puzzleStepIndex": "0",
             "puzzleTotalSteps": "5",
+            "requiredFlagKey": "mara_hymn_given",
+            "requiredFlagValue": "true",
+            "requiredFlagMessage": "You haul on the rope. The bell rings, but the note falls flat and dead — you don't know the hymn. Somewhere on the coast, someone must still remember the order of the Wardens' bells.",
             "advanceMessage": "You haul on the rope. The bronze bell sings out a deep clear note that runs through the chapel stone — and somewhere far below, the chapel itself answers, almost imperceptibly. The hymn has begun.",
             "resetMessage": "The bell rings hollowly, but the chapel does not answer. The hymn has slipped — return to the start.",
             "alreadySolvedMessage": "The bell of Dawn is silent now. Its note has been given."
@@ -151,7 +154,7 @@
     {
       "id": "drowned_chapel:side_chapel_south",
       "name": "South Side Chapel",
-      "description": "The southern side chapel, dedicated to the Watcher of Dusk by its setting-sun lintel. A second bronze tide-bell hangs at its heart. Salt-eater fungus blooms along the wet wall in a sour grey-yellow growth.",
+      "description": "The southern side chapel, dedicated to the Watcher of Dusk by its setting-sun lintel. A bronze tide-bell hangs at its heart. Salt-eater fungus blooms along the wet wall in a sour grey-yellow growth.",
       "x": 1,
       "y": 2,
       "exits": {
@@ -169,7 +172,7 @@
         {
           "id": "south_tide_bell",
           "label": "bronze tide-bell of Dusk",
-          "description": "The second bell of the Mariner's Hymn. Pull the rope.",
+          "description": "A bronze tide-bell dedicated to the Watcher of Dusk. Pull the rope.",
           "actionType": "PUZZLE_STEP",
           "triggerType": "ON_ACTION",
           "perceptionDC": 0,
@@ -178,6 +181,9 @@
             "puzzleGroupId": "tide_bells",
             "puzzleStepIndex": "1",
             "puzzleTotalSteps": "5",
+            "requiredFlagKey": "mara_hymn_given",
+            "requiredFlagValue": "true",
+            "requiredFlagMessage": "You haul on the rope. The bell rings, but the note falls flat and dead — you don't know the hymn. Somewhere on the coast, someone must still remember the order of the Wardens' bells.",
             "advanceMessage": "You haul on the rope. The Dusk-bell answers Dawn's distant ring with a lower note. Two of five — the chapel listens.",
             "resetMessage": "The Dusk-bell rings hollow. The hymn has slipped — return to the start.",
             "alreadySolvedMessage": "The bell of Dusk is silent now. Its note has been given."
@@ -226,7 +232,7 @@
         {
           "id": "crypt_tide_bell",
           "label": "bronze tide-bell of Storms",
-          "description": "The third bell of the Mariner's Hymn. Pull the rope.",
+          "description": "A bronze tide-bell carved with a storm-anvil sigil. Pull the rope.",
           "actionType": "PUZZLE_STEP",
           "triggerType": "ON_ACTION",
           "perceptionDC": 0,
@@ -235,6 +241,9 @@
             "puzzleGroupId": "tide_bells",
             "puzzleStepIndex": "2",
             "puzzleTotalSteps": "5",
+            "requiredFlagKey": "mara_hymn_given",
+            "requiredFlagValue": "true",
+            "requiredFlagMessage": "You haul on the rope. The bell rings, but the note falls flat and dead — you don't know the hymn. Somewhere on the coast, someone must still remember the order of the Wardens' bells.",
             "advanceMessage": "You pull the rope. The Storm-bell rings out a low metallic peal — the third Watcher hears you. The chapel walls themselves vibrate faintly in response.",
             "resetMessage": "The Storm-bell rings hollow. The hymn has slipped — return to the start.",
             "alreadySolvedMessage": "The bell of Storms is silent now. Its note has been given."
@@ -263,7 +272,7 @@
     {
       "id": "drowned_chapel:crypt_chamber",
       "name": "Crypt Chamber",
-      "description": "A circular chamber at the bottom of the corridor, the floor a single round slab inscribed with a five-pointed star. A bronze star-bell hangs above it in a frame of dark iron — the fourth of the hymn's bells. A figure in salt-stained robes stands by the bell-frame, the Tide-Speaker, who tolls these bells now in ways the Wardens never sang. The air is thick, stagnant, gritty in the lungs.",
+      "description": "A circular chamber at the bottom of the corridor, the floor a single round slab inscribed with a five-pointed star. A bronze star-bell hangs above it in a frame of dark iron — one of the hymn's bells. A figure in salt-stained robes stands by the bell-frame, the Tide-Speaker, who tolls these bells now in ways the Wardens never sang. The air is thick, stagnant, gritty in the lungs.",
       "x": 0,
       "y": 4,
       "exits": {
@@ -282,7 +291,7 @@
         {
           "id": "star_tide_bell",
           "label": "bronze tide-bell of the Star",
-          "description": "The fourth bell of the Mariner's Hymn. Pull the rope.",
+          "description": "A bronze tide-bell hanging from a star-inscribed frame of dark iron. Pull the rope.",
           "actionType": "PUZZLE_STEP",
           "triggerType": "ON_ACTION",
           "perceptionDC": 0,
@@ -291,6 +300,9 @@
             "puzzleGroupId": "tide_bells",
             "puzzleStepIndex": "3",
             "puzzleTotalSteps": "5",
+            "requiredFlagKey": "mara_hymn_given",
+            "requiredFlagValue": "true",
+            "requiredFlagMessage": "You haul on the rope. The bell rings, but the note falls flat and dead — you don't know the hymn. Somewhere on the coast, someone must still remember the order of the Wardens' bells.",
             "advanceMessage": "You pull the rope. The Star-bell rings out clear and high — four of five. Whatever sleeps in the inner sanctum stirs.",
             "resetMessage": "The Star-bell rings hollow. The hymn has slipped — return to the start.",
             "alreadySolvedMessage": "The bell of the Star is silent now. Its note has been given."
@@ -320,7 +332,7 @@
     {
       "id": "drowned_chapel:inner_sanctum",
       "name": "Inner Sanctum",
-      "description": "A high-vaulted chamber beyond the crypt — the chapel's true heart, dry and warm where the rest is cold and flooded. A great bronze sea-altar of fitted scales stands in the center, its central depression empty. Above it the fifth and largest tide-bell hangs from the vault — the Sealed-Eye Bell. To the east a wall recess shows the joints of a hidden door, sealed for now.",
+      "description": "A high-vaulted chamber beyond the crypt — the chapel's true heart, dry and warm where the rest is cold and flooded. A great bronze sea-altar of fitted scales stands in the center, its central depression empty. Above it the largest tide-bell hangs from the vault — the Sealed-Eye Bell. To the east a wall recess shows the joints of a hidden door, sealed for now.",
       "x": 0,
       "y": 5,
       "exits": {
@@ -341,7 +353,7 @@
         {
           "id": "sealed_eye_bell",
           "label": "Sealed-Eye Bell",
-          "description": "The fifth and largest tide-bell, hanging from the vault. Pull the rope to ring out the final note of the Mariner's Hymn — and to open the way to whatever sleeps beyond.",
+          "description": "The largest tide-bell, its face cast with the sigil of a sealed eye. Pull the rope.",
           "actionType": "PUZZLE_STEP",
           "triggerType": "ON_ACTION",
           "perceptionDC": 0,
@@ -350,6 +362,11 @@
             "puzzleGroupId": "tide_bells",
             "puzzleStepIndex": "4",
             "puzzleTotalSteps": "5",
+            "requiredFlagKey": "mara_hymn_given",
+            "requiredFlagValue": "true",
+            "requiredFlagMessage": "You haul on the rope. The bell rings, but the note falls flat and dead — you don't know the hymn. Somewhere on the coast, someone must still remember the order of the Wardens' bells.",
+            "completionFlagKey": "puzzle:tide_bells:complete",
+            "completionFlagValue": "true",
             "successMessage": "You pull the rope. The great Sealed-Eye Bell rings out a deep all-encompassing note that rolls up through the chapel and out to sea — the hymn is complete. With a long stone groan, the doors at the north of the sanctum swing inward, revealing the way to Korlach's lair.",
             "resetMessage": "The Sealed-Eye Bell rings hollow. The hymn has slipped — return to the bell of Dawn and begin again.",
             "alreadySolvedMessage": "The Sealed-Eye Bell hangs silent now. The way ahead is open.",

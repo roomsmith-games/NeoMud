@@ -204,6 +204,20 @@ object WorldLoader {
                     logger.warn("NPC '${npcData.id}' spawnPoint '$roomId' not found in loaded rooms")
                 }
             }
+            for (relock in npcData.onSpawnRelockExits) {
+                if (worldGraph.getRoom(relock.roomId) == null) {
+                    logger.warn("NPC '${npcData.id}' onSpawnRelockExits roomId '${relock.roomId}' not found in loaded rooms")
+                }
+                try { Direction.valueOf(relock.direction) } catch (_: IllegalArgumentException) {
+                    logger.warn("NPC '${npcData.id}' onSpawnRelockExits invalid direction '${relock.direction}'")
+                }
+                if (relock.interactableId.isNotBlank()) {
+                    val targetRoom = worldGraph.getRoom(relock.roomId)
+                    if (targetRoom != null && targetRoom.interactables.none { it.id == relock.interactableId }) {
+                        logger.warn("NPC '${npcData.id}' onSpawnRelockExits interactableId '${relock.interactableId}' not found on room '${relock.roomId}'")
+                    }
+                }
+            }
         }
 
         // Room data validation
@@ -247,7 +261,12 @@ object WorldLoader {
                         }
                     }
                     "TREASURE_DROP", "MONSTER_SPAWN", "ROOM_EFFECT",
-                    "RIDDLE_PROMPT", "CHOICE_PROMPT" -> { /* validated at runtime */ }
+                    "CHOICE_PROMPT" -> { /* validated at runtime */ }
+                    "RIDDLE_PROMPT" -> {
+                        if (feat.actionData.containsKey("completionFlagKey") && feat.actionData["completionFlagKey"].isNullOrBlank()) {
+                            logger.warn("Room '${room.id}' interactable '${feat.id}' RIDDLE_PROMPT has empty completionFlagKey")
+                        }
+                    }
                     "DAMAGE_TRAP" -> {
                         val saveStat = feat.actionData["saveStat"]
                         if (!saveStat.isNullOrBlank()) {
@@ -267,9 +286,18 @@ object WorldLoader {
                             }
                         }
                         validateSuccessDirection(room, feat, "PLACE_ITEM")
+                        if (feat.actionData.containsKey("completionFlagKey") && feat.actionData["completionFlagKey"].isNullOrBlank()) {
+                            logger.warn("Room '${room.id}' interactable '${feat.id}' PLACE_ITEM has empty completionFlagKey")
+                        }
                     }
                     "PUZZLE_STEP" -> {
                         validateSuccessDirection(room, feat, "PUZZLE_STEP")
+                        if (feat.actionData.containsKey("requiredFlagKey") && feat.actionData["requiredFlagKey"].isNullOrBlank()) {
+                            logger.warn("Room '${room.id}' interactable '${feat.id}' PUZZLE_STEP has empty requiredFlagKey")
+                        }
+                        if (feat.actionData.containsKey("completionFlagKey") && feat.actionData["completionFlagKey"].isNullOrBlank()) {
+                            logger.warn("Room '${room.id}' interactable '${feat.id}' PUZZLE_STEP has empty completionFlagKey")
+                        }
                     }
                     "CONDITIONAL_TRIGGER" -> {
                         val conditionType = feat.actionData["conditionType"]
@@ -283,6 +311,54 @@ object WorldLoader {
                     }
                     else -> logger.warn("Room '${room.id}' interactable '${feat.id}' unknown actionType '${feat.actionType}'")
                 }
+            }
+        }
+
+        // PUZZLE_STEP group completeness validation
+        val puzzleGroups = mutableMapOf<String, MutableList<Pair<String, Map<String, String>>>>()
+        for (room in worldGraph.getAllRooms()) {
+            for (feat in room.interactables) {
+                if (feat.actionType == "PUZZLE_STEP") {
+                    val groupId = feat.actionData["puzzleGroupId"] ?: continue
+                    puzzleGroups.getOrPut(groupId) { mutableListOf() }
+                        .add(feat.id to feat.actionData)
+                }
+            }
+        }
+        for ((groupId, members) in puzzleGroups) {
+            val totalStepsSet = members.mapNotNull { it.second["puzzleTotalSteps"]?.toIntOrNull() }.toSet()
+            if (totalStepsSet.size > 1) {
+                logger.warn("PUZZLE_STEP group '$groupId' has inconsistent puzzleTotalSteps: $totalStepsSet")
+            }
+            val totalSteps = totalStepsSet.firstOrNull() ?: continue
+            val stepIndices = members.mapNotNull { it.second["puzzleStepIndex"]?.toIntOrNull() }
+            val expected = (0 until totalSteps).toSet()
+            val actual = stepIndices.toSet()
+            val missing = expected - actual
+            val duplicate = stepIndices.groupBy { it }.filter { it.value.size > 1 }.keys
+            if (missing.isNotEmpty()) {
+                logger.warn("PUZZLE_STEP group '$groupId' missing step indices: $missing (totalSteps=$totalSteps)")
+            }
+            if (duplicate.isNotEmpty()) {
+                logger.warn("PUZZLE_STEP group '$groupId' has duplicate step indices: $duplicate")
+            }
+        }
+
+        // onKillFlags → CONDITIONAL_TRIGGER cross-reference (advisory)
+        val allKillFlagKeys = allNpcData.flatMap { (npc, _) -> npc.onKillFlags.keys }.toSet()
+        val allConditionalFlagKeys = worldGraph.getAllRooms()
+            .flatMap { it.interactables }
+            .filter { it.actionType == "CONDITIONAL_TRIGGER" && it.actionData["conditionType"] == "FLAG" }
+            .mapNotNull { it.actionData["requiredFlagKey"] }
+            .toSet()
+        for (key in allKillFlagKeys) {
+            if (key !in allConditionalFlagKeys) {
+                logger.warn("NPC onKillFlags key '$key' has no matching CONDITIONAL_TRIGGER FLAG consumer (orphaned)")
+            }
+        }
+        for (key in allConditionalFlagKeys) {
+            if (key.startsWith("kill:") && key !in allKillFlagKeys) {
+                logger.warn("CONDITIONAL_TRIGGER FLAG requires '$key' but no NPC produces it via onKillFlags")
             }
         }
 
