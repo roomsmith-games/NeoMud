@@ -6,9 +6,9 @@
   "bgm": "boss_intense",
   "levelRange": "25-28",
   "spawnConfig": {
-    "maxNpcsPerRoom": 2,
-    "spawnIntervalTicks": 18,
-    "maxTotalNpcs": 10
+    "maxPerRoom": 2,
+    "rateTicks": 18,
+    "maxEntities": 10
   },
   "imageStyle": "fantasy environment, dark fortress interior, corrupted stone, storm energy, game background",
   "imageNegativePrompt": "characters, people, modern, sci-fi, bright colors, outdoor",

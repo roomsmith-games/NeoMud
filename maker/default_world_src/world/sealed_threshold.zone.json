@@ -6,9 +6,9 @@
   "bgm": "boss_intense",
   "levelRange": "28-30",
   "spawnConfig": {
-    "maxNpcsPerRoom": 2,
-    "spawnIntervalTicks": 20,
-    "maxTotalNpcs": 14
+    "maxPerRoom": 2,
+    "rateTicks": 20,
+    "maxEntities": 14
   },
   "imageStyle": "fantasy environment, ancient underground ruins, fracture energy, game background",
   "imageNegativePrompt": "characters, people, modern, sci-fi, bright colors, outdoor",

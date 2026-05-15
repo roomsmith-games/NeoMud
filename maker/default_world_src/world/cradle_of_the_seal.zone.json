@@ -6,9 +6,9 @@
   "bgm": "boss_intense",
   "levelRange": "17-18",
   "spawnConfig": {
-    "maxNpcsPerRoom": 2,
-    "spawnIntervalTicks": 10,
-    "maxTotalNpcs": 6
+    "maxPerRoom": 2,
+    "rateTicks": 10,
+    "maxEntities": 6
   },
   "imageStyle": "fantasy underground dungeon, ancient sealed chamber, golden warding glyphs, cracked stone, atmospheric lighting, digital painting",
   "imageNegativePrompt": "modern, sci-fi, anime, cartoon, bright cheerful colors, text, watermark",

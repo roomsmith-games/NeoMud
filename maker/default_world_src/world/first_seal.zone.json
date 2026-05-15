@@ -6,9 +6,9 @@
   "bgm": "gorge_danger",
   "levelRange": "16-18",
   "spawnConfig": {
-    "maxNpcsPerRoom": 2,
-    "spawnIntervalTicks": 8,
-    "maxTotalNpcs": 10
+    "maxPerRoom": 2,
+    "rateTicks": 8,
+    "maxEntities": 10
   },
   "imageStyle": "fantasy landscape, ancient ruins on coastal cliffs, weathered stone pylons, overgrown with vines, moody sky, digital painting, muted blues and grays with golden rune-glow accents",
   "imageNegativePrompt": "modern, sci-fi, anime, cartoon, bright colors, cheerful, people, characters, text, watermark",

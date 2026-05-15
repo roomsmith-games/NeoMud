@@ -392,6 +392,24 @@ class WorldLoaderTest {
     }
 
     @Test
+    fun testAllCombatZonesHaveWorkingSpawnConfigs() {
+        val result = load()
+        val zonesWithHostileNpcs = result.npcDataList
+            .filter { it.first.hostile }
+            .map { it.second }
+            .toSet()
+
+        for (zoneId in zonesWithHostileNpcs) {
+            val config = result.zoneSpawnConfigs[zoneId]
+            assertNotNull(config, "Zone '$zoneId' has hostile NPCs but no spawn config")
+            assertTrue(config.rateTicks > 0,
+                "Zone '$zoneId' has rateTicks=0 — NPCs will never respawn (wrong field name?)")
+            assertTrue(config.maxEntities > 0,
+                "Zone '$zoneId' has maxEntities=0 — NPCs will never respawn (wrong field name?)")
+        }
+    }
+
+    @Test
     fun testManifestHasVersioningFields() {
         val result = load()
         val manifest = result.manifest
