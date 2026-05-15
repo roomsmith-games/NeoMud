@@ -68,7 +68,6 @@ class PursuitBehavior(
                     pursuitEnded = true
                     return NpcAction.None
                 }
-                // Pursuit crosses zone boundaries intentionally
                 return NpcAction.MoveTo(targetRoomId)
             }
         } else {

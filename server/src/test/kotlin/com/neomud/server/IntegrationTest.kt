@@ -632,9 +632,8 @@ class IntegrationTest {
             receiveServerMessage() // InventoryUpdate
             receiveServerMessage() // RoomItemsUpdate
 
-            // Send invalid coin type "all"
             send(Frame.Text(MessageSerializer.encodeClientMessage(
-                ClientMessage.PickupCoins("all")
+                ClientMessage.PickupCoins("diamonds")
             )))
 
             val response = receiveServerMessage()

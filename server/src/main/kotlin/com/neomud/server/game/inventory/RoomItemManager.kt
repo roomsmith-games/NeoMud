@@ -91,6 +91,17 @@ class RoomItemManager {
         }
     }
 
+    fun removeAllCoins(roomId: String): Coins {
+        val state = rooms[roomId] ?: return Coins()
+        synchronized(state) {
+            val coins = state.coins.copy()
+            if (coins == Coins()) return Coins()
+            state.coins = Coins()
+            cleanupIfEmpty(roomId, state)
+            return coins
+        }
+    }
+
     fun getGroundItems(roomId: String): List<GroundItem> {
         val state = rooms[roomId] ?: return emptyList()
         synchronized(state) {

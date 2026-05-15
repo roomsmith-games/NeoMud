@@ -264,7 +264,7 @@
       "maxHostileNpcs": 2,
       "effects": [
         {
-          "type": "chill",
+          "type": "DAMAGE",
           "value": 3,
           "message": "Cold spectral wind cuts through you despite the burn's residual heat.",
           "sound": "ghost_moan"
@@ -474,7 +474,7 @@
       "name": "Charred Treant",
       "description": "What was once a great oak is now a shambling ruin of blackened wood and smouldering heartwood. It moves with a slow grinding creak, dragging root-legs through the ash. When it strikes, burning splinters fly.",
       "startRoomId": "ashwood:ridge_west",
-      "behaviorType": "patrol",
+      "behaviorType": "wander",
       "hostile": true,
       "maxHp": 220,
       "damage": 38,

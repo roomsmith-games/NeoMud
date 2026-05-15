@@ -178,6 +178,22 @@ class GameConfigTest {
     }
 
     @Test
+    fun testResolveWeapon_includesFreeItems() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:free_sword", "Free Sword", "", "weapon", slot = "weapon", damageBonus = 5, value = 0, levelRequirement = 1)
+        ))
+        assertEquals("item:free_sword", GameConfig.StarterEquipment.resolveWeapon("WARRIOR", catalog))
+    }
+
+    @Test
+    fun testResolveWeapon_excludesQuestItems() {
+        val catalog = ItemCatalog(listOf(
+            Item("item:quest_blade", "Quest Blade", "", "quest", slot = "weapon", damageBonus = 5, value = 50, levelRequirement = 1)
+        ))
+        assertNull(GameConfig.StarterEquipment.resolveWeapon("WARRIOR", catalog))
+    }
+
+    @Test
     fun testCpTierProgression() {
         assertTrue(GameConfig.Progression.CP_PER_LEVEL_LOW < GameConfig.Progression.CP_PER_LEVEL_MID)
         assertTrue(GameConfig.Progression.CP_PER_LEVEL_MID < GameConfig.Progression.CP_PER_LEVEL_HIGH)

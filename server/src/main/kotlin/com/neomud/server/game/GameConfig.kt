@@ -196,23 +196,26 @@ object GameConfig {
             }
         }
 
+        private fun isStarterEligible(item: com.neomud.shared.model.Item, slot: String): Boolean =
+            item.slot == slot && item.levelRequirement <= 1 && item.type != "quest"
+
         fun resolveWeapon(classId: String, itemCatalog: com.neomud.server.world.ItemCatalog): String? {
             val defaultId = weaponForClass(classId)
             if (itemCatalog.getItem(defaultId) != null) return defaultId
             val category = weaponCategory(classId)
             return itemCatalog.getAllItems()
-                .filter { it.slot == "weapon" && it.levelRequirement <= 1 && it.value > 0 }
+                .filter { isStarterEligible(it, "weapon") }
                 .filter { it.name.lowercase().contains(category) }
                 .minByOrNull { it.value }?.id
                 ?: itemCatalog.getAllItems()
-                    .filter { it.slot == "weapon" && it.levelRequirement <= 1 && it.value > 0 }
+                    .filter { isStarterEligible(it, "weapon") }
                     .minByOrNull { it.value }?.id
         }
 
         fun resolveArmor(itemCatalog: com.neomud.server.world.ItemCatalog): String? {
             if (itemCatalog.getItem(ARMOR_ITEM_ID) != null) return ARMOR_ITEM_ID
             return itemCatalog.getAllItems()
-                .filter { it.slot == ARMOR_SLOT && it.levelRequirement <= 1 && it.value > 0 }
+                .filter { isStarterEligible(it, ARMOR_SLOT) }
                 .minByOrNull { it.value }?.id
         }
     }

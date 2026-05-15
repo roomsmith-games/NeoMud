@@ -216,7 +216,8 @@ class NpcManager(
                 val roomOk = maxPerRoom == null || aliveHostileNpcsInRoom(targetRoomId) < maxPerRoom
                 val sanctuaryOk = !npc.hostile || worldGraph.getRoom(targetRoomId)?.effects?.none { it.type == "SANCTUARY" } != false
                 val noFriendlyNpcs = !npc.hostile || targetRoomId !in friendlyNpcRooms
-                roomOk && sanctuaryOk && noFriendlyNpcs
+                val sameZone = targetRoomId.substringBefore(":") == npc.zoneId
+                roomOk && sanctuaryOk && noFriendlyNpcs && sameZone
             }
 
             when (val action = npc.behavior.tick(npc, worldGraph, canMoveTo)) {

@@ -61,9 +61,9 @@ class PickupCommand(
         val playerName = session.playerName ?: return
         val roomId = session.currentRoomId ?: return
 
-        val validCoinTypes = setOf("copper", "silver", "gold", "platinum")
+        val validCoinTypes = setOf("copper", "silver", "gold", "platinum", "all")
         if (coinType !in validCoinTypes) {
-            session.send(ServerMessage.Error("Invalid coin type. Use: copper, silver, gold, or platinum."))
+            session.send(ServerMessage.Error("Invalid coin type. Use: copper, silver, gold, platinum, or all."))
             return
         }
 
@@ -71,27 +71,33 @@ class PickupCommand(
         RestUtils.breakRest(session, "You stop resting.")
         StealthUtils.breakStealth(session, sessionManager, "Picking up coins reveals your presence!")
 
-        val amount = roomItemManager.removeCoins(roomId, coinType)
-        if (amount == 0) {
-            session.send(ServerMessage.Error("No $coinType to pick up."))
-            return
+        if (coinType == "all") {
+            val coins = roomItemManager.removeAllCoins(roomId)
+            if (coins == Coins()) {
+                session.send(ServerMessage.Error("No coins to pick up."))
+                return
+            }
+            coinRepository.addCoins(playerName, coins)
+            val total = coins.copper + coins.silver + coins.gold + coins.platinum
+            session.send(ServerMessage.PickupResult("coins", total, isCoin = true))
+        } else {
+            val amount = roomItemManager.removeCoins(roomId, coinType)
+            if (amount == 0) {
+                session.send(ServerMessage.Error("No $coinType to pick up."))
+                return
+            }
+            val coins = when (coinType) {
+                "copper" -> Coins(copper = amount)
+                "silver" -> Coins(silver = amount)
+                "gold" -> Coins(gold = amount)
+                "platinum" -> Coins(platinum = amount)
+                else -> return
+            }
+            coinRepository.addCoins(playerName, coins)
+            session.send(ServerMessage.PickupResult(coinType, amount, isCoin = true))
         }
 
-        val coins = when (coinType) {
-            "copper" -> Coins(copper = amount)
-            "silver" -> Coins(silver = amount)
-            "gold" -> Coins(gold = amount)
-            "platinum" -> Coins(platinum = amount)
-            else -> return
-        }
-        coinRepository.addCoins(playerName, coins)
-
-        session.send(ServerMessage.PickupResult(coinType, amount, isCoin = true))
-
-        // Send updated inventory to the picker
         sendInventoryUpdate(session, playerName)
-
-        // Broadcast updated ground state to entire room
         broadcastRoomItems(roomId)
     }
 
