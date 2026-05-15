@@ -114,6 +114,33 @@ class WorldLoaderActionTypesTest {
     }
 
     @Test
+    fun testOnKillFlagsCrossRefConditionalTriggers() {
+        val allKillFlagKeys = result.npcDataList
+            .flatMap { (npc, _) -> npc.onKillFlags.keys }
+            .toSet()
+        val allConditionalFlagKeys = result.worldGraph.getAllRooms()
+            .flatMap { it.interactables }
+            .filter { it.actionType == "CONDITIONAL_TRIGGER" && it.actionData["conditionType"] == "FLAG" }
+            .mapNotNull { it.actionData["requiredFlagKey"] }
+            .toSet()
+
+        for (key in allKillFlagKeys) {
+            assertTrue(
+                key in allConditionalFlagKeys,
+                "NPC onKillFlags key '$key' has no matching CONDITIONAL_TRIGGER FLAG consumer (orphaned)"
+            )
+        }
+        for (key in allConditionalFlagKeys) {
+            if (key.startsWith("kill:")) {
+                assertTrue(
+                    key in allKillFlagKeys,
+                    "CONDITIONAL_TRIGGER FLAG requires '$key' but no NPC produces it via onKillFlags"
+                )
+            }
+        }
+    }
+
+    @Test
     fun testAllDamageTrapSaveStatsResolveToNonZero() {
         val defaultStats = Stats(
             strength = 30, agility = 30, intellect = 30,

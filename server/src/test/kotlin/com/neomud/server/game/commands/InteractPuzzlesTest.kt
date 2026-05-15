@@ -463,6 +463,34 @@ class InteractPuzzlesTest {
     }
 
     @Test
+    fun puzzle_alreadySolved_withRequiredFlag_showsAlreadySolvedMessage() = runBlocking {
+        val flags = FakePlayerFlagsRepository()
+        flags.setFlag(testPlayerName, "puzzle:gated_seq:step", "1")  // already solved (totalSteps=1)
+        // Player does NOT have the required flag — but it shouldn't matter because puzzle is already solved
+        val step = RoomInteractable(
+            id = "gated_lever", label = "gated lever", description = "A lever.",
+            actionType = "PUZZLE_STEP",
+            actionData = mapOf(
+                "puzzleGroupId" to "gated_seq", "puzzleStepIndex" to "0", "puzzleTotalSteps" to "1",
+                "requiredFlagKey" to "some_prerequisite", "requiredFlagValue" to "1",
+                "requiredFlagMessage" to "You lack the prerequisite.",
+                "alreadySolvedMessage" to "The lever is already pulled.",
+                "successDirection" to "NORTH"
+            )
+        )
+        val wg = setupWorld(step)
+        val cmd = buildCommand(wg, flags = flags)
+        val session = newSession()
+
+        cmd.execute(session, "gated_lever")
+
+        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        assertNotNull(res)
+        assertTrue(res.message.contains("already pulled"),
+            "Already-solved guard should fire before requiredFlagKey check; got: ${res.message}")
+    }
+
+    @Test
     fun placeItem_completionFlagSet_onSuccess() = runBlocking {
         val flags = FakePlayerFlagsRepository()
         val feat = RoomInteractable(
