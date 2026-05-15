@@ -77,10 +77,10 @@ class DirectionPadTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u2196").performClick() // NW ↖
-        onNodeWithText("\u2197").performClick() // NE ↗
-        onNodeWithText("\u2199").performClick() // SW ↙
-        onNodeWithText("\u2198").performClick() // SE ↘
+        onNodeWithText("NW").performClick() // NW ↖
+        onNodeWithText("NE").performClick() // NE ↗
+        onNodeWithText("SW").performClick() // SW ↙
+        onNodeWithText("SE").performClick() // SE ↘
         assertEquals(
             listOf(Direction.NORTHWEST, Direction.NORTHEAST, Direction.SOUTHWEST, Direction.SOUTHEAST),
             moves
@@ -210,8 +210,8 @@ class DirectionPadTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u2196").performClick() // NW
-        onNodeWithText("\u2197").performClick() // NE
+        onNodeWithText("NW").performClick() // NW
+        onNodeWithText("NE").performClick() // NE
         assertEquals(listOf(Direction.NORTHWEST, Direction.NORTHEAST), moves)
     }
 }

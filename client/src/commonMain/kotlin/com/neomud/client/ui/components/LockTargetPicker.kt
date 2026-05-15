@@ -84,9 +84,9 @@ fun LockTargetPicker(
                         horizontalArrangement = Arrangement.spacedBy(Gap),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        LockDirButton("\u2196", Direction.NORTHWEST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
+                        LockDirButton("NW", Direction.NORTHWEST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
                         LockDirButton("\u25B2", Direction.NORTH, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
-                        LockDirButton("\u2197", Direction.NORTHEAST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
+                        LockDirButton("NE", Direction.NORTHEAST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
                     }
 
                     Spacer(modifier = Modifier.height(Gap))
@@ -117,9 +117,9 @@ fun LockTargetPicker(
                         horizontalArrangement = Arrangement.spacedBy(Gap),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        LockDirButton("\u2199", Direction.SOUTHWEST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
+                        LockDirButton("SW", Direction.SOUTHWEST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
                         LockDirButton("\u25BC", Direction.SOUTH, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
-                        LockDirButton("\u2198", Direction.SOUTHEAST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
+                        LockDirButton("SE", Direction.SOUTHEAST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
                     }
 
                     // UP / DOWN row

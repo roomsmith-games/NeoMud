@@ -71,7 +71,7 @@ fun DirectionPad(
             verticalAlignment = Alignment.CenterVertically
         ) {
             StoneDPadButton(
-                text = "\u2196",
+                text = "NW",
                 enabled = Direction.NORTHWEST in availableExits,
                 locked = Direction.NORTHWEST in lockedExits,
                 tracked = trackedDirection == Direction.NORTHWEST,
@@ -87,7 +87,7 @@ fun DirectionPad(
                 isCardinal = true
             )
             StoneDPadButton(
-                text = "\u2197",
+                text = "NE",
                 enabled = Direction.NORTHEAST in availableExits,
                 locked = Direction.NORTHEAST in lockedExits,
                 tracked = trackedDirection == Direction.NORTHEAST,
@@ -132,7 +132,7 @@ fun DirectionPad(
             verticalAlignment = Alignment.CenterVertically
         ) {
             StoneDPadButton(
-                text = "\u2199",
+                text = "SW",
                 enabled = Direction.SOUTHWEST in availableExits,
                 locked = Direction.SOUTHWEST in lockedExits,
                 tracked = trackedDirection == Direction.SOUTHWEST,
@@ -148,7 +148,7 @@ fun DirectionPad(
                 isCardinal = true
             )
             StoneDPadButton(
-                text = "\u2198",
+                text = "SE",
                 enabled = Direction.SOUTHEAST in availableExits,
                 locked = Direction.SOUTHEAST in lockedExits,
                 tracked = trackedDirection == Direction.SOUTHEAST,

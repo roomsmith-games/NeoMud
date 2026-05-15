@@ -81,9 +81,9 @@ fun KickDirectionPicker(
                     horizontalArrangement = Arrangement.spacedBy(Gap),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    KickDirButton("\u2196", Direction.NORTHWEST, validDirections, lockedExits, onSelect, SmallButtonSize)
+                    KickDirButton("NW", Direction.NORTHWEST, validDirections, lockedExits, onSelect, SmallButtonSize)
                     KickDirButton("\u25B2", Direction.NORTH, validDirections, lockedExits, onSelect, ButtonSize)
-                    KickDirButton("\u2197", Direction.NORTHEAST, validDirections, lockedExits, onSelect, SmallButtonSize)
+                    KickDirButton("NE", Direction.NORTHEAST, validDirections, lockedExits, onSelect, SmallButtonSize)
                 }
 
                 Spacer(modifier = Modifier.height(Gap))
@@ -114,9 +114,9 @@ fun KickDirectionPicker(
                     horizontalArrangement = Arrangement.spacedBy(Gap),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    KickDirButton("\u2199", Direction.SOUTHWEST, validDirections, lockedExits, onSelect, SmallButtonSize)
+                    KickDirButton("SW", Direction.SOUTHWEST, validDirections, lockedExits, onSelect, SmallButtonSize)
                     KickDirButton("\u25BC", Direction.SOUTH, validDirections, lockedExits, onSelect, ButtonSize)
-                    KickDirButton("\u2198", Direction.SOUTHEAST, validDirections, lockedExits, onSelect, SmallButtonSize)
+                    KickDirButton("SE", Direction.SOUTHEAST, validDirections, lockedExits, onSelect, SmallButtonSize)
                 }
 
                 // Row 4: DOWN
