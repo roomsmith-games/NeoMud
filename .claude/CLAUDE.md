@@ -298,7 +298,7 @@ Test fixtures calling `Application.module(jdbcUrl = …)` continue to work witho
 1. **Generate** via nano-banana MCP (`generate_image`), using the `imagePrompt` + `imageStyle` + `imageNegativePrompt` from the relevant JSON data file. nano-banana renders at 1024×1024 regardless of any size hint — do NOT skip the resize step in #4.
 2. **Convert** from PNG to WebP: `npx sharp-cli -i input.png -o output.webp --format webp`
 3. **Remove background**: `node scripts/remove-bg.mjs output.webp`
-4. **Resize to spec dimensions** (see table below) — `node scripts/slim-assets.mjs --category <coins|items|...|all>` resizes any oversized files in place. Skipping this step regenerates the bloat that Phase 7Q-H eliminated (default-world.nmd grew to 113MB largely because the resize step was historically missing).
+4. **Resize to spec dimensions** (see table below) — `node scripts/slim-assets.mjs --category <coins|items|...|all> --only file1.webp,file2.webp` resizes the named files in place. **Always use `--only` to list the new files explicitly** — without it the script scans the entire directory and may re-encode existing assets. Skipping this step regenerates the bloat that Phase 7Q-H eliminated (default-world.nmd grew to 113MB largely because the resize step was historically missing).
 5. **Verify** the result visually — check that the subject is intact
 6. **Clean up** intermediate PNGs and the `nanobanana-output/` directory
 
@@ -386,7 +386,7 @@ Image generation prompts are stored in the data files:
 
 **Prerequisites** (one-time setup): `cd scripts && npm install` for `sharp`, plus `brew install ffmpeg` for the audio re-encode path of `slim-assets.mjs`. The `scripts/node_modules/` directory is gitignored.
 
-- **`slim-assets.mjs`** — resize/re-encode `default_world_src/assets/` files to spec dimensions (per the Asset Image Pipeline table) and BGM to 96kbps stereo. Idempotent: skips files already at-or-below target dims. Atomic writes via tmp-then-rename. Flags: `--category {coins|items|rooms|npcs|players|audio|all}`, `--dry-run`, `--verbose`, `--update-zones` (rooms only — rewrites `.jpg` zone JSON refs to `.webp`), `--mono` (audio only — downmix to mono 96kbps). Always `--dry-run` first to preview byte deltas. Run any time the bundle grows unexpectedly.
+- **`slim-assets.mjs`** — resize/re-encode `default_world_src/assets/` files to spec dimensions (per the Asset Image Pipeline table) and BGM to 96kbps stereo. Atomic writes via tmp-then-rename. Flags: `--category {coins|items|rooms|npcs|players|audio|all}`, `--only name1.webp,name2.webp` (process only these files), `--dry-run`, `--verbose`, `--update-zones` (rooms only — rewrites `.jpg` zone JSON refs to `.webp`), `--mono` (audio only — downmix to mono 96kbps). **Always use `--only` when processing new assets** to avoid re-encoding the entire directory. Without `--only`, the script scans all files and skips those already at spec dims, but re-encoding can still alter file contents. Use the bare scan mode only for auditing the full directory.
 - **`remove-bg.mjs`** — strip backgrounds from generated sprite WebPs via rembg (ML segmentation) or `--white` flood-fill mode for solid-white backgrounds.
 - **`doctor.sh`** — environment health check (PATH, MCP servers, JAVA_HOME). Run when anything looks off; never spelunk through `~/.claude/` or `~/.mcp.json` directly.
 

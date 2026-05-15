@@ -51,13 +51,21 @@ const args = parseArgs(process.argv.slice(2));
 if (args.help) {
   console.log(`Usage: node scripts/slim-assets.mjs [options]
   --category <name>    coins|items|rooms|npcs|players|audio|all (default: all)
+  --only <names>       comma-separated basenames to process (others skipped)
   --dry-run            print projected changes, write nothing
   --verbose            per-file output
   --update-zones       (rooms only) rewrite zone JSON .jpg→.webp refs
   --mono               (audio only) downmix BGM to mono 96kbps
-  --help`);
+  --help
+
+When --only is provided, only the listed files are processed. Names are
+matched against the basename (e.g. "item_ale.webp,item_bread_loaf.webp").`);
   process.exit(0);
 }
+
+const onlySet = args.only
+  ? new Set(String(args.only).split(',').map(s => s.trim()).filter(Boolean))
+  : null;
 
 const CATEGORIES = ['coins', 'items', 'rooms', 'npcs', 'players', 'audio'];
 const requested = args.category === 'all' || !args.category ? CATEGORIES : [args.category];
@@ -99,7 +107,8 @@ async function runSprites(category, target) {
     return;
   }
   console.log(`\n=== ${category} → ${target.w}×${target.h} WebP q=${target.quality} ===`);
-  const files = fs.readdirSync(dir).filter((f) => /\.(webp|jpg|jpeg|png)$/i.test(f));
+  let files = fs.readdirSync(dir).filter((f) => /\.(webp|jpg|jpeg|png)$/i.test(f));
+  if (onlySet) files = files.filter((f) => onlySet.has(f));
   for (const name of files) {
     const file = path.join(dir, name);
     await processSprite(category, file, target);
@@ -114,7 +123,8 @@ async function runNpcs() {
     console.warn(`(npcs) directory missing: ${dir}`);
     return;
   }
-  const files = fs.readdirSync(dir).filter((f) => /\.webp$/i.test(f));
+  let files = fs.readdirSync(dir).filter((f) => /\.webp$/i.test(f));
+  if (onlySet) files = files.filter((f) => onlySet.has(f));
   for (const name of files) {
     // npc_forest_spider.webp → forest_spider
     const id = name.replace(/^npc_/, '').replace(/\.webp$/i, '');
@@ -134,7 +144,8 @@ async function runAudio() {
     console.warn(`(audio) directory missing: ${dir}`);
     return;
   }
-  const files = fs.readdirSync(dir).filter((f) => /\.mp3$/i.test(f));
+  let files = fs.readdirSync(dir).filter((f) => /\.mp3$/i.test(f));
+  if (onlySet) files = files.filter((f) => onlySet.has(f));
   for (const name of files) {
     const file = path.join(dir, name);
     await processAudio(file);
