@@ -441,10 +441,11 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           onKillFlags: JSON.stringify(npc.onKillFlags ?? {}),
           onSpawnRelockExits: JSON.stringify(npc.onSpawnRelockExits ?? []),
       }
+      const { id: _id, ...npcUpdateData } = npcData
       await prisma.npc.upsert({
         where: { id: npc.id },
         create: npcData,
-        update: npcData,
+        update: npcUpdateData,
       })
     }
   }

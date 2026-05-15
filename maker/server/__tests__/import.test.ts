@@ -5,6 +5,7 @@ import path from 'path'
 import os from 'os'
 import { importNmd } from '../import.js'
 import { deleteProject } from '../db.js'
+import { getProjectClient } from '../projectContext.js'
 
 const TEST_USER_ID = 'test-user'
 const tmpDir = path.join(os.tmpdir(), `neomud-import-test-${Date.now()}`)
@@ -71,5 +72,71 @@ describe('Import ZIP bomb protection', () => {
     createdProjects.push(projectName)
 
     await expect(importNmd(nmdPath, TEST_USER_ID, projectName)).resolves.not.toThrow()
+  })
+})
+
+describe('Import duplicate NPC handling', () => {
+  it('duplicate NPC IDs across zones do not crash import', async () => {
+    const zip = new AdmZip()
+    zip.addFile('manifest.json', Buffer.from('{"name":"dupe-test","version":"1.0.0"}'))
+    const zone1 = {
+      id: 'zone_a', name: 'Zone A', safe: true,
+      rooms: [
+        { id: 'zone_a:room1', name: 'Room 1', x: 0, y: 0, exits: { NORTH: 'zone_a:room2' } },
+        { id: 'zone_a:room2', name: 'Room 2', x: 0, y: 1, exits: { SOUTH: 'zone_a:room1' } },
+      ],
+      npcs: [{ id: 'npc:shared_guard', name: 'Guard', startRoomId: 'zone_a:room1', hostile: false, maxHp: 50, damage: 5, level: 1 }],
+    }
+    const zone2 = {
+      id: 'zone_b', name: 'Zone B', safe: true,
+      rooms: [
+        { id: 'zone_b:room1', name: 'Room B1', x: 0, y: 0, exits: { EAST: 'zone_b:room2' } },
+        { id: 'zone_b:room2', name: 'Room B2', x: 1, y: 0, exits: { WEST: 'zone_b:room1' } },
+      ],
+      npcs: [{ id: 'npc:shared_guard', name: 'Guard Elite', startRoomId: 'zone_b:room1', hostile: true, maxHp: 100, damage: 10, level: 5 }],
+    }
+    zip.addFile('world/zone_a.zone.json', Buffer.from(JSON.stringify(zone1)))
+    zip.addFile('world/zone_b.zone.json', Buffer.from(JSON.stringify(zone2)))
+
+    const nmdPath = writeTempNmd('dupe-npc.nmd', zip)
+    const projectName = `test_dupe_npc_${Date.now()}`
+    createdProjects.push(projectName)
+
+    await expect(importNmd(nmdPath, TEST_USER_ID, projectName)).resolves.not.toThrow()
+
+    const { client } = await getProjectClient(TEST_USER_ID, projectName)
+    const npcs = await client.npc.findMany()
+    expect(npcs).toHaveLength(1)
+    expect(npcs[0].id).toBe('npc:shared_guard')
+
+    const exits = await client.exit.findMany()
+    expect(exits.length).toBe(4)
+  })
+
+  it('exits are created even when zones contain many NPCs', async () => {
+    const zip = new AdmZip()
+    zip.addFile('manifest.json', Buffer.from('{"name":"exit-test","version":"1.0.0"}'))
+    const zone = {
+      id: 'test_zone', name: 'Test Zone', safe: true,
+      rooms: [
+        { id: 'test_zone:start', name: 'Start', x: 0, y: 0, exits: { NORTH: 'test_zone:end' } },
+        { id: 'test_zone:end', name: 'End', x: 0, y: 1, exits: { SOUTH: 'test_zone:start' } },
+      ],
+      npcs: [
+        { id: 'npc:guard_a', name: 'Guard A', startRoomId: 'test_zone:start', maxHp: 10, damage: 1, level: 1 },
+        { id: 'npc:guard_b', name: 'Guard B', startRoomId: 'test_zone:end', maxHp: 10, damage: 1, level: 1 },
+      ],
+    }
+    zip.addFile('world/test.zone.json', Buffer.from(JSON.stringify(zone)))
+    const nmdPath = writeTempNmd('exits.nmd', zip)
+    const projectName = `test_exits_${Date.now()}`
+    createdProjects.push(projectName)
+
+    await importNmd(nmdPath, TEST_USER_ID, projectName)
+
+    const { client } = await getProjectClient(TEST_USER_ID, projectName)
+    const exits = await client.exit.findMany()
+    expect(exits).toHaveLength(2)
+    expect(exits.map(e => e.direction).sort()).toEqual(['NORTH', 'SOUTH'])
   })
 })
