@@ -10,6 +10,21 @@
 - Default Players has sprite gallery with filter dropdowns (race/gender/class)
 - Default SFX has category-filtered list with colored status dots
 
+### Known Issues (as of Session 9 - 2026-05-14)
+- CRITICAL: Staging Maker .nmd import drops ALL exits -- 290 rooms x 0 exits (Issue #384)
+- CRITICAL: No zone defines a spawnRoom on staging (Issue #358)
+- 290 rooms missing background image assets (Issue #362)
+- 206 items missing sprite assets (Issue #363)
+- 113 NPCs missing sprite assets (Issue #365)
+- 270 PC sprites missing assets (Issue #366)
+- 747 missing SFX audio assets (Issue #368)
+- 11 hostile NPCs in Glass Desert/Mirage Spire have no loot drops (Issue #370)
+- 23 items use invalid slot 'none' (Issue #372)
+- Patrol NPC charred_treant has empty patrol route (Issue #373)
+- Room ashwood:wraith_hollow uses unknown effect type 'chill' (Issue #375)
+- Marketplace description references nonexistent Millhaven zone (Issue #382)
+- 11 hostile NPCs in Glass Desert/Mirage Spire have zero accuracy/defense/evasion (Issue #385)
+
 ### Known Issues (as of Session 8 - 2026-03-06)
 - Canvas room hit-testing misaligned at ALL DPR values (Issue #106) -- regression from Issue #69 fix
 - World map: clicking dimmed room tries to create new room instead of switching zones (Issue #125)
@@ -110,6 +125,17 @@
 - Room effects editor (HEAL/POISON/DAMAGE/MANA_REGEN/MANA_DRAIN/SANCTUARY)
 - Start Room dropdown shows "Zone > Room" format for clarity
 - Target Room dropdown in exits shows "Name (zone:id)" format
+
+### Staging Maker (Session 9 - 2026-05-14)
+- Staging URL: https://stage.neomud.app/maker
+- Staging API base: /maker-api/ (NOT /api/ or /maker/api/)
+- Platform auth: POST /api/v1/auth/login with {email, password} returns JWT
+- Auth tokens in localStorage: neomud_access_token, neomud_refresh_token, neomud_user
+- _default_world is Published v1.0.1 with 19 zones, 290 rooms, 206 items, 113 NPCs
+- Root cause of zero exits: .nmd import to Maker DB drops exit data (room content intact)
+- Game server loads .nmd directly, so players may not be affected by Maker DB issue
+- Platform login rate limits aggressively -- wait 60s between failed attempts
+- Validation modal shows 1,957 warnings across 8 categories
 
 ### API Endpoint Map
 - `/api/projects` - GET list, POST create

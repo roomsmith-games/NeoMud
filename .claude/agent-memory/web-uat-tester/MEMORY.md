@@ -1,0 +1,4 @@
+- [Staging URLs and asset proxy paths](staging_endpoints.md) — exact public hosts and the working bundle-assets endpoint
+- [WASM Compose for Web input quirks](compose_web_inputs.md) — how to drive Compose canvas text inputs from Playwright
+- [Anonymous play flow shape](anon_play_flow.md) — what the post-#32 guest journey actually looks like end-to-end
+- [Platform 429 body shape](platform_429_shape.md) — confirmed schema for rate-limit responses on stg
