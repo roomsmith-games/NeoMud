@@ -447,8 +447,10 @@
       "y": 10,
       "exits": {
         "NORTH": "necropolis_of_vael:khaim_sanctum",
-        "UP": "necropolis_of_vael:processional"
+        "UP": "necropolis_of_vael:processional",
+        "EAST": "necropolis_of_vael:vault"
       },
+      "lockedExits": {"EAST": 99},
       "backgroundImage": "/assets/images/rooms/necropolis_of_vael_sealed_passage.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
@@ -463,13 +465,13 @@
           "label": "Warded Iron Door",
           "description": "A heavy door of dark iron with a keyhole shaped for a ritual key. The lock mechanism is inscribed with warding symbols.",
           "actionType": "PLACE_ITEM",
+          "triggerType": "ON_USE",
           "actionData": {
             "acceptedItems": "item:khaims_ritual_key",
             "consumeItem": "true",
             "successMessage": "You insert the Bone Warden's ritual key into the lock. The warding symbols flare bright, then fade \u2014 the ancient mechanism recognizes its keeper. The iron door groans open, revealing a vault of unfathomable age beyond. The key crumbles to dust in the lock, its purpose fulfilled.",
             "failureMessage": "The lock rejects your offering. The warding symbols pulse with warning light. Only the ritual key carried by the Bone Warden above will open this door.",
-            "successDirection": "EAST",
-            "exitTarget": "necropolis_of_vael:vault"
+            "successDirection": "EAST"
           }
         }
       ]

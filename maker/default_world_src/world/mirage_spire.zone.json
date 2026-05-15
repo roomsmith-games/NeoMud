@@ -117,8 +117,10 @@
       "x": 10,
       "y": 18,
       "exits": {
-        "WEST": "mirage_spire:prism_gallery"
+        "WEST": "mirage_spire:prism_gallery",
+        "EAST": "mirage_spire:reflected_gallery"
       },
+      "lockedExits": {"EAST": 99},
       "backgroundImage": "/assets/images/rooms/mirage_spire_mirror_threshold.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
@@ -133,13 +135,13 @@
           "label": "Crystal Socket",
           "description": "A socket shaped to receive a specific crystalline object. The mirror wall hums with contained energy.",
           "actionType": "PLACE_ITEM",
+          "triggerType": "ON_USE",
           "actionData": {
-            "requiredItemId": "item:shard_of_true_sight",
+            "acceptedItems": "item:shard_of_true_sight",
             "consumeItem": "true",
             "successMessage": "You place the Shard of True Sight into the crystal socket. The mirror flares with blinding light \u2014 and then it is no longer a mirror. It is a doorway. Your reflection steps aside, and beyond it the Spire continues, inverted, descending where it once ascended. The Shard dissolves into the crystal wall, its purpose fulfilled.",
-            "failMessage": "The socket rejects the offering. Whatever this requires, it must show things as they truly are.",
-            "exitDirection": "EAST",
-            "exitTarget": "mirage_spire:reflected_gallery"
+            "failureMessage": "The socket rejects the offering. Whatever this requires, it must show things as they truly are.",
+            "successDirection": "EAST"
           }
         }
       ]
@@ -227,11 +229,12 @@
           "label": "Iron Chest",
           "description": "A dark iron chest \u2014 the only real object in this room of illusions. It is locked.",
           "actionType": "PLACE_ITEM",
+          "triggerType": "ON_USE",
           "actionData": {
-            "requiredItemId": "item:mirror_key",
+            "acceptedItems": "item:mirror_key",
             "consumeItem": "true",
             "successMessage": "The Mirror Key slides into the lock and turns with a satisfying click. The chest opens, revealing treasures that survived the reflection \u2014 real, solid, and valuable.",
-            "failMessage": "The lock doesn't budge. You need the correct key \u2014 something from deeper in the Spire."
+            "failureMessage": "The lock doesn't budge. You need the correct key \u2014 something from deeper in the Spire."
           }
         },
         {

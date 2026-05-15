@@ -159,8 +159,10 @@
       "z": -1,
       "exits": {
         "UP": "warlords_hold:great_hall",
-        "NORTH": "warlords_hold:cells"
+        "NORTH": "warlords_hold:cells",
+        "SOUTH": "warlords_hold:vault"
       },
+      "lockedExits": {"SOUTH": 99},
       "backgroundImage": "/assets/images/rooms/warlords_hold_underhall.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
@@ -177,13 +179,11 @@
           "actionType": "PLACE_ITEM",
           "triggerType": "ON_USE",
           "actionData": {
-            "requiredItemId": "item:drasks_war_key",
+            "acceptedItems": "item:drasks_war_key",
             "consumeItem": "true",
-            "exitDirection": "SOUTH",
-            "exitTarget": "warlords_hold:vault",
-            "useMessage": "You press Drask's War-Key into the fist-shaped lock. It turns with a grinding click, and the massive iron door swings inward on ancient hinges, revealing the vault beyond.",
-            "alreadyUsedMessage": "The vault door stands open. The lock is spent.",
-            "missingItemMessage": "The lock requires a key shaped like a clenched fist \u2014 Drask's personal insignia."
+            "successDirection": "SOUTH",
+            "successMessage": "You press Drask's War-Key into the fist-shaped lock. It turns with a grinding click, and the massive iron door swings inward on ancient hinges, revealing the vault beyond.",
+            "failureMessage": "The lock requires a key shaped like a clenched fist \u2014 Drask's personal insignia."
           }
         }
       ]
