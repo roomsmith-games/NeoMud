@@ -484,12 +484,10 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
     for (const room of zone.rooms ?? []) {
       const exits = room.exits ?? {}
       for (const [direction, toRoomId] of Object.entries(exits) as [string, string][]) {
-        await prisma.exit.create({
-          data: {
-            fromRoomId: room.id,
-            direction,
-            toRoomId,
-          },
+        await prisma.exit.upsert({
+          where: { fromRoomId_direction: { fromRoomId: room.id, direction } },
+          create: { fromRoomId: room.id, direction, toRoomId },
+          update: { toRoomId },
         })
       }
     }

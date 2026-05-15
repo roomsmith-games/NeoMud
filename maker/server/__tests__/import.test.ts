@@ -108,6 +108,9 @@ describe('Import duplicate NPC handling', () => {
     const npcs = await client.npc.findMany()
     expect(npcs).toHaveLength(1)
     expect(npcs[0].id).toBe('npc:shared_guard')
+    expect(npcs[0].name).toBe('Guard Elite')
+    expect(npcs[0].hostile).toBe(true)
+    expect(npcs[0].maxHp).toBe(100)
 
     const exits = await client.exit.findMany()
     expect(exits.length).toBe(4)
