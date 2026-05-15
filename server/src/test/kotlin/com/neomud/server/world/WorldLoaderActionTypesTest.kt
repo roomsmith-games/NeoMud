@@ -118,23 +118,32 @@ class WorldLoaderActionTypesTest {
         val allKillFlagKeys = result.npcDataList
             .flatMap { (npc, _) -> npc.onKillFlags.keys }
             .toSet()
-        val allConditionalFlagKeys = result.worldGraph.getAllRooms()
-            .flatMap { it.interactables }
-            .filter { it.actionType == "CONDITIONAL_TRIGGER" && it.actionData["conditionType"] == "FLAG" }
-            .mapNotNull { it.actionData["requiredFlagKey"] }
-            .toSet()
+        assertTrue(allKillFlagKeys.isNotEmpty(), "World must contain at least one NPC with onKillFlags")
+
+        // Collect all flag consumers: CONDITIONAL_TRIGGER FLAG + PUZZLE_STEP requiredFlagKey
+        val allFlagConsumers = mutableSetOf<String>()
+        for (room in result.worldGraph.getAllRooms()) {
+            for (feat in room.interactables) {
+                if (feat.actionType == "CONDITIONAL_TRIGGER" && feat.actionData["conditionType"] == "FLAG") {
+                    feat.actionData["requiredFlagKey"]?.let { allFlagConsumers.add(it) }
+                }
+                if (feat.actionType == "PUZZLE_STEP") {
+                    feat.actionData["requiredFlagKey"]?.let { allFlagConsumers.add(it) }
+                }
+            }
+        }
 
         for (key in allKillFlagKeys) {
             assertTrue(
-                key in allConditionalFlagKeys,
-                "NPC onKillFlags key '$key' has no matching CONDITIONAL_TRIGGER FLAG consumer (orphaned)"
+                key in allFlagConsumers,
+                "NPC onKillFlags key '$key' has no matching flag consumer (orphaned)"
             )
         }
-        for (key in allConditionalFlagKeys) {
+        for (key in allFlagConsumers) {
             if (key.startsWith("kill:")) {
                 assertTrue(
                     key in allKillFlagKeys,
-                    "CONDITIONAL_TRIGGER FLAG requires '$key' but no NPC produces it via onKillFlags"
+                    "Flag consumer requires '$key' but no NPC produces it via onKillFlags"
                 )
             }
         }

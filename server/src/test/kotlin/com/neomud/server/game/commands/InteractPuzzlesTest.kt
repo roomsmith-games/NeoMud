@@ -486,6 +486,7 @@ class InteractPuzzlesTest {
 
         val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
+        assertTrue(res.success, "Already-solved result should be success=true, not a flag-gate failure")
         assertTrue(res.message.contains("already pulled"),
             "Already-solved guard should fire before requiredFlagKey check; got: ${res.message}")
     }
