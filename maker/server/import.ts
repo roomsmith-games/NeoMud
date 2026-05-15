@@ -396,11 +396,10 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
       })
     }
 
-    // NPCs
+    // NPCs (upsert: duplicate IDs across zones take the last definition)
     for (const npc of zone.npcs ?? []) {
       const legacyNpc = legacyTemplates.get(`npc:${npc.id}`)
-      await prisma.npc.create({
-        data: {
+      const npcData = {
           id: npc.id,
           zoneId: zone.id,
           name: npc.name,
@@ -441,7 +440,11 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           phases: JSON.stringify(npc.phases ?? []),
           onKillFlags: JSON.stringify(npc.onKillFlags ?? {}),
           onSpawnRelockExits: JSON.stringify(npc.onSpawnRelockExits ?? []),
-        },
+      }
+      await prisma.npc.upsert({
+        where: { id: npc.id },
+        create: npcData,
+        update: npcData,
       })
     }
   }

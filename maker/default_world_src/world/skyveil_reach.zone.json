@@ -621,8 +621,8 @@
       "imageHeight": 384
     },
     {
-      "id": "npc:corrupted_warden",
-      "name": "Corrupted Warden",
+      "id": "npc:corrupted_warden_elite",
+      "name": "Corrupted Warden Elite",
       "description": "Once a guardian of the mountain shrines, this Warden has been claimed by the corruption leaking from Stormcrown Keep. The sealed-eye symbol on its breastplate is cracked and inverted, and dark energy seeps from the fissure like smoke. It still carries its halberd with military precision, still patrols its assigned route, but its eyes are empty black pits and its skin has taken on the grey pallor of the storm-soaked stone. It attacks anyone who approaches -- friend or foe, it can no longer tell the difference.",
       "startRoomId": "skyveil_reach:warden_graveyard",
       "behaviorType": "wander",
