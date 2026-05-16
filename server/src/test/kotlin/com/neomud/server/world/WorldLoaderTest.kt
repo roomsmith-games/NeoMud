@@ -412,6 +412,18 @@ class WorldLoaderTest {
     }
 
     @Test
+    fun testStarterZoneSpawnConfigAllowsResting() {
+        val result = load()
+        val forestConfig = result.zoneSpawnConfigs["forest"]
+        assertNotNull(forestConfig, "Forest zone should have a spawn config")
+
+        assertTrue(forestConfig.maxPerRoom <= 1,
+            "Forest maxPerRoom should be ≤1 so L1 players only face one hostile at a time, got ${forestConfig.maxPerRoom}")
+        assertTrue(forestConfig.rateTicks >= 20,
+            "Forest rateTicks should be ≥20 (~30s) to give L1 players time to rest between fights, got ${forestConfig.rateTicks}")
+    }
+
+    @Test
     fun testManifestHasVersioningFields() {
         val result = load()
         val manifest = result.manifest

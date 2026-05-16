@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -45,6 +46,7 @@ fun SpellBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         spellSlots.forEachIndexed { index, spellId ->
+            key(index) {
             val spell = spellId?.let { spellCatalog[it] }
             val isReadied = spell != null && spellId == readiedSpellId
             val hasEnoughMp = spell == null || currentMp >= spell.manaCost
@@ -114,6 +116,7 @@ fun SpellBar(
                         )
                     }
                 }
+            }
             }
         }
     }

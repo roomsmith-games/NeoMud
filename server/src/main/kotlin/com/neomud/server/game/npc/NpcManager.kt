@@ -100,6 +100,7 @@ class NpcManager(
     private val zoneTemplates = mutableMapOf<String, List<Pair<NpcData, String>>>()
     private val allTemplates = mutableMapOf<String, Pair<NpcData, String>>()
     private val zoneSpawnTimers = mutableMapOf<String, Int>()
+    private val bossRooms = mutableSetOf<RoomId>()
     private var nextSpawnIndex = 1L
 
     fun loadNpcs(npcDataList: List<Pair<NpcData, String>>) {
@@ -116,6 +117,9 @@ class NpcManager(
         }
 
         for ((data, zoneId) in npcDataList) {
+            if (data.phases.isNotEmpty()) {
+                bossRooms.add(data.startRoomId)
+            }
             val state = createNpcState(data, zoneId, data.id)
             npcs.add(state)
             applySpawnRelocks(state)
@@ -216,8 +220,9 @@ class NpcManager(
                 val roomOk = maxPerRoom == null || aliveHostileNpcsInRoom(targetRoomId) < maxPerRoom
                 val sanctuaryOk = !npc.hostile || worldGraph.getRoom(targetRoomId)?.effects?.none { it.type == "SANCTUARY" } != false
                 val noFriendlyNpcs = !npc.hostile || targetRoomId !in friendlyNpcRooms
+                val notBossRoom = !npc.hostile || npc.phases.isNotEmpty() || targetRoomId !in bossRooms
                 val sameZone = targetRoomId.substringBefore(":") == npc.zoneId
-                roomOk && sanctuaryOk && noFriendlyNpcs && sameZone
+                roomOk && sanctuaryOk && noFriendlyNpcs && notBossRoom && sameZone
             }
 
             when (val action = npc.behavior.tick(npc, worldGraph, canMoveTo)) {
@@ -287,7 +292,9 @@ class NpcManager(
             val candidates = template.spawnPoints.ifEmpty { listOf(template.startRoomId) }
             val spawnRoom = candidates.filter { roomId ->
                 val max = effectiveMaxPerRoom(roomId, zoneId)
-                max == null || aliveHostileNpcsInRoom(roomId) < max
+                val roomOk = max == null || aliveHostileNpcsInRoom(roomId) < max
+                val notBossRoom = template.phases.isNotEmpty() || roomId !in bossRooms
+                roomOk && notBossRoom
             }.randomOrNull() ?: continue
 
             val instanceId = "${template.id}#${nextSpawnIndex++}"

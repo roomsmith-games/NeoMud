@@ -1050,13 +1050,15 @@ private fun GameScreenLandscape(
                             )
                         }
                         for (feat in interactables) {
-                            val (icon, color) = interactableStyle(feat)
-                            RoomOverlayButton(
-                                icon = icon,
-                                label = feat.label,
-                                color = color,
-                                onClick = { gameViewModel.interactFeature(feat.id) }
-                            )
+                            key(feat.id) {
+                                val (icon, color) = interactableStyle(feat)
+                                RoomOverlayButton(
+                                    icon = icon,
+                                    label = feat.label,
+                                    color = color,
+                                    onClick = { gameViewModel.interactFeature(feat.id) }
+                                )
+                            }
                         }
                     }
                 }
@@ -1284,6 +1286,7 @@ private fun ActionButtonRow(
 
             val btnInfo = SKILL_BUTTON_MAP[skillId] ?: continue
 
+            key(skillId) {
             // SNEAK is a special toggle
             if (skillId == "SNEAK") {
                 val sneakEnabled = !attackMode || isHidden
@@ -1330,6 +1333,7 @@ private fun ActionButtonRow(
                     color = btnInfo.activeColor,
                     onClick = { gameViewModel.useSkill(skillId) }
                 )
+            }
             }
         }
 

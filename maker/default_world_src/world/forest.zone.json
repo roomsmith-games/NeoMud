@@ -5,9 +5,9 @@
   "safe": false,
   "bgm": "forest_danger",
   "spawnConfig": {
-    "maxEntities": 6,
-    "maxPerRoom": 2,
-    "rateTicks": 15
+    "maxEntities": 4,
+    "maxPerRoom": 1,
+    "rateTicks": 30
   },
   "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
   "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",

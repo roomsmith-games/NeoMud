@@ -520,21 +520,23 @@ private fun NpcContextMenu(
 
         // Offensive spell buttons
         offensiveSpells.forEach { spell ->
-            val color = schoolColor(spell.school)
-            Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .background(stoneBg, CircleShape)
-                    .border(1.dp, color.copy(alpha = 0.7f), CircleShape)
-                    .clickable { onCastSpell(spell.id) },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = spell.name.take(2),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = color
-                )
+            key(spell.id) {
+                val color = schoolColor(spell.school)
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .background(stoneBg, CircleShape)
+                        .border(1.dp, color.copy(alpha = 0.7f), CircleShape)
+                        .clickable { onCastSpell(spell.id) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = spell.name.take(2),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = color
+                    )
+                }
             }
         }
     }

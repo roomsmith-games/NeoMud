@@ -497,4 +497,28 @@ class NpcManagerTest {
         assertEquals(0, result.roomMaxHostileNpcs["cracked_plains:signal_cairn"],
             "Quest NPC room signal_cairn should have maxHostileNpcs=0")
     }
+
+    @Test
+    fun testHostileNpcsCannotWanderIntoBossRooms() {
+        val result = load()
+        val npcManager = NpcManager(result.worldGraph, result.zoneSpawnConfigs, result.roomMaxHostileNpcs)
+        npcManager.loadNpcs(result.npcDataList)
+
+        val bossNpcs = result.npcDataList.filter { it.first.phases.isNotEmpty() }
+        assertTrue(bossNpcs.isNotEmpty(), "Default world should have at least one boss NPC")
+
+        val bossRoomIds = bossNpcs.map { it.first.startRoomId }.toSet()
+
+        // Run many ticks — wandering NPCs should never enter a boss room
+        repeat(200) {
+            npcManager.tick()
+        }
+
+        for (bossRoom in bossRoomIds) {
+            val intruders = npcManager.getLivingHostileNpcsInRoom(bossRoom)
+                .filter { it.phases.isEmpty() && it.startRoomId != bossRoom }
+            assertTrue(intruders.isEmpty(),
+                "Non-boss NPCs should not wander into boss room $bossRoom, found: ${intruders.map { it.name }}")
+        }
+    }
 }
