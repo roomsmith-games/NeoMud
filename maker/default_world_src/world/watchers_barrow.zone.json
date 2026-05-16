@@ -15,12 +15,12 @@
     {
       "id": "watchers_barrow:vestibule",
       "name": "Barrow Vestibule",
-      "description": "A short stone-lined antechamber just inside the great mound, the air still and dry and very cold. Pale wedge of daylight reaches in from the entrance behind you; ahead the corridor narrows into utter dark. Faint scratches mark the floor — something dragged itself out of here once.",
-      "x": 0,
-      "y": 0,
+      "description": "A short stone-lined antechamber just inside the great mound, the air still and dry and very cold. Pale wedge of daylight reaches up from the entrance below; ahead the corridor narrows into utter dark. Faint scratches mark the floor — something dragged itself out of here once.",
+      "x": 4,
+      "y": 17,
       "exits": {
-        "WEST": "highmoor:barrow_threshold",
-        "EAST": "watchers_barrow:cobweb_corridor"
+        "EAST": "watchers_barrow:cobweb_corridor",
+        "DOWN": "highmoor:barrow_threshold"
       },
       "backgroundImage": "/assets/images/rooms/watchers_barrow_vestibule.webp",
       "departSound": "footstep_stone",
@@ -30,14 +30,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:cobweb_corridor",
       "name": "Cobweb Corridor",
       "description": "A long stone-walled corridor thick with dust and old grey cobwebs, the ceiling supported every few paces by a heavy capstone. One of the capstones overhead looks loose, its stone cracked and slightly shifted from its neighbors.",
-      "x": 1,
-      "y": 0,
+      "x": 5,
+      "y": 17,
       "exits": {
         "WEST": "watchers_barrow:vestibule",
         "EAST": "watchers_barrow:main_hall"
@@ -70,14 +70,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:main_hall",
       "name": "Hall of the Honored Dead",
       "description": "A broad rectangular chamber lined on every wall with stone-shelved alcoves, each alcove holding the bone-bundle of a long-dead Warden. Most lie undisturbed; a few have been pulled out and broken open. Passages lead north, east, and south, each marked by a different carved sigil above the lintel.",
-      "x": 2,
-      "y": 0,
+      "x": 6,
+      "y": 17,
       "exits": {
         "WEST": "watchers_barrow:cobweb_corridor",
         "NORTH": "watchers_barrow:silent_chamber",
@@ -92,14 +92,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:silent_chamber",
       "name": "Silent Chamber",
       "description": "A small low-ceilinged side chamber, the air here unmistakably wrong — too still, faintly metallic in the lungs. A small stone basin in the center holds a fine grey dust that has not settled in centuries, kept agitated by something subterranean.",
-      "x": 2,
-      "y": 1,
+      "x": 6,
+      "y": 18,
       "exits": {
         "SOUTH": "watchers_barrow:main_hall"
       },
@@ -132,14 +132,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:offering_chamber",
       "name": "Offering Chamber",
       "description": "A narrow side chamber, its far wall recessed into a shallow alcove holding a flat altar of polished black stone. The altar bears a single carved depression in its center, perfectly the size of a Watcher's honor-stone. The eastern wall behind the altar shows the joints of a hidden door, sealed for now.",
-      "x": 2,
-      "y": -1,
+      "x": 6,
+      "y": 16,
       "exits": {
         "NORTH": "watchers_barrow:main_hall",
         "EAST": "watchers_barrow:bonepit"
@@ -174,14 +174,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:bonepit",
       "name": "Bonepit",
       "description": "A small hidden chamber behind the offering altar. Bones lie scattered ankle-deep across the floor — picked clean, very old. In the corner stands a stone-lidded cist, its lid askew, the wax seal across its rim freshly broken. The cist is half-empty — most of what was in it has been taken — but a few things remain.",
-      "x": 3,
-      "y": -1,
+      "x": 7,
+      "y": 16,
       "exits": {
         "WEST": "watchers_barrow:offering_chamber"
       },
@@ -213,14 +213,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:ritual_gate",
       "name": "Ritual Gate",
       "description": "A small antechamber facing a great pair of stone doors carved with the four Watcher sigils — dawn, dusk, storm, star — and at the doors' joining a fifth sigil: the sealed eye. The doors will not move; the sealed eye is dark. A worn brass plate before them reads simply, ‘The four are spoken before the gate.’",
-      "x": 3,
-      "y": 0,
+      "x": 7,
+      "y": 17,
       "exits": {
         "WEST": "watchers_barrow:main_hall",
         "EAST": "watchers_barrow:approach"
@@ -257,14 +257,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:approach",
       "name": "Watcher's Approach",
       "description": "A wide stone-vaulted approach lined with carved relief friezes of the four Watchers in their long vigil. The floor is dark with old wax-spill from a hundred years of vigil-candles. Faint runic shapes glow softly red in the wall-arches, and the air smells of metal warming. To the east a side passage breaks off; the way north lies straight ahead, into the heart of the barrow.",
-      "x": 4,
-      "y": 0,
+      "x": 8,
+      "y": 17,
       "exits": {
         "WEST": "watchers_barrow:ritual_gate",
         "EAST": "watchers_barrow:knife_track",
@@ -299,14 +299,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:knife_track",
       "name": "Knife Track",
       "description": "A narrow side passage, its floor laid with rough stone slabs. Several of the slabs are subtly raised on hidden springs, set with razor-thin metal teeth that have not yet rusted through. At the far end stands an iron-banded coffer, and the dust-thick floor around it has been recently disturbed.",
-      "x": 5,
-      "y": 0,
+      "x": 9,
+      "y": 17,
       "exits": {
         "WEST": "watchers_barrow:approach"
       },
@@ -354,14 +354,14 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     },
     {
       "id": "watchers_barrow:barrow_heart",
       "name": "Heart of the Barrow",
       "description": "The deepest chamber of the mound, a wide circular vault with a stone bier at its center. On the bier lies a stone effigy of a Watcher — and standing over it, swathed in tattered grave-linen and crowned with a bone diadem, the Barrow-Wight Esketh waits. The chamber's vaulted roof is hung with cairn-stones tied with ancient rope, set to fall the moment intruders cross the inner threshold.",
-      "x": 4,
-      "y": 1,
+      "x": 8,
+      "y": 18,
       "exits": {
         "SOUTH": "watchers_barrow:approach"
       },
@@ -393,7 +393,7 @@
           }
         }
       ],
-      "z": 0
+      "z": 1
     }
   ],
   "npcs": [

@@ -16,12 +16,12 @@
     {
       "id": "mirage_spire:entry_hall",
       "name": "Entry Hall",
-      "description": "The interior of the Spire is nothing like its exterior suggested. The walls are smooth crystal, refracting light into slow-moving rainbows that crawl across every surface. The hall is circular, with a high vaulted ceiling that spirals upward into the tower's core. The air is cool and perfectly still — no wind penetrates here. A wide crystal corridor leads east, deeper into the ground floor. The entrance back to the desert lies north.",
-      "x": 0,
-      "y": 0,
+      "description": "The interior of the Spire is nothing like its exterior suggested. The walls are smooth crystal, refracting light into slow-moving rainbows that crawl across every surface. The hall is circular, with a high vaulted ceiling that spirals upward into the tower's core. The air is cool and perfectly still — no wind penetrates here. A wide crystal corridor leads east, deeper into the ground floor. The entrance back to the desert lies above.",
+      "x": 6,
+      "y": 19,
       "exits": {
-        "NORTH": "glass_desert:spire_gates",
-        "EAST": "mirage_spire:crystal_corridor"
+        "EAST": "mirage_spire:crystal_corridor",
+        "UP": "glass_desert:spire_gates"
       },
       "backgroundImage": "/assets/images/rooms/mirage_spire_entry_hall.webp",
       "departSound": "footstep_stone",
@@ -31,14 +31,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, stone castle, brick",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "mirage_spire:crystal_corridor",
       "name": "Crystal Corridor",
       "description": "A long passage of hexagonal crystal pillars, each one humming at a slightly different pitch, creating an ambient chord that fills the air. The floor is transparent — beneath it, you can see another corridor, identical but inverted, stretching away below your feet. A trick of the light, surely. At the corridor's end, a spiral staircase of fused glass ascends through the ceiling.",
-      "x": 1,
-      "y": 0,
+      "x": 7,
+      "y": 19,
       "exits": {
         "WEST": "mirage_spire:entry_hall",
         "UP": "mirage_spire:refraction_chamber"
@@ -51,14 +51,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, stone walls",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "mirage_spire:refraction_chamber",
       "name": "Refraction Chamber",
       "description": "A domed chamber where light enters through the crystal walls and is split into its component colors, each wavelength channeled along a different crystal pathway. The effect is overwhelming — the room pulses with shifting bands of pure color, and your shadow is cast in six directions at once. The stairs continue upward through a narrow aperture in the ceiling. The staircase down leads back to the corridor below.",
-      "x": 1,
-      "y": 0,
+      "x": 7,
+      "y": 19,
       "exits": {
         "DOWN": "mirage_spire:crystal_corridor",
         "UP": "mirage_spire:prism_gallery"
@@ -71,14 +71,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, dark, dim",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 1
+      "z": -1
     },
     {
       "id": "mirage_spire:prism_gallery",
       "name": "Prism Gallery",
       "description": "The highest accessible floor of the Spire's normal half. A gallery of crystal prisms lines the walls, each one containing what appears to be a frozen scene — a battle, a coronation, a funeral, a birth. They are not paintings or carvings; they are three-dimensional moments preserved in crystal, viewed from the inside. Some show places you recognize from the overworld below. One shows the Mirage Spire itself, whole and unblemished, before the cataclysm broke it. A passage leads east to the mirror threshold.",
-      "x": 1,
-      "y": 0,
+      "x": 7,
+      "y": 19,
       "exits": {
         "DOWN": "mirage_spire:refraction_chamber",
         "EAST": "mirage_spire:mirror_threshold"
@@ -112,14 +112,14 @@
           }
         }
       ],
-      "z": 2
+      "z": 0
     },
     {
       "id": "mirage_spire:mirror_threshold",
       "name": "Mirror Threshold",
       "description": "The gallery ends at a wall of perfect mirror — floor to ceiling, seamless, showing your reflection with uncanny clarity. But your reflection is wrong. It stands in a room that is this room, inverted — the ceiling becomes the floor, the stairs lead down instead of up. Your reflection watches you with an expression you are not wearing. Set into the wall beside the mirror is a crystal socket, shaped to receive something. The mirror hums with potential — it is not a wall, it is a door, waiting for the right key.",
-      "x": 2,
-      "y": 0,
+      "x": 8,
+      "y": 19,
       "exits": {
         "WEST": "mirage_spire:prism_gallery",
         "EAST": "mirage_spire:reflected_gallery"
@@ -151,14 +151,14 @@
           }
         }
       ],
-      "z": 2
+      "z": 0
     },
     {
       "id": "mirage_spire:reflected_gallery",
       "name": "Reflected Gallery",
       "description": "You have passed through the mirror. Everything here is the same — and reversed. The gallery prisms line the walls, but the scenes inside are wrong: victories show defeats, the living are dead, the Spire is whole where it should be broken. The light has a cold quality now, bluish and thin. The floor that was the ceiling is solid beneath your feet. Stairs descend from here — in the reflected world, down is the direction of depth.",
-      "x": 3,
-      "y": 0,
+      "x": 9,
+      "y": 19,
       "exits": {
         "WEST": "mirage_spire:mirror_threshold",
         "DOWN": "mirage_spire:shadow_corridor"
@@ -192,14 +192,14 @@
           }
         }
       ],
-      "z": 2
+      "z": 0
     },
     {
       "id": "mirage_spire:shadow_corridor",
       "name": "Shadow Corridor",
       "description": "The inverted version of the crystal corridor. The hexagonal pillars are dark here — not transparent but deeply opaque, absorbing light rather than refracting it. The ambient chord is lower, a bass drone that vibrates in your chest. Through the now-opaque floor above your head, you can see faint light from the normal corridor above — or is it below? Direction has lost meaning. A passage leads east to a sealed vault. The stairs continue down.",
-      "x": 3,
-      "y": 0,
+      "x": 9,
+      "y": 19,
       "exits": {
         "UP": "mirage_spire:reflected_gallery",
         "EAST": "mirage_spire:illusion_vault",
@@ -213,14 +213,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, colorful",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 1
+      "z": -1
     },
     {
       "id": "mirage_spire:illusion_vault",
       "name": "Illusion Vault",
       "description": "A sealed chamber off the shadow corridor, its walls lined with alcoves — each containing an item that looks real but is a reflection, a perfect glass replica with no substance. Weapons, armor, coins, all beautifully crafted in crystal and utterly worthless. In the center of the room, a single alcove holds something different: a chest of dark iron that is solid, real, and locked. The lock is shaped like a keyhole, waiting.",
-      "x": 4,
-      "y": 0,
+      "x": 10,
+      "y": 19,
       "exits": {
         "WEST": "mirage_spire:shadow_corridor"
       },
@@ -261,14 +261,14 @@
           }
         }
       ],
-      "z": 1
+      "z": -1
     },
     {
       "id": "mirage_spire:mirror_antechamber",
       "name": "Mirror Antechamber",
       "description": "The deepest point of the reflected Spire — or the highest, depending on which reality you trust. The chamber is circular, its walls entirely mirrored, creating infinite reflections of yourself stretching in every direction. Some of the reflections move independently. Some are wearing different armor. One is smiling when you are not. A heavy door of dark crystal leads east, beyond which you can hear a sound like glass grinding on glass.",
-      "x": 3,
-      "y": 0,
+      "x": 9,
+      "y": 19,
       "exits": {
         "UP": "mirage_spire:shadow_corridor",
         "EAST": "mirage_spire:shattered_hall"
@@ -281,14 +281,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, outdoor, simple room, few reflections",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "mirage_spire:shattered_hall",
       "name": "Shattered Hall",
       "description": "A vast hall of broken mirrors — the walls were once smooth crystal but something has smashed them, leaving jagged fragments that still reflect in broken, disjointed pieces. The floor crunches with mirror shards. At the center of the destruction stands a figure that is difficult to look at directly — it flickers between forms, each one a distorted version of something familiar. It guards the passage east with mechanical patience.",
-      "x": 4,
-      "y": 0,
+      "x": 10,
+      "y": 19,
       "exits": {
         "WEST": "mirage_spire:mirror_antechamber",
         "EAST": "mirage_spire:twin_arena"
@@ -301,14 +301,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, outdoor, intact mirrors, clean",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "mirage_spire:twin_arena",
       "name": "Twin Arena",
       "description": "The heart of the Mirage Spire. A perfect circle of unbroken mirror surrounds an open arena — the floor is transparent glass over an infinite drop (or an infinite climb, reflected). The ceiling mirrors the floor. Between them, you exist in a column of infinite space. The Mirror-Twin is here — or rather, two of it are. They circle each other in the center of the arena, perfectly synchronized, each one a flawless reflection of the other. When they notice you, they stop. They smile. The same smile, from two faces.",
-      "x": 5,
-      "y": 0,
+      "x": 11,
+      "y": 19,
       "exits": {
         "WEST": "mirage_spire:shattered_hall",
         "DOWN": "mirage_spire:mirror_heart"
@@ -321,14 +321,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, outdoor, small room, stone walls",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "mirage_spire:mirror_heart",
       "name": "Mirror Heart",
       "description": "Below the arena — or above it, in the reflected world — lies the Spire's core: a small chamber of raw, unworked crystal that predates the Spire itself. This was here before the cataclysm, before the seal-fracture. This was the seed. A single crystal formation in the center pulses with light in a slow heartbeat rhythm. Beside it, on a natural ledge of glass, sits a fragment of something older — a seal shard, separated from its parent ages ago, thrumming with contained power.",
-      "x": 5,
-      "y": 0,
+      "x": 11,
+      "y": 19,
       "exits": {
         "UP": "mirage_spire:twin_arena"
       },
@@ -356,7 +356,7 @@
           }
         }
       ],
-      "z": -1
+      "z": -3
     }
   ],
   "npcs": [

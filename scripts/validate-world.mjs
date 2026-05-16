@@ -6,12 +6,13 @@
  *   - Dangling exits (target room doesn't exist)
  *   - Duplicate room IDs
  *   - Missing reciprocal exits (A→B but B has no return exit at all)
- *   - Intra-zone coordinate mismatches (exit direction doesn't match coord delta)
- *   - Intra-zone coordinate overlaps (rooms at same x,y,z)
+ *   - Coordinate mismatches (exit direction doesn't match coord delta)
+ *   - Global coordinate overlaps (any two rooms at same x,y,z)
  *   - Wrong reciprocal directions (A→DIR→B but B→OPPOSITE(DIR)→C)
  *
- * Cross-zone exits are checked for reciprocal existence but NOT for coordinate
- * alignment, since each zone has its own independent coordinate system.
+ * Coordinates are globally unique — every room has a unique (x,y,z).
+ * Portal exits (BFS-excluded teleport connections) are exempt from
+ * coordinate alignment checks.
  */
 import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
@@ -29,6 +30,13 @@ const OPPOSITE = {
 const DX = { NORTH: 0, SOUTH: 0, EAST: 1, WEST: -1, UP: 0, DOWN: 0, NORTHEAST: 1, NORTHWEST: -1, SOUTHEAST: 1, SOUTHWEST: -1 };
 const DY = { NORTH: 1, SOUTH: -1, EAST: 0, WEST: 0, UP: 0, DOWN: 0, NORTHEAST: 1, NORTHWEST: 1, SOUTHEAST: -1, SOUTHWEST: -1 };
 const DZ = { NORTH: 0, SOUTH: 0, EAST: 0, WEST: 0, UP: 1, DOWN: -1, NORTHEAST: 0, NORTHWEST: 0, SOUTHEAST: 0, SOUTHWEST: 0 };
+
+// Portal exits: BFS-excluded connections where direction doesn't match coord delta.
+// These are teleport/magical connections that break the spatial graph cycle.
+const PORTALS = new Set([
+  'first_seal:watcher_perch->glass_desert:spire_base',
+  'glass_desert:spire_base->first_seal:watcher_perch',
+]);
 
 const files = readdirSync(worldDir).filter(f => f.endsWith('.zone.json'));
 const allRooms = new Map();
@@ -55,8 +63,8 @@ for (const [roomId, room] of allRooms) {
       continue;
     }
 
-    // Coordinate alignment: intra-zone only
-    if (target.zone === room.zone && DX[dir] !== undefined) {
+    // Coordinate alignment: global (skip portal exits)
+    if (DX[dir] !== undefined && !PORTALS.has(`${roomId}->${targetId}`)) {
       const ex = room.x + DX[dir];
       const ey = room.y + DY[dir];
       const ez = room.z + DZ[dir];
@@ -78,18 +86,18 @@ for (const [roomId, room] of allRooms) {
   }
 }
 
-// ── Check overlaps (3D: x,y,z) ─────────────────────────────────────────────
-const coordByZone = new Map();
+// ── Check global coordinate uniqueness ──────────────────────────────────────
+const coordGlobal = new Map();
 for (const [roomId, room] of allRooms) {
-  const key = `${room.zone}:${room.x},${room.y},${room.z}`;
-  if (!coordByZone.has(key)) coordByZone.set(key, []);
-  coordByZone.get(key).push(roomId);
+  const key = `${room.x},${room.y},${room.z}`;
+  if (!coordGlobal.has(key)) coordGlobal.set(key, []);
+  coordGlobal.get(key).push(roomId);
 }
 
-for (const [key, ids] of coordByZone) {
+for (const [coord, ids] of coordGlobal) {
   if (ids.length <= 1) continue;
-  const [zone, coord] = key.split(':');
-  errors.push(`COORD_OVERLAP: zone ${zone} at (${coord}): ${ids.join(', ')}`);
+  const zones = [...new Set(ids.map(id => allRooms.get(id).zone))];
+  errors.push(`COORD_OVERLAP: (${coord}) occupied by ${ids.length} rooms [${zones.join(',')}]: ${ids.join(', ')}`);
 }
 
 // ── Report ──────────────────────────────────────────────────────────────────

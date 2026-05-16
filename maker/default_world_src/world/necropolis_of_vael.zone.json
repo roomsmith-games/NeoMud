@@ -9,12 +9,12 @@
     {
       "id": "necropolis_of_vael:entrance_hall",
       "name": "Entrance Hall",
-      "description": "A massive archway of carved bone frames the entrance to the Necropolis of Vael. The arch is inscribed with names — thousands of them, in a script so small it blurs into texture from any distance. These are the dead interred within: soldiers of the Seal Wars, laid to rest with honor that has since been violated. Beyond the arch, a processional corridor stretches into darkness, its walls lined with alcoves containing the remains of those who fell in service. The air is cold and still, carrying the mineral smell of ancient stone and something sweeter beneath — embalming resins that have endured centuries.",
-      "x": 0,
-      "y": 0,
+      "description": "A massive archway of carved bone, set into the western cliff face, frames the entrance to the Necropolis of Vael. The arch is inscribed with names — thousands of them, in a script so small it blurs into texture from any distance. These are the dead interred within: soldiers of the Seal Wars, laid to rest with honor that has since been violated. Beyond the arch, a processional corridor stretches into darkness, its walls lined with alcoves containing the remains of those who fell in service. The air is cold and still, carrying the mineral smell of ancient stone and something sweeter beneath — embalming resins that have endured centuries.",
+      "x": -2,
+      "y": 20,
       "exits": {
-        "UP": "bone_wastes:necropolis_overlook",
-        "SOUTH": "necropolis_of_vael:processional"
+        "SOUTH": "necropolis_of_vael:processional",
+        "EAST": "bone_wastes:necropolis_overlook"
       },
       "backgroundImage": "/assets/images/rooms/necropolis_of_vael_entrance_hall.webp",
       "departSound": "footstep_stone",
@@ -24,14 +24,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, cheerful",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "necropolis_of_vael:processional",
       "name": "The Processional",
       "description": "A grand corridor wide enough for six pallbearers abreast, its vaulted ceiling lost in shadow above. The walls are carved with reliefs depicting the Seal Wars — armies clashing, the forging of the First Seal, the honored dead being carried to their final rest. Many of the reliefs have been defaced, scratched by clawed hands that emerged from the alcoves when the warding failed. The floor is polished bone-stone, worn smooth by centuries of funeral processions. Dust motes drift in the faint light that filters from somewhere above. Hidden mechanisms click softly in the walls.",
-      "x": 0,
-      "y": -1,
+      "x": -2,
+      "y": 19,
       "exits": {
         "NORTH": "necropolis_of_vael:entrance_hall",
         "SOUTH": "necropolis_of_vael:grand_atrium"
@@ -65,14 +65,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -2
     },
     {
       "id": "necropolis_of_vael:east_crypt",
       "name": "East Crypt",
       "description": "A side chamber filled with stone sarcophagi arranged in ordered rows. Most lids have been pushed aside from within — the occupants long since risen and wandered. A few remain sealed, their warding runes still intact, faintly glowing in the darkness. The walls are honeycombed with smaller burial niches, each containing skeletal remains wrapped in rotted cloth. The floor is covered in a thin layer of bone dust that puffs with every step. A pressure plate gleams dully near the center of the room.",
-      "x": 1,
-      "y": -2,
+      "x": -1,
+      "y": 18,
       "exits": {
         "WEST": "necropolis_of_vael:grand_atrium"
       },
@@ -105,14 +105,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -2
     },
     {
       "id": "necropolis_of_vael:grand_atrium",
       "name": "Grand Atrium",
       "description": "The processional opens into a vast atrium — the ceremonial heart of the Necropolis. A domed ceiling rises overhead, painted with a faded mural of the Seal Wars' final battle. Four massive pillars of carved bone support the dome, each depicting a different regiment of the fallen. At the center, a circular opening in the floor reveals a spiral staircase descending into the Catacombs below. Side passages lead east and west into the crypts. The atrium must have been magnificent once; now the mural is cracked, the pillars are scored with claw marks, and something has smeared the walls with symbols drawn in substances best not examined.",
-      "x": 0,
-      "y": -2,
+      "x": -2,
+      "y": 18,
       "exits": {
         "NORTH": "necropolis_of_vael:processional",
         "EAST": "necropolis_of_vael:east_crypt",
@@ -127,14 +127,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, small room",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "necropolis_of_vael:west_crypt",
       "name": "West Crypt",
       "description": "The western crypt holds the officers of the Seal War dead — their sarcophagi are larger, more ornately carved, bearing individual names and ranks. Most have been violated, lids shattered, contents scattered. The bones that remain are larger than normal, suggesting these warriors were enhanced somehow — or simply that the strongest were given the best burial. Tattered battle standards hang from the walls, their colors faded to grey. A faint draft comes from somewhere deeper in the Necropolis, carrying the smell of alchemical preservatives.",
-      "x": -1,
-      "y": -2,
+      "x": -3,
+      "y": 18,
       "exits": {
         "EAST": "necropolis_of_vael:grand_atrium"
       },
@@ -146,14 +146,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, simple",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -2
     },
     {
       "id": "necropolis_of_vael:catacomb_landing",
       "name": "Catacomb Landing",
       "description": "The spiral staircase from the Grand Atrium deposits you on a landing of fitted stone, its surface worn by centuries of pallbearers' boots. The air here is thicker, damper, with a chill that seeps through clothing. The walls transition from carved stone to raw bone — actual skeletal remains mortared into the structure, their empty eye sockets staring outward. This is the Catacombs proper: the dead are not merely interred here, they ARE the architecture. A passage leads south into the bone-lined depths.",
-      "x": 0,
-      "y": -2,
+      "x": -2,
+      "y": 18,
       "exits": {
         "UP": "necropolis_of_vael:grand_atrium",
         "SOUTH": "necropolis_of_vael:bone_passage"
@@ -166,14 +166,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, clean walls",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -3
     },
     {
       "id": "necropolis_of_vael:bone_passage",
       "name": "Bone Passage",
       "description": "A corridor where the walls, floor, and ceiling are constructed entirely of mortared bones. Femurs laid lengthwise form the floor, skulls stacked in geometric patterns create the walls, and ribcages arch overhead in a grotesque parody of cathedral vaulting. The bones are old — dry and yellow-white — but occasional scratching sounds suggest not all the dead here have fully given up on animation. A side chamber opens to the east, and the passage continues south.",
-      "x": 0,
-      "y": -3,
+      "x": -2,
+      "y": 17,
       "exits": {
         "NORTH": "necropolis_of_vael:catacomb_landing",
         "EAST": "necropolis_of_vael:ossuary_vault",
@@ -187,14 +187,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, stone walls",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -3
     },
     {
       "id": "necropolis_of_vael:ossuary_vault",
       "name": "Ossuary Vault",
       "description": "A circular chamber where the bone construction reaches its most elaborate — columns of stacked vertebrae support a dome of interlocking skulls, and the walls are decorated with intricate patterns made from every type of human bone. Thousands of the dead are represented here, their remains woven into the architecture with a craftsmanship that is both beautiful and deeply disturbing. The ceiling creaks ominously. Some of the load-bearing bones are cracked, and dust sifts down continuously from above.",
-      "x": 1,
-      "y": -3,
+      "x": -1,
+      "y": 17,
       "exits": {
         "WEST": "necropolis_of_vael:bone_passage"
       },
@@ -227,14 +227,14 @@
           }
         }
       ],
-      "z": -1
+      "z": -3
     },
     {
       "id": "necropolis_of_vael:embalming_hall",
       "name": "Embalming Hall",
       "description": "The necropolis embalmers worked here — stone tables line the room, each fitted with drainage channels that once carried away fluids. Clay vessels of embalming compounds line the shelves, some still sealed, their contents viable after centuries. The compounds were alchemical, designed to preserve flesh and bone against both decay and the necromantic energies that permeated the Seal War battlefield. Now those same compounds pool on the floor where vessels have cracked, creating a slick of volatile chemicals that reacts violently to heat or friction.",
-      "x": 0,
-      "y": -4,
+      "x": -2,
+      "y": 16,
       "exits": {
         "NORTH": "necropolis_of_vael:bone_passage",
         "SOUTH": "necropolis_of_vael:descent_of_kings"
@@ -268,14 +268,14 @@
           }
         }
       ],
-      "z": -1
+      "z": -3
     },
     {
       "id": "necropolis_of_vael:dust_chamber",
       "name": "Dust Chamber",
       "description": "A low-ceilinged room where the dead were prepared for interment — their bodies dried and wrapped, the excess tissue reduced to a fine dust that still coats every surface. The dust is inches deep in places, disturbed only by the passage of things that no longer need to breathe. Shelves hold wrapped bundles that might once have been body parts, now so desiccated they've shrunk to unrecognizable shapes. The air is thick with particulates that catch in the throat and sting the eyes.",
-      "x": -1,
-      "y": -5,
+      "x": -3,
+      "y": 15,
       "exits": {
         "EAST": "necropolis_of_vael:descent_of_kings"
       },
@@ -287,14 +287,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, clean air",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -3
     },
     {
       "id": "necropolis_of_vael:descent_of_kings",
       "name": "Descent of Kings",
       "description": "A ceremonial stairway reserved for the highest-ranking dead — generals and war heroes of the Seal Wars. The steps are wide and shallow, each carved with the name and deeds of the warrior whose body was carried down them. The walls bear full-length portrait carvings of the fallen, rendered in bone relief against dark stone. At the base of the descent, a second spiral staircase leads down into the Deep Sanctum — Khaim's domain. The air grows colder with each step down, and a faint sound rises from below: chanting, rhythmic and wrong, in a language that predates the Seal Wars.",
-      "x": 0,
-      "y": -5,
+      "x": -2,
+      "y": 15,
       "exits": {
         "NORTH": "necropolis_of_vael:embalming_hall",
         "WEST": "necropolis_of_vael:dust_chamber",
@@ -329,14 +329,14 @@
           }
         }
       ],
-      "z": -1
+      "z": -3
     },
     {
       "id": "necropolis_of_vael:stairwell_deep",
       "name": "Deep Stairwell",
       "description": "The second spiral staircase descends into the oldest part of the Necropolis — the Deep Sanctum, carved from living rock long before the Seal Wars dead were brought here. The air changes as you descend: colder, drier, with a faint ozone smell that speaks of active magic. The walls are no longer bone but dark stone inscribed with warding glyphs that flicker with residual power. Some have been overwritten with newer symbols in a cramped, feverish hand — Khaim's work, twisting the protective wards to serve his necromancy. The chanting is louder here.",
-      "x": 0,
-      "y": -5,
+      "x": -2,
+      "y": 15,
       "exits": {
         "UP": "necropolis_of_vael:descent_of_kings",
         "NORTH": "necropolis_of_vael:ritual_antechamber"
@@ -349,14 +349,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, outdoor, bright, bone walls",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -2
+      "z": -4
     },
     {
       "id": "necropolis_of_vael:ritual_antechamber",
       "name": "Ritual Antechamber",
       "description": "A chamber that was once a meditation space for the Necropolis wardens — those who maintained the burial wards. Khaim has repurposed it as a staging area for his rituals. The floor is carved with a massive glyph that pulses with sickly green light, and the air hums with contained necrotic energy. Bone fragments orbit slowly around the glyph's center point, suspended by magic. Shelves hold jars of components — grave earth, crushed bone, dried blood, and things less identifiable. The way south leads to the heart of Khaim's domain.",
-      "x": 0,
-      "y": -4,
+      "x": -2,
+      "y": 16,
       "exits": {
         "SOUTH": "necropolis_of_vael:stairwell_deep",
         "NORTH": "necropolis_of_vael:khaim_sanctum"
@@ -390,14 +390,14 @@
           }
         }
       ],
-      "z": -2
+      "z": -4
     },
     {
       "id": "necropolis_of_vael:warding_circle",
       "name": "Warding Circle",
       "description": "A side chamber adjacent to Khaim's sanctum, once the primary warding station for the entire Necropolis. A massive circle of protective runes is carved into the floor — or was. Khaim has partially overwritten it, converting the protective ward into an amplifier for his necromancy. The runes that remain intact still crackle with defensive energy, making the air taste of copper and ozone. Bone dust swirls in the conflicting magical currents, forming and dissolving patterns that almost resemble faces.",
-      "x": -1,
-      "y": -3,
+      "x": -3,
+      "y": 17,
       "exits": {
         "EAST": "necropolis_of_vael:khaim_sanctum"
       },
@@ -430,14 +430,14 @@
           }
         }
       ],
-      "z": -2
+      "z": -4
     },
     {
       "id": "necropolis_of_vael:khaim_sanctum",
       "name": "Khaim's Sanctum",
       "description": "The deepest chamber of the Necropolis — once the resting place of the Seal War's greatest heroes, now the throne room of Death-Speaker Khaim. The room is vast and circular, its walls lined with the open sarcophagi of generals and champions, all empty now — their occupants serve Khaim as his personal guard above. At the center, a raised dais holds a throne of fused bone, and upon it sits Khaim himself: a gaunt figure in robes of woven grave-cloth, a crown of finger bones upon his brow, a staff of black iron topped with a pulsing seal fragment. The fragment bathes the room in sickly light and fills the air with a sound at the edge of hearing — the voice of the broken seal, speaking to those who know how to listen.",
-      "x": 0,
-      "y": -3,
+      "x": -2,
+      "y": 17,
       "exits": {
         "SOUTH": "necropolis_of_vael:ritual_antechamber",
         "WEST": "necropolis_of_vael:warding_circle",
@@ -451,14 +451,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, outdoor, bright, cheerful, small room, multiple bosses",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -2
+      "z": -4
     },
     {
       "id": "necropolis_of_vael:sealed_passage",
       "name": "Sealed Passage",
       "description": "Beyond Khaim's throne, a short passage leads to the oldest part of the Necropolis — a vault that predates even the Seal Wars. The passage is blocked by a door of dark iron set with a complex lock mechanism. The keyhole is shaped to receive something specific — a ritual key, fashioned from bone and inscribed with warding symbols. Above the door, an inscription in ancient script warns that only the keeper of the ward may enter. A staircase carved into the rock wall spirals upward, offering a shortcut back to the Processional level above.",
-      "x": 0,
-      "y": -2,
+      "x": -2,
+      "y": 18,
       "exits": {
         "SOUTH": "necropolis_of_vael:khaim_sanctum",
         "EAST": "necropolis_of_vael:vault"
@@ -490,14 +490,14 @@
           }
         }
       ],
-      "z": -2
+      "z": -4
     },
     {
       "id": "necropolis_of_vael:vault",
       "name": "Vault of the Seal-Keepers",
       "description": "The oldest chamber in the Necropolis — older than the Seal Wars themselves, older perhaps than the civilization that built the Necropolis above it. The walls are rough-hewn from dark stone that doesn't match anything on the surface, and the ceiling is so low you must stoop. At the center of the chamber, a stone plinth holds a collection of items that have survived millennia: weapons and armor of a craft no modern smith could replicate, and a pile of coins that bear the faces of rulers history has forgotten. A faint hum fills the air — the resonance of powerful enchantments that have kept these treasures preserved against the ages.",
-      "x": 1,
-      "y": -2,
+      "x": -1,
+      "y": 18,
       "exits": {
         "WEST": "necropolis_of_vael:sealed_passage"
       },
@@ -525,7 +525,7 @@
           }
         }
       ],
-      "z": -2
+      "z": -4
     }
   ],
   "npcs": [

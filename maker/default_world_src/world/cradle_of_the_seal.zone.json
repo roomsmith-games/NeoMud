@@ -17,8 +17,8 @@
       "id": "cradle_of_the_seal:descent",
       "name": "The Descent",
       "description": "A spiral staircase carved from a single column of granite, descending deep into the rift. The warding glyphs on the walls grow brighter as you descend — the seal's power concentrates here, pressed into the stone like light into crystal. Each step echoes in the vertical shaft, the sound swallowed by the vast darkness below.",
-      "x": 0,
-      "y": 0,
+      "x": 10,
+      "y": 27,
       "exits": {
         "UP": "first_seal:seal_threshold",
         "SOUTH": "cradle_of_the_seal:outer_ring"
@@ -31,14 +31,14 @@
       "imageNegativePrompt": "modern, characters, anime, text, bright colors",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:outer_ring",
       "name": "Outer Ring",
       "description": "A circular corridor following the outer wall of the Cradle. The ceiling is low, the air close and warm. Ward-lines run along the floor in channels of hammered brass, still conducting faint golden energy. Doorways lead inward toward the seal chamber, but the wards here are the first line of defense — and they are cracking.",
-      "x": 0,
-      "y": -1,
+      "x": 10,
+      "y": 26,
       "exits": {
         "NORTH": "cradle_of_the_seal:descent",
         "WEST": "cradle_of_the_seal:ward_chamber",
@@ -73,14 +73,14 @@
           "label": "Stressed Ceiling"
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:ward_chamber",
       "name": "Ward Chamber",
       "description": "A hexagonal room built as an amplification node for the seal's warding network. Six pillars ring a central altar of polished obsidian, each pillar connected to the altar by channels of brass filled with slowly pulsing golden light. The altar's surface is carved with a complex interlocking pattern — a focusing lens for the seal's power.",
-      "x": -1,
-      "y": -1,
+      "x": 9,
+      "y": 26,
       "exits": {
         "EAST": "cradle_of_the_seal:outer_ring",
         "SOUTH": "cradle_of_the_seal:west_passage"
@@ -131,14 +131,14 @@
           "label": "Warding Altar"
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:seal_gallery",
       "name": "Seal Gallery",
       "description": "The walls of this long chamber are carved with murals depicting the creation of the First Seal. Panel by panel, the story unfolds: the discovery of the entity, the convening of the Warden Council, the months of ritual preparation, and finally the sealing itself — thirty Wardens giving their lives to bind the entity for eternity. The final panel shows a single figure remaining to watch over the seal. The paint is faded, but the golden leaf still catches the light.",
-      "x": 1,
-      "y": -1,
+      "x": 11,
+      "y": 26,
       "exits": {
         "WEST": "cradle_of_the_seal:outer_ring",
         "SOUTH": "cradle_of_the_seal:east_passage"
@@ -151,14 +151,14 @@
       "imageNegativePrompt": "modern, characters, anime, text, bright colors",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:east_passage",
       "name": "East Passage",
       "description": "A narrow passage slopes downward, the walls scarred with claw marks from something that tried to escape from below. The ward-lines here are fractured and dark — this section of the containment has failed. The air is colder, and an oppressive presence weighs on your mind, testing your resolve.",
-      "x": 1,
-      "y": -2,
+      "x": 11,
+      "y": 25,
       "exits": {
         "NORTH": "cradle_of_the_seal:seal_gallery",
         "WEST": "cradle_of_the_seal:guardian_hall"
@@ -192,14 +192,14 @@
           "label": "Fractured Ward-Line"
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:west_passage",
       "name": "West Passage",
       "description": "This passage runs parallel to the east corridor but in better repair — the wards here still hold, casting steady golden light across fitted stone walls. Alcoves hold the preserved remains of fallen Wardens, their hands folded over their chests, faces serene in death. Even in death, they serve the seal.",
-      "x": -1,
-      "y": -2,
+      "x": 9,
+      "y": 25,
       "exits": {
         "NORTH": "cradle_of_the_seal:ward_chamber",
         "EAST": "cradle_of_the_seal:guardian_hall"
@@ -215,14 +215,14 @@
       "imageNegativePrompt": "modern, characters, anime, text, bright colors",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:guardian_hall",
       "name": "Guardian Hall",
       "description": "A vast hall at the heart of the Cradle, its vaulted ceiling lost in shadow. The floor is a single massive warding circle, fifty feet across, its brass and obsidian lines still glowing with fierce golden light. This is where the seal's guardian dwells — the last and most powerful defense before the seal itself. The air thrums with concentrated warding energy.",
-      "x": 0,
-      "y": -2,
+      "x": 10,
+      "y": 25,
       "exits": {
         "WEST": "cradle_of_the_seal:west_passage",
         "EAST": "cradle_of_the_seal:east_passage",
@@ -236,14 +236,14 @@
       "imageNegativePrompt": "modern, characters, anime, text, bright colors",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:seal_antechamber",
       "name": "Seal Antechamber",
       "description": "The final chamber before the seal itself. A great door of warded bronze blocks the way south — the last physical barrier. Its surface is covered in thousands of individual glyphs, each one a separate binding. A speaking-horn is set into the door at eye level, and an inscription above reads: 'Only those who understand the cost may pass.'",
-      "x": 0,
-      "y": -3,
+      "x": 10,
+      "y": 24,
       "exits": {
         "NORTH": "cradle_of_the_seal:guardian_hall",
         "SOUTH": "cradle_of_the_seal:seal_chamber"
@@ -295,14 +295,14 @@
           "label": "Threshold Ward"
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:seal_chamber",
       "name": "The First Seal",
       "description": "The chamber of the First Seal. The rift in the earth yawns open here, a chasm a hundred feet across, and the seal spans it — a web of golden light so intricate and beautiful that it takes your breath away. Millions of ward-lines intersect in perfect geometric harmony, containing something vast and dark that presses against them from below. Cracks are visible now, thin lines of darkness in the golden web. The seal is failing. At the chamber's center, a stone platform overlooks the seal, and here the Guardian waits.",
-      "x": 0,
-      "y": -4,
+      "x": 10,
+      "y": 23,
       "exits": {
         "NORTH": "cradle_of_the_seal:seal_antechamber",
         "WEST": "cradle_of_the_seal:inner_sanctum"
@@ -318,14 +318,14 @@
       "imageNegativePrompt": "modern, characters, anime, text, bright colors, small room",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cradle_of_the_seal:inner_sanctum",
       "name": "Inner Sanctum",
       "description": "A small chamber carved into the rock behind the seal platform, once the private quarters of the Seal-Keeper. Shelves hold ancient texts and preservation jars, and a narrow cot suggests someone lived here for years at a time. A chest against the far wall bears the Warden seal — whatever is inside, it was left here deliberately for whoever might follow.",
-      "x": -1,
-      "y": -4,
+      "x": 9,
+      "y": 23,
       "exits": {
         "EAST": "cradle_of_the_seal:seal_chamber"
       },
@@ -337,7 +337,7 @@
       "imageNegativePrompt": "modern, characters, anime, text, bright colors, large room",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     }
   ],
   "npcs": [

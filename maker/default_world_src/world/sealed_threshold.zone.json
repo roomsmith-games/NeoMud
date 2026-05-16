@@ -17,8 +17,8 @@
       "id": "sealed_threshold:descent",
       "name": "The Descent",
       "description": "A steep carved stairway plunges downward from the Stormcrown's throne room into suffocating darkness. The walls are scored with ward-runes so old they have fused into the stone itself, their light reduced to a faint golden pulse that matches no heartbeat. Each step descends deeper into the earth, and the air grows heavier — charged with the tension of immense power held barely in check.",
-      "x": 0,
-      "y": 0,
+      "x": -2,
+      "y": 32,
       "exits": {
         "SOUTH": "stormcrown_keep:stormcrown_throne",
         "NORTH": "sealed_threshold:carved_passage"
@@ -32,14 +32,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:carved_passage",
       "name": "Carved Passage",
       "description": "An ancient corridor carved from living rock, its surfaces worn smooth by the passage of countless wardens over millennia. Ward-runes line both walls in parallel channels, their golden light flickering erratically as fracture energy interferes with the old enchantments. The ceiling is low, pressing down, and the stone itself vibrates with a subsonic hum that sets teeth on edge.",
-      "x": 0,
-      "y": 1,
+      "x": -2,
+      "y": 33,
       "exits": {
         "SOUTH": "sealed_threshold:descent",
         "NORTH": "sealed_threshold:ward_corridor"
@@ -53,14 +53,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:ward_corridor",
       "name": "Ward Corridor",
       "description": "The corridor widens into a broader passage where the ward-runes grow dense and complex, overlapping in patterns that suggest multiple generations of wardens reinforced the protections here. The floor is inlaid with brass channels that once conducted seal energy — now cracked and leaking faint golden sparks. A side passage opens to the west, and the air from it carries the scent of old stone and something metallic.",
-      "x": 0,
-      "y": 2,
+      "x": -2,
+      "y": 34,
       "exits": {
         "SOUTH": "sealed_threshold:carved_passage",
         "NORTH": "sealed_threshold:seal_gallery",
@@ -95,14 +95,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:guardians_alcove",
       "name": "Guardian's Alcove",
       "description": "A side chamber carved with geometric precision, its walls covered in ward-inscriptions that glow with a steady, unflickering light — the only stable wards in the entire threshold. At the center stands a raised platform of polished obsidian, scored with a single massive containment circle. Whatever was held here was meant to guard the deeper passages, and the power radiating from this room suggests it still does.",
-      "x": -1,
-      "y": 2,
+      "x": -3,
+      "y": 34,
       "exits": {
         "EAST": "sealed_threshold:ward_corridor"
       },
@@ -115,14 +115,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_gallery",
       "name": "Seal Gallery",
       "description": "A long hall lined with niches that once held ward-stones — the original components of the First Seal's outer defenses. Most niches stand empty, their contents crumbled to dust or stolen over the ages. A few stones remain, cracked and dark, their power spent. The murals between the niches depict the original sealing ritual in faded pigment, thirty robed figures giving their lives to bind what should never have been freed.",
-      "x": 0,
-      "y": 3,
+      "x": -2,
+      "y": 35,
       "exits": {
         "SOUTH": "sealed_threshold:ward_corridor",
         "NORTH": "sealed_threshold:outer_seal_ring",
@@ -137,14 +137,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:echo_chamber",
       "name": "Echo Chamber",
       "description": "A resonating side chamber where the stone walls are carved into concentric rings that amplify every sound into a disorienting cascade of echoes. Fracture energy pools in the acoustic focal point at the chamber's center, crackling and humming with a pitch that fluctuates between subsonic rumble and shrieking harmonic. The air here tastes of copper and ozone.",
-      "x": 1,
-      "y": 3,
+      "x": -1,
+      "y": 35,
       "exits": {
         "WEST": "sealed_threshold:seal_gallery"
       },
@@ -177,14 +177,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:outer_seal_ring",
       "name": "Outer Seal Ring",
       "description": "A circular room built as the outermost containment ring of the First Seal. The floor is a single massive disc of polished granite, inscribed with a ward-circle twenty feet in diameter. The inscriptions still glow — fitfully, in waves — as the Seal's residual energy cycles through its containment loops. The walls curve inward overhead, focusing the energy toward the center, where it rises in a visible column of golden-white light.",
-      "x": 0,
-      "y": 4,
+      "x": -2,
+      "y": 36,
       "exits": {
         "SOUTH": "sealed_threshold:seal_gallery",
         "NORTH": "sealed_threshold:oracles_sanctum"
@@ -198,14 +198,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:oracles_sanctum",
       "name": "Oracle's Sanctum",
       "description": "A hexagonal chamber of white marble — the only clean stone in the entire threshold, untouched by fracture corruption. Ward-light fills the room with a steady golden glow, and the air here is warm and still, a pocket of calm in the chaos below. The Oracle's meditation circle is carved into the floor, surrounded by candles that burn without flickering and without ever being consumed. This is the last safe haven before the final descent.",
-      "x": 0,
-      "y": 5,
+      "x": -2,
+      "y": 37,
       "exits": {
         "SOUTH": "sealed_threshold:outer_seal_ring",
         "NORTH": "sealed_threshold:threshold_gate"
@@ -219,14 +219,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:threshold_gate",
       "name": "Threshold Gate",
       "description": "A massive gate of seal-inscribed stone blocks the passage northward, its surface covered in ward-glyphs so dense they overlap into an almost solid wall of golden light. A keyhole shaped like a guardian's ward-glyph sits at the center of the gate, dark and waiting. The gate radiates power — whatever lies beyond, the original wardens wanted it sealed away from the world with everything they had.",
-      "x": 0,
-      "y": 6,
+      "x": -2,
+      "y": 38,
       "exits": {
         "SOUTH": "sealed_threshold:oracles_sanctum",
         "NORTH": "sealed_threshold:fracture_chamber"
@@ -264,14 +264,14 @@
       "unpickableExits": [
         "NORTH"
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:fracture_chamber",
       "name": "Fracture Chamber",
       "description": "The heart of the Sealed Threshold — a vast domed chamber where the shattered First Seal hangs suspended in mid-air, its fragments slowly orbiting a core of pure fracture energy that pulses between blinding white and absolute darkness. Two ritual circles glow on opposite sides of the chamber: to the west, one radiates steady golden restorative light; to the east, another crackles with red-black destructive chaos. The air here is almost unbearable, thick with raw power.",
-      "x": 0,
-      "y": 7,
+      "x": -2,
+      "y": 39,
       "exits": {
         "SOUTH": "sealed_threshold:threshold_gate",
         "WEST": "sealed_threshold:seal_approach",
@@ -315,14 +315,14 @@
         "WEST",
         "EAST"
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_approach",
       "name": "Seal Approach",
       "description": "The western passage is bathed in steady golden light that radiates from the ward-inscriptions covering every surface. The stone here feels warm to the touch, humming with the Seal's restorative energy. The corridor narrows as it proceeds, the wards growing denser, the light brighter — a gauntlet of purification that tests the resolve of those who chose the path of renewal.",
-      "x": -1,
-      "y": 7,
+      "x": -3,
+      "y": 39,
       "exits": {
         "EAST": "sealed_threshold:fracture_chamber",
         "WEST": "sealed_threshold:seal_corridor"
@@ -361,14 +361,14 @@
       "unpickableExits": [
         "WEST"
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_corridor",
       "name": "Seal Corridor",
       "description": "A long corridor where concentrated seal energy discharges at irregular intervals, arcing between the ward-inscribed walls in blinding golden bolts. The floor is scorched in overlapping blast patterns — testament to centuries of continuous discharge. The wards here were designed to destroy anything that penetrated this deep without authorization, and they are still functioning with lethal efficiency.",
-      "x": -2,
-      "y": 7,
+      "x": -4,
+      "y": 39,
       "exits": {
         "EAST": "sealed_threshold:seal_approach",
         "SOUTH": "sealed_threshold:seal_ward_room"
@@ -402,14 +402,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_ward_room",
       "name": "Seal Ward Room",
       "description": "A warded room where the walls are lined with intact seal-stones — the last surviving components of the Seal's original defense grid. Each stone pulses with a deep golden glow, and together they create a harmonic resonance that makes the air shimmer like heat haze. The room feels orderly despite the chaos elsewhere, its geometry precise and deliberate, every angle calculated to reinforce the containment.",
-      "x": -2,
-      "y": 6,
+      "x": -4,
+      "y": 38,
       "exits": {
         "NORTH": "sealed_threshold:seal_corridor",
         "SOUTH": "sealed_threshold:seal_antechamber"
@@ -423,14 +423,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_antechamber",
       "name": "Seal Antechamber",
       "description": "The anteroom to the Seal Sanctum. The walls here are covered in final warnings carved in the old Warden script — exhortations to turn back, declarations of the power contained beyond, and the names of the thirty wardens who gave their lives in the original sealing. The golden light here is almost painfully bright, concentrated by the narrowing architecture into a focused beam that points through the southern doorway.",
-      "x": -2,
-      "y": 5,
+      "x": -4,
+      "y": 37,
       "exits": {
         "NORTH": "sealed_threshold:seal_ward_room",
         "SOUTH": "sealed_threshold:seal_sanctum"
@@ -444,14 +444,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_sanctum",
       "name": "Seal Sanctum",
       "description": "The innermost chamber of the restoration path — a vast circular room where the Seal's full power was once focused. The floor is a single disc of white marble inscribed with the master containment circle, its lines blazing with golden fire. At the center stands the Sealed One in its restoration form, drawing on the Seal's remaining power to create layered ward-barriers that shimmer like liquid gold. The air here burns with purifying energy.",
-      "x": -2,
-      "y": 4,
+      "x": -4,
+      "y": 36,
       "exits": {
         "NORTH": "sealed_threshold:seal_antechamber",
         "SOUTH": "sealed_threshold:seal_epilogue"
@@ -487,14 +487,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:seal_epilogue",
       "name": "Seal Epilogue",
       "description": "Beyond the Seal Sanctum lies a small, still chamber suffused with fading golden light. The air here is calm — impossibly calm after the fury of the battle. The Seal's energy lingers as a warm glow that seeps from the walls, the floor, the ceiling, as though the stone itself remembers what was restored here. A Warden's coffer rests on a pedestal at the chamber's center, left for those who chose the path of renewal.",
-      "x": -2,
-      "y": 3,
+      "x": -4,
+      "y": 35,
       "exits": {
         "NORTH": "sealed_threshold:seal_sanctum"
       },
@@ -528,14 +528,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:sunder_approach",
       "name": "Sunder Approach",
       "description": "The eastern passage writhes with red-black fracture energy that crawls across every surface like living flame. The stone here is cracked and unstable, shot through with veins of solidified chaos that pulse with a heartbeat rhythm. The air smells of burning and ozone, and the walls groan with the strain of containing the destructive power that flows through them. This is the path of those who chose to shatter the Seal.",
-      "x": 1,
-      "y": 7,
+      "x": -1,
+      "y": 39,
       "exits": {
         "WEST": "sealed_threshold:fracture_chamber",
         "EAST": "sealed_threshold:sunder_corridor"
@@ -574,14 +574,14 @@
       "unpickableExits": [
         "EAST"
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:sunder_corridor",
       "name": "Sunder Corridor",
       "description": "A corridor where reality itself seems to fray at the edges. Fracture energy erupts from cracks in the walls at random intervals, detonating in bursts of red-black light that leave afterimages burned into the retinas. The stone floor is a patchwork of blast craters and newly-formed crystal growths — the chaos energy crystallizing on contact with matter. Nothing here is stable. Nothing here is safe.",
-      "x": 2,
-      "y": 7,
+      "x": 0,
+      "y": 39,
       "exits": {
         "WEST": "sealed_threshold:sunder_approach",
         "SOUTH": "sealed_threshold:sunder_chaos_room"
@@ -615,14 +615,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:sunder_chaos_room",
       "name": "Sunder Chaos Room",
       "description": "A room where the boundary between the material world and raw chaos has worn dangerously thin. Reality flickers — the walls shift between solid stone and translucent windows into a void of red-black energy. Gravity fluctuates, objects drift briefly upward before crashing down. The fracture energy here is so dense it's visible as a permanent red-black haze that obscures the far walls and makes distances impossible to judge.",
-      "x": 2,
-      "y": 6,
+      "x": 0,
+      "y": 38,
       "exits": {
         "NORTH": "sealed_threshold:sunder_corridor",
         "SOUTH": "sealed_threshold:sunder_antechamber"
@@ -636,14 +636,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:sunder_antechamber",
       "name": "Sunder Antechamber",
       "description": "The anteroom to the Sunder Sanctum. The walls here have partially dissolved into raw fracture energy, leaving ragged gaps through which a void of red-black chaos is visible. The floor is cracked into floating plates that shift underfoot, held together by nothing but the residual structure of the stone's memory of being solid. The sound of the Sealed One's power reverberates through the gaps — a deep, grinding roar that never stops.",
-      "x": 2,
-      "y": 5,
+      "x": 0,
+      "y": 37,
       "exits": {
         "NORTH": "sealed_threshold:sunder_chaos_room",
         "SOUTH": "sealed_threshold:sunder_sanctum"
@@ -657,14 +657,14 @@
       "imageWidth": 1024,
       "imageHeight": 576,
       "interactables": [],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:sunder_sanctum",
       "name": "Sunder Sanctum",
       "description": "The innermost chamber of the destruction path — a vast room where the Seal has been almost completely shattered. The floor is a maelstrom of floating stone plates and crackling red-black energy, the walls barely visible through the chaos. At the center, the Sealed One in its destruction form channels the Seal's fracture energy into devastating chaotic attacks, its form flickering between solid and translucent as it draws power from the breaking point between worlds.",
-      "x": 2,
-      "y": 4,
+      "x": 0,
+      "y": 36,
       "exits": {
         "NORTH": "sealed_threshold:sunder_antechamber",
         "SOUTH": "sealed_threshold:sunder_epilogue"
@@ -700,14 +700,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "sealed_threshold:sunder_epilogue",
       "name": "Sunder Epilogue",
       "description": "Beyond the Sunder Sanctum, the chaos has burned itself out, leaving a hollow chamber of vitrified stone — the walls fused into dark glass by the intensity of the fracture energy that passed through. The air is still but charged, tingling against exposed skin. Where the Seal once held, there is only empty space and the faint echo of power released. A cache of crystallized fracture energy has coalesced on a natural shelf of obsidian.",
-      "x": 2,
-      "y": 3,
+      "x": 0,
+      "y": 35,
       "exits": {
         "NORTH": "sealed_threshold:sunder_sanctum"
       },
@@ -741,7 +741,7 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     }
   ],
   "npcs": [

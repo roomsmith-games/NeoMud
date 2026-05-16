@@ -16,8 +16,8 @@
       "id": "foothills:south_trail",
       "name": "Hidden Ascent",
       "description": "A narrow switchback trail clings to the gorge wall here, climbing away from the depths below. The air thins as you ascend, and the sound of dripping water fades behind you. To the south, the trail drops back into the gorge; to the north, sunlight breaks through.",
-      "x": 0,
-      "y": 0,
+      "x": 1,
+      "y": 8,
       "exits": {
         "SOUTH": "gorge:depths",
         "NORTH": "foothills:winding_climb"
@@ -36,8 +36,8 @@
       "id": "foothills:winding_climb",
       "name": "Winding Mountain Climb",
       "description": "The trail levels out into a series of broad switchbacks across the mountain face. Sparse pines cling to the rocky soil, their needles whispering in the high wind. The pass opens up to the north, revealing distant snowcapped peaks.",
-      "x": 0,
-      "y": 1,
+      "x": 1,
+      "y": 9,
       "exits": {
         "SOUTH": "foothills:south_trail",
         "NORTH": "foothills:meadow"
@@ -56,8 +56,8 @@
       "id": "foothills:meadow",
       "name": "High Meadow",
       "description": "A broad alpine meadow opens before you, ringed by jagged peaks. Wildflowers nod in the breeze and a small stream cuts across the grass. A worn path leads west toward an overlook, east toward Master Aldric's lodge, and north further into the pass.",
-      "x": 0,
-      "y": 2,
+      "x": 1,
+      "y": 10,
       "exits": {
         "WEST": "foothills:overlook",
         "EAST": "foothills:lodge_approach",
@@ -79,8 +79,8 @@
       "id": "foothills:overlook",
       "name": "Eagle's Overlook",
       "description": "A rocky outcropping juts from the mountainside, offering a vast view of the gorge and forests far below. From here you can see the marsh as a hazy green smudge in the distance, and the smoke of Millhaven beyond that. A pair of eagles circle on the thermals.",
-      "x": -1,
-      "y": 2,
+      "x": 0,
+      "y": 10,
       "exits": {
         "EAST": "foothills:meadow"
       },
@@ -98,8 +98,8 @@
       "id": "foothills:lodge_approach",
       "name": "Lodge Approach",
       "description": "A well-tended path leads east, rough flagstones laid into the mountain grass. Smoke rises from a stone chimney up ahead, and the sound of metal on stone reaches you faintly — the steady tap of a chisel from someone old and unhurried.",
-      "x": 1,
-      "y": 2,
+      "x": 2,
+      "y": 10,
       "exits": {
         "WEST": "foothills:meadow",
         "EAST": "foothills:masters_lodge"
@@ -118,8 +118,8 @@
       "id": "foothills:masters_lodge",
       "name": "Master Aldric's Lodge",
       "description": "A sturdy stone lodge built into the mountain face, its interior warm and lit by a generous hearth. Weapons and training dummies line the walls, and the air smells of leather, wood smoke, and wax. Master Aldric stands by the fire, watching you with measured interest.",
-      "x": 2,
-      "y": 2,
+      "x": 3,
+      "y": 10,
       "exits": {
         "WEST": "foothills:lodge_approach"
       },
@@ -138,8 +138,8 @@
       "id": "foothills:crossroads",
       "name": "Pass Crossroads",
       "description": "Trails meet here at a weathered stone marker carved with a sealed-eye sigil — the same as the token Old Wren gave you. East leads toward the cliffs and the dark mouth of the Iron Vein Mine. West, an old bandit camp lies abandoned. The trail north climbs higher.",
-      "x": 0,
-      "y": 3,
+      "x": 1,
+      "y": 11,
       "exits": {
         "SOUTH": "foothills:meadow",
         "EAST": "foothills:eastern_trail",
@@ -160,8 +160,8 @@
       "id": "foothills:eastern_trail",
       "name": "Eastern Trail",
       "description": "The trail clings to a steep slope as it bends east, the ground giving way to broken scree. The dark mouth of a mine shaft is visible up ahead, framed by old timber supports.",
-      "x": 1,
-      "y": 3,
+      "x": 2,
+      "y": 11,
       "exits": {
         "WEST": "foothills:crossroads",
         "EAST": "foothills:mine_approach"
@@ -180,8 +180,8 @@
       "id": "foothills:mine_approach",
       "name": "Mine Approach",
       "description": "A leveled platform of crushed stone leads to the mine entrance. Old iron tools rust quietly in the open air — pickaxes, ore carts, a cracked anvil. Whoever worked this mine left in a hurry.",
-      "x": 2,
-      "y": 3,
+      "x": 3,
+      "y": 11,
       "exits": {
         "WEST": "foothills:eastern_trail",
         "EAST": "foothills:mine_entrance_overlook"
@@ -200,8 +200,8 @@
       "id": "foothills:mine_entrance_overlook",
       "name": "Iron Vein Mine Entrance",
       "description": "The mouth of the mine yawns before you — a dark archway of cut stone, supported by ancient timbers. A cool draft flows out, carrying the metallic smell of damp iron and something else underneath, faintly musty. Faint scratches mark the threshold, as if something dragged itself across the stone.",
-      "x": 3,
-      "y": 3,
+      "x": 4,
+      "y": 11,
       "exits": {
         "WEST": "foothills:mine_approach",
         "EAST": "iron_vein:entrance"
@@ -220,8 +220,8 @@
       "id": "foothills:western_trail",
       "name": "Western Trail",
       "description": "The trail bends west, descending through stunted pines. Old wagon ruts cut deep into the dirt, suggesting this was once a busier route. A faint smell of old smoke drifts on the breeze.",
-      "x": -1,
-      "y": 3,
+      "x": 0,
+      "y": 11,
       "exits": {
         "EAST": "foothills:crossroads",
         "WEST": "foothills:old_camp"
@@ -240,8 +240,8 @@
       "id": "foothills:old_camp",
       "name": "Abandoned Camp",
       "description": "A scattering of overturned tents and collapsed firepits speaks to a hasty retreat. Whoever camped here did not pack carefully. A tarnished signet glints among the ash, half-buried.",
-      "x": -2,
-      "y": 3,
+      "x": -1,
+      "y": 11,
       "exits": {
         "EAST": "foothills:western_trail"
       },
@@ -259,8 +259,8 @@
       "id": "foothills:ridge",
       "name": "High Ridge",
       "description": "The ridge rises sharply here, granting a windswept view of the broader range. Eastward, the path bends toward a small cave half-hidden in the rocks. The trail north continues toward the summit.",
-      "x": 0,
-      "y": 4,
+      "x": 1,
+      "y": 12,
       "exits": {
         "SOUTH": "foothills:crossroads",
         "EAST": "foothills:hermit_cave",
@@ -280,8 +280,8 @@
       "id": "foothills:hermit_cave",
       "name": "Hermit's Cave",
       "description": "A small natural cave, dry and well-kept. A stone bench sits along one wall, alongside a few simple tools. Whoever made this their home is not here now, but the kindled fire pit suggests they will return.",
-      "x": 1,
-      "y": 4,
+      "x": 2,
+      "y": 12,
       "exits": {
         "WEST": "foothills:ridge"
       },
@@ -300,8 +300,8 @@
       "id": "foothills:summit_path",
       "name": "Summit Path",
       "description": "The trail steepens sharply, snow gathering in the cracks even now. The wall of ice that once sealed the way north has split clean down its spine — a finger‐wide crack runs through it, broad enough to slip past. Beyond, the trail flattens out onto a high windswept plateau.",
-      "x": 0,
-      "y": 5,
+      "x": 1,
+      "y": 13,
       "exits": {
         "SOUTH": "foothills:ridge",
         "NORTH": "highmoor:south_climb"

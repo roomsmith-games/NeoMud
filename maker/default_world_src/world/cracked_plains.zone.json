@@ -17,8 +17,8 @@
       "id": "cracked_plains:rift_edge_south",
       "name": "Southern Rift Edge",
       "description": "You stand on the edge of a shattered plateau, wind screaming across bare stone. A deep rift yawns before you — fifty feet across at its narrowest, dropping into blue-shadowed darkness. To the east, a half-collapsed stone bridge spans the gap. Below, the rift floor is dimly visible, streaked with bioluminescent moss. Behind you, a precarious descent leads back down to the Ashwood ridge.",
-      "x": 0,
-      "y": 0,
+      "x": 1,
+      "y": 28,
       "exits": {
         "SOUTHWEST": "ashwood:ridge_lookout",
         "EAST": "cracked_plains:broken_bridge",
@@ -54,14 +54,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:broken_bridge",
       "name": "Broken Bridge",
       "description": "A massive stone bridge once spanned the rift here — now only half remains, the far end sheared clean away and dropped into the chasm below. Someone has laid rough-hewn planks across the gap, lashed together with rope. The crossing is narrow and the wind is merciless.",
-      "x": 1,
-      "y": 0,
+      "x": 2,
+      "y": 28,
       "exits": {
         "WEST": "cracked_plains:rift_edge_south",
         "EAST": "cracked_plains:east_plateau",
@@ -75,14 +75,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:east_plateau",
       "name": "East Plateau",
       "description": "Beyond the bridge, the plateau stretches eastward — cracked and barren, dotted with scrub brush clinging to crevices. The stone is pale grey, scarred with long fissures running roughly north-south. To the south, the ground slopes toward a collapsed shelf where a secondary rift cuts in from the east.",
-      "x": 2,
-      "y": 0,
+      "x": 3,
+      "y": 28,
       "exits": {
         "WEST": "cracked_plains:broken_bridge",
         "SOUTH": "cracked_plains:collapsed_shelf"
@@ -95,14 +95,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, lush, tropical",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:collapsed_shelf",
       "name": "Collapsed Shelf",
       "description": "A section of the plateau has sheared away here, forming a jagged shelf that drops in broken tiers toward the rift floor far below. The descent looks possible — barely — down a series of fractured ledges and exposed rock faces. The air rising from the rift is cool and damp, carrying the faint glow of fungal light.",
-      "x": 2,
-      "y": -1,
+      "x": 3,
+      "y": 27,
       "exits": {
         "NORTH": "cracked_plains:east_plateau",
         "DOWN": "cracked_plains:rift_floor_east"
@@ -115,14 +115,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:rift_floor_south",
       "name": "Rift Floor — South",
       "description": "The bottom of the rift. Towering walls of layered stone rise on either side, narrowing the sky to a strip of grey light far above. The floor is uneven — a mix of fallen rubble, mineral deposits, and patches of bioluminescent moss that pulses with a slow blue-green rhythm. Water seeps down the walls in thin rivulets.",
-      "x": 0,
-      "y": 0,
+      "x": 1,
+      "y": 28,
       "exits": {
         "UP": "cracked_plains:rift_edge_south",
         "NORTH": "cracked_plains:rift_tunnel"
@@ -135,14 +135,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight, open sky",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:rift_tunnel",
       "name": "Rift Tunnel",
       "description": "The rift narrows here to barely shoulder-width, the walls pressing close enough to touch on both sides. Overhead, the rock almost meets, forming a natural tunnel. The bioluminescent moss is thicker here, casting everything in eerie blue-green light. A faint hissing comes from vents in the floor where warm gas seeps up from deep below.",
-      "x": 0,
-      "y": 1,
+      "x": 1,
+      "y": 29,
       "exits": {
         "SOUTH": "cracked_plains:rift_floor_south",
         "NORTH": "cracked_plains:rift_floor_north",
@@ -177,14 +177,14 @@
           }
         }
       ],
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:rift_junction",
       "name": "Rift Junction",
       "description": "Two rifts intersect here, creating a wider chamber at the bottom of the earth. The ceiling is high — thirty feet of open air before the walls close in again above. Stalactites of mineral deposit hang from the overhang, and a shallow pool of clear water has collected where the floors meet. Side passages branch in several directions.",
-      "x": 0,
-      "y": 1,
+      "x": 1,
+      "y": 29,
       "exits": {
         "SOUTH": "cracked_plains:fungal_grotto",
         "UP": "cracked_plains:rift_tunnel"
@@ -197,14 +197,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -2
+      "z": -3
     },
     {
       "id": "cracked_plains:fungal_grotto",
       "name": "Fungal Grotto",
       "description": "A side-chamber off the main rift, thick with enormous shelf fungi growing from every surface. The bioluminescence here is intense — clusters of glowing mushrooms in blues, greens, and pale violet carpet the walls and ceiling, making the grotto shimmer like a subterranean night sky. The air is warm and humid, rich with spores.",
-      "x": 0,
-      "y": 0,
+      "x": 1,
+      "y": 28,
       "exits": {
         "NORTH": "cracked_plains:rift_junction"
       },
@@ -216,14 +216,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, daylight",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -2
+      "z": -3
     },
     {
       "id": "cracked_plains:rift_floor_east",
       "name": "Rift Floor — East",
       "description": "The eastern arm of the rift, narrower and rougher than the south. Fallen stone from the collapsed shelf above has created a field of tumbled boulders, and rift crawlers have strung webs between them. A natural staircase of eroded rock climbs the north wall toward daylight.",
-      "x": 2,
-      "y": -1,
+      "x": 3,
+      "y": 27,
       "exits": {
         "NORTH": "cracked_plains:rift_spring",
         "UP": "cracked_plains:collapsed_shelf"
@@ -236,14 +236,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:rift_spring",
       "name": "Rift Spring",
       "description": "Where an underground spring surfaces on the rift floor, creating a pool of clear, cold water that flows away south through the rocks. The moss is lush here, and the air is fresher than elsewhere in the rifts. A weathered merchant has set up a lean-to against the rift wall, selling supplies to anyone brave or foolish enough to travel the cracks.",
-      "x": 2,
-      "y": 0,
+      "x": 3,
+      "y": 28,
       "exits": {
         "SOUTH": "cracked_plains:rift_floor_east"
       },
@@ -255,14 +255,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:rift_floor_north",
       "name": "Rift Floor — North",
       "description": "The northern end of the main rift, where it begins to shallow out. A rope ladder has been staked into the rock here, dangling from an iron ring hammered into the plateau above — someone uses this route regularly. The walls are scarred with old pick-marks, as if miners once worked the exposed mineral seams.",
-      "x": 0,
-      "y": 2,
+      "x": 1,
+      "y": 30,
       "exits": {
         "SOUTH": "cracked_plains:rift_tunnel",
         "UP": "cracked_plains:north_plateau"
@@ -275,14 +275,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:north_plateau",
       "name": "North Plateau",
       "description": "Back on the surface, the plateau stretches northward under a vast grey sky. The rifts are narrower here but more numerous — hairline cracks radiating outward like a shattered mirror. A war-road of packed dirt and crushed stone cuts east through the wasteland, and a lone signal cairn stands on a rise to the west.",
-      "x": 0,
-      "y": 2,
+      "x": 1,
+      "y": 30,
       "exits": {
         "DOWN": "cracked_plains:rift_floor_north",
         "EAST": "cracked_plains:war_road",
@@ -296,14 +296,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, lush, tropical",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:east_bluffs",
       "name": "East Bluffs",
       "description": "High ground on the eastern edge of the cracked plateau, where the stone drops away in sheer bluffs. Far below, a dead landscape of scattered bones and sun-bleached wreckage stretches to the horizon. The wind is savage here — it howls across the bluffs with enough force to stagger you. A war-road comes in from the west.",
-      "x": 2,
-      "y": 1,
+      "x": 3,
+      "y": 29,
       "exits": {
         "NORTHWEST": "cracked_plains:war_road",
         "SOUTHEAST": "cracked_plains:cliff_roost"
@@ -316,14 +316,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:signal_cairn",
       "name": "Signal Cairn",
       "description": "A tall cairn of stacked stones stands on a rise in the plateau — one of the old Warden signal stations, used to relay fire-warnings across the plains before the rifts shattered the network. Someone has been here recently: fresh ashes in a fire-pit, a bedroll stashed in a crevice, and scratch-marks in the stone that look like tactical notes.",
-      "x": -1,
-      "y": 2,
+      "x": 0,
+      "y": 30,
       "exits": {
         "EAST": "cracked_plains:north_plateau",
         "SOUTH": "cracked_plains:west_ridge"
@@ -336,14 +336,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:war_road",
       "name": "War Road",
       "description": "A road of packed dirt and crushed stone, wide enough for two carts abreast. Boot-prints and wheel-ruts mark it as heavily trafficked. Bandit patrols use this as their main supply route between Drask's fortress and the lowland raids. To the south, a ruined stone fort guards a junction where the road descends toward the deepest rift.",
-      "x": 1,
-      "y": 2,
+      "x": 2,
+      "y": 30,
       "exits": {
         "WEST": "cracked_plains:north_plateau",
         "SOUTH": "cracked_plains:ruined_fort",
@@ -378,14 +378,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:cliff_roost",
       "name": "Cliff Roost",
       "description": "A jutting overhang on the bluffs where cliff harpies have nested — the stone is streaked white with droppings, and the nests are crude tangles of bone, cloth, and stolen equipment. The harpies wheel and shriek overhead, territorial and aggressive. The view from here is staggering: the entire cracked plateau spreads north and west, rift-lines visible as dark veins in the pale stone.",
-      "x": 3,
-      "y": 0,
+      "x": 4,
+      "y": 28,
       "exits": {
         "NORTHWEST": "cracked_plains:east_bluffs"
       },
@@ -397,14 +397,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:ruined_fort",
       "name": "Ruined Fort",
       "description": "An old Warden wayfort, half-collapsed into the rift it once guarded. The walls still stand on the north side, but the southern half has fallen away into the chasm, and you can see the levels of the fort exposed in cross-section — like a doll's house split open. Stone stairs descend from a doorway in the floor, leading down toward the approach to Drask's Hold far below.",
-      "x": 1,
-      "y": 1,
+      "x": 2,
+      "y": 29,
       "exits": {
         "NORTH": "cracked_plains:war_road",
         "DOWN": "cracked_plains:hold_approach"
@@ -438,14 +438,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:bone_field",
       "name": "Bone Field",
       "description": "A grim stretch of plateau where the remains of old battles bleach in the wind. Bones — human, animal, and things less identifiable — are scattered across the cracked stone, along with rusted weapons and scraps of armor. Drask's bandits have staked skulls on poles along the road as a warning. The war-road continues west toward the fortress approach. To the south, the stone gives way to something strange — a glittering expanse of fused glass stretching to the horizon, shimmering with heat haze.",
-      "x": 1,
-      "y": -1,
+      "x": 2,
+      "y": 27,
       "exits": {
         "SOUTH": "glass_desert:vitrified_threshold",
         "NORTH": "cracked_plains:broken_bridge"
@@ -458,14 +458,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, cheerful, bright colors",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:west_ridge",
       "name": "West Ridge",
       "description": "A narrow ridge of unbroken stone running along the western edge of the plateau. The ground drops away steeply on both sides — the rift to the east, and a long slope of loose scree to the west. Wind funnels along the ridge with enough force to make walking difficult. Ahead, the ridge connects to the war-road near the fortress approach.",
-      "x": -1,
-      "y": 1,
+      "x": 0,
+      "y": 29,
       "exits": {
         "NORTH": "cracked_plains:signal_cairn"
       },
@@ -477,14 +477,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:hold_approach",
       "name": "Hold Approach",
       "description": "The war-road ends at the lip of the deepest rift on the plateau — a chasm two hundred feet deep, its far wall carved into a fortress. The Warlord's Hold. Stone battlements jut from the cliff face at three levels, connected by external stairs and rope bridges. A heavy timber drawbridge spans the gap to the fortress gates. Bandit sentries watch from the battlements above.",
-      "x": 1,
-      "y": 1,
+      "x": 2,
+      "y": 29,
       "exits": {
         "UP": "cracked_plains:ruined_fort",
         "SOUTH": "cracked_plains:hold_gates"
@@ -497,17 +497,17 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:hold_gates",
       "name": "Hold Gates",
-      "description": "The far end of the drawbridge, where iron-banded timber gates open into the cliff face. The stone around the entrance is carved with crude trophies — old Warden seals defaced with bandit marks, hammered flat and mounted as mockeries. The air changes as you step inside: cooler, still, and heavy with the smell of smoke and unwashed bodies.",
-      "x": 1,
-      "y": 0,
+      "description": "The far end of the drawbridge, where iron-banded timber gates guard a steep descent into the cliff below. The stone around the entrance is carved with crude trophies — old Warden seals defaced with bandit marks, hammered flat and mounted as mockeries. The air changes as you step inside: cooler, still, and heavy with the smell of smoke and unwashed bodies.",
+      "x": 2,
+      "y": 28,
       "exits": {
         "NORTH": "cracked_plains:hold_approach",
-        "EAST": "warlords_hold:great_hall"
+        "DOWN": "warlords_hold:great_hall"
       },
       "backgroundImage": "/assets/images/rooms/cracked_plains_hold_gates.webp",
       "departSound": "footstep_stone",
@@ -517,14 +517,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": -1
+      "z": -2
     },
     {
       "id": "cracked_plains:bandit_camp",
       "name": "Bandit Camp",
       "description": "A sprawling camp of tents and lean-tos on the plateau near the rift edge, where Drask's outriders rest between raids. Cook-fires smoulder, stolen goods are piled in crates, and horses are picketed on a rope line. A rickety wooden watchtower rises above the camp, offering views across the entire southern approach.",
-      "x": 0,
-      "y": 1,
+      "x": 1,
+      "y": 29,
       "exits": {
         "SOUTH": "cracked_plains:rift_edge_south",
         "UP": "cracked_plains:bandit_watchtower"
@@ -537,14 +537,14 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, cheerful",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -1
     },
     {
       "id": "cracked_plains:bandit_watchtower",
       "name": "Bandit Watchtower",
       "description": "The top of the rickety watchtower — a platform of lashed planks swaying in the wind. From up here you can see for miles in every direction: the cracked plateau, the rift-lines cutting through it like dark veins, the distant smudge of the Ashwood Burn to the south, and to the north, the war-road leading to the Hold. A signal horn hangs from a peg, ready to sound an alarm.",
-      "x": 0,
-      "y": 1,
+      "x": 1,
+      "y": 29,
       "exits": {
         "DOWN": "cracked_plains:bandit_camp"
       },
@@ -556,7 +556,7 @@
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 1
+      "z": 0
     }
   ],
   "npcs": [

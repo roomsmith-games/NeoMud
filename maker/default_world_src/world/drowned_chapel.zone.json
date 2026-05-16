@@ -16,8 +16,8 @@
       "id": "drowned_chapel:vestibule",
       "name": "Drowned Vestibule",
       "description": "A short stone-vaulted antechamber inside the chapel doors, the floor ankle-deep in salt water that never quite drains. Pale wedge of daylight reaches in from behind. The vault overhead drips slowly, and the air carries an unmistakable rot-of-the-deep smell.",
-      "x": 0,
-      "y": 0,
+      "x": 3,
+      "y": 30,
       "exits": {
         "SOUTH": "salt_coast:chapel_threshold",
         "NORTH": "drowned_chapel:flooded_narthex"
@@ -36,8 +36,8 @@
       "id": "drowned_chapel:flooded_narthex",
       "name": "Flooded Narthex",
       "description": "A long colonnaded narthex, the floor flooded knee-deep at high tide and gleaming with brine even as the tide retreats. Two great bronze tide-marks set into the wall show the flood-line of the worst surges. The water occasionally lifts in unexplained eddies, as if something passed through.",
-      "x": 0,
-      "y": 1,
+      "x": 3,
+      "y": 31,
       "exits": {
         "SOUTH": "drowned_chapel:vestibule",
         "NORTH": "drowned_chapel:nave"
@@ -76,8 +76,8 @@
       "id": "drowned_chapel:nave",
       "name": "Sunken Nave",
       "description": "The great central hall of the chapel, its choir and high altar still recognisable through a thigh-deep skin of brackish water. The roof is high and shadowed; faint red rune-marks gleam on the floor below the surface. Side chapels open off east and west, and the inner chapel approach lies further north.",
-      "x": 0,
-      "y": 2,
+      "x": 3,
+      "y": 32,
       "exits": {
         "SOUTH": "drowned_chapel:flooded_narthex",
         "WEST": "drowned_chapel:side_chapel_north",
@@ -118,8 +118,8 @@
       "id": "drowned_chapel:side_chapel_north",
       "name": "North Side Chapel",
       "description": "A small side chapel off the nave, drier than the rest of the temple, dedicated by the carving above its lintel to the Watcher of Dawn. A bronze tide-bell hangs at the chapel's heart, salt-greened but intact.",
-      "x": -1,
-      "y": 2,
+      "x": 2,
+      "y": 32,
       "exits": {
         "EAST": "drowned_chapel:nave"
       },
@@ -159,8 +159,8 @@
       "id": "drowned_chapel:side_chapel_south",
       "name": "South Side Chapel",
       "description": "The southern side chapel, dedicated to the Watcher of Dusk by its setting-sun lintel. A bronze tide-bell hangs at its heart. Salt-eater fungus blooms along the wet wall in a sour grey-yellow growth.",
-      "x": 1,
-      "y": 2,
+      "x": 4,
+      "y": 32,
       "exits": {
         "WEST": "drowned_chapel:nave"
       },
@@ -219,8 +219,8 @@
       "id": "drowned_chapel:crypt_corridor",
       "name": "Crypt Corridor",
       "description": "A long stone-vaulted corridor descending toward the chapel undercroft, its floor angling steeper as it goes. The walls hold high alcoves where the bronze tide-bells of past Wardens once tolled — most are gone, but one remains in its niche, carved in the shape of a storm-anvil. The roof creaks faintly above.",
-      "x": 0,
-      "y": 3,
+      "x": 3,
+      "y": 33,
       "exits": {
         "SOUTH": "drowned_chapel:nave",
         "NORTH": "drowned_chapel:crypt_chamber"
@@ -279,8 +279,8 @@
       "id": "drowned_chapel:crypt_chamber",
       "name": "Crypt Chamber",
       "description": "A circular chamber at the bottom of the corridor, the floor a single round slab inscribed with a five-pointed star. A bronze star-bell hangs above it in a frame of dark iron — one of the hymn's bells. A figure in salt-stained robes stands by the bell-frame, the Tide-Speaker, who tolls these bells now in ways the Wardens never sang. The air is thick, stagnant, gritty in the lungs.",
-      "x": 0,
-      "y": 4,
+      "x": 3,
+      "y": 34,
       "exits": {
         "SOUTH": "drowned_chapel:crypt_corridor",
         "NORTH": "drowned_chapel:inner_sanctum"
@@ -340,8 +340,8 @@
       "id": "drowned_chapel:inner_sanctum",
       "name": "Inner Sanctum",
       "description": "A high-vaulted chamber beyond the crypt — the chapel's true heart, dry and warm where the rest is cold and flooded. A great bronze sea-altar of fitted scales stands in the center, its central depression empty. Above it the largest tide-bell hangs from the vault — the Sealed-Eye Bell. To the east a wall recess shows the joints of a hidden door, sealed for now.",
-      "x": 0,
-      "y": 5,
+      "x": 3,
+      "y": 35,
       "exits": {
         "SOUTH": "drowned_chapel:crypt_chamber",
         "EAST": "drowned_chapel:mariners_vault",
@@ -426,8 +426,8 @@
       "id": "drowned_chapel:mariners_vault",
       "name": "Mariner's Vault",
       "description": "A small dry chamber behind the sea-altar, shelved in dark stone. The shelves hold the votive offerings of mariners across centuries — small bronze tokens, sealed clay jars, scrimshaw, and at the back, a stone-lidded reliquary bearing the marks of older Wardens than even Old Wren has tales of.",
-      "x": 1,
-      "y": 5,
+      "x": 4,
+      "y": 35,
       "exits": {
         "WEST": "drowned_chapel:inner_sanctum"
       },
@@ -465,8 +465,8 @@
       "id": "drowned_chapel:korlach_lair",
       "name": "Korlach's Lair",
       "description": "The deepest chamber of the chapel — a vast oval flooded waist-deep in dark salt water, the centre dominated by a great bronze ring sunk into the floor like a mooring-stone for whatever lives down here. Above the ring rises the Tidewarden Korlach itself, fish-pale and many-armed, more wrong than any Warden could have predicted. The reliquary on the back wall threatens to fall the instant your weight crosses the threshold.",
-      "x": 0,
-      "y": 6,
+      "x": 3,
+      "y": 36,
       "exits": {
         "SOUTH": "drowned_chapel:inner_sanctum"
       },

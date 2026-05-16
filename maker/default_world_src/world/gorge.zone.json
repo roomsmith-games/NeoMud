@@ -15,13 +15,13 @@
     {
       "id": "gorge:mouth",
       "name": "Gorge Mouth",
-      "description": "Sheer walls of black basalt rise on either side, forming a narrow ravine scarred with claw marks and scorch marks alike. Charred bones and shattered weapons litter the entrance — grim testimony to the gorge's lethal inhabitants. The air is noticeably warmer here, carrying a faint sulfurous tang. Loose stones crunch underfoot as the path descends into darkness. A treacherous trail to the south winds down through the mist toward the marsh.",
-      "x": 0,
-      "y": 0,
+      "description": "Sheer walls of black basalt rise on either side, forming a narrow ravine scarred with claw marks and scorch marks alike. Charred bones and shattered weapons litter the entrance — grim testimony to the gorge's lethal inhabitants. The air is noticeably warmer here, carrying a faint sulfurous tang. Loose stones crunch underfoot as the path descends into darkness. A treacherous trail winds down through the mist toward the marsh below.",
+      "x": 1,
+      "y": 5,
       "exits": {
-        "SOUTH": "marsh:heart",
         "NORTH": "gorge:ledge",
-        "EAST": "gorge:fissure"
+        "EAST": "gorge:fissure",
+        "DOWN": "marsh:heart"
       },
       "backgroundImage": "/assets/images/rooms/gorge_mouth.webp",
       "departSound": "footstep_stone",
@@ -36,8 +36,8 @@
       "id": "gorge:ledge",
       "name": "Narrow Ledge",
       "description": "The path narrows to a precarious ledge along the gorge wall, with a sheer drop into darkness on one side. Cracks in the basalt vent plumes of hot steam, and patches of obsidian glint like black glass in the dim light. The gorge widens ahead, descending into its deepest reaches, while a shadowed alcove lies to the west.",
-      "x": 0,
-      "y": 1,
+      "x": 1,
+      "y": 6,
       "exits": {
         "SOUTH": "gorge:mouth",
         "NORTH": "gorge:depths",
@@ -55,12 +55,12 @@
     {
       "id": "gorge:fissure",
       "name": "Volcanic Fissure",
-      "description": "A wide crack in the gorge floor reveals a hellish glow from far below. Molten rock pulses deep within the fissure, casting dancing orange light across the cavern walls. The heat is almost unbearable, and the air ripples with thermal distortion. Shed scales litter the ground around a makeshift nest of scorched stones. A rocky trail descends south through a ravine, eventually reaching a stream in the forest far below.",
-      "x": 1,
-      "y": 0,
+      "description": "A wide crack in the gorge floor reveals a hellish glow from far below. Molten rock pulses deep within the fissure, casting dancing orange light across the cavern walls. The heat is almost unbearable, and the air ripples with thermal distortion. Shed scales litter the ground around a makeshift nest of scorched stones. A rocky trail descends southwest through a ravine, eventually reaching a stream in the forest below.",
+      "x": 2,
+      "y": 5,
       "exits": {
         "WEST": "gorge:mouth",
-        "SOUTH": "forest:stream"
+        "SOUTHWEST": "forest:stream"
       },
       "backgroundImage": "/assets/images/rooms/gorge_fissure.webp",
       "departSound": "footstep_stone",
@@ -75,8 +75,8 @@
       "id": "gorge:alcove",
       "name": "Shadowed Alcove",
       "description": "A natural alcove carved into the gorge wall by centuries of erosion. The ceiling hangs low and the walls are streaked with mineral deposits — copper green, iron red, and sulfur yellow. Scattered bones and rusted equipment suggest this has been used as an ambush point. The only way out is back east to the ledge.",
-      "x": -1,
-      "y": 1,
+      "x": 0,
+      "y": 6,
       "exits": {
         "EAST": "gorge:ledge"
       },
@@ -93,8 +93,8 @@
       "id": "gorge:depths",
       "name": "Gorge Depths",
       "description": "The deepest chamber of Blackstone Gorge, where the walls widen into a natural arena of dark stone. Lava seeps through cracks in the floor, casting an infernal glow across towering basalt columns. The air thrums with a low vibration, and massive claw gouges in the stone walls speak of something immensely powerful that calls this place home. A narrow cleft in the north face reveals a switchback trail climbing the outer gorge wall toward distant daylight.",
-      "x": 0,
-      "y": 2,
+      "x": 1,
+      "y": 7,
       "exits": {
         "SOUTH": "gorge:ledge",
         "NORTH": "foothills:south_trail"

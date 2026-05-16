@@ -17,7 +17,7 @@
       "name": "Forest Edge",
       "description": "The treeline begins here, ancient oaks towering overhead and blotting out much of the sky. Shafts of sunlight pierce the canopy, illuminating patches of moss and wildflowers. The town walls are visible to the south, a reassuring sight as the forest grows denser to the north.",
       "x": 0,
-      "y": 0,
+      "y": 2,
       "exits": {
         "SOUTH": "town:gate",
         "NORTH": "forest:path"
@@ -37,7 +37,7 @@
       "name": "Winding Forest Path",
       "description": "A narrow dirt path winds between massive tree trunks, their bark covered in luminescent moss. Strange birdcalls echo from the canopy above, and the undergrowth rustles with unseen creatures. The path splits ahead, continuing north into deeper woods or branching east toward a break in the trees.",
       "x": 0,
-      "y": 1,
+      "y": 3,
       "exits": {
         "SOUTH": "forest:edge",
         "EAST": "forest:clearing",
@@ -57,7 +57,7 @@
       "name": "Sunlit Clearing",
       "description": "A peaceful clearing where sunlight streams down unimpeded. Wildflowers carpet the ground in a riot of color, and butterflies dance lazily in the warm air. A fallen log provides a natural resting spot, its surface covered in shelf mushrooms. A gentle warmth pervades the clearing, keeping the forest's dangers at bay.",
       "x": 1,
-      "y": 1,
+      "y": 3,
       "exits": {
         "WEST": "forest:path"
       },
@@ -84,7 +84,7 @@
       "name": "Deep Forest",
       "description": "The forest grows thick and primeval here. Gnarled roots break through the earth like the fingers of buried giants, and the canopy is so dense that only a dim green twilight reaches the forest floor. The air is cool and damp, heavy with the scent of earth and decay. To the west, the ground turns soft and waterlogged, and a faint mist clings to the undergrowth.",
       "x": 0,
-      "y": 2,
+      "y": 4,
       "exits": {
         "SOUTH": "forest:path",
         "EAST": "forest:stream",
@@ -119,7 +119,7 @@
       "name": "Hidden Cave",
       "description": "A narrow cave entrance hidden behind thick vines opens into a small, damp chamber. Water drips from the low ceiling, and patches of bioluminescent moss cast an eerie blue-green glow across the rough stone walls. The air smells of damp earth and something faintly metallic. Beyond the western mouth of the cave, the ground turns soft and waterlogged — the edge of a vast marsh.",
       "x": -1,
-      "y": 2,
+      "y": 4,
       "exits": {
         "EAST": "forest:deep"
       },
@@ -154,12 +154,12 @@
     {
       "id": "forest:stream",
       "name": "Forest Stream",
-      "description": "A crystal-clear stream burbles over smooth stones, cutting a gentle path through the forest floor. Ferns and water plants line the banks, and small silver fish dart in the shallows. The sound of running water is calming after the oppressive silence of the deep woods. Northward, the stream narrows and the banks steepen into a rocky ravine that climbs toward the gorge.",
+      "description": "A crystal-clear stream burbles over smooth stones, cutting a gentle path through the forest floor. Ferns and water plants line the banks, and small silver fish dart in the shallows. The sound of running water is calming after the oppressive silence of the deep woods. To the northeast, the stream narrows and the banks steepen into a rocky ravine that climbs toward the gorge.",
       "x": 1,
-      "y": 2,
+      "y": 4,
       "exits": {
         "WEST": "forest:deep",
-        "NORTH": "gorge:fissure"
+        "NORTHEAST": "gorge:fissure"
       },
       "backgroundImage": "/assets/images/rooms/forest_stream.webp",
       "departSound": "footstep_splash",
@@ -175,7 +175,7 @@
       "name": "Overgrown Ruins",
       "description": "Crumbling stone walls rise from the forest floor, half-swallowed by moss and creeping vines. The remains of an ancient structure — perhaps a watchtower or shrine — stand in eerie silence. Faded carvings on the stones hint at a civilization long forgotten. The air here feels heavy, as if the ruins remember what the forest has tried to bury.",
       "x": 0,
-      "y": 3,
+      "y": 5,
       "exits": {
         "SOUTH": "forest:deep"
       },

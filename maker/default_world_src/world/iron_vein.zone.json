@@ -16,8 +16,8 @@
       "id": "iron_vein:entrance",
       "name": "Mine Entrance",
       "description": "A few paces inside the mine, daylight still reaches the floor as a pale wedge. Old timber supports brace the ceiling, and rusted iron tools lean against the wall. The shaft drops away into darkness ahead.",
-      "x": 0,
-      "y": 0,
+      "x": 5,
+      "y": 11,
       "exits": {
         "WEST": "foothills:mine_entrance_overlook",
         "EAST": "iron_vein:antechamber"
@@ -36,8 +36,8 @@
       "id": "iron_vein:antechamber",
       "name": "Lit Antechamber",
       "description": "A small open chamber where the miners once gathered before each shift. A lantern still burns on a hook by the wall, kept lit by some unknown hand. This is the last truly safe spot in the mine.",
-      "x": 1,
-      "y": 0,
+      "x": 6,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:entrance",
         "EAST": "iron_vein:upper_tunnel"
@@ -57,8 +57,8 @@
       "id": "iron_vein:upper_tunnel",
       "name": "Upper Tunnel",
       "description": "The main tunnel widens into a junction, three passages branching out. The floor is littered with debris — fallen support timbers, broken ore carts. Watch your step.",
-      "x": 2,
-      "y": 0,
+      "x": 7,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:antechamber",
         "NORTH": "iron_vein:east_shaft",
@@ -99,8 +99,8 @@
       "id": "iron_vein:east_shaft",
       "name": "East Shaft",
       "description": "A narrower side tunnel, hewn close enough that you can touch both walls. Faint scratches mark the stone where many small claws have passed.",
-      "x": 2,
-      "y": 1,
+      "x": 7,
+      "y": 12,
       "exits": {
         "SOUTH": "iron_vein:upper_tunnel",
         "EAST": "iron_vein:abandoned_chamber"
@@ -119,8 +119,8 @@
       "id": "iron_vein:abandoned_chamber",
       "name": "Abandoned Chamber",
       "description": "A larger chamber that once served as a foreman's office. A heavy wooden desk lies overturned, papers scattered and water-damaged. A rusted iron lever protrudes from one wall, its purpose unclear at first glance.",
-      "x": 3,
-      "y": 1,
+      "x": 8,
+      "y": 12,
       "exits": {
         "WEST": "iron_vein:east_shaft",
         "EAST": "iron_vein:hidden_alcove"
@@ -160,8 +160,8 @@
       "id": "iron_vein:hidden_alcove",
       "name": "Hidden Alcove",
       "description": "A small alcove revealed behind the rotated desk-back, lit by a single guttering candle that has somehow not gone out. A small iron-banded chest sits in the corner, dust-thick on its lid.",
-      "x": 4,
-      "y": 1,
+      "x": 9,
+      "y": 12,
       "exits": {
         "WEST": "iron_vein:abandoned_chamber"
       },
@@ -197,8 +197,8 @@
       "id": "iron_vein:west_shaft",
       "name": "West Shaft",
       "description": "A working ore vein, the rough walls glittering with darker mineral seams. The air is thick with stone dust. Skittering sounds echo from somewhere ahead.",
-      "x": 2,
-      "y": -1,
+      "x": 7,
+      "y": 10,
       "exits": {
         "NORTH": "iron_vein:upper_tunnel",
         "SOUTH": "iron_vein:ore_vein"
@@ -217,8 +217,8 @@
       "id": "iron_vein:ore_vein",
       "name": "Iron Vein",
       "description": "The richest seam of iron in the mine, the walls thick with raw ore. Old tools lie where their owners dropped them. Cobwebs choke the corners. Multiple skittering forms scatter at your light.",
-      "x": 2,
-      "y": -2,
+      "x": 7,
+      "y": 9,
       "exits": {
         "NORTH": "iron_vein:west_shaft"
       },
@@ -236,8 +236,8 @@
       "id": "iron_vein:flooded_passage",
       "name": "Flooded Passage",
       "description": "Knee-deep cold water pools in this section of the tunnel, its surface utterly still. Loose stones from the ceiling have fallen here over the years, leaving the floor uneven and treacherous beneath the dark surface.",
-      "x": 3,
-      "y": 0,
+      "x": 8,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:upper_tunnel",
         "EAST": "iron_vein:deep_chamber"
@@ -276,8 +276,8 @@
       "id": "iron_vein:deep_chamber",
       "name": "Deep Chamber",
       "description": "The tunnel opens into a wide natural chamber, the air thick with the smell of damp earth and something acrid underneath. Strands of pale silk hang from the ceiling like a bride's veil. Whatever made this knows you are here.",
-      "x": 4,
-      "y": 0,
+      "x": 9,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:flooded_passage",
         "EAST": "iron_vein:webbed_corridor"
@@ -296,8 +296,8 @@
       "id": "iron_vein:webbed_corridor",
       "name": "Webbed Corridor",
       "description": "The corridor narrows and the silk thickens — strands as thick as ship rope crisscross between the walls. Every surface is sticky. Something massive must have made this.",
-      "x": 5,
-      "y": 0,
+      "x": 10,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:deep_chamber",
         "EAST": "iron_vein:cavemother_lair"
@@ -336,8 +336,8 @@
       "id": "iron_vein:cavemother_lair",
       "name": "Cavemother's Lair",
       "description": "A vast circular chamber, the floor packed earth scattered with the bones of those who came before. Pale eggs the size of human heads cling to the walls in clusters. At the chamber's center, the Cavemother waits — and she has been waiting a long time.",
-      "x": 6,
-      "y": 0,
+      "x": 11,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:webbed_corridor",
         "EAST": "iron_vein:treasure_chamber"
@@ -356,8 +356,8 @@
       "id": "iron_vein:treasure_chamber",
       "name": "Cavemother's Hoard",
       "description": "A small chamber behind the lair, the floor strewn with the gear and gold of the Cavemother's victims. Some of it looks fresh.",
-      "x": 7,
-      "y": 0,
+      "x": 12,
+      "y": 11,
       "exits": {
         "WEST": "iron_vein:cavemother_lair"
       },

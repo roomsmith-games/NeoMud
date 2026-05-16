@@ -103,8 +103,14 @@ class WorldMapIntegrityTest {
         assertTrue(wrong.isEmpty(), "Wrong reciprocal directions:\n${wrong.joinToString("\n")}")
     }
 
+    // Portal exits where direction doesn't match coordinate delta (magical teleport)
+    private val portalExits = setOf(
+        "first_seal:watcher_perch" to "glass_desert:spire_base",
+        "glass_desert:spire_base" to "first_seal:watcher_perch",
+    )
+
     @Test
-    fun testIntraZoneCoordinateAlignment() {
+    fun testGlobalCoordinateAlignment() {
         val world = load().worldGraph
         val allRooms = world.getAllRooms()
         val roomMap = allRooms.associateBy { it.id }
@@ -113,7 +119,7 @@ class WorldMapIntegrityTest {
         for (room in allRooms) {
             for ((dir, targetId) in room.exits) {
                 val target = roomMap[targetId] ?: continue
-                if (target.zoneId != room.zoneId) continue
+                if ((room.id to targetId) in portalExits) continue
                 val expectedX = room.x + (dx[dir] ?: 0)
                 val expectedY = room.y + (dy[dir] ?: 0)
                 val expectedZ = room.z + (dz[dir] ?: 0)
@@ -129,26 +135,27 @@ class WorldMapIntegrityTest {
 
         assertTrue(
             mismatches.isEmpty(),
-            "Intra-zone coordinate mismatches:\n${mismatches.joinToString("\n")}"
+            "Global coordinate mismatches:\n${mismatches.joinToString("\n")}"
         )
     }
 
     @Test
-    fun testNoIntraZoneCoordinateOverlaps() {
+    fun testGlobalCoordinateUniqueness() {
         val world = load().worldGraph
         val allRooms = world.getAllRooms()
         val overlaps = mutableListOf<String>()
 
-        val byZoneCoord = allRooms.groupBy { Pair(it.zoneId, Triple(it.x, it.y, it.z)) }
-        for ((key, rooms) in byZoneCoord) {
+        val byCoord = allRooms.groupBy { Triple(it.x, it.y, it.z) }
+        for ((coord, rooms) in byCoord) {
             if (rooms.size <= 1) continue
             val ids = rooms.map { it.id }
-            overlaps.add("${key.first} at (${key.second}): ${ids.joinToString(", ")}")
+            val zones = rooms.map { it.zoneId }.toSet()
+            overlaps.add("(${coord.first},${coord.second},${coord.third}) [${zones.joinToString(",")}]: ${ids.joinToString(", ")}")
         }
 
         assertTrue(
             overlaps.isEmpty(),
-            "Coordinate overlaps found:\n${overlaps.joinToString("\n")}"
+            "Global coordinate collisions found:\n${overlaps.joinToString("\n")}"
         )
     }
 }

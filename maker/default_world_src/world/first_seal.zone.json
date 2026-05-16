@@ -17,8 +17,8 @@
       "id": "first_seal:coastal_bluffs",
       "name": "Coastal Bluffs",
       "description": "Wind-scoured bluffs rise above a churning sea. Ancient stone markers, their inscriptions long eroded, line the cliff edge like silent sentinels. The grass is coarse and salt-bleached, bent permanently eastward by the relentless gale. Ahead, the remnants of a paved road lead deeper along the coast.",
-      "x": 0,
-      "y": 0,
+      "x": 5,
+      "y": 26,
       "exits": {
         "WEST": "salt_coast:lighthouse_ruin",
         "EAST": "first_seal:eroded_path",
@@ -38,8 +38,8 @@
       "id": "first_seal:tidal_cave",
       "name": "Tidal Cave",
       "description": "A sea-carved cave in the cliff face, accessible only at low tide. The walls glisten with brine and mineral deposits. Strange phosphorescent algae casts a sickly green glow across tide pools full of unusual creatures. The back wall looks unnaturally smooth, as if something was sealed behind it long ago.",
-      "x": 0,
-      "y": -1,
+      "x": 5,
+      "y": 25,
       "exits": {
         "NORTH": "first_seal:coastal_bluffs"
       },
@@ -57,8 +57,8 @@
       "id": "first_seal:eroded_path",
       "name": "Eroded Path",
       "description": "The ancient road continues east, its flagstones cracked and tilted by centuries of freeze and thaw. Salt-crusted shrubs cling to the gaps between stones. To the north, a line of massive stone pillars stands against the sky, each carved with spiraling glyphs that still faintly pulse with warding light.",
-      "x": 1,
-      "y": 0,
+      "x": 6,
+      "y": 26,
       "exits": {
         "WEST": "first_seal:coastal_bluffs",
         "NORTH": "first_seal:warden_pillars",
@@ -78,8 +78,8 @@
       "id": "first_seal:warden_pillars",
       "name": "Warden Pillars",
       "description": "Six massive stone pillars rise thirty feet from a circular foundation of fitted basalt. Each pillar bears spiraling glyphs that glow faintly gold in sequence, as if the warding enchantment still cycles through its ancient pattern. The air between the pillars thrums with barely-perceptible energy. Something powerful was contained here — or still is.",
-      "x": 1,
-      "y": 1,
+      "x": 6,
+      "y": 27,
       "exits": {
         "SOUTH": "first_seal:eroded_path",
         "EAST": "first_seal:collapsed_arch"
@@ -113,8 +113,8 @@
       "id": "first_seal:collapsed_arch",
       "name": "Collapsed Arch",
       "description": "A great stone archway has fallen here, its keystone cracked and lying amid rubble. The arch once marked the formal entrance to the Seal Approach — carved reliefs on the surviving sections show robed figures performing a binding ritual. Beyond the rubble, the ruins grow denser and more deliberate.",
-      "x": 2,
-      "y": 1,
+      "x": 7,
+      "y": 27,
       "exits": {
         "WEST": "first_seal:warden_pillars",
         "SOUTH": "first_seal:seal_road",
@@ -149,8 +149,8 @@
       "id": "first_seal:seal_road",
       "name": "Seal Road",
       "description": "The ancient road widens here into a proper avenue, its stones fitted so precisely that even after millennia, barely a blade of grass grows between them. Ward-stones line both sides, their carved eyes gazing inward at travelers. The craftsmanship speaks of absolute dedication to a single purpose: keeping something contained.",
-      "x": 2,
-      "y": 0,
+      "x": 7,
+      "y": 26,
       "exits": {
         "WEST": "first_seal:eroded_path",
         "NORTH": "first_seal:collapsed_arch",
@@ -192,8 +192,8 @@
       "id": "first_seal:sunken_garden",
       "name": "Sunken Garden",
       "description": "A terraced garden has sunk below the level of the surrounding ruins, its once-manicured beds now choked with salt-resistant weeds and stunted trees. A cracked fountain at the center still weeps a thin trickle of brackish water. The garden walls are carved with scenes of the Wardens' vigil — robed figures standing guard over a great circle of light.",
-      "x": 2,
-      "y": -1,
+      "x": 7,
+      "y": 25,
       "exits": {
         "NORTH": "first_seal:seal_road",
         "EAST": "first_seal:keeper_outpost"
@@ -212,8 +212,8 @@
       "id": "first_seal:sentinel_grounds",
       "name": "Sentinel Grounds",
       "description": "A broad open area paved in dark stone, ringed by the remains of great statues. Only three of the original twelve still stand — faceless stone warriors in archaic armor, each twice the height of a man. The broken statues lie in pieces across the grounds, their severed limbs and shattered torsos slowly being reclaimed by lichen and moss.",
-      "x": 3,
-      "y": 0,
+      "x": 8,
+      "y": 26,
       "exits": {
         "WEST": "first_seal:seal_road",
         "NORTH": "first_seal:overgrown_plaza",
@@ -233,8 +233,8 @@
       "id": "first_seal:overgrown_plaza",
       "name": "Overgrown Plaza",
       "description": "What was once a grand ceremonial plaza is now a tangle of salt-hardy vegetation pushing through cracked marble. The outline of a great circle is still visible in the stonework — a smaller echo of the seal pattern itself. Stone benches line the edges, their surfaces worn smooth by wind and time.",
-      "x": 3,
-      "y": 1,
+      "x": 8,
+      "y": 27,
       "exits": {
         "SOUTH": "first_seal:sentinel_grounds",
         "WEST": "first_seal:collapsed_arch",
@@ -255,8 +255,8 @@
       "id": "first_seal:keeper_outpost",
       "name": "Keeper's Outpost",
       "description": "A small stone building, remarkably intact compared to the surrounding ruins. Someone has repaired the roof with salvaged timber and oiled canvas. A fire pit outside still holds warm coals, and supplies are stacked neatly against one wall. This is clearly a lived-in space — the last keeper of the First Seal still maintains their vigil.",
-      "x": 3,
-      "y": -1,
+      "x": 8,
+      "y": 25,
       "exits": {
         "WEST": "first_seal:sunken_garden",
         "NORTHEAST": "first_seal:inner_approach"
@@ -275,8 +275,8 @@
       "id": "first_seal:inner_approach",
       "name": "Inner Approach",
       "description": "The ruins close in here, forming a natural corridor of crumbling walls and toppled columns. The warding energy is palpable now — the air tastes of copper and ozone, and your skin prickles with static. Every surface bears glyphs, some still glowing, others dark and cracked. Whatever the Wardens sealed, you are drawing close to it.",
-      "x": 4,
-      "y": 0,
+      "x": 9,
+      "y": 26,
       "exits": {
         "WEST": "first_seal:sentinel_grounds",
         "NORTH": "first_seal:seal_forecourt",
@@ -297,8 +297,8 @@
       "id": "first_seal:seal_forecourt",
       "name": "Seal Forecourt",
       "description": "A vast semicircular courtyard before the entrance to the Cradle. The pavement is inlaid with a massive warding circle in brass and obsidian, still intact despite the ruin of everything around it. The circle's geometric precision is breathtaking — every line, every angle calculated to contain and redirect enormous amounts of arcane energy. At the far edge, a stairway descends into darkness.",
-      "x": 4,
-      "y": 1,
+      "x": 9,
+      "y": 27,
       "exits": {
         "SOUTH": "first_seal:inner_approach",
         "WEST": "first_seal:overgrown_plaza",
@@ -338,8 +338,8 @@
       "id": "first_seal:seal_threshold",
       "name": "Seal Threshold",
       "description": "The stairway descends through a narrow passage cut from living rock, its walls lined with the most intricate warding glyphs you have seen — layer upon layer of containment magic, redundancy built upon redundancy. The Wardens were not merely cautious. They were terrified. A cold draft rises from below, carrying the scent of ancient stone and something else — something that makes the hair on your arms stand on end.",
-      "x": 5,
-      "y": 1,
+      "x": 10,
+      "y": 27,
       "exits": {
         "WEST": "first_seal:seal_forecourt",
         "DOWN": "cradle_of_the_seal:descent"
@@ -358,8 +358,8 @@
       "id": "first_seal:rift_overlook",
       "name": "Rift Overlook",
       "description": "The cliff edge drops away sharply here, revealing a dizzying view down into a great rift in the earth. Far below, at the bottom of the chasm, you can see a faint golden glow — the First Seal itself, still burning after all these millennia. The scale of it is staggering. The entire Cradle was built inside this natural fissure, and the seal spans its full width.",
-      "x": 5,
-      "y": 0,
+      "x": 10,
+      "y": 26,
       "exits": {
         "WEST": "first_seal:inner_approach"
       },
@@ -377,8 +377,8 @@
       "id": "first_seal:pillar_walk",
       "name": "Pillar Walk",
       "description": "A long colonnade of square-cut pillars stretches east to west, their surfaces carved with the names and deeds of every Warden who served at this seal. Thousands of names, spanning centuries. The most recent entries are faded but legible — the last guardians wrote with increasing urgency about cracks in the seal and dwindling numbers. The final entry reads simply: 'Taren remains. May that be enough.'",
-      "x": 3,
-      "y": 2,
+      "x": 8,
+      "y": 28,
       "exits": {
         "EAST": "first_seal:watcher_perch",
         "SOUTH": "first_seal:overgrown_plaza"
@@ -397,8 +397,8 @@
       "id": "first_seal:watcher_perch",
       "name": "Watcher's Perch",
       "description": "An elevated stone platform at the eastern end of the Pillar Walk, built as a watch post overlooking the approaches from three directions. A crumbling parapet offers some shelter from the wind. From here you can see the full extent of the Seal Approach — the ancient road, the broken arch, the sentinel grounds, the forecourt with its great warding circle. It is beautiful and terrible in its ruined grandeur. Above, a precarious traverse along the cliff face leads up to the Glass Desert — you can see the shimmering fused landscape on the plateau above.",
-      "x": 4,
-      "y": 2,
+      "x": 9,
+      "y": 28,
       "exits": {
         "WEST": "first_seal:pillar_walk",
         "UP": "glass_desert:spire_base"

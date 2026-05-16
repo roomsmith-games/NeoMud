@@ -17,11 +17,11 @@
       "id": "stormcrown_keep:gatehouse",
       "name": "Storm-Blasted Gatehouse",
       "description": "The gatehouse of Stormcrown Keep stands open, its iron portcullis fused in place by a lightning strike that left black scorch-marks radiating across the stone. Beyond the threshold, the air changes — colder, charged, tasting of ozone. The Warden sigil above the arch has been defaced, replaced by a crude storm-bolt carved deep into the granite.",
-      "x": 0,
-      "y": 0,
+      "x": -2,
+      "y": 25,
       "exits": {
-        "SOUTH": "skyveil_reach:stormcrown_gates",
-        "NORTH": "stormcrown_keep:outer_ward"
+        "NORTH": "stormcrown_keep:outer_ward",
+        "SOUTHEAST": "skyveil_reach:stormcrown_gates"
       },
       "backgroundImage": "/assets/images/rooms/stormcrown_keep_gatehouse.webp",
       "departSound": "footstep_stone",
@@ -54,14 +54,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:outer_ward",
       "name": "Outer Ward",
       "description": "An open courtyard once used for mustering the garrison. The flagstones are cracked and heaved upward by the dark energy radiating from deeper within the keep. Skeletal remains of hitching posts and weapon racks line the walls. Rain lashes down from the perpetual storm overhead, pooling in the broken stones. Passages lead in every direction — west to a collapsed wing, east to the old armory.",
-      "x": 0,
-      "y": 1,
+      "x": -2,
+      "y": 26,
       "exits": {
         "SOUTH": "stormcrown_keep:gatehouse",
         "NORTH": "stormcrown_keep:inner_ward",
@@ -76,14 +76,14 @@
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:collapsed_wing",
       "name": "Collapsed Wing",
       "description": "The western wing of the keep has partially caved in, the upper floors pancaked down into a treacherous slope of rubble and shattered timber. What was once the officers' quarters is now a maze of leaning walls and precarious overhangs. A few personal effects are visible among the debris — a tarnished mirror, a child's wooden toy brought from home, a half-crushed writing desk. The collapse appears to have been caused by a single massive lightning strike.",
-      "x": -1,
-      "y": 1,
+      "x": -3,
+      "y": 26,
       "exits": {
         "EAST": "stormcrown_keep:outer_ward"
       },
@@ -118,14 +118,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:armory",
       "name": "Warden Armory",
       "description": "The keep's armory stands in eerie order, its weapon racks still filled with swords and halberds — all corroded black, as if bathed in acid. Lightning-shaped cracks run through the stone walls, and a faint violet glow pulses from the corrupted steel. The Wardens who died here left their arms behind, but something in the corruption has made the metal dangerous to touch.",
-      "x": 1,
-      "y": 1,
+      "x": -1,
+      "y": 26,
       "exits": {
         "WEST": "stormcrown_keep:outer_ward"
       },
@@ -160,14 +160,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:inner_ward",
       "name": "Inner Ward",
       "description": "The inner courtyard of Stormcrown Keep is smaller and more oppressive than the outer ward. The walls here are higher, the stone darker, veined with the same purple energy that permeates the deeper keep. A well at the center has been sealed with iron plates, and the faint sound of something moving beneath them echoes upward. The air tastes of copper and rot.",
-      "x": 0,
-      "y": 2,
+      "x": -2,
+      "y": 27,
       "exits": {
         "SOUTH": "stormcrown_keep:outer_ward",
         "NORTH": "stormcrown_keep:great_hall",
@@ -205,14 +205,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:dungeon_cells",
       "name": "Dungeon Cells",
       "description": "Iron-barred cells line both sides of a narrow corridor descending into the keep's underbelly. Most doors stand open, their occupants long gone — or worse. One cell at the end still shows claw marks gouged deep into the stone walls from the inside. The drain grate in the floor is choked with something dark, and the smell is indescribable. Whatever Stormcrown kept down here was not treated kindly.",
-      "x": -1,
-      "y": 2,
+      "x": -3,
+      "y": 27,
       "exits": {
         "EAST": "stormcrown_keep:inner_ward"
       },
@@ -247,14 +247,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:guard_hall",
       "name": "Guard Hall",
       "description": "The garrison's guard hall stretches east to west, its long tables overturned and its benches splintered. Plates of petrified food still sit where they were abandoned — the corruption came mid-meal, it seems. The hearth at the center is cold and dark, filled with ash that has never been cleared. Scorch marks on the walls trace the path of something that moved through here at terrible speed, burning everything it touched.",
-      "x": 1,
-      "y": 2,
+      "x": -1,
+      "y": 27,
       "exits": {
         "WEST": "stormcrown_keep:inner_ward",
         "EAST": "stormcrown_keep:chapel_of_storms"
@@ -290,14 +290,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:chapel_of_storms",
       "name": "Chapel of Storms",
       "description": "The keep's chapel has been thoroughly desecrated and remade into something terrible. The altar has been cracked in half and rebuilt into a crude lightning rod that channels the storm's energy directly into the floor. The stained glass windows — once depicting the Wardens' founding oath — are shattered, and the storm howls through the gaps. Strange sigils have been burned into the stone floor in patterns that hurt to look at directly. The air here tastes of ozone and despair.",
-      "x": 2,
-      "y": 2,
+      "x": 0,
+      "y": 27,
       "exits": {
         "WEST": "stormcrown_keep:guard_hall"
       },
@@ -332,14 +332,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:great_hall",
       "name": "Great Hall",
       "description": "The keep's great hall stretches before you, its vaulted ceiling lost in shadow and storm-cloud that has seeped in through the shattered skylights. Massive iron chandeliers hang at precarious angles, their chains corroded nearly through. A long feasting table runs the length of the hall, split down the middle by what appears to have been a single devastating lightning strike. The tapestries on the walls depict the Wardens' victories, each one slashed through by something with claws.",
-      "x": 0,
-      "y": 3,
+      "x": -2,
+      "y": 28,
       "exits": {
         "SOUTH": "stormcrown_keep:inner_ward",
         "NORTH": "stormcrown_keep:sealed_corridor",
@@ -377,14 +377,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:trophy_room",
       "name": "Trophy Room",
       "description": "A chamber lined with alcoves that once held the Wardens' proudest trophies — weapons taken from defeated enemies, banners from conquered strongholds, artifacts of historical significance. Most have been smashed or defaced, but a few remain intact behind cracked glass cases. The destruction here was deliberate, methodical — someone went through this room and systematically destroyed everything that celebrated the old Warden order.",
-      "x": -1,
-      "y": 3,
+      "x": -3,
+      "y": 28,
       "exits": {
         "EAST": "stormcrown_keep:great_hall"
       },
@@ -396,14 +396,14 @@
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:war_room",
       "name": "War Room",
       "description": "The Wardens' war room still holds its massive stone map table, carved with a relief of the surrounding mountain range and marked with tiny iron figurines representing troop positions. Someone has swept most of the figurines to the floor and replaced them with new markers — crude lightning-bolt shapes hammered from black iron, positioned in a pattern that suggests a siege rather than a defense. Scrolls and dispatch cases litter the floor around the table.",
-      "x": 1,
-      "y": 3,
+      "x": -1,
+      "y": 28,
       "exits": {
         "WEST": "stormcrown_keep:great_hall"
       },
@@ -438,14 +438,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:sealed_corridor",
       "name": "Sealed Corridor",
       "description": "The corridor narrows here, its walls pressing close and its ceiling lowering to barely head height. The stone is darker than anywhere else in the keep, veined with thick lines of pulsing purple energy that converge ahead on a massive door of black iron. The door is sealed with crackling ward-lightning, and a keyhole shaped like a commander's seal glows at its center. To the west, a passage leads to what appears to be officers' quarters.",
-      "x": 0,
-      "y": 4,
+      "x": -2,
+      "y": 29,
       "exits": {
         "SOUTH": "stormcrown_keep:great_hall",
         "WEST": "stormcrown_keep:therons_quarters",
@@ -499,14 +499,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:therons_quarters",
       "name": "Theron's Quarters",
       "description": "The lieutenant's quarters — austere even by Warden standards. A narrow cot, a weapons rack, a writing desk covered in half-finished reports. Everything is precisely arranged, as if Theron's discipline survived his corruption. The desk holds a half-written letter: 'Commander, I can no longer distinguish your voice from the storm. If you read this, I have —' The rest is obscured by a scorch mark. The room reeks of ozone and cold discipline.",
-      "x": -1,
-      "y": 4,
+      "x": -3,
+      "y": 29,
       "exits": {
         "EAST": "stormcrown_keep:sealed_corridor"
       },
@@ -518,14 +518,14 @@
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful, lavish",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:throne_antechamber",
       "name": "Throne Antechamber",
       "description": "Beyond the sealed door, the keep transforms. The stone here is darker still, veined with glowing purple lines like a living circulatory system. The corridor opens into a hexagonal antechamber where six pillars ring a warding circle inlaid in bronze and silver — its runes still faintly glowing, though the light flickers and stutters with corruption. The air hums with a deep vibration that you feel in your teeth. Passages branch in every direction, and the main way north leads to the throne room itself.",
-      "x": 0,
-      "y": 5,
+      "x": -2,
+      "y": 30,
       "exits": {
         "SOUTH": "stormcrown_keep:sealed_corridor",
         "NORTH": "stormcrown_keep:stormcrown_throne",
@@ -563,14 +563,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:lightning_gallery",
       "name": "Lightning Gallery",
       "description": "An open gallery whose roof has been blown completely away, exposing the perpetual storm that crowns the keep. Lightning strikes the remaining columns with metronomic regularity, each bolt feeding the network of purple veins that web the walls. The floor is scorched black in overlapping blast patterns, and the air is so charged that your hair stands on end. The view from here is staggering — the entire mountain range visible through the storm, lit by continuous flashes.",
-      "x": -1,
-      "y": 5,
+      "x": -3,
+      "y": 30,
       "exits": {
         "EAST": "stormcrown_keep:throne_antechamber"
       },
@@ -605,14 +605,14 @@
           }
         }
       ],
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:storm_conduit",
       "name": "Storm Conduit",
       "description": "A cylindrical chamber that serves as the keep's primary lightning rod, channeling the storm's energy down through the fortress into the deep stone below. A massive iron rod runs floor to ceiling through the center of the room, crackling with continuous electrical discharge. The walls are lined with copper plates, green with age, that redirect errant bolts. The heat in here is intense, and the thunder is deafening — each strike shakes the entire room.",
-      "x": 1,
-      "y": 5,
+      "x": -1,
+      "y": 30,
       "exits": {
         "WEST": "stormcrown_keep:throne_antechamber"
       },
@@ -624,14 +624,14 @@
       "imageNegativePrompt": "characters, people, modern, sci-fi, top-down, isometric, outdoor, bright, cheerful, calm",
       "imageWidth": 1024,
       "imageHeight": 576,
-      "z": 0
+      "z": -3
     },
     {
       "id": "stormcrown_keep:stormcrown_throne",
       "name": "Stormcrown Throne",
       "description": "The heart of Stormcrown Keep — a vast circular hall beneath a domed ceiling that has been blown completely open to the storm. Rain lashes down through the gap, and lightning strikes the iron crown-shaped finial at the dome's apex with metronomic regularity, each bolt feeding the purple veins that web the walls. At the center of the hall stands a raised dais of fused black iron, and upon it, a throne wrought from the same metal. Beyond the throne, a passage has been blasted through the eastern wall — its edges scorched and vitrified by an energy discharge of incredible power. Through it, a descending stairway leads down into raw rock and darkness. The air from below carries a scent of ancient stone and something that predates the keep by millennia. The rubble could be cleared with sufficient strength.",
-      "x": 0,
-      "y": 6,
+      "x": -2,
+      "y": 31,
       "exits": {
         "SOUTH": "stormcrown_keep:throne_antechamber",
         "NORTH": "sealed_threshold:descent"
@@ -670,7 +670,7 @@
       "unpickableExits": [
         "NORTH"
       ],
-      "z": 0
+      "z": -3
     }
   ],
   "npcs": [
