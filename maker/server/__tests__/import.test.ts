@@ -82,16 +82,16 @@ describe('Import duplicate NPC handling', () => {
     const zone1 = {
       id: 'zone_a', name: 'Zone A', safe: true,
       rooms: [
-        { id: 'zone_a:room1', name: 'Room 1', x: 0, y: 0, exits: { NORTH: 'zone_a:room2' } },
-        { id: 'zone_a:room2', name: 'Room 2', x: 0, y: 1, exits: { SOUTH: 'zone_a:room1' } },
+        { id: 'zone_a:room1', name: 'Room 1', x: 0, y: 0, z: 0, exits: { NORTH: 'zone_a:room2' } },
+        { id: 'zone_a:room2', name: 'Room 2', x: 0, y: 1, z: 0, exits: { SOUTH: 'zone_a:room1' } },
       ],
       npcs: [{ id: 'npc:shared_guard', name: 'Guard', startRoomId: 'zone_a:room1', hostile: false, maxHp: 50, damage: 5, level: 1 }],
     }
     const zone2 = {
       id: 'zone_b', name: 'Zone B', safe: true,
       rooms: [
-        { id: 'zone_b:room1', name: 'Room B1', x: 0, y: 0, exits: { EAST: 'zone_b:room2' } },
-        { id: 'zone_b:room2', name: 'Room B2', x: 1, y: 0, exits: { WEST: 'zone_b:room1' } },
+        { id: 'zone_b:room1', name: 'Room B1', x: 2, y: 0, z: 0, exits: { EAST: 'zone_b:room2' } },
+        { id: 'zone_b:room2', name: 'Room B2', x: 3, y: 0, z: 0, exits: { WEST: 'zone_b:room1' } },
       ],
       npcs: [{ id: 'npc:shared_guard', name: 'Guard Elite', startRoomId: 'zone_b:room1', hostile: true, maxHp: 100, damage: 10, level: 5 }],
     }
@@ -122,8 +122,8 @@ describe('Import duplicate NPC handling', () => {
     const zone = {
       id: 'test_zone', name: 'Test Zone', safe: true,
       rooms: [
-        { id: 'test_zone:start', name: 'Start', x: 0, y: 0, exits: { NORTH: 'test_zone:end' } },
-        { id: 'test_zone:end', name: 'End', x: 0, y: 1, exits: { SOUTH: 'test_zone:start' } },
+        { id: 'test_zone:start', name: 'Start', x: 0, y: 0, z: 0, exits: { NORTH: 'test_zone:end' } },
+        { id: 'test_zone:end', name: 'End', x: 0, y: 1, z: 0, exits: { SOUTH: 'test_zone:start' } },
       ],
       npcs: [
         { id: 'npc:guard_a', name: 'Guard A', startRoomId: 'test_zone:start', maxHp: 10, damage: 1, level: 1 },

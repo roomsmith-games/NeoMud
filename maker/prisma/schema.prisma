@@ -33,6 +33,7 @@ model Room {
   description         String
   x                   Int
   y                   Int
+  z                   Int    @default(0)
   backgroundImage     String @default("")
   effects             String @default("[]")
   bgm                 String @default("")

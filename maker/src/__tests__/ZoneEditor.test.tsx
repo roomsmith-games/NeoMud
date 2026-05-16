@@ -11,6 +11,7 @@ vi.mock('../api', () => {
       put: vi.fn().mockResolvedValue({}),
       del: vi.fn().mockResolvedValue({}),
     },
+    getProjectScope: vi.fn().mockReturnValue('test-project'),
   }
 })
 
@@ -73,7 +74,7 @@ const mockApi = vi.mocked(api)
 function makeRoom(id: string, name: string, x: number, y: number, exits: { fromRoomId: string; toRoomId: string; direction: string }[] = []) {
   return {
     id, name, description: `${name} description.`,
-    x, y, backgroundImage: '', bgm: '', bgmPrompt: '', bgmDuration: 0,
+    x, y, z: 0, backgroundImage: '', bgm: '', bgmPrompt: '', bgmDuration: 0,
     departSound: '', effects: '', lockedExits: '', lockResetTicks: '', hiddenExits: '',
     imagePrompt: '', imageStyle: '', imageNegativePrompt: '', interactables: '[]',
     unpickableExits: '', imageWidth: 1024, imageHeight: 576, maxHostileNpcs: null,

@@ -200,7 +200,7 @@ zonesRouter.post('/zones/:zoneId/rooms', rejectIfReadOnly, async (req, res) => {
   try {
     const zoneId = param(req, 'zoneId')
     const {
-      id, name, description, x, y,
+      id, name, description, x, y, z,
       backgroundImage, effects, bgm, bgmPrompt, bgmDuration, departSound,
     } = req.body
     const fullId = id.startsWith(`${zoneId}:`) ? id : `${zoneId}:${id}`
@@ -208,10 +208,10 @@ zonesRouter.post('/zones/:zoneId/rooms', rejectIfReadOnly, async (req, res) => {
     // Validate no room exists at the same coordinates globally (shared coordinate space)
     if (x !== undefined && y !== undefined) {
       const overlapping = await req.db!.room.findFirst({
-        where: { x, y },
+        where: { x, y, z: z ?? 0 },
       })
       if (overlapping) {
-        res.status(409).json({ error: `A room already exists at coordinates (${x}, ${y})` })
+        res.status(409).json({ error: `A room already exists at coordinates (${x}, ${y}, ${z ?? 0})` })
         return
       }
     }
@@ -224,6 +224,7 @@ zonesRouter.post('/zones/:zoneId/rooms', rejectIfReadOnly, async (req, res) => {
         description,
         x,
         y,
+        z: z ?? 0,
         backgroundImage: backgroundImage ?? '',
         effects: effects ?? '[]',
         bgm: bgm ?? '',
@@ -269,11 +270,14 @@ zonesRouter.put('/zones/:zoneId/rooms/:id', rejectIfReadOnly, async (req, res) =
 
     // Validate no other room exists at the same coordinates globally (shared coordinate space)
     if (req.body.x !== undefined && req.body.y !== undefined) {
+      const zForCheck = req.body.z ?? (await req.db!.room.findUnique({
+        where: { id: fullId }, select: { z: true }
+      }))?.z ?? 0
       const overlapping = await req.db!.room.findFirst({
-        where: { x: req.body.x, y: req.body.y, id: { not: fullId } },
+        where: { x: req.body.x, y: req.body.y, z: zForCheck, id: { not: fullId } },
       })
       if (overlapping) {
-        res.status(409).json({ error: `A room already exists at coordinates (${req.body.x}, ${req.body.y})` })
+        res.status(409).json({ error: `A room already exists at coordinates (${req.body.x}, ${req.body.y}, ${zForCheck})` })
         return
       }
     }

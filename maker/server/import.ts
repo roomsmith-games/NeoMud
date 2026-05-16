@@ -374,6 +374,7 @@ export async function importNmd(nmdPath: string, userId: string, projectName: st
           description: room.description ?? '',
           x: room.x ?? 0,
           y: room.y ?? 0,
+          z: room.z ?? 0,
           backgroundImage: room.backgroundImage ?? '',
           effects: JSON.stringify(
             room.effects ??

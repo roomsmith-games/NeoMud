@@ -101,6 +101,7 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
           description: room.description,
           x: room.x,
           y: room.y,
+          z: room.z,
           backgroundImage: room.backgroundImage,
           ...((() => { const e = parseJsonField(room.effects, []); return e.length > 0 ? { effects: e } : {}; })()),
           bgm: room.bgm,
