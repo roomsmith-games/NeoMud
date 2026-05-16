@@ -85,7 +85,7 @@ fun LockTargetPicker(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         LockDirButton("NW", Direction.NORTHWEST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
-                        LockDirButton("\u25B2", Direction.NORTH, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
+                        LockDirButton("N", Direction.NORTH, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
                         LockDirButton("NE", Direction.NORTHEAST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
                     }
 
@@ -96,7 +96,7 @@ fun LockTargetPicker(
                         horizontalArrangement = Arrangement.spacedBy(Gap),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        LockDirButton("\u25C0", Direction.WEST, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
+                        LockDirButton("W", Direction.WEST, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
                         Box(
                             modifier = Modifier.size(ButtonSize),
                             contentAlignment = Alignment.Center
@@ -107,7 +107,7 @@ fun LockTargetPicker(
                                 modifier = Modifier.size(32.dp)
                             )
                         }
-                        LockDirButton("\u25B6", Direction.EAST, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
+                        LockDirButton("E", Direction.EAST, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
                     }
 
                     Spacer(modifier = Modifier.height(Gap))
@@ -118,7 +118,7 @@ fun LockTargetPicker(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         LockDirButton("SW", Direction.SOUTHWEST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
-                        LockDirButton("\u25BC", Direction.SOUTH, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
+                        LockDirButton("S", Direction.SOUTH, pickableDirections, lockedExits.keys, onSelect, ButtonSize)
                         LockDirButton("SE", Direction.SOUTHEAST, pickableDirections, lockedExits.keys, onSelect, SmallButtonSize)
                     }
 
@@ -146,7 +146,7 @@ fun LockTargetPicker(
                                     )
                                 ) {
                                     Text(
-                                        text = if (pickable) "\u2B06 Up" else "\u22A0 Up",
+                                        text = "Up",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -167,7 +167,7 @@ fun LockTargetPicker(
                                     )
                                 ) {
                                     Text(
-                                        text = if (pickable) "\u2B07 Down" else "\u22A0 Down",
+                                        text = "Down",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold
                                     )

@@ -204,6 +204,28 @@ EOF
 
 For UX issues and feature suggestions, file those as issues too — use labels `playtest` and `enhancement`.
 
+## Session Cleanup (MANDATORY)
+
+**Before ending your session, you MUST shut down the relay process.** Leaving the relay running holds the WebSocket connection open, which locks the character as "already logged in" and prevents anyone else (including other test runs) from using that character until the game container is restarted.
+
+```bash
+# Read the PID from the lock file and send SIGTERM for a clean shutdown
+if [ -f scripts/relay.lock ]; then
+  kill "$(cat scripts/relay.lock)" 2>/dev/null
+  sleep 1
+  # Verify it's gone
+  if [ -f scripts/relay.lock ]; then
+    kill -9 "$(cat scripts/relay.lock)" 2>/dev/null
+    rm -f scripts/relay.lock scripts/relay-state.json
+  fi
+  echo "Relay shut down."
+else
+  echo "No relay lock file found."
+fi
+```
+
+**This is not optional.** Even if you hit errors, ran out of things to test, or are ending early — always clean up the relay before returning your report.
+
 ## Output Format
 
 End every session with a structured playtest report. Reference the GitHub issue numbers you filed.

@@ -82,7 +82,7 @@ fun KickDirectionPicker(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     KickDirButton("NW", Direction.NORTHWEST, validDirections, lockedExits, onSelect, SmallButtonSize)
-                    KickDirButton("\u25B2", Direction.NORTH, validDirections, lockedExits, onSelect, ButtonSize)
+                    KickDirButton("N", Direction.NORTH, validDirections, lockedExits, onSelect, ButtonSize)
                     KickDirButton("NE", Direction.NORTHEAST, validDirections, lockedExits, onSelect, SmallButtonSize)
                 }
 
@@ -93,7 +93,7 @@ fun KickDirectionPicker(
                     horizontalArrangement = Arrangement.spacedBy(Gap),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    KickDirButton("\u25C0", Direction.WEST, validDirections, lockedExits, onSelect, ButtonSize)
+                    KickDirButton("W", Direction.WEST, validDirections, lockedExits, onSelect, ButtonSize)
                     Box(
                         modifier = Modifier.size(ButtonSize),
                         contentAlignment = Alignment.Center
@@ -104,7 +104,7 @@ fun KickDirectionPicker(
                             modifier = Modifier.size(32.dp)
                         )
                     }
-                    KickDirButton("\u25B6", Direction.EAST, validDirections, lockedExits, onSelect, ButtonSize)
+                    KickDirButton("E", Direction.EAST, validDirections, lockedExits, onSelect, ButtonSize)
                 }
 
                 Spacer(modifier = Modifier.height(Gap))
@@ -115,7 +115,7 @@ fun KickDirectionPicker(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     KickDirButton("SW", Direction.SOUTHWEST, validDirections, lockedExits, onSelect, SmallButtonSize)
-                    KickDirButton("\u25BC", Direction.SOUTH, validDirections, lockedExits, onSelect, ButtonSize)
+                    KickDirButton("S", Direction.SOUTH, validDirections, lockedExits, onSelect, ButtonSize)
                     KickDirButton("SE", Direction.SOUTHEAST, validDirections, lockedExits, onSelect, SmallButtonSize)
                 }
 
@@ -135,7 +135,7 @@ fun KickDirectionPicker(
                         )
                     ) {
                         Text(
-                            text = "\u2B07 Down",
+                            text = "Down",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
                         )

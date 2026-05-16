@@ -185,6 +185,17 @@ When given a specific system to test (e.g., "combat", "vendors", "spells", "pers
 3. Test every boundary condition
 4. File bugs with root cause analysis
 
+## Session Cleanup (MANDATORY)
+
+**If you started a relay during this session, you MUST shut it down before ending.** Leaving it running holds the WebSocket connection open, locking the character as "already logged in" and requiring a game container restart to clear.
+
+```bash
+if [ -f scripts/relay.lock ]; then
+  kill "$(cat scripts/relay.lock)" 2>/dev/null; sleep 1
+  [ -f scripts/relay.lock ] && kill -9 "$(cat scripts/relay.lock)" 2>/dev/null && rm -f scripts/relay.lock scripts/relay-state.json
+fi
+```
+
 ## Output Format
 
 End every session with a structured QA report:

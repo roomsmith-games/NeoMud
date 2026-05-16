@@ -163,7 +163,7 @@ fun DirectionPad(
             verticalAlignment = Alignment.CenterVertically
         ) {
             StoneStairButton(
-                label = "\u25B2 UP",
+                label = "UP",
                 enabled = Direction.UP in availableExits,
                 locked = Direction.UP in lockedExits,
                 tracked = trackedDirection == Direction.UP,
@@ -171,7 +171,7 @@ fun DirectionPad(
             )
             Spacer(modifier = Modifier.width(SMALL_BUTTON_SIZE - STAIR_WIDTH + H_GAP))
             StoneStairButton(
-                label = "\u25BC DN",
+                label = "DN",
                 enabled = Direction.DOWN in availableExits,
                 locked = Direction.DOWN in lockedExits,
                 tracked = trackedDirection == Direction.DOWN,

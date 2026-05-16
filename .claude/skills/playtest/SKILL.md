@@ -68,4 +68,11 @@ Read `scripts/relay-state.json` to confirm `connected` and `loggedIn` are true.
 1. Read the relay state to see the current game state
 2. Play the game following your methodology — read state, send commands, evaluate results
 3. Document bugs, UX issues, and impressions as you go
-4. End with a structured playtest report
+4. **Shut down the relay** (MANDATORY — see "Session Cleanup" in the agent definition):
+   ```bash
+   if [ -f scripts/relay.lock ]; then
+     kill "$(cat scripts/relay.lock)" 2>/dev/null; sleep 1
+     [ -f scripts/relay.lock ] && kill -9 "$(cat scripts/relay.lock)" 2>/dev/null && rm -f scripts/relay.lock scripts/relay-state.json
+   fi
+   ```
+5. End with a structured playtest report

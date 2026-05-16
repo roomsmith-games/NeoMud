@@ -20,7 +20,11 @@
 - **Locked**: Tavern Cellar (DOWN from tavern, "The way down is locked")
 - **Iron Vein Mine** (dungeon, ~10 rooms, L8-12 estimated): mine_entrance (from forest), main_shaft, east_shaft, flooded_passage, abandoned_chamber (lever EXIT_OPEN interactable), hidden_alcove (TREASURE_DROP chest: Health Potion + Mana Potion + Foremans Iron Key + 181c 2s), deep_chamber, webbed_corridor (DAMAGE_TRAP sticky silk), cavemother_lair (boss: Cavemother Vrelda 420HP), treasure_chamber (empty, bug #389). NPCs: Cave Spider, Mine Ghoul (130HP, 28-35 dmg), Cavemother Vrelda (420HP, 40-53 dmg boss). Boss drops: Cavemothers Fang + Greater Health Potion + 2g 8s 85c.
 - **Salt Coast** (overworld, L14-16 estimated): Saltpoint Square (hub), Saltpoint Dock (Captain Mara Tenwick quest NPC), Saltpoint Inn, Fishmonger, Long Pier, Tide Pools, Chapel Path (Riptide Crab 295HP 44-53 dmg), Chapel Steps, Chapel Threshold (cross-zone to drowned_chapel:vestibule), North Lookout, Saltpoint Outskirts.
-- **Drowned Chapel** (dungeon, partially explored): vestibule (entry from salt_coast:chapel_threshold), flooded_narthex. Atmospheric rot/brine theme.
+- **Drowned Chapel** (dungeon, ~10 rooms, L14-16): vestibule (entry from salt_coast:chapel_threshold), flooded_narthex, nave, north_side_chapel (tide-bell #1), south_side_chapel (tide-bell #2), choir_loft (tide-bell #3), bell_tower (tide-bell #4), sanctum (tide-bell #5, PUZZLE_STEP gate), altar_chamber (boss: Tidewarden Korlach 620HP, 475 XP), reliquary. PUZZLE_STEP tide-bell system with 5 bells in sequence. Atmospheric rot/brine theme.
+- **Watcher's Barrow** (dungeon, ~10 rooms, discovered Session 14): Entry from highmoor via DOWN. Contains sealed-eye gate (PUZZLE_STEP), boss ~540HP. Not fully tested due to relay issues.
+- **Highmoor** (overworld, ~17 rooms, L16-18 estimated): Star Cairn PUZZLE_STEP interactables, Mountain Warden NPC, very sparse hostile NPC spawns (#408). Multiple rooms explored but relay multi-fire prevented systematic mapping.
+- **Foothills** (~12 rooms): Vendor present, Mountain Warden NPC, connects to Skyveil Reach.
+- **Skyveil Reach** (partially explored): sky_bridge, storm_ridge, windswept_crossing, skyveil_plateau (exits to archons_camp with T4 trainer Archon Veska). Not fully tested.
 - **Cracked Plains** (23 rooms, L18-20): All rooms explored. Surface: rift_edge_south (entry from Ashwood via DOWN/UP), broken_bridge, east_plateau, collapsed_shelf, east_bluffs, cliff_roost, bone_field, war_road, north_plateau, west_ridge, signal_cairn (quest NPC Haela), ruined_fort, hold_approach, hold_gates, bandit_camp, bandit_watchtower. Rift floor: rift_floor_south, rift_tunnel, rift_junction, rift_floor_east, rift_spring (vendor Krenn), rift_floor_north, fungal_grotto. 12 vertical exits tested (all work except #316 one-way).
 - **Warlord's Hold** (10 rooms, L19-20 dungeon): great_hall (hub), guard_hall, trophy_room (Lieutenant sub-boss 480HP), upper_gallery, armory, battlements, war_room (Warlord Drask boss 900HP), underhall, cells, vault (PLACE_ITEM locked door)
 - **Bone Wastes** (23 rooms, L22-25 overworld): All rooms explored. Entry: glass_edge (WEST from glass_desert:buried_road). Key rooms: bone_spire (vendor Rask), death_gate (quest NPC Scholar Meris), necropolis_overlook (DOWN to dungeon), bone_ridge_lookout (vista), skull_ravine_rim/skull_ravine (vertical), bone_wastes_edge (forward stub). All exits bidirectional. Traps: Unstable Ground (fallen_standard), others.
@@ -88,6 +92,23 @@
 - #387 -- Hostile NPCs wander into boss room after boss kill, killing players during loot phase
 - #388 -- Level 30 warrior dies to mid-level NPCs without getting a chance to fight back
 - #389 -- Iron Vein Cavemother treasure chamber is empty -- no loot or interactables
+- #404 -- Rate limiter treats 429 retries as new login attempts, creating escalation death spiral
+- #405 -- Relay multi-fire: file watcher triggers 4-10x per single command write
+- #406 -- Concurrent Claude sessions share relay-command.json causing command interleaving
+- #407 -- Relay replays massive stale command queue from previous sessions
+- #408 -- Highmoor Steppes has very sparse NPC spawns -- only 1 hostile NPC across 17 rooms
+- #409 -- Watcher's Barrow dungeon: PUZZLE_STEP sealed-eye gate untestable via relay
+- #410 -- Endgame zones (Stormcrown, Sealed Threshold) untestable due to relay multi-fire
+- #411 -- Highmoor Star Cairn PUZZLE_STEP: untested, needs verification
+- #412 -- Stormcrown Keep: keep_entrance and stormcrown_entrance room IDs not found on staging
+- #413 -- Drowned Chapel boss Tidewarden Korlach gives only 475 XP for dungeon boss
+- #415 -- Tavern cellar only accessible via admin teleport
+- #416 -- Drowned Chapel boss Tidewarden Korlach: no phase transitions during combat
+- #417 -- Boss loot lost when player moved from room before pickup
+- #418 -- Drowned Chapel tide-bell puzzle: excellent quest design, needs manual testing
+- #419 -- Marsh Edge is a dead-end with no external zone connection
+- #420 -- Game relay crashes silently after processing teleport commands
+- #421 -- Platform admin account alternates between characters on relay reconnect
 
 ## Game State Observations
 - **Warrior Combat**: Iron Sword does 21-25 damage per hit (STR 35). One-shots rats (15 HP), spiders (20 HP), bandits (20 HP). Two-shots wolves (30 HP).
@@ -107,6 +128,20 @@
 - **XP loss on death**: 13 XP lost per death at Level 30. Confirmed in 3 consecutive deaths.
 - **Iron Vein combat (L30 STR 80)**: Steel Greatsword does 46-54 damage per hit. Cavemother Vrelda (420HP boss) does 40-53 per hit. Mine Ghoul (130HP) does 28-35 per hit. Cave Spider does 29 per hit but misses ~90% of the time.
 - **Salt Coast combat (L30 STR 80)**: Riptide Crab (295HP) does 44-53 damage per hit, same range as L30 player. Kills L30 in ~7 hits.
+
+## Drowned Chapel Observations (Session 14, Staging)
+- **Boss**: Tidewarden Korlach 620HP, defeated at L30 STR 100. Only 475 XP reward (#413). No phase transitions (#416).
+- **Puzzle system**: 5 tide-bells in sequence (PUZZLE_STEP). Requires Captain Mara quest flag. Excellent design but untestable via relay (#418).
+- **Boss loot**: Dropped on ground but lost due to relay multi-fire moving player out of room before pickup (#417).
+- **Zone connections**: salt_coast:chapel_threshold -> drowned_chapel:vestibule (bidirectional).
+
+## Relay Infrastructure Issues (Session 14, Critical)
+- **Multi-fire**: macOS FSEvents triggers file watcher 4-10x per write. Toggle commands (godmode) become unusable. Idempotent commands (setstat) work as workaround. Filed #405.
+- **Command interleaving**: Concurrent Claude sessions write to same relay-command.json. Filed #406.
+- **Stale queue replay**: Relay replays old commands from previous sessions. Filed #407.
+- **Rate limiter escalation**: 429 retries count as login attempts, extending lockout. Filed #404.
+- **Character alternation**: Platform admin account alternates between UatTester and Bob on reconnect. Filed #421.
+- **Net effect**: Endgame zones (Stormcrown Keep, Sealed Threshold) could NOT be systematically tested. Room-specific testing impossible when multi-fire teleports you through 4-10 rooms per command.
 
 ## Cleric Gameplay Notes (Session 4)
 - **Spell system works well**: ready_spell + attack_toggle auto-casts each tick; cast_spell works for one-off casts out of combat
@@ -216,3 +251,11 @@
 - Test Haela Riftwalker quest interaction via real client (relay cannot interact with PLACE_ITEM/interactables)
 - Test make_choice and place_item once #347 is fixed
 - Test TREASURE_DROP in seal/sunder epilogue rooms
+- **BLOCKER**: Re-test Stormcrown Keep systematically once relay multi-fire (#405) is fixed
+- **BLOCKER**: Test Sealed Threshold ending CHOICE_PROMPT end-to-end once relay is stable
+- **BLOCKER**: Verify boss phase transitions on staging (Korlach #416, Sealed One #346 still broken)
+- Test T4 trainer (Archon Veska) at Skyveil Reach
+- Test T5 trainer (Oracle) at Sealed Threshold oracles_sanctum
+- Verify Watcher's Barrow PUZZLE_STEP sealed-eye gate (#409)
+- Verify Highmoor Star Cairn PUZZLE_STEP (#411)
+- Verify Stormcrown Keep room IDs exist on staging (#412)
