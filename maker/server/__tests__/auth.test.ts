@@ -1,10 +1,20 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import express from 'express'
 import request from 'supertest'
 import jwt from 'jsonwebtoken'
 import { authenticate } from '../middleware/auth.js'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me-minimum-thirty-two-characters'
+const JWT_SECRET = 'dev-secret-change-me-minimum-thirty-two-characters'
+const ORIGINAL_JWT_SECRET = process.env.JWT_SECRET
+
+beforeEach(() => {
+  process.env.JWT_SECRET = JWT_SECRET
+})
+
+afterEach(() => {
+  if (ORIGINAL_JWT_SECRET !== undefined) process.env.JWT_SECRET = ORIGINAL_JWT_SECRET
+  else delete process.env.JWT_SECRET
+})
 
 function createAuthTestApp() {
   const app = express()

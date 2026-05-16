@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import api, { PLATFORM_URL } from '../api';
 import type { CSSProperties } from 'react';
 
@@ -77,7 +77,21 @@ interface AuthGuardProps {
  * platform root. In dev builds, also renders a paste-in token field.
  */
 export default function AuthGuard({ children }: AuthGuardProps) {
-  if (api.isAuthenticated()) {
+  const [authMode, setAuthMode] = useState<'jwt' | 'open' | 'loading'>('loading');
+
+  useEffect(() => {
+    if (api.isAuthenticated()) {
+      setAuthMode('jwt');
+      return;
+    }
+    fetch(`${import.meta.env.VITE_API_BASE ?? ''}/api/auth/mode`)
+      .then((r) => r.json())
+      .then((data) => setAuthMode(data.mode === 'open' ? 'open' : 'jwt'))
+      .catch(() => setAuthMode('jwt'));
+  }, []);
+
+  if (authMode === 'loading') return null;
+  if (authMode === 'open' || api.isAuthenticated()) {
     return <>{children}</>;
   }
 

@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { authenticate } from './middleware/auth.js'
+import { authenticate, isOpenMode } from './middleware/auth.js'
 import { errorHandler } from './middleware/errorHandler.js'
 import { requestMetrics } from './middleware/requestMetrics.js'
 import { projectMiddleware, getProjectsDir } from './projectContext.js'
@@ -30,14 +30,16 @@ export const app = express()
 
 // ─── Security middleware ────────────────────────────────
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'blob:'],
-    },
-  },
+  contentSecurityPolicy: process.env.NODE_ENV === 'production'
+    ? {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'blob:'],
+        },
+      }
+    : false,
   hsts: process.env.NODE_ENV === 'production'
     ? { maxAge: 31536000, includeSubDomains: true }
     : false,
@@ -77,6 +79,11 @@ app.use(express.json({ limit: '1mb' }))
 
 // ─── Request metrics (fire-and-forget, emits on response finish) ──
 app.use(requestMetrics)
+
+// ─── Auth mode endpoint (before auth middleware so it's always accessible) ──
+app.get('/api/auth/mode', (_req, res) => {
+  res.json({ mode: isOpenMode() ? 'open' : 'jwt' })
+})
 
 // ─── Auth on all API routes ─────────────────────────────
 app.use('/api', authenticate)

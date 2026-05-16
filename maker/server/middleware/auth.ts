@@ -14,6 +14,18 @@ if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET && !process
   process.exit(1)
 }
 
+// Open mode: no JWT config and not production — local dev, no auth required.
+// Evaluated lazily so tests can set env vars before the first request.
+let _openModeLogged = false
+function isOpenModeActive(): boolean {
+  const open = !process.env.JWT_SECRET && !process.env.JWT_PUBLIC_KEY && process.env.NODE_ENV !== 'production'
+  if (open && !_openModeLogged) {
+    _openModeLogged = true
+    console.log('[auth] No JWT config found, running in open mode (local dev only)')
+  }
+  return open
+}
+
 interface TokenPayload {
   userId: string
   role: string
@@ -67,7 +79,19 @@ function getVerifyConfig(): { key: jwt.Secret; algorithms: jwt.Algorithm[] } {
  * Validates Platform-issued JWTs. In dev mode with MAKER_DEV_USER_ID set,
  * allows unauthenticated requests with a synthetic user.
  */
+export function isOpenMode(): boolean {
+  return isOpenModeActive()
+}
+
 export function authenticate(req: Request, res: Response, next: NextFunction): void {
+  // Open mode: no JWT config, not production — skip auth entirely.
+  // Grant ADMIN so the default world template in _shared/ is visible.
+  if (isOpenModeActive()) {
+    req.user = { userId: 'local-dev', role: 'ADMIN' }
+    next()
+    return
+  }
+
   const authHeader = req.headers.authorization
   const devUserId = getDevUserId()
 
