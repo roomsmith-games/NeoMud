@@ -241,8 +241,8 @@ class WorldLoaderTest {
 
         val mouth = world.getRoom("gorge:mouth")
         assertNotNull(mouth)
-        assertEquals("marsh:heart", mouth.exits[com.neomud.shared.model.Direction.SOUTH],
-            "gorge:mouth should exit south to marsh:heart")
+        assertEquals("marsh:heart", mouth.exits[com.neomud.shared.model.Direction.DOWN],
+            "gorge:mouth should exit down to marsh:heart")
     }
 
     @Test
@@ -252,13 +252,13 @@ class WorldLoaderTest {
 
         val stream = world.getRoom("forest:stream")
         assertNotNull(stream)
-        assertEquals("gorge:fissure", stream.exits[com.neomud.shared.model.Direction.NORTH],
-            "forest:stream should exit north to gorge:fissure")
+        assertEquals("gorge:fissure", stream.exits[com.neomud.shared.model.Direction.NORTHEAST],
+            "forest:stream should exit northeast to gorge:fissure")
 
         val fissure = world.getRoom("gorge:fissure")
         assertNotNull(fissure)
-        assertEquals("forest:stream", fissure.exits[com.neomud.shared.model.Direction.SOUTH],
-            "gorge:fissure should exit south to forest:stream")
+        assertEquals("forest:stream", fissure.exits[com.neomud.shared.model.Direction.SOUTHWEST],
+            "gorge:fissure should exit southwest to forest:stream")
     }
 
     @Test
@@ -268,13 +268,13 @@ class WorldLoaderTest {
 
         val heart = world.getRoom("marsh:heart")
         assertNotNull(heart)
-        assertEquals("gorge:mouth", heart.exits[com.neomud.shared.model.Direction.NORTH],
-            "marsh:heart should exit north to gorge:mouth")
+        assertEquals("gorge:mouth", heart.exits[com.neomud.shared.model.Direction.UP],
+            "marsh:heart should exit up to gorge:mouth")
 
         val gorgeMouth = world.getRoom("gorge:mouth")
         assertNotNull(gorgeMouth)
-        assertEquals("marsh:heart", gorgeMouth.exits[com.neomud.shared.model.Direction.SOUTH],
-            "gorge:mouth should exit south to marsh:heart")
+        assertEquals("marsh:heart", gorgeMouth.exits[com.neomud.shared.model.Direction.DOWN],
+            "gorge:mouth should exit down to marsh:heart")
     }
 
     @Test
