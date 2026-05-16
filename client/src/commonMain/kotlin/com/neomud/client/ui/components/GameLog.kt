@@ -104,7 +104,7 @@ fun GameLog(
                 }
             }
     ) {
-        items(entries) { entry ->
+        items(entries, key = { it.id }) { entry ->
             Text(
                 text = buildAnnotatedString {
                     for (span in entry.spans) {

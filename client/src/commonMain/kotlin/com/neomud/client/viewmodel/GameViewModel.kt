@@ -831,8 +831,11 @@ class GameViewModel(
         addEntry(LogEntry(text, color))
     }
 
+    private var nextLogId = 0L
+
     private fun addEntry(entry: LogEntry) {
-        val log = _gameLog.value + entry
+        val stamped = entry.copy(id = nextLogId++)
+        val log = _gameLog.value + stamped
         _gameLog.value = if (log.size > 200) log.takeLast(200) else log
     }
 

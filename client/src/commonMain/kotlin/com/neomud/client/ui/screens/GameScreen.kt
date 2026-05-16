@@ -347,13 +347,15 @@ fun GameScreen(
             val data = mapData
             if (data != null) {
                 val currentRoom = roomInfo?.room
-                MapOverlay(
-                    rooms = data.rooms,
-                    playerRoomId = data.playerRoomId,
-                    visitedRoomIds = visitedRooms,
-                    currentZoneName = currentRoom?.zoneId ?: "",
-                    onClose = { gameViewModel.toggleMap() }
-                )
+                key(data.playerRoomId) {
+                    MapOverlay(
+                        rooms = data.rooms,
+                        playerRoomId = data.playerRoomId,
+                        visitedRoomIds = visitedRooms,
+                        currentZoneName = currentRoom?.zoneId ?: "",
+                        onClose = { gameViewModel.toggleMap() }
+                    )
+                }
             }
         }
 
@@ -730,14 +732,16 @@ private fun GameScreenPortrait(
             // Layer 2: Floating minimap
             val data = mapData
             if (data != null) {
-                FloatingMiniMap(
-                    rooms = data.rooms,
-                    playerRoomId = data.playerRoomId,
-                    visitedRoomIds = visitedRooms,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(end = 4.dp, top = 4.dp)
-                )
+                key(data.playerRoomId) {
+                    FloatingMiniMap(
+                        rooms = data.rooms,
+                        playerRoomId = data.playerRoomId,
+                        visitedRoomIds = visitedRooms,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(end = 4.dp, top = 4.dp)
+                    )
+                }
             }
 
             // Layer 3: Trainer/Vendor/Crafter/Interactable overlays (bottom-left of room view)
@@ -998,14 +1002,16 @@ private fun GameScreenLandscape(
                 // Layer 2: Floating minimap
                 val data = mapData
                 if (data != null) {
-                    FloatingMiniMap(
-                        rooms = data.rooms,
-                        playerRoomId = data.playerRoomId,
-                        visitedRoomIds = visitedRooms,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(end = 4.dp, top = 4.dp)
-                    )
+                    key(data.playerRoomId) {
+                        FloatingMiniMap(
+                            rooms = data.rooms,
+                            playerRoomId = data.playerRoomId,
+                            visitedRoomIds = visitedRooms,
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(end = 4.dp, top = 4.dp)
+                        )
+                    }
                 }
 
                 // Layer 3: Trainer/Vendor/Crafter/Interactable overlays (bottom-left of room view)

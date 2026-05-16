@@ -293,7 +293,7 @@ private fun BagGrid(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(bagItems) { invItem ->
+            items(bagItems, key = { it.itemId }) { invItem ->
                 val item = itemCatalog[invItem.itemId]
                 BagItemCell(
                     invItem = invItem,

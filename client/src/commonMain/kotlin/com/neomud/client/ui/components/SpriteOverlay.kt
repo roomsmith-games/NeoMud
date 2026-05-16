@@ -356,13 +356,16 @@ private fun EntitySprite(
                 }
 
                 val spriteId = npc.spriteOverride.ifEmpty { npc.id }
-                AsyncImage(
-                    model = coil3.request.ImageRequest.Builder(context)
+                val npcModel = remember(spriteId) {
+                    coil3.request.ImageRequest.Builder(context)
                         .data(spriteUrl(serverBaseUrl, spriteId))
                         .crossfade(200)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
-                        .build(),
+                        .build()
+                }
+                AsyncImage(
+                    model = npcModel,
                     contentDescription = npc.name,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -381,13 +384,16 @@ private fun EntitySprite(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                AsyncImage(
-                    model = coil3.request.ImageRequest.Builder(context)
+                val pcModel = remember(info.spriteUrl) {
+                    coil3.request.ImageRequest.Builder(context)
                         .data(pcSpriteUrl(serverBaseUrl, info))
                         .crossfade(200)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
-                        .build(),
+                        .build()
+                }
+                AsyncImage(
+                    model = pcModel,
                     contentDescription = info.name,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
