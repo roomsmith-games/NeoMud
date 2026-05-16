@@ -791,14 +791,23 @@ function ZoneEditor() {
     [rooms, allExits]
   );
 
-  // Reset layer to 0 when zone changes (if 0 exists), otherwise pick highest
+  // World map layers (when no zone is selected)
+  const worldLayers = useMemo(() => {
+    if (selectedZoneId) return [];
+    const zSet = new Set<number>();
+    for (const g of allRooms) for (const r of g.rooms) zSet.add(r.z);
+    return [...zSet].sort((a, b) => b - a);
+  }, [selectedZoneId, allRooms]);
+
+  // Reset layer when zone changes: use zone layers if a zone is selected, world layers otherwise
   useEffect(() => {
-    if (layers.length === 0) {
+    const active = selectedZoneId ? layers : worldLayers;
+    if (active.length === 0) {
       setCurrentLayer(0);
-    } else if (!layers.includes(currentLayer)) {
-      setCurrentLayer(layers.includes(0) ? 0 : layers[0]);
+    } else if (!active.includes(currentLayer)) {
+      setCurrentLayer(active.includes(0) ? 0 : active[0]);
     }
-  }, [layers]);
+  }, [selectedZoneId, layers, worldLayers]);
 
   // Filter rooms and exits to the current layer
   const layerRoomIds = useMemo(() => {
@@ -935,14 +944,6 @@ function ZoneEditor() {
       )));
     return [...filteredExits, ...otherExits];
   }, [selectedZoneId, filteredExits, allRooms, combinedMapRooms]);
-
-  // World map layers (when no zone is selected)
-  const worldLayers = useMemo(() => {
-    if (selectedZoneId) return [];
-    const zSet = new Set<number>();
-    for (const g of allRooms) for (const r of g.rooms) zSet.add(r.z);
-    return [...zSet].sort((a, b) => b - a);
-  }, [selectedZoneId, allRooms]);
 
   // World map rooms/exits (when no zone is selected) — filtered to currentLayer
   const worldMapRooms = useMemo(() => {
