@@ -778,13 +778,15 @@ private fun GameScreenPortrait(
                         )
                     }
                     for (feat in interactables) {
-                        val (icon, color) = interactableStyle(feat)
-                        RoomOverlayButton(
-                            icon = icon,
-                            label = feat.label,
-                            color = color,
-                            onClick = { gameViewModel.interactFeature(feat.id) }
-                        )
+                        key(feat.id) {
+                            val (icon, color) = interactableStyle(feat)
+                            RoomOverlayButton(
+                                icon = icon,
+                                label = feat.label,
+                                color = color,
+                                onClick = { gameViewModel.interactFeature(feat.id) }
+                            )
+                        }
                     }
                 }
             }
