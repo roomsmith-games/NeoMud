@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest'
 import request from 'supertest'
 import type { Express } from 'express'
+import fs from 'fs'
+import path from 'path'
 import { createTestApp } from './helpers.js'
+import { getProjectsDir } from '../projectContext.js'
 
 const BEARER = 'Bearer test-token'
 
@@ -37,11 +40,27 @@ describe('POST /api/projects — plan-based quota (FREE=3)', () => {
   let cleanup: () => Promise<void>
 
   beforeAll(async () => {
+    // Purge stale test-user projects from prior runs so quota counts are predictable
+    const userDir = path.join(getProjectsDir(), 'test-user')
+    if (fs.existsSync(userDir)) {
+      fs.rmSync(userDir, { recursive: true, force: true })
+    }
     const ctx = await createTestApp()
     app = ctx.app
     cleanup = ctx.cleanup
   })
-  afterAll(async () => { await cleanup() })
+  afterAll(async () => {
+    await cleanup()
+    // Clean up any projects created during the tests (q1_, q2_, q3_, creator_, etc.)
+    const userDir = path.join(getProjectsDir(), 'test-user')
+    if (fs.existsSync(userDir)) {
+      for (const f of fs.readdirSync(userDir)) {
+        if (f.startsWith('test_')) continue // leave createTestApp's project for cleanup()
+        const full = path.join(userDir, f)
+        fs.rmSync(full, { recursive: true, force: true })
+      }
+    }
+  })
 
   it('does not call Platform subscription when request has no Authorization header', async () => {
     // Dev/test path: no Bearer token. Quota helper should short-circuit
