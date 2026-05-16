@@ -16,8 +16,8 @@
       "id": "salt_coast:cliff_descent",
       "name": "Cliff Descent",
       "description": "A steep stone stair cut zigzag down the face of the Highmoor cliffs, scoured smooth by centuries of salt wind. Far below, the sea rolls in steady grey lines onto a shore strewn with bleached driftwood. Above and behind you, the plateau falls away.",
-      "x": 1,
-      "y": 26,
+      "x": 0,
+      "y": 0,
       "exits": {
         "SOUTH": "highmoor:north_pass",
         "NORTH": "salt_coast:cliff_zigzag"
@@ -29,14 +29,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, salt wind and grey stone",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:cliff_zigzag",
       "name": "Cliff Zigzag",
       "description": "The trail switches back and forth across the cliff face, the stone stained dark with old salt and lichen. Sea-spray reaches you on the harder gusts even at this height. Cliff-hawks ride the thermals at eye level, eyeing you with a patient, predatory calm.",
-      "x": 1,
-      "y": 27,
+      "x": 0,
+      "y": 1,
       "exits": {
         "SOUTH": "salt_coast:cliff_descent",
         "NORTH": "salt_coast:driftwood_strand"
@@ -48,14 +49,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, salt wind and grey stone, vertiginous",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:tide_grove",
       "name": "Petrified Grove",
       "description": "A small grove of long-dead trees, their trunks gone smooth and grey as polished stone — petrified by some long-ago surge of the sea that washed this far inland. The branches still hold their reach, even after centuries.",
       "x": -1,
-      "y": 28,
+      "y": 2,
       "exits": {
         "EAST": "salt_coast:driftwood_strand",
         "NORTH": "salt_coast:beach_west"
@@ -67,14 +69,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, petrified forest, eerie",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, lush, green leaves",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:driftwood_strand",
       "name": "Driftwood Strand",
       "description": "The trail flattens out at the foot of the cliffs onto a long pebble beach scattered with great heaps of bleached driftwood. The wind carries the keening of gulls and, faintly, the toll of a slow bell from somewhere up the shore.",
-      "x": 1,
-      "y": 28,
+      "x": 0,
+      "y": 2,
       "exits": {
         "SOUTH": "salt_coast:cliff_zigzag",
         "WEST": "salt_coast:tide_grove",
@@ -87,18 +90,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, pebble beach, driftwood",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:beach_west",
       "name": "Western Beach",
       "description": "The pebble beach narrows sharply westward as the cliff face curves inward. Tide-pools collect in the rock shelves here, dark with kelp and the slow patient movement of small things waiting for water.",
       "x": -1,
-      "y": 29,
+      "y": 3,
       "exits": {
         "SOUTH": "salt_coast:tide_grove",
         "EAST": "salt_coast:saltpoint_outskirts",
-        "NORTH": "salt_coast:western_cliffs"
+        "NORTHWEST": "salt_coast:western_cliffs"
       },
       "backgroundImage": "/assets/images/rooms/salt_coast_beach_west.webp",
       "departSound": "footstep_stone",
@@ -107,14 +111,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, tide pools, kelp",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:saltpoint_outskirts",
       "name": "Saltpoint Outskirts",
       "description": "A few stone-built houses begin to dot the path here, their roofs heavy with slate against the wind, walls white-washed with sea-lime. Smoke rises from a few chimneys; the village proper lies just ahead.",
-      "x": 1,
-      "y": 29,
+      "x": 0,
+      "y": 3,
       "exits": {
         "SOUTH": "salt_coast:driftwood_strand",
         "WEST": "salt_coast:beach_west",
@@ -127,14 +132,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, stone fishing village",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:saltpoint_square",
       "name": "Saltpoint Square",
       "description": "The heart of Saltpoint, a small open square paved in sea-worn flagstones around an old stone wellhead. The salt wind cuts through here even on still days. Doors open off in every direction: an inn west, a fishmonger's shop also west off the alley, a path east to the tide-pools, and the dock-road north.",
-      "x": 1,
-      "y": 30,
+      "x": 0,
+      "y": 4,
       "exits": {
         "SOUTH": "salt_coast:saltpoint_outskirts",
         "WEST": "salt_coast:saltpoint_inn",
@@ -149,14 +155,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, stone fishing village",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:saltpoint_inn",
       "name": "The Lantern & Net",
       "description": "A snug inn of stone and dark timber, its common room low-ceilinged and warm with peat-smoke. A great brass lantern hangs over the central table, cleaned salt-bright, and behind the bar a row of fishing nets serves as both decoration and curtain. Sage Iolanthe sits at the inn's quietest corner table with a stack of weathered scroll-cases beside her.",
-      "x": 0,
-      "y": 30,
+      "x": -1,
+      "y": 4,
       "exits": {
         "EAST": "salt_coast:saltpoint_square",
         "NORTH": "salt_coast:fishmonger"
@@ -169,14 +176,15 @@
       "imageStyle": "fantasy digital painting, rich colors, warm interior firelight, slightly painterly, fixed perspective, JRPG background, stage-like composition, cozy coastal inn interior",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:fishmonger",
       "name": "Selwyn's Fishmonger",
       "description": "A narrow shop of weathered planks, smelling sharply of salt and brine. Crates of dried fish and racks of cured kelp line the walls, and a chalkboard above the counter lists the day's prices. Selwyn Pierwick keeps the counter, ledger ready.",
-      "x": 0,
-      "y": 31,
+      "x": -1,
+      "y": 5,
       "exits": {
         "SOUTH": "salt_coast:saltpoint_inn",
         "WEST": "salt_coast:smugglers_cave",
@@ -190,14 +198,15 @@
       "imageStyle": "fantasy digital painting, rich colors, warm shop lantern light, slightly painterly, fixed perspective, JRPG background, stage-like composition, fishing village shop",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:smugglers_cave",
       "name": "Smuggler's Cave",
       "description": "A narrow sea-cave cut into the cliff base, the floor uneven and slick with weed. Old crates and lengths of rope are stacked against the back wall — clearly used recently, by someone who didn't pay tax on what they brought through.",
-      "x": -1,
-      "y": 31,
+      "x": -2,
+      "y": 5,
       "exits": {
         "EAST": "salt_coast:fishmonger"
       },
@@ -208,14 +217,15 @@
       "imageStyle": "fantasy digital painting, dim cave light, salt-damp stone, slightly painterly, fixed perspective, JRPG background, stage-like composition, sea cave",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:tide_pools",
       "name": "Tide Pools",
       "description": "A broad shelf of dark rock pocked with shallow sea-water pools at low tide. Sea-spiders the size of dogs scuttle between the rocks; carapaces glint dully in the grey light. The path bends north along the rocks, and a worn stone road runs east up toward the lighthouse ruin.",
-      "x": 2,
-      "y": 30,
+      "x": 1,
+      "y": 4,
       "exits": {
         "WEST": "salt_coast:saltpoint_square",
         "EAST": "salt_coast:lighthouse_ruin",
@@ -228,14 +238,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, tide flats, dangerous",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:lighthouse_ruin",
       "name": "Lighthouse Ruin",
       "description": "A great round tower of fitted stone, broken halfway up its height — the upper courses fallen long ago, the lantern-room and its mirror-wheel scattered as cold rubble across the rocks below. The doorway gapes empty. The base of the tower still smells faintly of old whale-oil. Eastward, ancient stone markers line the cliff edge, marking a forgotten road along the coast.",
-      "x": 3,
-      "y": 30,
+      "x": 2,
+      "y": 4,
       "exits": {
         "WEST": "salt_coast:tide_pools",
         "EAST": "first_seal:coastal_bluffs"
@@ -247,14 +258,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ruined lighthouse",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:saltpoint_dock",
       "name": "Saltpoint Dock",
       "description": "A low stone dock juts a short way into the cove, its pilings green with weed below the waterline. A few small fishing boats are tied up here, their sails furled. Captain Mara Tenwick stands at the end of the dock, looking out across the chop toward the half-submerged silhouette of the Drowned Chapel.",
-      "x": 1,
-      "y": 31,
+      "x": 0,
+      "y": 5,
       "exits": {
         "SOUTH": "salt_coast:saltpoint_square",
         "NORTH": "salt_coast:long_pier",
@@ -268,14 +280,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, stone dock, distant chapel ruin",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:long_pier",
       "name": "Long Pier",
       "description": "An older wooden pier extending well past the dock proper, the boards spongy with damp. The chop hits harder this far out, and the slow toll of the chapel's broken bell carries across the water more clearly here.",
-      "x": 1,
-      "y": 32,
+      "x": 0,
+      "y": 6,
       "exits": {
         "SOUTH": "salt_coast:saltpoint_dock",
         "WEST": "salt_coast:wreck_field"
@@ -287,14 +300,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, wooden pier",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:wreck_field",
       "name": "Wreck Field",
       "description": "The shore here is choked with the weather-greyed bones of half a dozen wrecked ships, their hulls split open and rotted from the inside out. The masts that still stand are leaning. Whatever pulled these ships under was not the storm.",
-      "x": 0,
-      "y": 32,
+      "x": -1,
+      "y": 6,
       "exits": {
         "SOUTH": "salt_coast:fishmonger",
         "EAST": "salt_coast:long_pier"
@@ -306,17 +320,18 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ship graveyard",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:western_cliffs",
       "name": "Western Cliffs",
       "description": "The shore turns to a high cliff again here, dropping straight down to angry white water. A path runs along the cliff edge, narrow and exposed. To the west, a trail of cracked blackened earth descends into the Ashwood Burn — a vast charred forest destroyed decades ago by a pyromancer's failed experiment.",
-      "x": -1,
-      "y": 30,
+      "x": -2,
+      "y": 4,
       "exits": {
-        "SOUTH": "salt_coast:beach_west",
-        "WEST": "ashwood:scorched_trail"
+        "WEST": "ashwood:scorched_trail",
+        "SOUTHEAST": "salt_coast:beach_west"
       },
       "backgroundImage": "/assets/images/rooms/salt_coast_western_cliffs.webp",
       "departSound": "footstep_stone",
@@ -325,14 +340,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, exposed cliff path",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:chapel_path",
       "name": "Chapel Path",
       "description": "A worn stone causeway runs eastward from the dock toward the Drowned Chapel itself — exposed at low tide, half-submerged at high. The flagstones are slick with weed. The chapel's bulk grows steadily larger as you walk.",
-      "x": 2,
-      "y": 31,
+      "x": 1,
+      "y": 5,
       "exits": {
         "WEST": "salt_coast:saltpoint_dock",
         "EAST": "salt_coast:north_lookout",
@@ -346,14 +362,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, tidal causeway, chapel ruin",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:north_lookout",
       "name": "Northern Lookout",
       "description": "A small rocky promontory looking north along the coast, where the cliffs curve away into the haze of distance. From here you can see the dark line of a salt marsh many miles away, and beyond that, nothing you can name.",
-      "x": 3,
-      "y": 31,
+      "x": 2,
+      "y": 5,
       "exits": {
         "WEST": "salt_coast:chapel_path"
       },
@@ -364,14 +381,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, headland vista",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:chapel_steps",
       "name": "Chapel Steps",
       "description": "A flight of broad stone steps leads up out of the tidal flats and onto the broken outer porch of the Drowned Chapel. The lower steps are polished smooth by tide and weed; the upper, dry-stained black with old salt. A great archway lies ahead.",
-      "x": 2,
-      "y": 32,
+      "x": 1,
+      "y": 6,
       "exits": {
         "SOUTH": "salt_coast:chapel_path",
         "NORTH": "salt_coast:chapel_threshold"
@@ -383,14 +401,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, sunken chapel approach",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "salt_coast:chapel_threshold",
       "name": "Chapel Threshold",
       "description": "The great arched doorway of the Drowned Chapel yawns black before you. The stone is salt-bleached and pocked, the carved relief above the lintel almost gone — but you can still make out, faintly, the sealed-eye sigil. Cold air sighs out from inside, smelling of brine and a deeper, older rot.",
-      "x": 2,
-      "y": 33,
+      "x": 1,
+      "y": 7,
       "exits": {
         "SOUTH": "salt_coast:chapel_steps",
         "NORTH": "drowned_chapel:vestibule"
@@ -402,7 +421,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric coastal lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, sunken chapel entrance, ominous",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     }
   ],
   "npcs": [

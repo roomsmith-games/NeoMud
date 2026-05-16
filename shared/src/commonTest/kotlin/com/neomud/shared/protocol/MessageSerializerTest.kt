@@ -142,8 +142,8 @@ class MessageSerializerTest {
     @Test
     fun testMapDataRoundTrip() {
         val rooms = listOf(
-            MapRoom("town:square", "Town Square", 0, 0, mapOf(Direction.NORTH to "town:gate"), hasPlayers = true),
-            MapRoom("town:gate", "North Gate", 0, 1, mapOf(Direction.SOUTH to "town:square"))
+            MapRoom("town:square", "Town Square", 0, 0, exits = mapOf(Direction.NORTH to "town:gate"), hasPlayers = true),
+            MapRoom("town:gate", "North Gate", 0, 1, exits = mapOf(Direction.SOUTH to "town:square"))
         )
         val original = ServerMessage.MapData(rooms, "town:square")
         val json = MessageSerializer.encodeServerMessage(original)
@@ -156,11 +156,11 @@ class MessageSerializerTest {
         val rooms = listOf(
             MapRoom(
                 "town:square", "Town Square", 0, 0,
-                mapOf(Direction.NORTH to "town:gate", Direction.EAST to "town:shop"),
+                exits = mapOf(Direction.NORTH to "town:gate", Direction.EAST to "town:shop"),
                 lockedExits = setOf(Direction.NORTH),
                 hiddenExits = setOf(Direction.EAST)
             ),
-            MapRoom("town:gate", "North Gate", 0, 1, mapOf(Direction.SOUTH to "town:square"))
+            MapRoom("town:gate", "North Gate", 0, 1, exits = mapOf(Direction.SOUTH to "town:square"))
         )
         val original = ServerMessage.MapData(rooms, "town:square")
         val json = MessageSerializer.encodeServerMessage(original)
@@ -171,8 +171,8 @@ class MessageSerializerTest {
     @Test
     fun testMapDataWithVisitedRoomsRoundTrip() {
         val rooms = listOf(
-            MapRoom("town:square", "Town Square", 0, 0, mapOf(Direction.NORTH to "town:gate")),
-            MapRoom("town:gate", "North Gate", 0, 1, mapOf(Direction.SOUTH to "town:square"))
+            MapRoom("town:square", "Town Square", 0, 0, exits = mapOf(Direction.NORTH to "town:gate")),
+            MapRoom("town:gate", "North Gate", 0, 1, exits = mapOf(Direction.SOUTH to "town:square"))
         )
         val visited = setOf("town:square", "town:gate", "town:market")
         val original = ServerMessage.MapData(rooms, "town:square", visited)
@@ -186,7 +186,7 @@ class MessageSerializerTest {
     @Test
     fun testMapDataVisitedRoomsDefaultEmpty() {
         val rooms = listOf(
-            MapRoom("town:square", "Town Square", 0, 0, mapOf(Direction.NORTH to "town:gate"))
+            MapRoom("town:square", "Town Square", 0, 0, exits = mapOf(Direction.NORTH to "town:gate"))
         )
         val original = ServerMessage.MapData(rooms, "town:square")
         val json = MessageSerializer.encodeServerMessage(original)
@@ -198,7 +198,7 @@ class MessageSerializerTest {
     @Test
     fun testMapDataDefaultFieldsBackwardCompatible() {
         // MapRoom with no lockedExits/hiddenExits should deserialize with empty defaults
-        val room = MapRoom("r1", "Room", 0, 0, mapOf(Direction.NORTH to "r2"))
+        val room = MapRoom("r1", "Room", 0, 0, exits = mapOf(Direction.NORTH to "r2"))
         val original = ServerMessage.MapData(listOf(room), "r1")
         val json = MessageSerializer.encodeServerMessage(original)
         val decoded = MessageSerializer.decodeServerMessage(json)

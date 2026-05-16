@@ -12,11 +12,11 @@
       "id": "skyveil_reach:mountain_pass",
       "name": "Mountain Pass",
       "description": "The bone-strewn wastes fall away behind you as the terrain rises sharply into dark stone foothills. A narrow pass cuts between two sheer cliff faces, the rock scarred with ancient tool marks where the Wardens once widened this road. Wind funnels through the gap with enough force to stagger you, carrying the smell of wet stone and ozone. The switchback trail above is barely visible through curtains of low cloud.",
-      "x": 3,
-      "y": 20,
+      "x": 0,
+      "y": 0,
       "exits": {
-        "SOUTH": "bone_wastes:bone_wastes_edge",
-        "NORTH": "skyveil_reach:highland_trail"
+        "NORTH": "skyveil_reach:highland_trail",
+        "UP": "bone_wastes:bone_wastes_edge"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_mountain_pass.webp",
       "departSound": "footstep_stone",
@@ -45,14 +45,15 @@
             "failMessage": "Sharp rocks tear at your legs as you tumble down the scree slope, slamming against a boulder."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "skyveil_reach:highland_trail",
       "name": "Highland Trail",
       "description": "An exposed ridge trail climbs steeply along the mountain's shoulder, offering dizzying views of the Bone Wastes far below. The path is barely wide enough for two abreast, its edges crumbling into empty air. Warden waymarkers line the route -- carved stones with the sealed-eye symbol, most weathered to illegibility. To the east, a ruined structure clings to a rocky spur. The wind howls through gaps in the stone with a voice that sounds almost human.",
-      "x": 3,
-      "y": 19,
+      "x": 0,
+      "y": 1,
       "exits": {
         "SOUTH": "skyveil_reach:mountain_pass",
         "NORTH": "skyveil_reach:windswept_crossing",
@@ -64,14 +65,15 @@
       "imageStyle": "fantasy environment, mountain ridge trail, vertiginous height, storm light, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, lush vegetation",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:crumbling_watchtower",
       "name": "Crumbling Watchtower",
       "description": "The remains of a Warden watchtower perch on a rocky spur, three of its four walls collapsed into rubble. The surviving wall still bears carved reliefs depicting armored figures standing vigil over the mountain passes. A cracked observation slit looks out over the Bone Wastes, and rusted iron brackets suggest signal fires were once lit here. The floor is treacherous -- loose flagstones over a drop that goes down farther than the eye can follow.",
-      "x": 4,
-      "y": 19,
+      "x": 1,
+      "y": 1,
       "exits": {
         "WEST": "skyveil_reach:highland_trail"
       },
@@ -81,14 +83,15 @@
       "imageStyle": "fantasy environment, ruined watchtower interior, ancient military outpost, crumbling stone, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, intact building",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:windswept_crossing",
       "name": "Windswept Crossing",
       "description": "Four paths converge at a broad shelf of bare stone, scoured clean by the relentless mountain wind. A massive Warden waystone stands at the center -- a pillar of dark granite twice the height of a man, its sealed-eye symbol still faintly luminous despite centuries of erosion. The wind changes direction unpredictably here, creating swirling vortices of grit and snow that sting exposed skin. To the west, rows of pale shapes are visible through the haze. To the east, a ridge crackles with distant lightning.",
-      "x": 3,
-      "y": 18,
+      "x": 0,
+      "y": 2,
       "exits": {
         "SOUTH": "skyveil_reach:highland_trail",
         "NORTH": "skyveil_reach:skyveil_plateau",
@@ -101,14 +104,15 @@
       "imageStyle": "fantasy environment, mountain crossroads, Warden waystone, dramatic wind, storm atmosphere, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, lush vegetation, clear sky",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:warden_graveyard",
       "name": "Warden Graveyard",
       "description": "Rows of weathered tombstones march across a sheltered depression in the mountainside, each carved with the sealed-eye symbol and a name in the old Warden script. The dead were interred standing, in the Warden tradition, their graves marked by upright stone slabs that lean at angles after centuries of frost heave. Some graves have been disturbed -- the earth sunken or pushed outward from below, as if the occupants tried to claw their way free. A cold, greenish light seeps from the deepest cracks.",
-      "x": 2,
-      "y": 18,
+      "x": -1,
+      "y": 2,
       "exits": {
         "EAST": "skyveil_reach:windswept_crossing",
         "SOUTH": "skyveil_reach:forgotten_shrine",
@@ -141,14 +145,15 @@
             "failMessage": "A shard of grave marker catches you across the ribs and bone fragments pepper your face and arms."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "skyveil_reach:wind_carved_cave",
       "name": "Wind-Carved Cave",
       "description": "A natural cave hollowed from the mountainside by centuries of wind erosion, its entrance a smooth oval worn into the rock face. The interior is surprisingly deep, the walls sculpted into flowing organic shapes by the tireless work of grit-laden air. The wind moans through the cave in a low, continuous drone that sets the teeth on edge. Old Warden supply caches -- rotted crates and corroded metal containers -- line the back wall, long since looted of anything useful.",
-      "x": 1,
-      "y": 18,
+      "x": -2,
+      "y": 2,
       "exits": {
         "EAST": "skyveil_reach:warden_graveyard"
       },
@@ -158,14 +163,15 @@
       "imageStyle": "fantasy environment, wind-carved cave interior, smooth organic rock, atmospheric, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, bright, colorful",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:forgotten_shrine",
       "name": "Forgotten Shrine",
       "description": "A small stone shrine nestled in a sheltered nook of the mountainside, its entrance framed by two carved pillars depicting Wardens in ceremonial armor. The shrine's interior is surprisingly well-preserved -- the sealed-eye symbol on the back wall still glows with a faint golden warmth, and offerings have been left on the altar: mountain flowers that have not wilted despite the cold, a cup of water that has not frozen. Someone tends this place still, in secret.",
-      "x": 2,
-      "y": 19,
+      "x": -1,
+      "y": 1,
       "exits": {
         "NORTH": "skyveil_reach:warden_graveyard"
       },
@@ -185,18 +191,19 @@
       "imageStyle": "fantasy environment, sacred shrine interior, golden glow, Warden symbols, warm reverent atmosphere, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, dark, corrupted, ruined",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:storm_ridge",
       "name": "Storm Ridge",
       "description": "A jagged ridge of dark stone juts eastward from the crossing, its surface blackened and fused where lightning has struck again and again over the centuries. The air here is thick with ozone and crackles with static -- metal objects hum and spark, and the hair on your arms stands straight. Deep score marks in the rock trace the paths of old lightning channels, branching like river deltas frozen in stone. The ridge offers no shelter from the storm above.",
-      "x": 4,
-      "y": 18,
+      "x": 1,
+      "y": 2,
       "exits": {
         "WEST": "skyveil_reach:windswept_crossing",
-        "NORTH": "skyveil_reach:sky_bridge",
-        "EAST": "skyveil_reach:precipice_lookout"
+        "EAST": "skyveil_reach:precipice_lookout",
+        "NORTHEAST": "skyveil_reach:sky_bridge"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_storm_ridge.webp",
       "departSound": "footstep_stone",
@@ -225,14 +232,15 @@
             "failMessage": "The lightning catches you mid-stride, every muscle seizing as current tears through your body."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "skyveil_reach:precipice_lookout",
       "name": "Precipice Lookout",
       "description": "The ridge terminates in a sheer drop, a promontory of blackened stone jutting out over a cloud-filled void. The view is staggering -- through gaps in the storm, the entire eastern face of the mountain range is visible, peak after peak marching to the horizon in shades of grey and white. A Warden signal platform stands at the promontory's tip, its fire channels cold and filled with rainwater. The wind is savage here, coming in gusts strong enough to push you toward the edge.",
-      "x": 5,
-      "y": 18,
+      "x": 2,
+      "y": 2,
       "exits": {
         "WEST": "skyveil_reach:storm_ridge"
       },
@@ -242,17 +250,18 @@
       "imageStyle": "fantasy environment, mountain promontory, extreme height, panoramic storm vista, dramatic atmosphere, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, safe, enclosed, lush vegetation",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:sky_bridge",
       "name": "Sky Bridge",
       "description": "A massive stone bridge spans the chasm between two peaks, built by the Wardens to connect the lower approaches to the upper mountain. The bridge is a single unsupported arch of fitted stone blocks, each carved with interlocking Warden seals that once held the structure together through magic as much as masonry. The seals are failing now, cracks webbing through the keystone, and the wind threatens to tear you from the span with every gust. The chasm below is bottomless cloud. Crossing feels like walking on nothing.",
-      "x": 4,
-      "y": 17,
+      "x": 2,
+      "y": 3,
       "exits": {
-        "SOUTH": "skyveil_reach:storm_ridge",
-        "NORTH": "skyveil_reach:eagle_aerie"
+        "NORTH": "skyveil_reach:eagle_aerie",
+        "SOUTHWEST": "skyveil_reach:storm_ridge"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_sky_bridge.webp",
       "departSound": "footstep_stone",
@@ -281,14 +290,15 @@
             "failMessage": "You plunge through the gap and barely catch a protruding stone, the impact slamming the breath from your lungs."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "skyveil_reach:eagle_aerie",
       "name": "Eagle Aerie",
       "description": "A high nesting ground crowns the peak beyond the sky bridge, its rocky surface littered with enormous nests woven from branches, bone, and strips of old Warden banners. Feathers as long as your forearm drift on the wind. The nests are large enough to sleep in, built by whatever massive raptors have claimed this height as their domain. The view from the aerie is commanding -- the entire mountain range spreads below, and the dark bulk of Stormcrown Keep is visible above to the northwest, wreathed in perpetual lightning.",
-      "x": 4,
-      "y": 16,
+      "x": 2,
+      "y": 4,
       "exits": {
         "SOUTH": "skyveil_reach:sky_bridge"
       },
@@ -298,19 +308,20 @@
       "imageStyle": "fantasy environment, mountain aerie, raptor nests, panoramic vista, storm atmosphere, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, lush vegetation, enclosed",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:skyveil_plateau",
       "name": "Skyveil Plateau",
       "description": "Above the crossing, the mountain opens into a broad plateau that gives the zone its name -- a shelf of stone perpetually veiled by low-hanging storm clouds that obscure the peaks above. The plateau was once a Warden staging ground, and the foundations of barracks, storehouses, and a command post are still visible as raised stone platforms with mounting holes for palisade walls. The sealed-eye symbol is carved into the central platform, large enough to be seen from the air. Paths lead in every direction from this central hub.",
-      "x": 3,
-      "y": 17,
+      "x": 0,
+      "y": 3,
       "exits": {
         "SOUTH": "skyveil_reach:windswept_crossing",
-        "NORTH": "skyveil_reach:archons_camp",
         "WEST": "skyveil_reach:ruined_barracks",
-        "EAST": "skyveil_reach:cliffside_path"
+        "EAST": "skyveil_reach:cliffside_path",
+        "NORTHWEST": "skyveil_reach:archons_camp"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_skyveil_plateau.webp",
       "departSound": "footstep_stone",
@@ -318,14 +329,15 @@
       "imageStyle": "fantasy environment, mountain plateau, Warden staging ground, cloud veil, dramatic storm, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, lush vegetation, clear sky",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:ruined_barracks",
       "name": "Ruined Barracks",
       "description": "The collapsed remains of a Warden barracks sprawl across a shelf of rock west of the plateau. Three of the four walls have fallen inward, burying whatever was inside under tons of fitted stone. The fourth wall still stands, its arrow slits staring blindly at the mountain. Inside the rubble, fragments of daily life are visible -- a corroded cook-pot, the remains of a bunk frame, a sealed-eye pennant so faded it is barely recognizable. Something has been digging through the debris recently, leaving fresh claw marks on the stone.",
-      "x": 2,
-      "y": 17,
+      "x": -1,
+      "y": 3,
       "exits": {
         "EAST": "skyveil_reach:skyveil_plateau",
         "WEST": "skyveil_reach:armory_ruins"
@@ -357,14 +369,15 @@
             "failMessage": "The falling lintel clips your shoulder and drives you to your knees under a shower of stone fragments."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "skyveil_reach:armory_ruins",
       "name": "Armory Ruins",
       "description": "The old Warden armory is in better shape than the barracks -- its reinforced walls were built to withstand siege, and while the roof has caved in, the walls themselves still stand. Empty weapon racks line the interior, their contents long since looted or corroded to uselessness. A few iron brackets still hold the rusted ghosts of halberds. The forge at the back of the room is cold and cracked, its bellows rotted away, but the anvil remains -- dark iron, unmarked by time, still ringing faintly when the wind catches it just right.",
-      "x": 1,
-      "y": 17,
+      "x": -2,
+      "y": 3,
       "exits": {
         "EAST": "skyveil_reach:ruined_barracks"
       },
@@ -374,17 +387,18 @@
       "imageStyle": "fantasy environment, ruined armory interior, military storage, ancient forge, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, intact roof, lush vegetation",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:cliffside_path",
       "name": "Cliffside Path",
       "description": "A narrow path hugs the eastern cliff face, barely wide enough for single file. Iron pitons hammered into the rock by Warden engineers provide precarious hand-holds, most rusted but still anchored. The drop to the right is absolute -- hundreds of feet of empty air before the clouds close in. Frozen spray from an unseen waterfall coats the stones in a treacherous glaze of ice, and the path glistens in the storm light. Every step requires concentration.",
-      "x": 5,
-      "y": 17,
+      "x": 1,
+      "y": 3,
       "exits": {
         "WEST": "skyveil_reach:skyveil_plateau",
-        "NORTH": "skyveil_reach:frozen_falls"
+        "NORTHWEST": "skyveil_reach:frozen_falls"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_cliffside_path.webp",
       "departSound": "footstep_stone",
@@ -392,16 +406,17 @@
       "imageStyle": "fantasy environment, cliff path, vertiginous height, ice-glazed stone, dramatic atmosphere, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, wide safe path, lush vegetation",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:frozen_falls",
       "name": "Frozen Falls",
       "description": "A waterfall cascading down the cliff face has frozen solid, transforming into a wall of blue-white ice that towers overhead. The ice is ancient and compressed, translucent enough to see dark shapes trapped within -- rocks, branches, and what might be the silhouette of an armored figure, perfectly preserved. Meltwater seeps from the base of the falls, feeding a shallow pool that has frozen into a mirror-smooth sheet. The air here is bitterly cold, and the silence after the constant wind is startling.",
-      "x": 5,
-      "y": 16,
+      "x": 0,
+      "y": 4,
       "exits": {
-        "SOUTH": "skyveil_reach:cliffside_path"
+        "SOUTHEAST": "skyveil_reach:cliffside_path"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_frozen_falls.webp",
       "departSound": "footstep_stone",
@@ -409,18 +424,19 @@
       "imageStyle": "fantasy environment, frozen waterfall, ancient ice, translucent blue-white, cold atmosphere, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, warm, flowing water, lush vegetation",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:archons_camp",
       "name": "Archon's Camp",
       "description": "A deep natural alcove in the mountainside has been expanded by careful stonework into a defensible camp. Fresh Warden symbols are carved into the walls -- not ancient and faded like the ones below, but maintained by a living hand. A small forge-fire burns in a stone hearth, its smoke drawn out through a natural chimney. Weapon racks, armor stands, and shelves of scrolls line the walls. The camp has the feel of a place where someone has chosen to stand watch alone for a very long time, maintaining discipline against the encroaching corruption.",
-      "x": 3,
-      "y": 16,
+      "x": -1,
+      "y": 4,
       "exits": {
-        "SOUTH": "skyveil_reach:skyveil_plateau",
         "NORTH": "skyveil_reach:summit_approach",
-        "EAST": "skyveil_reach:warden_memorial"
+        "NORTHEAST": "skyveil_reach:warden_memorial",
+        "SOUTHEAST": "skyveil_reach:skyveil_plateau"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_archons_camp.webp",
       "departSound": "footstep_stone",
@@ -438,16 +454,17 @@
       "imageStyle": "fantasy environment, mountain camp interior, Warden outpost, warm firelight, lived-in, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, abandoned, ruined, dark",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:warden_memorial",
       "name": "Warden Memorial",
       "description": "A large stone memorial stands on an exposed shelf east of the camp, carved from a single block of dark granite the size of a small house. The names of fallen Wardens are inscribed across every surface in precise script, hundreds of them, each accompanied by the sealed-eye symbol and a date. The most recent names are carved deeper, with more care -- these were not ancient history to whoever wrote them, but people remembered and mourned. A ring of smaller standing stones surrounds the memorial, their surfaces inscribed with protective wards that still faintly glow.",
-      "x": 4,
-      "y": 15,
+      "x": 0,
+      "y": 5,
       "exits": {
-        "WEST": "skyveil_reach:archons_camp"
+        "SOUTHWEST": "skyveil_reach:archons_camp"
       },
       "backgroundImage": "/assets/images/rooms/skyveil_reach_warden_memorial.webp",
       "departSound": "footstep_stone",
@@ -456,14 +473,15 @@
       "imageStyle": "fantasy environment, memorial monument, dark granite, faintly glowing wards, somber reverence, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, desert, cheerful, bright colors",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "skyveil_reach:summit_approach",
       "name": "Summit Approach",
       "description": "The final stretch of mountain before Stormcrown Keep. The path narrows to a wide Warden-built road, its flagstones cracked but still serviceable, climbing the last hundred yards toward the massive gatehouse visible through the storm above. The corruption from the Keep is visible now -- dark veins of energy run through the rock itself, pulsing like a heartbeat. The air tastes of copper and ozone, and the storm is at its worst here, with lightning striking the road every few seconds.",
-      "x": 3,
-      "y": 15,
+      "x": -1,
+      "y": 5,
       "exits": {
         "SOUTH": "skyveil_reach:archons_camp",
         "NORTH": "skyveil_reach:stormcrown_gates"
@@ -495,14 +513,15 @@
             "failMessage": "Corrupted Warden magic slams into you, the ward's ancient defensive power turned hostile and burning."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "skyveil_reach:stormcrown_gates",
       "name": "Stormcrown Gates",
       "description": "The gates of Stormcrown Keep loom before you -- massive doors of dark iron set into a gatehouse of fitted stone that merges seamlessly with the mountain peak itself. The doors stand partially open, warped by the corruption that pulses through the structure like a disease. Beyond them, a passage leads into the Keep's interior, lit by the sickly green glow of inverted Warden seals. The storm is at its most intense here, lightning striking the gatehouse towers in a continuous barrage that the corrupted structure drinks in hungrily.",
-      "x": 3,
-      "y": 14,
+      "x": -1,
+      "y": 6,
       "exits": {
         "SOUTH": "skyveil_reach:summit_approach",
         "NORTH": "stormcrown_keep:gatehouse"
@@ -513,7 +532,8 @@
       "imageStyle": "fantasy environment, fortress gates, dark iron, green corruption glow, lightning storm, dramatic climax, game background",
       "imageNegativePrompt": "characters, people, modern, sci-fi, tropical, peaceful, clear sky, welcoming, bright",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     }
   ],
   "npcs": [

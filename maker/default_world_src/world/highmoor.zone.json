@@ -17,7 +17,7 @@
       "name": "Plateau Threshold",
       "description": "The trail levels out abruptly, the air thinning into a steady, cold wind. Behind you the ice-cracked summit path drops back into the foothills; ahead, the steppes open out — a long flat sweep of brown grass and low cairns, ringed by far peaks.",
       "x": 0,
-      "y": 18,
+      "y": 0,
       "exits": {
         "SOUTH": "foothills:summit_path",
         "NORTH": "highmoor:gateway_pillars"
@@ -29,14 +29,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest, jungle",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:gateway_pillars",
       "name": "Gateway Pillars",
       "description": "Two leaning monoliths flank the trail, each as tall as a watchtower and carved with the same sealed-eye sigil Old Wren's token bears. Wind has hollowed them into thin shapes that whistle low when the gusts shift.",
       "x": 0,
-      "y": 19,
+      "y": 1,
       "exits": {
         "SOUTH": "highmoor:south_climb",
         "NORTH": "highmoor:south_gully"
@@ -48,14 +49,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, ancient ritual stones",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest, jungle",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:south_gully",
       "name": "Wind Gully",
       "description": "A long shallow gully runs east-west here, scoured by the wind into a natural channel of pale grass. Trails branch off in three directions: north toward an old camp, west into a deeper draw, east toward a cluster of leaning stones.",
       "x": 0,
-      "y": 20,
+      "y": 2,
       "exits": {
         "SOUTH": "highmoor:gateway_pillars",
         "NORTH": "highmoor:watcher_camp",
@@ -69,14 +71,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest, jungle",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:windswept_plain",
       "name": "Windswept Plain",
       "description": "An expanse of pale grass scoured nearly flat by the constant wind. Bones of long-dead livestock surface here and there in the dry soil. The trail bends west toward a low cluster of tents and the thin smoke of a banked fire.",
       "x": -1,
-      "y": 20,
+      "y": 2,
       "exits": {
         "EAST": "highmoor:south_gully",
         "WEST": "highmoor:trader_waystop"
@@ -88,14 +91,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest, jungle",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:trader_waystop",
       "name": "Trader's Waystop",
       "description": "A small huddle of leather tents pitched in the lee of a stone outcrop, sheltered from the worst of the wind. A pack mule grazes on what little grass it can find, and a wide-shouldered trader sits by a banked fire, his wares spread out on a folded blanket.",
       "x": -2,
-      "y": 20,
+      "y": 2,
       "exits": {
         "EAST": "highmoor:windswept_plain"
       },
@@ -107,18 +111,18 @@
       "imageStyle": "fantasy digital painting, rich warm earth tones, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, sheltered camp",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:watcher_camp",
       "name": "Watcher's Camp",
       "description": "A spare camp set on a low rise, a single weathered tent staked against the wind, a small fire burning steadily in a pit ringed with sealed-eye sigils. The camp commands a view of the steppes in every direction — east toward the great burial mound, north into the cairn field. Vexa, the Last Watcher, keeps her vigil here.",
       "x": 0,
-      "y": 21,
+      "y": 3,
       "exits": {
         "SOUTH": "highmoor:south_gully",
-        "NORTH": "highmoor:cairn_field",
-        "EAST": "highmoor:barrow_path"
+        "NORTH": "highmoor:cairn_field"
       },
       "backgroundImage": "/assets/images/rooms/highmoor_watcher_camp.webp",
       "departSound": "footstep_grass",
@@ -128,14 +132,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, vigilant",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:eastern_tor",
       "name": "Eastern Tor",
       "description": "A weathered tor of stacked granite rises from the plain, its base ringed by smaller boulders that have rolled down over the centuries. To the north a stone-paved track leads on toward a circle of leaning stones; the south falls away in scree.",
       "x": 1,
-      "y": 20,
+      "y": 2,
       "exits": {
         "WEST": "highmoor:south_gully",
         "NORTH": "highmoor:sentinel_stones"
@@ -147,17 +152,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, granite tor",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:sentinel_stones",
       "name": "Sentinel Stones",
       "description": "A ring of leaning stones, each tilted slightly toward the rising sun. The eastmost stone is taller than the rest, carved with a clear sigil — a sun rising over a horizon. The wind stops here, oddly, as if the stones themselves still listen.",
       "x": 1,
-      "y": 21,
+      "y": 3,
       "exits": {
         "SOUTH": "highmoor:eastern_tor",
-        "NORTH": "highmoor:offering_terrace"
+        "NORTH": "highmoor:offering_terrace",
+        "EAST": "highmoor:barrow_path"
       },
       "backgroundImage": "/assets/images/rooms/highmoor_sentinel_stones.webp",
       "departSound": "footstep_stone",
@@ -185,14 +192,15 @@
             "alreadySolvedMessage": "The Sentinel of the Dawn is silent. Its watch is given."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "highmoor:offering_terrace",
       "name": "Star Cairn Terrace",
       "description": "A flat terrace cut into the plateau, paved with old slate. At its center stands a small tight-built cairn topped with a flat stone bearing a five-pointed star, its lines worn but legible. The southern face of the cairn is darkest, as if it has stared a long time south into the night.",
       "x": 1,
-      "y": 22,
+      "y": 4,
       "exits": {
         "SOUTH": "highmoor:sentinel_stones",
         "NORTH": "highmoor:broken_obelisk"
@@ -223,14 +231,15 @@
             "alreadySolvedMessage": "The Star Cairn is silent. Its watch is given."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "highmoor:broken_obelisk",
       "name": "Storm Anvil",
       "description": "A massive black obelisk lies cracked into three pieces here, struck (or so the chiselled words on its base claim) by a single bolt of lightning the night the seals were sworn. Even broken, the central fragment bears a clear lightning-bolt-into-anvil sigil. The wind seems to shy around it.",
       "x": 1,
-      "y": 23,
+      "y": 5,
       "exits": {
         "SOUTH": "highmoor:offering_terrace",
         "NORTH": "highmoor:raven_perch"
@@ -261,18 +270,19 @@
             "alreadySolvedMessage": "The Anvil of Storms is silent. Its watch is given."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "highmoor:raven_perch",
       "name": "Raven Perch",
       "description": "A small rocky knoll black with raven droppings, the carrion birds wheeling overhead in a slow, watchful circle. Tufts of black feather drift in the grass between the stones. The trail forks here — west toward a ring of upright stones, north into deeper steppe.",
       "x": 1,
-      "y": 24,
+      "y": 6,
       "exits": {
         "SOUTH": "highmoor:broken_obelisk",
-        "WEST": "highmoor:standing_stones",
-        "NORTH": "highmoor:north_pass"
+        "NORTH": "highmoor:north_pass",
+        "SOUTHWEST": "highmoor:standing_stones"
       },
       "backgroundImage": "/assets/images/rooms/highmoor_raven_perch.webp",
       "departSound": "footstep_stone",
@@ -281,14 +291,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:north_pass",
       "name": "Northern Pass",
       "description": "The plateau begins to fold in on itself here, ridges rising on either side and the wind carrying a real salt tang now. The fallen stone that once choked the trail has been cleared aside — recently, by no hand you can name — and the path leads down toward a far hazy horizon that is unmistakably the sea.",
       "x": 1,
-      "y": 25,
+      "y": 7,
       "exits": {
         "SOUTH": "highmoor:raven_perch",
         "NORTH": "salt_coast:cliff_descent"
@@ -300,18 +311,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, far horizon",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:standing_stones",
       "name": "Standing Stones",
       "description": "A close ring of upright standing stones, each leaning slightly west toward the setting sun. The westmost stone is the broadest, its face carved with a clear sun setting behind a hill. Long shadows lean across the ring even at midday.",
       "x": 0,
-      "y": 24,
+      "y": 5,
       "exits": {
-        "EAST": "highmoor:raven_perch",
         "SOUTH": "highmoor:cairn_field",
-        "WEST": "highmoor:hermit_outpost"
+        "WEST": "highmoor:hermit_outpost",
+        "NORTHEAST": "highmoor:raven_perch"
       },
       "backgroundImage": "/assets/images/rooms/highmoor_standing_stones.webp",
       "departSound": "footstep_stone",
@@ -339,14 +351,15 @@
             "alreadySolvedMessage": "The Watcher of Dusk is silent. Its watch is given."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "highmoor:cairn_field",
       "name": "Cairn Field",
       "description": "Hundreds of small piled-stone cairns crowd the slope here, none higher than a man's knee, each marking the burial of someone the Wardens chose to honor. Their names are gone; only the stones remember. The grass between them grows in tight patient tufts.",
       "x": 0,
-      "y": 23,
+      "y": 4,
       "exits": {
         "NORTH": "highmoor:standing_stones",
         "SOUTH": "highmoor:watcher_camp",
@@ -359,14 +372,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, mass burial cairns",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:lost_shrine",
       "name": "Lost Shrine",
       "description": "A small stone-roofed shrine half-sunk into the soil, its altar shattered but the wall behind it intact. Stone tablets mortared into the wall bear the Watcher's Litany, the carved letters still clear: ‘First the Sentinel of the Dawn, then the Watcher of Dusk; the Anvil of Storms answers third, and last the Star Cairn of the South.’ A side note adds: ‘the gate within answers only when the four are given.’",
       "x": -1,
-      "y": 23,
+      "y": 4,
       "exits": {
         "EAST": "highmoor:cairn_field",
         "WEST": "highmoor:dry_creek",
@@ -380,14 +394,15 @@
       "imageStyle": "fantasy digital painting, rich colors, soft sanctuary light, slightly painterly, fixed perspective, JRPG background, stage-like composition, ancient shrine interior",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:dry_creek",
       "name": "Dry Creek Bed",
       "description": "A long-dead streambed runs east-west through the plateau, its bed paved with smooth pebbles bleached by years of sun. A few sun-bleached bones lie among the stones — too small to be human, too long to be hare.",
       "x": -2,
-      "y": 23,
+      "y": 4,
       "exits": {
         "EAST": "highmoor:lost_shrine",
         "NORTH": "highmoor:western_tor",
@@ -400,14 +415,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, dry watercourse",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:wolfden",
       "name": "Wolf Den",
       "description": "A dark hollow in the side of a low rise, the soil around it churned with old paw prints. The smell of musk is strong. A few cracked bones — these unmistakably human — lie at the entrance, picked clean.",
       "x": -2,
-      "y": 22,
+      "y": 3,
       "exits": {
         "NORTH": "highmoor:dry_creek"
       },
@@ -418,14 +434,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, predator den",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:hermit_outpost",
       "name": "Hermit's Outpost",
       "description": "A spare stone hut crouches against a low boulder, its single door long since rotted off the leather hinges. A soot-stained hearth still holds a circle of warmth, and a small pile of dry firewood stands stacked with surprising care, as if someone was here recently.",
       "x": -1,
-      "y": 24,
+      "y": 5,
       "exits": {
         "EAST": "highmoor:standing_stones",
         "SOUTH": "highmoor:lost_shrine",
@@ -439,14 +456,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, lonely hut",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:western_tor",
       "name": "Western Tor",
       "description": "A weathered tor of dark stone rises sharply from the plain, the ground at its base littered with split flint and the bones of small game. Fragments of an old leather scout's pack lie among the stones — torn, by something larger than wolves.",
       "x": -2,
-      "y": 24,
+      "y": 5,
       "exits": {
         "EAST": "highmoor:hermit_outpost",
         "SOUTH": "highmoor:dry_creek"
@@ -458,16 +476,17 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, granite tor",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:barrow_path",
       "name": "Barrow Path",
       "description": "A worn track of stone slabs runs east here, leading away from the watcher's camp toward a low grass-covered mound that dominates the next rise: Watcher's Barrow itself. The slabs underfoot are carved with sealed-eye sigils every few paces.",
       "x": 2,
-      "y": 21,
+      "y": 3,
       "exits": {
-        "WEST": "highmoor:watcher_camp",
+        "WEST": "highmoor:sentinel_stones",
         "EAST": "highmoor:barrow_threshold"
       },
       "backgroundImage": "/assets/images/rooms/highmoor_barrow_path.webp",
@@ -477,14 +496,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, ritual approach",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:barrow_threshold",
       "name": "Barrow Threshold",
       "description": "The path ends at a low arched stone doorway set into the side of the great mound, the lintel carved with the sealed-eye sigil writ large. Cold air sighs out of the dark mouth, smelling faintly of dry stone and old ash. To the north, the grass mound climbs higher; the doorway leads east, into the dark.",
       "x": 3,
-      "y": 21,
+      "y": 3,
       "exits": {
         "WEST": "highmoor:barrow_path",
         "EAST": "watchers_barrow:vestibule",
@@ -497,14 +517,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, barrow entrance, ominous",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "highmoor:mound_summit",
       "name": "Mound Summit",
       "description": "The flat grass crown of the great mound, broad enough to gather a hundred mourners on. A single weathered standing stone marks the center, its face worn smooth by a thousand years of wind. From here you can see every cairn and stone of the steppes laid out below, and the dark line of the foothills falling away to the south.",
       "x": 3,
-      "y": 22,
+      "y": 4,
       "exits": {
         "SOUTH": "highmoor:barrow_threshold"
       },
@@ -516,7 +537,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, vantage summit",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, forest",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     }
   ],
   "npcs": [

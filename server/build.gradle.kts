@@ -66,7 +66,14 @@ tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJ
     }
 }
 
+tasks.register<Exec>("validateWorld") {
+    description = "Validates world data integrity (coordinates, exits, reciprocals)"
+    group = "verification"
+    commandLine("node", rootProject.file("scripts/validate-world.mjs").absolutePath)
+}
+
 tasks.register<Zip>("packageWorld") {
+    dependsOn("validateWorld")
     description = "Builds the default world bundle (.nmd) from maker source"
     group = "build"
 

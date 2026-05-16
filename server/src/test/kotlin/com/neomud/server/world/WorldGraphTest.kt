@@ -229,4 +229,73 @@ class WorldGraphTest {
         val graph = buildTestWorld()
         assertFalse(graph.isExitCurrentlyHidden("town:square", Direction.NORTH))
     }
+
+    // --- Z-plane filtering tests ---
+
+    private fun buildMultiLevelWorld(): WorldGraph {
+        val graph = WorldGraph()
+        // Surface (z=0)
+        graph.addRoom(Room("zone:surface_a", "Surface A", "desc",
+            mapOf(Direction.EAST to "zone:surface_b", Direction.DOWN to "zone:underground_a"), "zone", 0, 0))
+        graph.addRoom(Room("zone:surface_b", "Surface B", "desc",
+            mapOf(Direction.WEST to "zone:surface_a", Direction.UP to "zone:upper_a"), "zone", 1, 0))
+        // Underground (z=-1)
+        graph.addRoom(Room("zone:underground_a", "Underground A", "desc",
+            mapOf(Direction.UP to "zone:surface_a", Direction.EAST to "zone:underground_b"), "zone", 0, 0, z = -1))
+        graph.addRoom(Room("zone:underground_b", "Underground B", "desc",
+            mapOf(Direction.WEST to "zone:underground_a"), "zone", 1, 0, z = -1))
+        // Upper level (z=1)
+        graph.addRoom(Room("zone:upper_a", "Upper A", "desc",
+            mapOf(Direction.DOWN to "zone:surface_b"), "zone", 1, 0, z = 1))
+        graph.setDefaultSpawn("zone:surface_a")
+        return graph
+    }
+
+    @Test
+    fun testGetRoomsNearFiltersToSameZLevel() {
+        val graph = buildMultiLevelWorld()
+        val nearby = graph.getRoomsNear("zone:surface_a", radius = 5)
+        val ids = nearby.map { it.id }.toSet()
+
+        assertTrue("zone:surface_a" in ids, "Should include center room")
+        assertTrue("zone:surface_b" in ids, "Should include same-z neighbor")
+        assertFalse("zone:underground_a" in ids, "Should NOT include z=-1 room")
+        assertFalse("zone:underground_b" in ids, "Should NOT include z=-1 room")
+        assertFalse("zone:upper_a" in ids, "Should NOT include z=1 room")
+        assertEquals(2, nearby.size)
+    }
+
+    @Test
+    fun testGetRoomsNearFromUnderground() {
+        val graph = buildMultiLevelWorld()
+        val nearby = graph.getRoomsNear("zone:underground_a", radius = 5)
+        val ids = nearby.map { it.id }.toSet()
+
+        assertTrue("zone:underground_a" in ids)
+        assertTrue("zone:underground_b" in ids)
+        assertFalse("zone:surface_a" in ids, "Should NOT include z=0 room")
+        assertFalse("zone:surface_b" in ids, "Should NOT include z=0 room")
+        assertEquals(2, nearby.size)
+    }
+
+    @Test
+    fun testGetRoomsNearFromUpperLevel() {
+        val graph = buildMultiLevelWorld()
+        val nearby = graph.getRoomsNear("zone:upper_a", radius = 5)
+        val ids = nearby.map { it.id }.toSet()
+
+        assertTrue("zone:upper_a" in ids)
+        assertFalse("zone:surface_b" in ids, "Should NOT include z=0 room")
+        assertEquals(1, nearby.size)
+    }
+
+    @Test
+    fun testGetRoomsNearPreservesVerticalExits() {
+        val graph = buildMultiLevelWorld()
+        val nearby = graph.getRoomsNear("zone:surface_a", radius = 5)
+        val surfaceA = nearby.find { it.id == "zone:surface_a" }!!
+
+        assertTrue(Direction.DOWN in surfaceA.exits, "DOWN exit should be in exits map for indicator rendering")
+        assertEquals("zone:underground_a", surfaceA.exits[Direction.DOWN])
+    }
 }

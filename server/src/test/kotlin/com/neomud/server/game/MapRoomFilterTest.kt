@@ -30,7 +30,7 @@ class MapRoomFilterTest {
             "zone", 1, 0,
             lockedExits = mapOf(Direction.WEST to 10)
         ))
-        graph.addRoom(Room("r4", "Above Room 1", "desc", mapOf(Direction.DOWN to "r1"), "zone", 0, 0))
+        graph.addRoom(Room("r4", "Above Room 1", "desc", mapOf(Direction.DOWN to "r1"), "zone", 0, 0, z = 1))
         // r1's EAST exit is also hidden
         graph.setHiddenExitDefs("r1", mapOf(Direction.EAST to HiddenExitData(perceptionDC = 15, lockDifficulty = 12)))
         return graph
@@ -187,7 +187,7 @@ class MapRoomFilterTest {
     }
 
     @Test
-    fun testUpDownExitsPreserved() {
+    fun testUpDownExitsPreservedButTargetFilteredByZLevel() {
         val graph = buildGraph()
         val session = FakeSession()
         val sm = SessionManager()
@@ -196,10 +196,9 @@ class MapRoomFilterTest {
         val rawRooms = graph.getRoomsNear("r1")
         val enriched = enrichForFake(rawRooms, session, graph, sm, nm)
         val r1 = enriched.find { it.id == "r1" }!!
-        val r4 = enriched.find { it.id == "r4" }!!
 
-        assertTrue(Direction.UP in r1.exits, "UP exit should be preserved")
-        assertTrue(Direction.DOWN in r4.exits, "DOWN exit should be preserved")
+        assertTrue(Direction.UP in r1.exits, "UP exit should be preserved for indicator rendering")
+        assertFalse(enriched.any { it.id == "r4" }, "Room at different z-level should be filtered out of minimap")
     }
 
     @Test

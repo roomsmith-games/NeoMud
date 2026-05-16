@@ -29,7 +29,8 @@
       "imageStyle": "fantasy digital painting, salt-stained stone, dim daylight wedge, drowned chapel atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "drowned_chapel:flooded_narthex",
@@ -68,7 +69,8 @@
             "damageMessage": "A deep-sea surge rolls through the narthex — you are slammed sideways into a column-base before you can brace! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:nave",
@@ -109,7 +111,8 @@
             "damageMessage": "A flagstone shatters beneath your foot — you fall hard against the rim of the drop, water rushing up around your ribs! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:side_chapel_north",
@@ -149,7 +152,8 @@
             "alreadySolvedMessage": "The bell of Dawn is silent now. Its note has been given."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:side_chapel_south",
@@ -208,7 +212,8 @@
             "damageMessage": "Sour spores release as you pass — burning where they touch your skin and lungs! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:crypt_corridor",
@@ -267,7 +272,8 @@
             "damageMessage": "Your shin catches the tripwire — a counterweight comes crashing down across your shoulders before you can throw yourself flat! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:crypt_chamber",
@@ -327,7 +333,8 @@
             "damageMessage": "The brine-thick air fills your lungs and refuses to let go — you stagger as your chest fights for breath! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:inner_sanctum",
@@ -340,7 +347,10 @@
         "EAST": "drowned_chapel:mariners_vault",
         "NORTH": "drowned_chapel:korlach_lair"
       },
-      "lockedExits": { "EAST": 99, "NORTH": 99 },
+      "lockedExits": {
+        "EAST": 99,
+        "NORTH": 99
+      },
       "backgroundImage": "/assets/images/rooms/drowned_chapel_inner_sanctum.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
@@ -409,7 +419,8 @@
             "damageMessage": "The runes flare red as you cross — a hooked cold thought drives in behind your eyes! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:mariners_vault",
@@ -447,7 +458,8 @@
             "maxGold": "2"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "drowned_chapel:korlach_lair",
@@ -485,7 +497,8 @@
             "damageMessage": "The reliquary breaks loose as you cross — a hundredweight of stone slams into your shoulders before you can brace! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     }
   ],
   "npcs": [
@@ -515,7 +528,7 @@
       "lootItems": [
         {
           "itemId": "item:mariners_conch",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },
@@ -716,13 +729,13 @@
       "lootItems": [
         {
           "itemId": "item:tidewardens_maw",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },
         {
           "itemId": "item:sealed_tide_fragment",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },

@@ -49,6 +49,7 @@ class WorldGraph {
 
     fun getRoomsNear(centerRoomId: RoomId, radius: Int = 3): List<MapRoom> {
         val center = rooms[centerRoomId] ?: return emptyList()
+        val centerZ = center.z
         val visited = mutableSetOf<RoomId>()
         val result = mutableListOf<MapRoom>()
         val queue = ArrayDeque<Pair<RoomId, Int>>()
@@ -66,6 +67,7 @@ class WorldGraph {
                     name = room.name,
                     x = room.x,
                     y = room.y,
+                    z = room.z,
                     exits = room.exits,
                     backgroundImage = room.backgroundImage,
                     zoneId = room.zoneId
@@ -73,11 +75,12 @@ class WorldGraph {
             )
 
             if (depth < radius) {
-                for ((_, targetId) in room.exits) {
-                    if (targetId !in visited) {
-                        visited.add(targetId)
-                        queue.add(targetId to depth + 1)
-                    }
+                for ((dir, targetId) in room.exits) {
+                    if (targetId in visited) continue
+                    val target = rooms[targetId] ?: continue
+                    if (target.z != centerZ) continue
+                    visited.add(targetId)
+                    queue.add(targetId to depth + 1)
                 }
             }
         }

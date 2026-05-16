@@ -45,6 +45,7 @@ data class RoomData(
     val description: String,
     val x: Int,
     val y: Int,
+    val z: Int = 0,
     val exits: Map<Direction, RoomId>,
     val backgroundImage: String = "",
     val healPerTick: Int = 0,

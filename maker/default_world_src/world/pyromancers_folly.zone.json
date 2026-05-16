@@ -17,8 +17,8 @@
       "id": "pyromancers_folly:gatehouse",
       "name": "Collapsed Gatehouse",
       "description": "The academy's gatehouse, half-buried in rubble. Stone steps descend from the surface through a gap in the collapsed ceiling. The walls are covered in scorched murals — students at study, lecturers at the board — now blackened beyond recognition. A corridor leads south into the interior.",
-      "x": -6,
-      "y": 27,
+      "x": 0,
+      "y": 0,
       "exits": {
         "UP": "ashwood:academy_approach",
         "SOUTH": "pyromancers_folly:entry_hall"
@@ -30,14 +30,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, collapsed dungeon entrance",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:entry_hall",
       "name": "Scorched Entry Hall",
       "description": "A long hall with a vaulted ceiling, cracked and stained by fire. Iron torch-brackets line the walls, still glowing with enchanted flames that have burned for decades without fuel. The floor is patterned tile, warped and buckled by heat. Corridors branch east and west.",
-      "x": -6,
-      "y": 26,
+      "x": 0,
+      "y": -1,
       "exits": {
         "NORTH": "pyromancers_folly:gatehouse",
         "EAST": "pyromancers_folly:east_corridor",
@@ -70,14 +71,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, scorched academy hall with magical fire",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:west_corridor",
       "name": "West Corridor",
       "description": "A narrow corridor with collapsed classrooms on either side. Desks and chairs are visible through doorways, all charred. An arcane ward shimmers across the corridor ahead — a pale blue barrier that crackles faintly. Three rune-pillars are visible in the rubble, their activation sequence long forgotten.",
-      "x": -7,
-      "y": 26,
+      "x": -1,
+      "y": -1,
       "exits": {
         "EAST": "pyromancers_folly:entry_hall",
         "SOUTH": "pyromancers_folly:forge_altar"
@@ -126,14 +128,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, ruined academy corridor with arcane ward",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:east_corridor",
       "name": "East Corridor",
       "description": "The east wing of the academy, where the advanced laboratories were. The walls here are slick with condensed magical residue — a faintly luminous orange film. Something large and hot patrols this corridor. The second rune-pillar stands against the far wall.",
-      "x": -5,
-      "y": 26,
+      "x": 1,
+      "y": -1,
       "exits": {
         "WEST": "pyromancers_folly:entry_hall",
         "SOUTH": "pyromancers_folly:laboratory"
@@ -182,14 +185,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, magical laboratory corridor with orange residue",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:laboratory",
       "name": "Shattered Laboratory",
       "description": "A large chamber that was once the academy's main experimental lab. Shattered glass apparatus, warped metal frames, and pools of solidified alchemical residue cover the floor. A bound infernal paces behind a containment circle that has held for decades — barely. The third rune-pillar stands by the south door.",
-      "x": -5,
-      "y": 25,
+      "x": 1,
+      "y": -2,
       "exits": {
         "NORTH": "pyromancers_folly:east_corridor",
         "SOUTH": "pyromancers_folly:sentinel_chamber"
@@ -242,14 +246,15 @@
       "imageHeight": 576,
       "lockedExits": {
         "SOUTH": 99
-      }
+      },
+      "z": 0
     },
     {
       "id": "pyromancers_folly:sentinel_chamber",
       "name": "Sentinel Chamber",
       "description": "A round chamber where the Ash Sentinel stands guard — a towering construct of fused stone and ember, built by Vatric to protect the inner sanctum. The construct's eye-slits glow a steady orange. Behind it, a heavy iron door leads south to the sanctum antechamber.",
-      "x": -5,
-      "y": 24,
+      "x": 1,
+      "y": -3,
       "exits": {
         "NORTH": "pyromancers_folly:laboratory",
         "SOUTH": "pyromancers_folly:sanctum_antechamber"
@@ -281,20 +286,21 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, guardian chamber with heavy iron door",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:sanctum_antechamber",
       "name": "Sanctum Antechamber",
       "description": "A narrow antechamber before Vatric's sanctum door. The door is massive — black iron bound in bronze, covered in arcane inscriptions. A brass speaking-face is set at eye height, its lips parted. The inscription above reads: \"Speak the answer, or burn.\" The riddle must be spoken aloud to open the way.",
-      "x": -5,
-      "y": 23,
+      "x": 1,
+      "y": -4,
       "exits": {
         "NORTH": "pyromancers_folly:sentinel_chamber",
-        "SOUTH": "pyromancers_folly:vatrics_sanctum"
+        "NORTHWEST": "pyromancers_folly:vatrics_sanctum"
       },
       "lockedExits": {
-        "SOUTH": 99
+        "NORTHWEST": 99
       },
       "backgroundImage": "/assets/images/rooms/pyromancers_folly_sanctum_antechamber.webp",
       "departSound": "footstep_stone",
@@ -341,20 +347,21 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, riddle door antechamber with brass face",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:vatrics_sanctum",
       "name": "Vatric's Sanctum",
       "description": "The heart of the Pyromancer's Folly — a vast circular chamber beneath a cracked dome. Fire still burns in the central pit where Vatric's experiment went wrong, casting dancing orange light on walls lined with scorched bookshelves. The Cinder-Lich Vatric stands at the far side of the fire, what remains of him — a skeletal figure wreathed in perpetual flame, still clutching a staff of fused glass and bone.",
-      "x": -5,
-      "y": 22,
+      "x": 0,
+      "y": -3,
       "exits": {
-        "NORTH": "pyromancers_folly:sanctum_antechamber",
-        "WEST": "pyromancers_folly:forge_altar"
+        "SOUTHEAST": "pyromancers_folly:sanctum_antechamber",
+        "NORTHWEST": "pyromancers_folly:forge_altar"
       },
       "lockedExits": {
-        "WEST": 99
+        "NORTHWEST": 99
       },
       "backgroundImage": "/assets/images/rooms/pyromancers_folly_vatrics_sanctum.webp",
       "departSound": "footstep_stone",
@@ -363,20 +370,21 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, boss arena with eternal fire pit",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "pyromancers_folly:forge_altar",
       "name": "Hidden Forge Altar",
       "description": "A concealed vault behind the sanctum's west wall, accessible only after defeating the ward. A massive stone forge-altar dominates the room — its surface carved with fire runes and bearing a central depression the size of a fist. Heat radiates from the altar even now.",
-      "x": -6,
-      "y": 22,
+      "x": -1,
+      "y": -2,
       "exits": {
-        "EAST": "pyromancers_folly:vatrics_sanctum",
-        "NORTH": "pyromancers_folly:west_corridor"
+        "NORTH": "pyromancers_folly:west_corridor",
+        "SOUTHEAST": "pyromancers_folly:vatrics_sanctum"
       },
       "lockedExits": {
-        "EAST": 99
+        "SOUTHEAST": 99
       },
       "backgroundImage": "/assets/images/rooms/pyromancers_folly_forge_altar.webp",
       "departSound": "footstep_stone",
@@ -404,7 +412,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric dungeon lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, hidden forge altar vault with fire runes",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, tropical, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     }
   ],
   "npcs": [
@@ -608,7 +617,7 @@
       "lootItems": [
         {
           "itemId": "item:vatrics_ember_shard",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },

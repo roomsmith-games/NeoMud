@@ -17,8 +17,8 @@
       "id": "warlords_hold:great_hall",
       "name": "Great Hall",
       "description": "The main hall of the Hold, carved from the living rock of the rift wall. Massive stone pillars support a vaulted ceiling thirty feet overhead, and torches burn in iron sconces along the walls. Drask's banner — a clenched fist on black — hangs above a stone dais at the far end. The floor is scarred from years of heavy boots and dragged prisoners. Stairs climb upward to a gallery above, and a dark passage descends into the fortress depths.",
-      "x": 6,
-      "y": 36,
+      "x": 0,
+      "y": 0,
       "exits": {
         "WEST": "cracked_plains:hold_gates",
         "NORTH": "warlords_hold:guard_hall",
@@ -33,14 +33,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground fortress great hall",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight, outdoor",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "warlords_hold:guard_hall",
       "name": "Guard Hall",
       "description": "A low-ceilinged barracks carved into the north wall of the fortress. Crude bunks line both sides, with weapon racks between them — most half-empty, the arms distributed to Drask's troops. A cooking fire smolders in a stone-lined pit, filling the room with greasy smoke. The guards rotate in shifts, and there are always fresh ones here.",
-      "x": 6,
-      "y": 37,
+      "x": 0,
+      "y": 1,
       "exits": {
         "SOUTH": "warlords_hold:great_hall"
       },
@@ -51,14 +52,15 @@
       "imageStyle": "fantasy digital painting, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground military barracks",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "warlords_hold:trophy_room",
       "name": "Trophy Room",
       "description": "Drask's lieutenant keeps this room as a monument to conquest. Shields, banners, and weapons taken from defeated foes line the walls — many bearing the Warden sigil. A heavy oak table serves as both desk and dining surface, covered in maps and half-eaten food. The lieutenant sits here when not patrolling, studying Drask's campaign plans.",
-      "x": 7,
-      "y": 36,
+      "x": 1,
+      "y": 0,
       "exits": {
         "WEST": "warlords_hold:great_hall"
       },
@@ -69,14 +71,15 @@
       "imageStyle": "fantasy digital painting, atmospheric torch lighting, slightly painterly, fixed perspective, JRPG background, underground trophy chamber",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright daylight",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "warlords_hold:upper_gallery",
       "name": "Upper Gallery",
       "description": "A stone gallery overlooking the great hall below through murder-holes carved in the floor. Arrow slits in the outer wall admit thin shafts of daylight from the rift outside. The gallery connects the armory to the west with the battlements to the east, and a final stair climbs to Drask's war room above.",
-      "x": 6,
-      "y": 36,
+      "x": 0,
+      "y": 0,
       "z": 1,
       "exits": {
         "DOWN": "warlords_hold:great_hall",
@@ -97,8 +100,8 @@
       "id": "warlords_hold:armory",
       "name": "Armory",
       "description": "The Hold's original armory, expanded by Drask's forces. Racks of weapons line the walls — swords, axes, crossbows, bundles of bolts. Armor stands hold mismatched suits assembled from looted gear. A workbench with a whetstone and oil occupies the center. The air smells of metal and leather polish.",
-      "x": 5,
-      "y": 36,
+      "x": -1,
+      "y": 0,
       "z": 1,
       "exits": {
         "EAST": "warlords_hold:upper_gallery"
@@ -116,8 +119,8 @@
       "id": "warlords_hold:battlements",
       "name": "Battlements",
       "description": "The Hold's upper defense — a narrow stone walkway carved into the outer rift wall, open to the sky on one side. A waist-high parapet protects against the sheer drop into the rift below. Crossbow emplacements are positioned at intervals, and signal torches stand ready for lighting. The wind howls through the gap, carrying the sounds of the rift up from the darkness below.",
-      "x": 7,
-      "y": 36,
+      "x": 1,
+      "y": 0,
       "z": 1,
       "exits": {
         "WEST": "warlords_hold:upper_gallery"
@@ -135,8 +138,8 @@
       "id": "warlords_hold:war_room",
       "name": "Drask's War Room",
       "description": "The highest chamber in the Hold, carved from the very top of the rift wall. A massive stone table dominates the center, covered in hand-drawn maps, campaign markers, and stolen Warden documents. The walls are hung with the banners of every settlement Drask has raided. A single window — more of a slash in the rock — looks out over the cracked plateau far below. This is where the warlord plans, commands, and waits.",
-      "x": 6,
-      "y": 36,
+      "x": 0,
+      "y": 0,
       "z": 2,
       "exits": {
         "DOWN": "warlords_hold:upper_gallery"
@@ -154,8 +157,8 @@
       "id": "warlords_hold:underhall",
       "name": "Underhall",
       "description": "Below the great hall, the Hold descends into older construction — smooth Warden stonework, not the rough-hewn tunnels above. The corridor is narrow and low, with guttering torches spaced far apart. The air is damp and cold. Cells branch off to the north, and the south end terminates at a massive iron door bearing the Warden seal — the vault, still locked after all these centuries.",
-      "x": 6,
-      "y": 36,
+      "x": 0,
+      "y": 0,
       "z": -1,
       "exits": {
         "UP": "warlords_hold:great_hall",
@@ -194,8 +197,8 @@
       "id": "warlords_hold:cells",
       "name": "Prison Cells",
       "description": "A row of iron-barred cells carved into the rock. Most are empty now — Drask prefers to ransom or conscript his prisoners rather than keep them. One cell still holds a skeleton in rusted chains, a remnant of the Hold's original Warden garrison. War hounds patrol the corridor, trained to savage anyone who doesn't wear Drask's brand.",
-      "x": 6,
-      "y": 37,
+      "x": 0,
+      "y": 1,
       "z": -1,
       "exits": {
         "SOUTH": "warlords_hold:underhall"
@@ -213,8 +216,8 @@
       "id": "warlords_hold:vault",
       "name": "Warden Vault",
       "description": "Behind the sealed door lies the Hold's deepest secret — a Warden vault, its walls lined with faintly glowing glyphs. Stone shelves hold the remnants of Warden artifacts, most already looted by Drask's forces. But the real prize is in the center: a reinforced iron chest still sealed with warding runes, too powerful for Drask to crack. Whatever the Wardens locked away here, it was important enough to build an entire fortress around.",
-      "x": 6,
-      "y": 35,
+      "x": 0,
+      "y": -1,
       "z": -1,
       "exits": {
         "NORTH": "warlords_hold:underhall"
@@ -398,7 +401,7 @@
       "lootItems": [
         {
           "itemId": "item:drasks_war_key",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },
@@ -458,7 +461,7 @@
         },
         {
           "itemId": "item:drasks_seal_shard",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         }

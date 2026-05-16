@@ -4,6 +4,7 @@ import com.neomud.server.defaultWorldSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class WorldLoaderTest {
@@ -232,15 +233,16 @@ class WorldLoaderTest {
         val result = load()
         val world = result.worldGraph
 
+        // Marsh is only accessible via gorge:mouth (single-entry zone)
         val cave = world.getRoom("forest:cave")
         assertNotNull(cave)
-        assertEquals("marsh:shallows", cave.exits[com.neomud.shared.model.Direction.WEST],
-            "forest:cave should exit west to marsh:shallows")
+        assertNull(cave.exits[com.neomud.shared.model.Direction.WEST],
+            "forest:cave should not exit west to marsh (marsh is single-entry via gorge)")
 
-        val shallows = world.getRoom("marsh:shallows")
-        assertNotNull(shallows)
-        assertEquals("forest:cave", shallows.exits[com.neomud.shared.model.Direction.EAST],
-            "marsh:shallows should exit east to forest:cave")
+        val mouth = world.getRoom("gorge:mouth")
+        assertNotNull(mouth)
+        assertEquals("marsh:heart", mouth.exits[com.neomud.shared.model.Direction.SOUTH],
+            "gorge:mouth should exit south to marsh:heart")
     }
 
     @Test

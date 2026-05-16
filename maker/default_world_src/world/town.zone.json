@@ -5,7 +5,11 @@
   "safe": true,
   "bgm": "town_peaceful",
   "spawnRoom": "town:temple",
-  "spawnConfig": { "maxEntities": 0, "maxPerRoom": 0, "rateTicks": 0 },
+  "spawnConfig": {
+    "maxEntities": 0,
+    "maxPerRoom": 0,
+    "rateTicks": 0
+  },
   "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
   "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
   "rooms": [
@@ -27,7 +31,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "town:tavern",
@@ -39,7 +44,9 @@
         "EAST": "town:square",
         "DOWN": "town:cellar"
       },
-      "lockedExits": { "DOWN": 10 },
+      "lockedExits": {
+        "DOWN": 10
+      },
       "backgroundImage": "/assets/images/rooms/town_tavern.webp",
       "bgm": "tavern_merry",
       "departSound": "footstep_wood",
@@ -47,7 +54,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "town:market",
@@ -66,7 +74,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "town:gate",
@@ -84,7 +93,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "town:temple",
@@ -97,25 +107,43 @@
       },
       "backgroundImage": "/assets/images/rooms/town_temple.webp",
       "bgm": "temple_divine",
-      "effects": [{"type": "HEAL", "value": 5, "message": "The temple's aura soothes your wounds.", "sound": "healing_aura"}, {"type": "SANCTUARY", "value": 0, "message": "The divine sanctuary of the temple forbids violence here.", "sound": ""}],
+      "effects": [
+        {
+          "type": "HEAL",
+          "value": 5,
+          "message": "The temple's aura soothes your wounds.",
+          "sound": "healing_aura"
+        },
+        {
+          "type": "SANCTUARY",
+          "value": 0,
+          "message": "The divine sanctuary of the temple forbids violence here.",
+          "sound": ""
+        }
+      ],
       "departSound": "footstep_marble",
       "imagePrompt": "First-person view standing inside a serene stone temple. Flat polished marble floor filling the lower third. Tall stained glass windows on left and right casting rainbow light. A white-draped altar centered ahead at the far wall, incense smoke curling upward. Vaulted stone ceiling. No people or creatures.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "town:cellar",
       "name": "Tavern Cellar",
       "description": "A damp stone cellar beneath the tavern, lit by a single sputtering torch. Barrels of ale and crates of provisions line the walls. Cobwebs hang in every corner, and the air smells of old wood and stale beer. A rickety wooden ladder leads up to a heavy trapdoor in the ceiling, but it's latched shut from this side. An iron lever juts from the wall nearby.",
       "x": -1,
-      "y": -1,
+      "y": 0,
       "exits": {
         "UP": "town:tavern"
       },
-      "lockedExits": { "UP": 99 },
-      "unpickableExits": ["UP"],
+      "lockedExits": {
+        "UP": 99
+      },
+      "unpickableExits": [
+        "UP"
+      ],
       "interactables": [
         {
           "id": "lever_trapdoor",
@@ -123,7 +151,9 @@
           "description": "You heave the rusty iron lever. With a grinding clank, the trapdoor latch releases and the way up swings open.",
           "icon": "",
           "actionType": "EXIT_OPEN",
-          "actionData": { "direction": "UP" },
+          "actionData": {
+            "direction": "UP"
+          },
           "perceptionDC": 0,
           "cooldownTicks": 0,
           "resetTicks": 40,
@@ -136,9 +166,10 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
-    }
-    ,{
+      "imageHeight": 576,
+      "z": -1
+    },
+    {
       "id": "town:magic_shop",
       "name": "The Enchanted Emporium",
       "description": "A narrow shop crammed with arcane curiosities. Crystal orbs float lazily near the ceiling, casting prismatic light across shelves overflowing with scrolls, wands, and bubbling potions. The air hums with latent magic, and faint runes glow on the doorframe. A glass display case holds enchanted rings and amulets on velvet cushions.",
@@ -155,7 +186,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "town:forge",
@@ -163,7 +195,9 @@
       "description": "A sweltering workshop dominated by a roaring forge. Anvils, workbenches, and racks of raw materials crowd every surface. Pelts hang from ceiling hooks, obsidian shards glitter in bins, and strange vials of wraith essence line a shelf behind the counter. A grizzled half-orc tends the forge with surprising precision.",
       "x": 3,
       "y": 0,
-      "exits": { "WEST": "town:magic_shop" },
+      "exits": {
+        "WEST": "town:magic_shop"
+      },
       "backgroundImage": "/assets/images/rooms/town_forge.webp",
       "bgm": "artificer_workshop",
       "departSound": "footstep_cobblestone",
@@ -171,7 +205,8 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     }
   ],
   "npcs": [
@@ -190,7 +225,13 @@
       "evasion": 5,
       "agility": 12,
       "perception": 30,
-      "patrolRoute": ["town:gate", "town:square", "town:market", "town:square", "town:gate"],
+      "patrolRoute": [
+        "town:gate",
+        "town:square",
+        "town:market",
+        "town:square",
+        "town:gate"
+      ],
       "imagePrompt": "Full-body medieval town guard standing upright facing the viewer, chainmail armor over tabard, hand on sword pommel, stern expression. Single character, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy character sprite, full body, front-facing, clean edges, game asset, solid white background",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, bust only, modern, sci-fi, anime",

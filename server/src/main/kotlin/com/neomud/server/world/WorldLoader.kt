@@ -110,6 +110,7 @@ object WorldLoader {
                     zoneId = zone.id,
                     x = roomData.x,
                     y = roomData.y,
+                    z = roomData.z,
                     backgroundImage = roomData.backgroundImage,
                     effects = effects,
                     bgm = roomData.bgm.ifEmpty { zone.bgm },

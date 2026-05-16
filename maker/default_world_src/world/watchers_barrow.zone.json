@@ -29,7 +29,8 @@
       "imageStyle": "fantasy digital painting, dry stone burial chamber, cold pale daylight wedge, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "watchers_barrow:cobweb_corridor",
@@ -68,7 +69,8 @@
             "damageMessage": "Stone grinds overhead — you barely look up before a heavy capstone crashes down across your shoulders! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:main_hall",
@@ -89,7 +91,8 @@
       "imageStyle": "fantasy digital painting, dry stone burial chamber, dim torchlight, oppressive ancient atmosphere, slightly painterly, fixed perspective, JRPG dungeon background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "watchers_barrow:silent_chamber",
@@ -128,7 +131,8 @@
             "damageMessage": "You inhale a lungful of bone-dust before you can stop yourself — it burns going down. (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:offering_chamber",
@@ -140,7 +144,9 @@
         "NORTH": "watchers_barrow:main_hall",
         "EAST": "watchers_barrow:bonepit"
       },
-      "lockedExits": { "EAST": 99 },
+      "lockedExits": {
+        "EAST": 99
+      },
       "backgroundImage": "/assets/images/rooms/watchers_barrow_offering_chamber.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
@@ -167,7 +173,8 @@
             "successDirection": "EAST"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:bonepit",
@@ -205,7 +212,8 @@
             "maxGold": "1"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:ritual_gate",
@@ -217,7 +225,9 @@
         "WEST": "watchers_barrow:main_hall",
         "EAST": "watchers_barrow:approach"
       },
-      "lockedExits": { "EAST": 99 },
+      "lockedExits": {
+        "EAST": 99
+      },
       "backgroundImage": "/assets/images/rooms/watchers_barrow_ritual_gate.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 1,
@@ -246,7 +256,8 @@
             "successDirection": "EAST"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:approach",
@@ -287,7 +298,8 @@
             "damageMessage": "The runes flare red as you pass — a hooked cold thought drives in behind your eyes! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:knife_track",
@@ -341,7 +353,8 @@
             "maxSilver": "8"
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "watchers_barrow:barrow_heart",
@@ -379,7 +392,8 @@
             "damageMessage": "Rope snaps overhead — a hail of cairn-stones crashes down across your back as you cross the threshold! (-{damage} HP)"
           }
         }
-      ]
+      ],
+      "z": 0
     }
   ],
   "npcs": [
@@ -602,13 +616,13 @@
       "lootItems": [
         {
           "itemId": "item:eskeths_skull",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },
         {
           "itemId": "item:eskeths_seal_fragment",
-          "chance": 1.0,
+          "chance": 1,
           "minQuantity": 1,
           "maxQuantity": 1
         },

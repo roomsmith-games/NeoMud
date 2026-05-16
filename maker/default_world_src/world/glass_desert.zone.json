@@ -1,7 +1,7 @@
 {
   "id": "glass_desert",
   "name": "Glass Desert",
-  "description": "Beyond the Cracked Plains, the land transforms into something alien \u2014 a vast desert of fused glass and vitrified sand, legacy of the ancient seal-fracture that released catastrophic heat across this plateau. The ground shimmers with refracted light, and mirages blur the horizon in every direction. At the desert's heart, the Mirage Spire rises \u2014 a crystalline tower that bends light around itself, appearing to shift position with every step.",
+  "description": "Beyond the Cracked Plains, the land transforms into something alien — a vast desert of fused glass and vitrified sand, legacy of the ancient seal-fracture that released catastrophic heat across this plateau. The ground shimmers with refracted light, and mirages blur the horizon in every direction. At the desert's heart, the Mirage Spire rises — a crystalline tower that bends light around itself, appearing to shift position with every step.",
   "safe": false,
   "bgm": "gorge_danger",
   "levelRange": "20-22",
@@ -16,9 +16,9 @@
     {
       "id": "glass_desert:vitrified_threshold",
       "name": "Vitrified Threshold",
-      "description": "The cracked stone of the plains gives way abruptly to something else \u2014 the ground here is smooth, fused glass, rippled like a frozen sea. The transition is sharp, as if an ancient wall of heat swept across from the south and stopped precisely here. Shards of obsidian jut from the glassy surface at odd angles. The air is dry and hot, carrying a faint chemical tang. South, the glass desert stretches to the wavering horizon. A bone-scattered field lies to the north.",
-      "x": 5,
-      "y": 30,
+      "description": "The cracked stone of the plains gives way abruptly to something else — the ground here is smooth, fused glass, rippled like a frozen sea. The transition is sharp, as if an ancient wall of heat swept across from the south and stopped precisely here. Shards of obsidian jut from the glassy surface at odd angles. The air is dry and hot, carrying a faint chemical tang. South, the glass desert stretches to the wavering horizon. A bone-scattered field lies to the north.",
+      "x": 0,
+      "y": 0,
       "exits": {
         "NORTH": "cracked_plains:bone_field",
         "EAST": "glass_desert:scorched_flats",
@@ -46,20 +46,21 @@
             "perceptionDC": "18",
             "saveDC": "18",
             "damageType": "physical",
-            "noticeMessage": "You spot hairline cracks radiating from the obsidian cluster \u2014 pressure is building beneath the surface.",
+            "noticeMessage": "You spot hairline cracks radiating from the obsidian cluster — pressure is building beneath the surface.",
             "triggerMessage": "The glass formation erupts! Razor-sharp shards explode outward in a deadly spray!",
             "saveMessage": "You throw yourself flat as glass shards whistle overhead, embedding in the ground where you stood.",
             "failMessage": "Glass shards slice across your body like a thousand tiny blades. Blood wells from dozens of shallow cuts."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "glass_desert:scorched_flats",
       "name": "Scorched Flats",
-      "description": "A wide expanse of blackened, fused ground \u2014 the glass here is darker, scorched by whatever ancient conflagration created this wasteland. Heat radiates from the surface in visible waves, distorting the air above. Scattered across the flats are the fused remnants of what might once have been buildings \u2014 lumps of melted stone and metal, now indistinguishable from the glass around them.",
-      "x": 6,
-      "y": 30,
+      "description": "A wide expanse of blackened, fused ground — the glass here is darker, scorched by whatever ancient conflagration created this wasteland. Heat radiates from the surface in visible waves, distorting the air above. Scattered across the flats are the fused remnants of what might once have been buildings — lumps of melted stone and metal, now indistinguishable from the glass around them.",
+      "x": 1,
+      "y": 0,
       "exits": {
         "WEST": "glass_desert:vitrified_threshold",
         "EAST": "glass_desert:shimmer_ridge",
@@ -87,20 +88,21 @@
             "perceptionDC": "19",
             "saveDC": "19",
             "damageType": "fire",
-            "noticeMessage": "The air above a dark crack shimmers with extreme heat \u2014 the ground here is dangerously thin over something molten.",
+            "noticeMessage": "The air above a dark crack shimmers with extreme heat — the ground here is dangerously thin over something molten.",
             "triggerMessage": "A geyser of superheated air erupts from the cracked ground, engulfing you in searing heat!",
             "saveMessage": "You grit your teeth against the blast of heat, your skin reddening but holding. The worst passes quickly.",
             "failMessage": "The superheated air sears your lungs and blisters exposed skin. You stagger clear, gasping, smelling singed hair."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "glass_desert:shimmer_ridge",
       "name": "Shimmer Ridge",
-      "description": "A long ridge of crystallized sand rises here, its surface catching the light and throwing prismatic reflections in every direction. The ridge runs roughly north-south, offering a vantage point over the surrounding glass desert. To the south, the terrain drops away toward a flow of dark obsidian. Westward, the scorched flats stretch back toward the plains. The ridge itself is treacherous \u2014 smooth as polished glass and steeply angled.",
-      "x": 7,
-      "y": 30,
+      "description": "A long ridge of crystallized sand rises here, its surface catching the light and throwing prismatic reflections in every direction. The ridge runs roughly north-south, offering a vantage point over the surrounding glass desert. To the south, the terrain drops away toward a flow of dark obsidian. Westward, the scorched flats stretch back toward the plains. The ridge itself is treacherous — smooth as polished glass and steeply angled.",
+      "x": 2,
+      "y": 0,
       "exits": {
         "WEST": "glass_desert:scorched_flats",
         "SOUTH": "glass_desert:obsidian_flow"
@@ -112,14 +114,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, crystalline ridge",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, lush green",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:fused_crater",
       "name": "Fused Crater",
-      "description": "A massive impact crater, its walls smooth as a bowl \u2014 the glass here is thick and deep, fused by unimaginable heat into a perfect concave surface. Standing at the rim, you can see your reflection in the dark glass below, distorted and strange. The crater drops away steeply, and at its base a dark opening leads down into a passage buried beneath the desert surface. The air rising from below is cool and stale.",
-      "x": 5,
-      "y": 29,
+      "description": "A massive impact crater, its walls smooth as a bowl — the glass here is thick and deep, fused by unimaginable heat into a perfect concave surface. Standing at the rim, you can see your reflection in the dark glass below, distorted and strange. The crater drops away steeply, and at its base a dark opening leads down into a passage buried beneath the desert surface. The air rising from below is cool and stale.",
+      "x": 0,
+      "y": -1,
       "exits": {
         "NORTH": "glass_desert:vitrified_threshold",
         "DOWN": "glass_desert:buried_road"
@@ -131,14 +134,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, glass crater",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, water, lake",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:glass_waste",
       "name": "Glass Waste",
-      "description": "The glass desert stretches endlessly here, flat and featureless save for occasional ridges of crystallized sand that rise and fall like frozen waves. The ground is treacherous \u2014 smooth in places, razor-sharp in others where the glass has fractured. Visibility is poor despite the open terrain; heat mirages dance at every horizon, making distance impossible to judge. Something skitters across the glass in the middle distance, too quick to identify.",
-      "x": 6,
-      "y": 29,
+      "description": "The glass desert stretches endlessly here, flat and featureless save for occasional ridges of crystallized sand that rise and fall like frozen waves. The ground is treacherous — smooth in places, razor-sharp in others where the glass has fractured. Visibility is poor despite the open terrain; heat mirages dance at every horizon, making distance impossible to judge. Something skitters across the glass in the middle distance, too quick to identify.",
+      "x": 1,
+      "y": -1,
       "exits": {
         "NORTH": "glass_desert:scorched_flats",
         "SOUTH": "glass_desert:heat_haze"
@@ -150,17 +154,18 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, glass desert waste",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, lush green, buildings",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:obsidian_flow",
       "name": "Obsidian Flow",
-      "description": "A river of solidified obsidian cuts through the glass desert here, its surface black and mirror-smooth. The flow is ancient \u2014 whatever molten material created it cooled millennia ago into this frozen river of volcanic glass. The edges are lethally sharp where the obsidian has fractured. At a break in the flow, a steep descent leads down into a narrow canyon carved through the glass bedrock.",
-      "x": 7,
-      "y": 29,
+      "description": "A river of solidified obsidian cuts through the glass desert here, its surface black and mirror-smooth. The flow is ancient — whatever molten material created it cooled millennia ago into this frozen river of volcanic glass. The edges are lethally sharp where the obsidian has fractured. At a break in the flow, a steep descent leads down into a narrow canyon carved through the glass bedrock.",
+      "x": 2,
+      "y": -1,
       "exits": {
         "NORTH": "glass_desert:shimmer_ridge",
-        "DOWN": "glass_desert:glass_canyon_floor"
+        "EAST": "glass_desert:glass_canyon_floor"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_obsidian_flow.webp",
       "departSound": "footstep_stone",
@@ -169,17 +174,17 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, obsidian flow",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, water, actual river",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:buried_road",
       "name": "Buried Road",
-      "description": "Beneath the glass crust, a pre-cataclysm road has been partially preserved \u2014 its fitted stones warped and fused but still recognizable as deliberate construction. The underground passage follows this ancient road, lit by a faint phosphorescent glow from mineral deposits in the glass walls. The air is cool and still. Whoever built this road did so before the glass desert existed \u2014 this was once open countryside. To the west, the glass layer thins and cracks, giving way to pale bone-strewn earth \u2014 the edge of the Bone Wastes.",
-      "x": 5,
-      "y": 28,
+      "description": "Beneath the glass crust, a pre-cataclysm road has been partially preserved — its fitted stones warped and fused but still recognizable as deliberate construction. The underground passage follows this ancient road, lit by a faint phosphorescent glow from mineral deposits in the glass walls. The air is cool and still. Whoever built this road did so before the glass desert existed — this was once open countryside. To the west, the glass layer thins and cracks, giving way to pale bone-strewn earth — the edge of the Bone Wastes.",
+      "x": 0,
+      "y": -1,
       "exits": {
         "UP": "glass_desert:fused_crater",
-        "EAST": "glass_desert:heat_haze",
         "WEST": "bone_wastes:glass_edge"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_buried_road.webp",
@@ -189,17 +194,18 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, underground passage",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, daylight, open sky",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": -1
     },
     {
       "id": "glass_desert:glass_canyon_floor",
       "name": "Glass Canyon Floor",
-      "description": "The narrow canyon cuts deep through the fused desert, its walls rising thirty feet on either side \u2014 smooth, striated glass in bands of amber, black, and pale gold. The canyon floor is littered with fallen glass shards and fine crystalline sand. A thin trickle of water seeps from a crack in the eastern wall, evidence of some underground aquifer far below. The canyon runs south toward the mirage fields.",
-      "x": 7,
-      "y": 28,
+      "description": "The narrow canyon cuts deep through the fused desert, its walls rising thirty feet on either side — smooth, striated glass in bands of amber, black, and pale gold. The canyon floor is littered with fallen glass shards and fine crystalline sand. A thin trickle of water seeps from a crack in the eastern wall, evidence of some underground aquifer far below. The canyon runs south toward the mirage fields.",
+      "x": 3,
+      "y": -1,
       "exits": {
-        "UP": "glass_desert:obsidian_flow",
-        "SOUTH": "glass_desert:mirror_dunes"
+        "WEST": "glass_desert:obsidian_flow",
+        "SOUTHEAST": "glass_desert:mirror_dunes"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_glass_canyon_floor.webp",
       "departSound": "footstep_stone",
@@ -208,19 +214,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, glass canyon",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, wide open spaces",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:heat_haze",
       "name": "Heat Haze",
-      "description": "The air here shimmers so violently that the landscape seems to melt and reform with every step. Directions become unreliable \u2014 what appears to be a tower to the south could be a rock formation, or nothing at all. The glass underfoot is hot to the touch, and the horizon wobbles like a reflection in disturbed water. A passage from the buried road emerges to the west. Through the haze, you can make out a crossroads of sorts to the east, where several desert paths converge.",
-      "x": 5,
-      "y": 27,
+      "description": "The air here shimmers so violently that the landscape seems to melt and reform with every step. Directions become unreliable — what appears to be a tower to the south could be a rock formation, or nothing at all. The glass underfoot is hot to the touch, and the horizon wobbles like a reflection in disturbed water. A passage from the buried road emerges to the west. Through the haze, you can make out a crossroads of sorts to the east, where several desert paths converge.",
+      "x": 1,
+      "y": -2,
       "exits": {
         "NORTH": "glass_desert:glass_waste",
-        "WEST": "glass_desert:buried_road",
         "EAST": "glass_desert:mirage_crossroads",
-        "SOUTH": "glass_desert:false_spring"
+        "SOUTHEAST": "glass_desert:false_spring"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_heat_haze.webp",
       "departSound": "footstep_stone",
@@ -229,18 +235,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, heat mirage desert",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, clear visibility, sharp details",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:mirage_crossroads",
       "name": "Mirage Crossroads",
-      "description": "Several paths converge here at a nexus of cracked glass and wind-carved crystal formations. Every direction shows something promising \u2014 a gleaming pool to the south that might be water or might be polished glass, a shimmering structure to the east that might be the Spire or might be a heat phantom. Even the path back wavers in the haze. Someone has driven an iron spike into the ground here and hung a strip of faded cloth from it \u2014 a crude waymarker, though which way it points is anyone's guess.",
-      "x": 6,
-      "y": 27,
+      "description": "Several paths converge here at a nexus of cracked glass and wind-carved crystal formations. Every direction shows something promising — a gleaming pool to the south that might be water or might be polished glass, a shimmering structure to the east that might be the Spire or might be a heat phantom. Even the path back wavers in the haze. Someone has driven an iron spike into the ground here and hung a strip of faded cloth from it — a crude waymarker, though which way it points is anyone's guess.",
+      "x": 2,
+      "y": -2,
       "exits": {
         "WEST": "glass_desert:heat_haze",
         "EAST": "glass_desert:phantom_oasis",
-        "SOUTH": "glass_desert:dune_sea"
+        "SOUTHEAST": "glass_desert:dune_sea"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_mirage_crossroads.webp",
       "departSound": "footstep_stone",
@@ -254,7 +261,7 @@
         {
           "id": "mirage_pitfall_trap",
           "label": "Shimmering Pool",
-          "description": "What appears to be a shallow pool of water ahead \u2014 but something about the light is wrong.",
+          "description": "What appears to be a shallow pool of water ahead — but something about the light is wrong.",
           "actionType": "DAMAGE_TRAP",
           "triggerType": "ON_ENTER",
           "perceptionDC": 18,
@@ -264,63 +271,66 @@
             "perceptionDC": "18",
             "saveDC": "18",
             "damageType": "physical",
-            "noticeMessage": "That's not water \u2014 it's a thin sheet of glass over a deep hole. The mirage nearly fooled you.",
+            "noticeMessage": "That's not water — it's a thin sheet of glass over a deep hole. The mirage nearly fooled you.",
             "triggerMessage": "The 'pool' shatters beneath your weight! It was a thin glass sheet over a concealed pit!",
             "saveMessage": "You catch the edge as the glass breaks, hauling yourself up before you fall through completely.",
             "failMessage": "You plunge through the false floor, landing hard on jagged glass shards ten feet below. Pain lances through your legs."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "glass_desert:phantom_oasis",
       "name": "Phantom Oasis",
-      "description": "Against all reason, you find yourself in what appears to be a genuine oasis \u2014 a ring of pale, twisted trees surrounding a depression of darker sand. But look closer: the trees are stone, petrified and fused with glass. The sand is ground crystal. There is no water here, only the memory of water, preserved in glass like an insect in amber. The mirage that drew you here was convincing. East, a field of mirror-bright dunes stretches toward the canyon. South, darker glass formations rise.",
-      "x": 7,
-      "y": 27,
+      "description": "Against all reason, you find yourself in what appears to be a genuine oasis — a ring of pale, twisted trees surrounding a depression of darker sand. But look closer: the trees are stone, petrified and fused with glass. The sand is ground crystal. There is no water here, only the memory of water, preserved in glass like an insect in amber. The mirage that drew you here was convincing. East, a field of mirror-bright dunes stretches toward the canyon. South, darker glass formations rise.",
+      "x": 3,
+      "y": -2,
       "exits": {
         "WEST": "glass_desert:mirage_crossroads",
         "EAST": "glass_desert:mirror_dunes",
-        "SOUTH": "glass_desert:thermal_ridge"
+        "SOUTHEAST": "glass_desert:thermal_ridge"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_phantom_oasis.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 2,
-      "imagePrompt": "First-person view of a false desert oasis \u2014 petrified glass-fused trees in a ring around a depression of ground crystal sand, no actual water, everything preserved in glass like amber, pale twisted stone trees, shimmering heat, deceptive beauty, fantasy glass desert",
+      "imagePrompt": "First-person view of a false desert oasis — petrified glass-fused trees in a ring around a depression of ground crystal sand, no actual water, everything preserved in glass like amber, pale twisted stone trees, shimmering heat, deceptive beauty, fantasy glass desert",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, phantom oasis",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, real water, green leaves, living trees",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:false_spring",
       "name": "False Spring",
-      "description": "The heat haze promised a spring, and you found one \u2014 of sorts. Water does seep here, a thin trickle from deep underground, pooling in a natural glass basin barely two handspans across. It is warm, mineral-heavy, and bitter, but it is real water in a glass desert. Someone has camped here before; you find the remains of a fire ring built from obsidian chunks, and scratched into the glass nearby: 'TRUST NOTHING SOUTH OF THE CROSSROADS.'",
-      "x": 5,
-      "y": 26,
+      "description": "The heat haze promised a spring, and you found one — of sorts. Water does seep here, a thin trickle from deep underground, pooling in a natural glass basin barely two handspans across. It is warm, mineral-heavy, and bitter, but it is real water in a glass desert. Someone has camped here before; you find the remains of a fire ring built from obsidian chunks, and scratched into the glass nearby: 'TRUST NOTHING SOUTH OF THE CROSSROADS.'",
+      "x": 2,
+      "y": -3,
       "exits": {
-        "NORTH": "glass_desert:heat_haze",
-        "EAST": "glass_desert:dune_sea"
+        "EAST": "glass_desert:dune_sea",
+        "NORTHWEST": "glass_desert:heat_haze"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_false_spring.webp",
       "departSound": "footstep_stone",
       "maxHostileNpcs": 0,
-      "imagePrompt": "First-person view of a tiny desert spring \u2014 small glass basin with thin trickle of mineral water, old fire ring made of obsidian chunks, scratched message in glass ground, sparse camp remnants, quiet isolated oasis in glass desert, fantasy wasteland rest stop",
+      "imagePrompt": "First-person view of a tiny desert spring — small glass basin with thin trickle of mineral water, old fire ring made of obsidian chunks, scratched message in glass ground, sparse camp remnants, quiet isolated oasis in glass desert, fantasy wasteland rest stop",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, desert spring",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, large pool, lush vegetation",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:dune_sea",
       "name": "Dune Sea",
-      "description": "The glass desert transforms here into something approaching actual dunes \u2014 fine crystalline sand, driven by constant wind into sweeping ridged formations that glitter like crushed diamonds. The dunes are not stable; they shift and resettle with a sound like distant wind chimes. Between the dunes, deep troughs drop away into shadow. One such trough to the south descends steeply into a wind-carved rift below the dune level.",
-      "x": 6,
-      "y": 26,
+      "description": "The glass desert transforms here into something approaching actual dunes — fine crystalline sand, driven by constant wind into sweeping ridged formations that glitter like crushed diamonds. The dunes are not stable; they shift and resettle with a sound like distant wind chimes. Between the dunes, deep troughs drop away into shadow. One such trough to the south descends steeply into a wind-carved rift below the dune level.",
+      "x": 3,
+      "y": -3,
       "exits": {
-        "NORTH": "glass_desert:mirage_crossroads",
         "WEST": "glass_desert:false_spring",
-        "DOWN": "glass_desert:wind_carved_rift"
+        "SOUTH": "glass_desert:wind_carved_rift",
+        "NORTHWEST": "glass_desert:mirage_crossroads"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_dune_sea.webp",
       "departSound": "footstep_stone",
@@ -344,24 +354,25 @@
             "perceptionDC": "19",
             "saveDC": "19",
             "damageType": "physical",
-            "noticeMessage": "The sand is circling \u2014 a sinkhole forming. You skirt wide around its edge.",
+            "noticeMessage": "The sand is circling — a sinkhole forming. You skirt wide around its edge.",
             "triggerMessage": "The ground collapses into a spiral of grinding crystal sand, pulling you downward!",
             "saveMessage": "You throw yourself sideways, rolling free of the sinkhole's pull as sand cascades into the void.",
             "failMessage": "The crystal sand drags you down, grinding against your armor and skin. You claw your way out, bloodied and shaken."
           }
         }
-      ]
+      ],
+      "z": 0
     },
     {
       "id": "glass_desert:mirror_dunes",
       "name": "Mirror Dunes",
-      "description": "These dunes are different \u2014 their surfaces are not loose sand but sheets of reflective glass, curved and polished by centuries of wind into perfect concave mirrors. Every surface shows you a reflection, but wrong: distorted, delayed, sometimes showing things that aren't there. Your own reflection watches you from a dozen angles, and not all of them move when you do. The effect is profoundly disorienting. The canyon walls rise to the north, and a ridge of dark glass climbs to the west.",
-      "x": 7,
-      "y": 26,
+      "description": "These dunes are different — their surfaces are not loose sand but sheets of reflective glass, curved and polished by centuries of wind into perfect concave mirrors. Every surface shows you a reflection, but wrong: distorted, delayed, sometimes showing things that aren't there. Your own reflection watches you from a dozen angles, and not all of them move when you do. The effect is profoundly disorienting. The canyon walls rise to the north, and a ridge of dark glass climbs to the west.",
+      "x": 4,
+      "y": -2,
       "exits": {
-        "NORTH": "glass_desert:glass_canyon_floor",
         "WEST": "glass_desert:phantom_oasis",
-        "UP": "glass_desert:thermal_ridge"
+        "SOUTH": "glass_desert:thermal_ridge",
+        "NORTHWEST": "glass_desert:glass_canyon_floor"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_mirror_dunes.webp",
       "departSound": "footstep_stone",
@@ -370,17 +381,18 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, mirror dunes",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, normal sand",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:wind_carved_rift",
       "name": "Wind-Carved Rift",
-      "description": "Below the dune sea, a narrow rift has been carved through the glass bedrock by millennia of wind-driven sand. The passage is barely wide enough to walk through, its walls sculpted into flowing organic shapes \u2014 arches, spirals, and hollow chambers worn smooth as silk. The wind howls through the constriction with a sound like a sustained musical note. Sand streams through the air in thin curtains.",
-      "x": 6,
-      "y": 25,
+      "description": "Below the dune sea, a narrow rift has been carved through the glass bedrock by millennia of wind-driven sand. The passage is barely wide enough to walk through, its walls sculpted into flowing organic shapes — arches, spirals, and hollow chambers worn smooth as silk. The wind howls through the constriction with a sound like a sustained musical note. Sand streams through the air in thin curtains.",
+      "x": 3,
+      "y": -4,
       "exits": {
-        "UP": "glass_desert:dune_sea",
-        "EAST": "glass_desert:shattered_monolith"
+        "EAST": "glass_desert:shattered_monolith",
+        "NORTH": "glass_desert:dune_sea"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_wind_carved_rift.webp",
       "departSound": "footstep_stone",
@@ -389,18 +401,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, wind-carved rift",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, wide open, spacious",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:thermal_ridge",
       "name": "Thermal Ridge",
-      "description": "A high ridge of dark volcanic glass rises above the surrounding dune fields, its surface still warm to the touch \u2014 heated by geothermal vents deep below. From this elevation you can see the full sweep of the glass desert: the scorched flats to the north, the mirror dunes below to the east, and to the south, unmistakable now, the Mirage Spire rising from the desert floor like a needle of crystallized light. Hot air rises from cracks in the ridge, creating thermals that distort everything beyond arm's reach.",
-      "x": 7,
-      "y": 25,
+      "description": "A high ridge of dark volcanic glass rises above the surrounding dune fields, its surface still warm to the touch — heated by geothermal vents deep below. From this elevation you can see the full sweep of the glass desert: the scorched flats to the north, the mirror dunes below to the east, and to the south, unmistakable now, the Mirage Spire rising from the desert floor like a needle of crystallized light. Hot air rises from cracks in the ridge, creating thermals that distort everything beyond arm's reach.",
+      "x": 4,
+      "y": -3,
       "exits": {
-        "DOWN": "glass_desert:mirror_dunes",
         "SOUTH": "glass_desert:shattered_monolith",
-        "NORTH": "glass_desert:phantom_oasis"
+        "NORTH": "glass_desert:mirror_dunes",
+        "NORTHWEST": "glass_desert:phantom_oasis"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_thermal_ridge.webp",
       "departSound": "footstep_stone",
@@ -409,14 +422,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, volcanic glass ridge",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, lush green, clouds",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:shattered_monolith",
       "name": "Shattered Monolith",
-      "description": "A massive stone monolith once stood here \u2014 a Warden waymarker from before the cataclysm. Now it lies broken, toppled by the same forces that created the glass desert. Its fragments are scattered across an area the size of a town square, half-buried in crystalline sand. Carved text on one surviving face reads: '...the Spire was not built. It grew from the fracture, and what lives inside it is not what you expect...' The Spire itself is close now, visible through the heat haze to the south.",
-      "x": 7,
-      "y": 24,
+      "description": "A massive stone monolith once stood here — a Warden waymarker from before the cataclysm. Now it lies broken, toppled by the same forces that created the glass desert. Its fragments are scattered across an area the size of a town square, half-buried in crystalline sand. Carved text on one surviving face reads: '...the Spire was not built. It grew from the fracture, and what lives inside it is not what you expect...' The Spire itself is close now, visible through the heat haze to the south.",
+      "x": 4,
+      "y": -4,
       "exits": {
         "NORTH": "glass_desert:thermal_ridge",
         "WEST": "glass_desert:wind_carved_rift",
@@ -429,18 +443,19 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, ruined monolith",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, intact monument",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:glass_spire_vista",
       "name": "Glass Spire Vista",
-      "description": "The Mirage Spire dominates everything from here \u2014 a tower of crystallized glass and light that rises impossibly high from the desert floor, its surface constantly shifting with refracted colors. It does not look built; it looks grown, like a crystal formation scaled up a thousandfold. The base is perhaps a quarter mile south, surrounded by a ring of fused glass rubble. To the east, the land drops away in a series of glass shelves overlooking ancient ruins far below \u2014 the crumbling remains of the First Seal approach.",
-      "x": 7,
-      "y": 23,
+      "description": "The Mirage Spire dominates everything from here — a tower of crystallized glass and light that rises impossibly high from the desert floor, its surface constantly shifting with refracted colors. It does not look built; it looks grown, like a crystal formation scaled up a thousandfold. The base is perhaps a quarter mile south, surrounded by a ring of fused glass rubble. To the east, the land drops away in a series of glass shelves overlooking ancient ruins far below — the crumbling remains of the First Seal approach.",
+      "x": 4,
+      "y": -5,
       "exits": {
         "NORTH": "glass_desert:shattered_monolith",
         "SOUTH": "glass_desert:spire_approach",
-        "DOWN": "glass_desert:spire_base"
+        "EAST": "glass_desert:spire_base"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_glass_spire_vista.webp",
       "departSound": "footstep_stone",
@@ -449,17 +464,18 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, crystal spire vista",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, small tower",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:spire_base",
       "name": "Spire Base",
-      "description": "At the base of the cliff shelf, among tumbled glass boulders, a narrow trail winds toward the spire's foundation. The glass here is ancient and deeply layered \u2014 you can see through it in places, catching glimpses of structures buried far below the surface. Bones, too, preserved in the glass like specimens in amber. Below, a precarious descent along the cliff face leads down to the Warden Seal ruins of the First Seal, visible through a gap in the glass formations far beneath you.",
-      "x": 8,
-      "y": 22,
+      "description": "At the base of the cliff shelf, among tumbled glass boulders, a narrow trail winds toward the spire's foundation. The glass here is ancient and deeply layered — you can see through it in places, catching glimpses of structures buried far below the surface. Bones, too, preserved in the glass like specimens in amber. Below, a precarious descent along the cliff face leads down to the Warden Seal ruins of the First Seal, visible through a gap in the glass formations far beneath you.",
+      "x": 5,
+      "y": -5,
       "exits": {
-        "UP": "glass_desert:glass_spire_vista",
-        "DOWN": "first_seal:watcher_perch"
+        "DOWN": "first_seal:watcher_perch",
+        "WEST": "glass_desert:glass_spire_vista"
       },
       "backgroundImage": "/assets/images/rooms/glass_desert_spire_base.webp",
       "departSound": "footstep_stone",
@@ -468,14 +484,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, glass cliff base",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, open flat ground",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:spire_approach",
       "name": "Spire Approach",
-      "description": "The final approach to the Mirage Spire. A ring of fused rubble encircles the tower's base like a crater wall \u2014 the heat that formed the spire clearly devastated everything within a hundred paces. The rubble is sharp and treacherous, but a path has been worn through it by something that comes and goes regularly. The spire's surface up close is mesmerizing: layers of transparent and opaque glass in shifting colors, warm to the touch, humming faintly at a frequency you feel more than hear.",
-      "x": 7,
-      "y": 22,
+      "description": "The final approach to the Mirage Spire. A ring of fused rubble encircles the tower's base like a crater wall — the heat that formed the spire clearly devastated everything within a hundred paces. The rubble is sharp and treacherous, but a path has been worn through it by something that comes and goes regularly. The spire's surface up close is mesmerizing: layers of transparent and opaque glass in shifting colors, warm to the touch, humming faintly at a frequency you feel more than hear.",
+      "x": 4,
+      "y": -6,
       "exits": {
         "NORTH": "glass_desert:glass_spire_vista",
         "SOUTH": "glass_desert:spire_gates"
@@ -487,14 +504,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, crystal spire approach",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, small tower, ruins",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     },
     {
       "id": "glass_desert:spire_gates",
       "name": "Spire Gates",
-      "description": "The entrance to the Mirage Spire. What serves as a door is a gap in the crystal wall where two massive glass formations lean together, forming a pointed arch. The interior glows with soft, shifting light \u2014 refracted sunlight channeled through the spire's crystalline structure. The air inside is cool and still, a stark contrast to the brutal desert heat. Something watches from within; you can feel it, a pressure behind your eyes, like being observed by something that sees through glass.",
-      "x": 7,
-      "y": 21,
+      "description": "The entrance to the Mirage Spire. What serves as a door is a gap in the crystal wall where two massive glass formations lean together, forming a pointed arch. The interior glows with soft, shifting light — refracted sunlight channeled through the spire's crystalline structure. The air inside is cool and still, a stark contrast to the brutal desert heat. Something watches from within; you can feel it, a pressure behind your eyes, like being observed by something that sees through glass.",
+      "x": 4,
+      "y": -7,
       "exits": {
         "NORTH": "glass_desert:spire_approach",
         "SOUTH": "mirage_spire:entry_hall"
@@ -506,14 +524,15 @@
       "imageStyle": "fantasy digital painting, rich colors, atmospheric lighting, slightly painterly, fixed perspective, JRPG background, crystal spire entrance",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, wooden door, stone castle",
       "imageWidth": 1024,
-      "imageHeight": 576
+      "imageHeight": 576,
+      "z": 0
     }
   ],
   "npcs": [
     {
       "id": "npc:glass_scorpion",
       "name": "Glass Scorpion",
-      "description": "A predator perfectly adapted to the glass desert \u2014 its carapace is transparent, nearly invisible against the vitrified ground. Only its eyes, eight points of black amid the glass, give it away. Its tail ends in a crystalline stinger that can punch through leather armor.",
+      "description": "A predator perfectly adapted to the glass desert — its carapace is transparent, nearly invisible against the vitrified ground. Only its eyes, eight points of black amid the glass, give it away. Its tail ends in a crystalline stinger that can punch through leather armor.",
       "level": 20,
       "maxHp": 250,
       "damage": 46,
@@ -565,7 +584,7 @@
     {
       "id": "npc:sand_wraith",
       "name": "Sand Wraith",
-      "description": "A spectral figure made of crystalline sand, held together by some residual magical force from the cataclysm. It drifts across the glass desert like a dust devil given malicious purpose, its form constantly shifting \u2014 sometimes humanoid, sometimes an amorphous cloud of grinding particles.",
+      "description": "A spectral figure made of crystalline sand, held together by some residual magical force from the cataclysm. It drifts across the glass desert like a dust devil given malicious purpose, its form constantly shifting — sometimes humanoid, sometimes an amorphous cloud of grinding particles.",
       "level": 20,
       "maxHp": 240,
       "damage": 48,
@@ -714,7 +733,7 @@
     {
       "id": "npc:glass_elemental",
       "name": "Glass Elemental",
-      "description": "A towering figure of animated glass \u2014 eight feet tall, its body a shifting mosaic of transparent and opaque panels that grind against each other as it moves. It is a remnant of the cataclysm, a fragment of elemental fury that never dissipated, locked in an eternal patrol around the Spire. Its fists hit like sledgehammers wrapped in razors.",
+      "description": "A towering figure of animated glass — eight feet tall, its body a shifting mosaic of transparent and opaque panels that grind against each other as it moves. It is a remnant of the cataclysm, a fragment of elemental fury that never dissipated, locked in an eternal patrol around the Spire. Its fists hit like sledgehammers wrapped in razors.",
       "level": 21,
       "maxHp": 300,
       "damage": 52,
@@ -763,7 +782,7 @@
     {
       "id": "npc:zara_wayfinder",
       "name": "Zara the Wayfinder",
-      "description": "A lean, weathered woman in sand-colored leather, her eyes hidden behind smoked-glass goggles. She carries a Warden's compass \u2014 an ancient device that supposedly points toward seal fractures. She has been mapping the glass desert for years, documenting the mirages and their patterns. She seems to know more about the Spire than she's willing to share openly.",
+      "description": "A lean, weathered woman in sand-colored leather, her eyes hidden behind smoked-glass goggles. She carries a Warden's compass — an ancient device that supposedly points toward seal fractures. She has been mapping the glass desert for years, documenting the mirages and their patterns. She seems to know more about the Spire than she's willing to share openly.",
       "level": 22,
       "maxHp": 300,
       "damage": 0,
@@ -771,7 +790,7 @@
       "hostile": false,
       "startRoomId": "glass_desert:false_spring",
       "wanderRadius": 0,
-      "dialogueScript": "Zara adjusts her goggles and studies you with an unreadable expression. 'You're headed for the Spire. Everyone who comes through here is. Listen \u2014 the Spire isn't a building, it's a wound. The cataclysm left it, and what lives inside is a reflection of everything the seal couldn't contain. You'll need a Shard of True Sight to pass the mirror threshold, or you'll walk its halls forever thinking down is up.' She produces a crystalline fragment from her pack. 'Take this. I found it in the monolith ruins. It shows things as they are, not as they appear. The seals, the fragments, the war-brands \u2014 they're all connected. Whatever is inside that Spire is the reason the seals are failing.'",
+      "dialogueScript": "Zara adjusts her goggles and studies you with an unreadable expression. 'You're headed for the Spire. Everyone who comes through here is. Listen — the Spire isn't a building, it's a wound. The cataclysm left it, and what lives inside is a reflection of everything the seal couldn't contain. You'll need a Shard of True Sight to pass the mirror threshold, or you'll walk its halls forever thinking down is up.' She produces a crystalline fragment from her pack. 'Take this. I found it in the monolith ruins. It shows things as they are, not as they appear. The seals, the fragments, the war-brands — they're all connected. Whatever is inside that Spire is the reason the seals are failing.'",
       "interactSound": "trainer_greet",
       "grantItemId": "item:shard_of_true_sight",
       "grantItemFlag": "zara_shard_given",
@@ -785,7 +804,7 @@
     {
       "id": "npc:fennec_salvager",
       "name": "Fennec the Salvager",
-      "description": "A wiry halfling with enormous ears \u2014 hence the name \u2014 who has turned desert salvage into a thriving business. His camp at the buried road is stocked with gear scavenged from failed expeditions into the Spire, repaired and marked up considerably. He's cheerful about the markup. 'Supply and demand, friend. There's plenty of supply of dead adventurers, and plenty of demand for their stuff.'",
+      "description": "A wiry halfling with enormous ears — hence the name — who has turned desert salvage into a thriving business. His camp at the buried road is stocked with gear scavenged from failed expeditions into the Spire, repaired and marked up considerably. He's cheerful about the markup. 'Supply and demand, friend. There's plenty of supply of dead adventurers, and plenty of demand for their stuff.'",
       "level": 20,
       "maxHp": 200,
       "damage": 0,
@@ -793,7 +812,7 @@
       "hostile": false,
       "startRoomId": "glass_desert:buried_road",
       "wanderRadius": 0,
-      "interactMessage": "Fennec grins up at you from behind a makeshift counter of stacked glass bricks. 'Welcome to Fennec's Finds! Everything a Spire-bound adventurer could need \u2014 pre-owned, lovingly restored, and priced to move. Well, priced to move my profits upward, anyway. Take a look!'",
+      "interactMessage": "Fennec grins up at you from behind a makeshift counter of stacked glass bricks. 'Welcome to Fennec's Finds! Everything a Spire-bound adventurer could need — pre-owned, lovingly restored, and priced to move. Well, priced to move my profits upward, anyway. Take a look!'",
       "interactSound": "vendor_greet",
       "exitSound": "vendor_greet",
       "vendorItems": [

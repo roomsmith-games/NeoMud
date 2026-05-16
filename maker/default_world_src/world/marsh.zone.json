@@ -16,8 +16,8 @@
       "id": "marsh:edge",
       "name": "Marsh Edge",
       "description": "The forest floor gives way to soft, waterlogged earth. Gnarled mangrove roots rise from murky pools, and the air grows thick with the stench of decay. The carcass of an armored knight lies half-submerged in the muck nearby, his plate mail crushed and torn by something immensely powerful. A low-hanging mist obscures everything beyond a few paces. The marsh stretches ominously northward and eastward.",
-      "x": -3,
-      "y": 4,
+      "x": 0,
+      "y": 0,
       "exits": {
         "NORTH": "marsh:trail",
         "EAST": "marsh:shallows"
@@ -28,14 +28,15 @@
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
       "imageWidth": 1536,
-      "imageHeight": 1024
+      "imageHeight": 1024,
+      "z": 0
     },
     {
       "id": "marsh:trail",
       "name": "Sunken Trail",
       "description": "A half-submerged trail of rotting planks stretches across the mire, many boards cracked or missing entirely. Dark water ripples on either side, disturbed by unseen things beneath the surface. The path continues north toward the heart of the marsh, while a gap in the undergrowth leads west to a darkened hollow.",
-      "x": -3,
-      "y": 5,
+      "x": 0,
+      "y": 1,
       "exits": {
         "SOUTH": "marsh:edge",
         "NORTH": "marsh:heart",
@@ -47,18 +48,18 @@
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
       "imageWidth": 1536,
-      "imageHeight": 1024
+      "imageHeight": 1024,
+      "z": 0
     },
     {
       "id": "marsh:shallows",
       "name": "Fetid Shallows",
       "description": "Ankle-deep water stretches in every direction, broken only by tufts of swamp grass and the occasional rotting stump. Bubbles rise sluggishly from the muck below, releasing foul-smelling gas. Something large disturbed the water recently — fresh tracks lead north toward a small island. To the east, firmer ground and the canopy of the forest beckon.",
-      "x": -2,
-      "y": 4,
+      "x": 1,
+      "y": 0,
       "exits": {
         "WEST": "marsh:edge",
-        "NORTH": "marsh:island",
-        "EAST": "forest:cave"
+        "NORTH": "marsh:island"
       },
       "backgroundImage": "/assets/images/rooms/marsh_shallows.webp",
       "departSound": "footstep_splash",
@@ -66,14 +67,15 @@
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
       "imageWidth": 1536,
-      "imageHeight": 1024
+      "imageHeight": 1024,
+      "z": 0
     },
     {
       "id": "marsh:hollow",
       "name": "Hag's Hollow",
       "description": "A dark depression in the marsh, ringed by ancient willows whose drooping branches form a natural curtain. The water here is unnaturally still and black as ink. Strange totems of bone and feather hang from the branches, clicking softly in a breeze you cannot feel. This place reeks of dark magic.",
-      "x": -4,
-      "y": 5,
+      "x": -1,
+      "y": 1,
       "exits": {
         "EAST": "marsh:trail"
       },
@@ -83,14 +85,15 @@
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
       "imageWidth": 1536,
-      "imageHeight": 1024
+      "imageHeight": 1024,
+      "z": 0
     },
     {
       "id": "marsh:island",
       "name": "Mire Island",
       "description": "A rare patch of solid ground rises from the swamp — a small island of packed earth and moss-covered stones. The remains of a campfire suggest someone or something shelters here. The island offers a commanding but unsettling view of the marsh in every direction, with the dark heart of the swamp visible to the northwest.",
-      "x": -2,
-      "y": 5,
+      "x": 1,
+      "y": 1,
       "exits": {
         "SOUTH": "marsh:shallows",
         "NORTHWEST": "marsh:heart"
@@ -120,14 +123,15 @@
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
       "imageWidth": 1536,
-      "imageHeight": 1024
+      "imageHeight": 1024,
+      "z": 0
     },
     {
       "id": "marsh:heart",
       "name": "Heart of the Marsh",
       "description": "The deepest part of the Thornveil Marsh, where the mist is so thick it seems almost solid. Ancient trees have petrified here, their stone trunks rising like pillars from the black water. Will-o'-wisps dance in the gloom, leading the unwary deeper into the mire. To the north, the ground rises sharply — a treacherous trail climbs toward the dark mouth of a rocky gorge.",
-      "x": -3,
-      "y": 6,
+      "x": 0,
+      "y": 2,
       "exits": {
         "SOUTH": "marsh:trail",
         "SOUTHEAST": "marsh:island",
@@ -139,7 +143,8 @@
       "imageStyle": "fantasy digital painting, dark swamp atmosphere, murky greens and browns, fog and mist, slightly painterly, fixed perspective, JRPG background, stage-like composition",
       "imageNegativePrompt": "modern, cars, electricity, sci-fi, top-down, isometric, characters, people, figures, bright cheerful",
       "imageWidth": 1536,
-      "imageHeight": 1024
+      "imageHeight": 1024,
+      "z": 0
     }
   ],
   "npcs": [
