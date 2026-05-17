@@ -721,6 +721,30 @@
       "attackSound": "tongue_lash",
       "missSound": "tongue_miss",
       "deathSound": "ghost_death",
+      "phases": [
+        {
+          "name": "Abyssal Ward",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:tidewarden_korlach_phase2",
+          "damage": 46,
+          "accuracy": 22,
+          "defense": 28,
+          "evasion": 16,
+          "transitionMessage": "Korlach draws its many arms inward, weaving them into a lattice of pale flesh and ancient sigils. The water around it stills to glass. Something older than the Seal itself stares out from behind the bone-smooth face.",
+          "transitionSound": "boss_phase_shift"
+        },
+        {
+          "name": "Devouring Tide",
+          "hpThresholdPercent": 0.2,
+          "spriteId": "npc:tidewarden_korlach_phase3",
+          "damage": 58,
+          "accuracy": 26,
+          "defense": 14,
+          "evasion": 4,
+          "transitionMessage": "The ward shatters. Every arm unfurls at once — lashing, grasping, tearing at the air itself. The salt water erupts into a churning vortex as Korlach unleashes the full horror of the deep.",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
       "imagePrompt": "Full-body vast pale boss creature rising from waist-deep dark salt water, once-human form gone broad and many-armed in the depths, fish-pale skin runed with ancient pale-blue sigils, smooth eyeless band of bone where the eyes should be, multiple long muscular arms reaching outward, monumental dread presence facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, drowned horror boss, pale sea tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon",
