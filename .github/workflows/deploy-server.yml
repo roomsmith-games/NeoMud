@@ -156,7 +156,10 @@ jobs:
             -F "changelog=$CHANGELOG" \
             -F "bundle=@server/build/worlds/default-world.nmd")
           if [ "$HTTP_CODE" = "409" ]; then
-            echo "⚠ Version $VERSION already exists — skipping to verify"
+            echo "❌ Version $VERSION already exists — bump version in maker/default_world_src/manifest.json"
+            echo "   Without a new version, the container will NOT restart with the new Docker image."
+            echo "   This is the #1 cause of 'deploy succeeded but staging is broken.'"
+            exit 1
           elif [ "$HTTP_CODE" -ge 400 ]; then
             echo "❌ Publish failed (HTTP $HTTP_CODE):"
             cat /tmp/publish-response.json
