@@ -1,6 +1,7 @@
 package com.neomud.client.platform
 
 actual fun returnToMarketplace() { /* No-op on desktop — world browser handles navigation */ }
+actual fun dismissNativeLoadingScreen() { /* No-op on desktop */ }
 
 actual val serverConfig: ServerConfig = ServerConfig(
     defaultHost = System.getProperty("neomud.host", "127.0.0.1"),

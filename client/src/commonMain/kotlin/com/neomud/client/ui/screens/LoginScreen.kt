@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import com.neomud.client.platform.dismissNativeLoadingScreen
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -98,6 +99,8 @@ fun LoginScreen(
     var showGuestWarning by remember { mutableStateOf(false) }
     var characterName by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(Unit) { dismissNativeLoadingScreen() }
 
     Box(
         modifier = Modifier.fillMaxSize(),

@@ -26,5 +26,9 @@ expect val serverConfig: ServerConfig
 /** Redirect back to the web marketplace. Only meaningful on WASM; no-op on native platforms. */
 expect fun returnToMarketplace()
 
+/** Dismiss the native loading screen. On WASM, fades out the HTML loading overlay.
+ *  No-op on native platforms (Android/iOS/Desktop handle their own splash screens). */
+expect fun dismissNativeLoadingScreen()
+
 /** Backward-compatible alias — use [serverConfig] directly for new code. */
 val defaultServerHost: String get() = serverConfig.defaultHost

@@ -20,8 +20,11 @@ private fun getHostname(): String = js("window.location.hostname || ''")
 private fun jsNavigate(url: String): Unit = js("window.location.href = url")
 
 actual fun returnToMarketplace() {
-    // Navigate back to the React marketplace root
     jsNavigate("/")
+}
+
+actual fun dismissNativeLoadingScreen() {
+    js("if (typeof window.__NEOMUD_DISMISS_LOADING__ === 'function') window.__NEOMUD_DISMISS_LOADING__()")
 }
 
 actual val serverConfig: ServerConfig = run {

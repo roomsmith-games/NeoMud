@@ -3,6 +3,7 @@ package com.neomud.client.platform
 import platform.Foundation.NSBundle
 
 actual fun returnToMarketplace() { /* No-op on iOS — world browser handles navigation */ }
+actual fun dismissNativeLoadingScreen() { /* No-op on iOS */ }
 
 actual val serverConfig: ServerConfig = ServerConfig(
     defaultHost = (NSBundle.mainBundle.objectForInfoDictionaryKey("NeoMudDefaultHost") as? String) ?: "127.0.0.1",

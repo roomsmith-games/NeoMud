@@ -272,29 +272,25 @@
         setTimeout(advanceStage, 5000);
         setTimeout(advanceStage, 9000);
 
-        // Remove loading screen once Compose renders
-        var observer = new MutationObserver(function() {
-            var target = document.getElementById('ComposeTarget');
-            if (target && target.childNodes.length > 0) {
-                fill.style.width = '100%';
-                stageText.textContent = 'Connected!';
-                // Stop loading BGM (game will start its own)
-                if (window.__NEOMUD_LOADING_BGM__) {
-                    window.__NEOMUD_LOADING_BGM__.pause();
-                    window.__NEOMUD_LOADING_BGM__ = null;
-                }
-                var loadingEl = document.getElementById('loading');
-                if (loadingEl) {
-                    loadingEl.classList.add('fade-out');
-                    setTimeout(function() { loadingEl.remove(); observer.disconnect(); }, 500);
-                }
+        // Dismiss loading screen — called by Compose via dismissNativeLoadingScreen()
+        // when the login screen is actually rendered and interactive.
+        window.__NEOMUD_DISMISS_LOADING__ = function() {
+            fill.style.width = '100%';
+            stageText.textContent = 'Entering world...';
+            if (window.__NEOMUD_LOADING_BGM__) {
+                window.__NEOMUD_LOADING_BGM__.pause();
+                window.__NEOMUD_LOADING_BGM__ = null;
             }
-        });
-        observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+            var loadingEl = document.getElementById('loading');
+            if (loadingEl) {
+                loadingEl.classList.add('fade-out');
+                setTimeout(function() { loadingEl.remove(); }, 500);
+            }
+        };
+        // Safety net: force-dismiss after 5 min if callback never fires
         setTimeout(function() {
-            var el = document.getElementById('loading');
-            if (el) { el.classList.add('fade-out'); setTimeout(function() { el.remove(); }, 500); }
-        }, 20000);
+            if (document.getElementById('loading')) window.__NEOMUD_DISMISS_LOADING__();
+        }, 300000);
     </script>
     <!-- Sentry error tracking (CDN loader with baked-in DSN, catches all JS errors) -->
     <script src="https://js.sentry-cdn.com/ed49ac2687b7b9cc5c0cd45c2bf1e1f1.min.js" crossorigin="anonymous"></script>
