@@ -691,7 +691,10 @@ class GameViewModel(
                 _playerCoins.value = message.updatedCoins
                 _inventory.value = message.updatedInventory
                 _equipment.value = message.equipment
-                // Refresh vendor info if panel is open
+                _vendorInfo.value = _vendorInfo.value?.copy(
+                    playerInventory = message.updatedInventory,
+                    playerCoins = message.updatedCoins
+                )
                 if (_showVendor.value) interactVendor()
             }
             is ServerMessage.SellResult -> {
@@ -703,6 +706,10 @@ class GameViewModel(
                 _playerCoins.value = message.updatedCoins
                 _inventory.value = message.updatedInventory
                 _equipment.value = message.equipment
+                _vendorInfo.value = _vendorInfo.value?.copy(
+                    playerInventory = message.updatedInventory,
+                    playerCoins = message.updatedCoins
+                )
                 if (_showVendor.value) interactVendor()
             }
             is ServerMessage.XpGained -> {

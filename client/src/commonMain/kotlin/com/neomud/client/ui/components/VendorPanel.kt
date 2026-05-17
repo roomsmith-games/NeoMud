@@ -96,8 +96,8 @@ fun VendorPanel(
     vendorInfo: ServerMessage.VendorInfo,
     playerLevel: Int,
     itemCatalog: Map<String, Item>,
-    onBuy: (String) -> Unit,
-    onSell: (String) -> Unit,
+    onBuy: (String, Int) -> Unit,
+    onSell: (String, Int) -> Unit,
     onClose: () -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -241,7 +241,7 @@ fun VendorPanel(
                                 playerLevel = playerLevel,
                                 ownedCount = ownedQty,
                                 equippedItem = equippedBySlot[vendorItem.item.slot],
-                                onBuy = { onBuy(vendorItem.item.id) }
+                                onBuy = { qty -> onBuy(vendorItem.item.id, qty) }
                             )
                         }
                     } else {
@@ -261,7 +261,7 @@ fun VendorPanel(
                                 item = item,
                                 playerCharm = vendorInfo.playerCharm,
                                 hasHaggle = vendorInfo.hasHaggle,
-                                onSell = { onSell(invItem.itemId) }
+                                onSell = { qty -> onSell(invItem.itemId, qty) }
                             )
                         }
                     }
@@ -317,11 +317,15 @@ private fun BuyItemRow(
     playerLevel: Int,
     ownedCount: Int,
     equippedItem: Item? = null,
-    onBuy: () -> Unit
+    onBuy: (Int) -> Unit
 ) {
     val item = vendorItem.item
-    val canAfford = playerCoins.totalCopper() >= vendorItem.price.totalCopper()
+    val unitPrice = vendorItem.price.totalCopper()
+    val maxAffordable = if (unitPrice > 0) (playerCoins.totalCopper() / unitPrice).toInt().coerceAtLeast(0) else 0
     val meetsLevel = playerLevel >= item.levelRequirement
+    var quantity by remember { mutableIntStateOf(1) }
+    val clampedQty = quantity.coerceIn(1, maxAffordable.coerceAtLeast(1))
+    val canAfford = playerCoins.totalCopper() >= unitPrice * clampedQty
     val canBuy = canAfford && meetsLevel
     val context = LocalPlatformContext.current
     val serverBaseUrl = LocalServerBaseUrl.current
@@ -440,14 +444,24 @@ private fun BuyItemRow(
             }
         }
 
-        Text(
-            text = vendorItem.price.displayString(),
-            fontSize = 12.sp,
-            color = if (canAfford) BurnishedGold else Color(0xFF884444),
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                text = if (clampedQty > 1)
+                    Coins.fromCopper(unitPrice * clampedQty).displayString()
+                else vendorItem.price.displayString(),
+                fontSize = 12.sp,
+                color = if (canAfford) BurnishedGold else Color(0xFF884444)
+            )
+            if (maxAffordable > 1) {
+                QuantityStepper(
+                    quantity = clampedQty,
+                    max = maxAffordable.coerceAtMost(99),
+                    onQuantityChange = { quantity = it }
+                )
+            }
+        }
+        Spacer(Modifier.width(6.dp))
 
-        // Buy button — stone-styled
         Box(
             modifier = Modifier
                 .height(32.dp)
@@ -467,7 +481,7 @@ private fun BuyItemRow(
                     drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
                     drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
                 }
-                .then(if (canBuy) Modifier.clickable(onClick = onBuy) else Modifier)
+                .then(if (canBuy) Modifier.clickable { onBuy(clampedQty) } else Modifier)
                 .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -486,11 +500,13 @@ private fun SellItemRow(
     item: Item?,
     playerCharm: Int,
     hasHaggle: Boolean = false,
-    onSell: () -> Unit
+    onSell: (Int) -> Unit
 ) {
     val itemName = item?.name ?: inventoryItem.itemId
     val itemValue = item?.value ?: 0
-    val sellPriceCopper = if (itemValue > 0) Coins.sellPriceCopper(itemValue, inventoryItem.quantity, playerCharm, hasHaggle) else 0L
+    var quantity by remember { mutableIntStateOf(inventoryItem.quantity) }
+    val clampedQty = quantity.coerceIn(1, inventoryItem.quantity)
+    val sellPriceCopper = if (itemValue > 0) Coins.sellPriceCopper(itemValue, clampedQty, playerCharm, hasHaggle) else 0L
     val sellPrice = Coins.fromCopper(sellPriceCopper)
     val canSell = itemValue > 0
     val context = LocalPlatformContext.current
@@ -552,14 +568,22 @@ private fun SellItemRow(
             }
         }
 
-        Text(
-            text = if (canSell) sellPrice.displayString() else "No value",
-            fontSize = 12.sp,
-            color = if (canSell) BurnishedGold else AshGray,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                text = if (canSell) sellPrice.displayString() else "No value",
+                fontSize = 12.sp,
+                color = if (canSell) BurnishedGold else AshGray
+            )
+            if (inventoryItem.quantity > 1 && canSell) {
+                QuantityStepper(
+                    quantity = clampedQty,
+                    max = inventoryItem.quantity,
+                    onQuantityChange = { quantity = it }
+                )
+            }
+        }
+        Spacer(Modifier.width(6.dp))
 
-        // Sell button — stone-styled
         Box(
             modifier = Modifier
                 .height(32.dp)
@@ -579,7 +603,7 @@ private fun SellItemRow(
                     drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
                     drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
                 }
-                .then(if (canSell) Modifier.clickable(onClick = onSell) else Modifier)
+                .then(if (canSell) Modifier.clickable { onSell(clampedQty) } else Modifier)
                 .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -588,6 +612,51 @@ private fun SellItemRow(
                 color = if (canSell) Color.White else AshGray,
                 fontWeight = FontWeight.Bold
             )
+        }
+    }
+}
+
+@Composable
+private fun QuantityStepper(
+    quantity: Int,
+    max: Int,
+    onQuantityChange: (Int) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(top = 2.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .background(StoneTheme.frameDark, RoundedCornerShape(3.dp))
+                .border(1.dp, AshGray.copy(alpha = 0.4f), RoundedCornerShape(3.dp))
+                .then(
+                    if (quantity > 1) Modifier.clickable { onQuantityChange(quantity - 1) }
+                    else Modifier
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("-", fontSize = 12.sp, color = if (quantity > 1) BoneWhite else AshGray)
+        }
+        Text(
+            text = "$quantity",
+            fontSize = 11.sp,
+            color = BoneWhite,
+            modifier = Modifier.padding(horizontal = 6.dp)
+        )
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .background(StoneTheme.frameDark, RoundedCornerShape(3.dp))
+                .border(1.dp, AshGray.copy(alpha = 0.4f), RoundedCornerShape(3.dp))
+                .then(
+                    if (quantity < max) Modifier.clickable { onQuantityChange(quantity + 1) }
+                    else Modifier
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("+", fontSize = 12.sp, color = if (quantity < max) BoneWhite else AshGray)
         }
     }
 }

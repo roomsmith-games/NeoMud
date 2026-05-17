@@ -266,8 +266,8 @@ fun GameScreen(
                     vendorInfo = info,
                     playerLevel = player?.level ?: 1,
                     itemCatalog = itemCatalog,
-                    onBuy = { itemId -> gameViewModel.buyItem(itemId) },
-                    onSell = { itemId -> gameViewModel.sellItem(itemId) },
+                    onBuy = { itemId, qty -> gameViewModel.buyItem(itemId, qty) },
+                    onSell = { itemId, qty -> gameViewModel.sellItem(itemId, qty) },
                     onClose = { gameViewModel.dismissVendor() }
                 )
             }
