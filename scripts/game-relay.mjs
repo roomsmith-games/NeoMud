@@ -30,6 +30,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = path.join(__dirname, 'relay-state.json');
 const COMMAND_FILE = path.join(__dirname, 'relay-command.json');
 const TEMP_STATE_FILE = path.join(__dirname, '.relay-state.tmp');
+const PROCESSING_FILE = path.join(__dirname, '.relay-command.processing');
 const LOCK_FILE = path.join(__dirname, 'relay.lock');
 
 const COMMAND_POLL_MS = 250;
@@ -37,6 +38,9 @@ const PING_INTERVAL_MS = 30_000;
 const COMMAND_SPACING_MS = 150;
 const MAX_RECENT_EVENTS = 50;
 const STATE_WRITE_DEBOUNCE_MS = 100;
+const MAX_RECONNECT_ATTEMPTS = 5;
+const RECONNECT_BASE_MS = 2000;
+const COMMAND_DEDUP_MS = 500;
 
 // ---------------------------------------------------------------------------
 // CLI args — parse --url and --register flags, then positional user/pass
@@ -51,9 +55,10 @@ let registerOpts = {};
 let guestOpts = {};
 let platformRegisterOpts = {};
 let platformAccessToken = null;
+let characterOverride = null;
 let username, password;
 
-// Extract --url and --staging flags first
+// Extract --url, --staging, and --character flags first
 const args = [];
 for (let i = 0; i < rawArgs.length; i++) {
   if (rawArgs[i] === '--url' && i + 1 < rawArgs.length) {
@@ -61,6 +66,8 @@ for (let i = 0; i < rawArgs.length; i++) {
   } else if (rawArgs[i] === '--staging' && i + 1 < rawArgs.length) {
     stagingMode = true;
     stagingSlug = rawArgs[++i];
+  } else if (rawArgs[i] === '--character' && i + 1 < rawArgs.length) {
+    characterOverride = rawArgs[++i];
   } else {
     args.push(rawArgs[i]);
   }
@@ -406,6 +413,9 @@ const handlers = {
   // Platform auth response — fires after client_hello with valid JWT
   platform_auth_ok(msg) {
     pushEvent('system', `Platform auth OK: ${msg.characterName || '(new character needed)'}`);
+    if (msg.characterNames && msg.characterNames.length > 1) {
+      pushEvent('system', `Available characters: ${msg.characterNames.join(', ')}`);
+    }
     if (msg.needsCharacterCreation) {
       if (registerMode && stagingMode) {
         pushEvent('system', 'Creating platform character...');
@@ -416,8 +426,9 @@ const handlers = {
         process.exit(1);
       }
     } else {
-      pushEvent('system', `Logging in as ${msg.characterName}...`);
-      send({ type: 'platform_login' });
+      const charName = characterOverride || (msg.characterNames && msg.characterNames[0]) || msg.characterName;
+      pushEvent('system', `Logging in as ${charName}...`);
+      send({ type: 'platform_login', characterName: charName });
     }
   },
 
@@ -432,6 +443,7 @@ const handlers = {
   },
   login_ok(msg) {
     state.loggedIn = true;
+    reconnectAttempts = 0;
     const p = msg.player;
     state.player = {
       name: p.name,
@@ -454,6 +466,29 @@ const handlers = {
   auth_error(msg) {
     pushEvent('error', `Auth error: ${msg.reason}`);
     console.error('[relay] Auth error:', msg.reason);
+
+    if (msg.reason && msg.reason.toLowerCase().includes('already logged in')) {
+      console.log('[relay] Account already logged in. Waiting 5s then retrying...');
+      setTimeout(() => {
+        if (!state.loggedIn) {
+          console.log('[relay] Retrying login...');
+          retryAuth();
+        }
+      }, 5000);
+    } else if (msg.reason && msg.reason.toLowerCase().includes('too many')) {
+      console.error('[relay] Rate limited. Exiting.');
+      shutdownRelay(1);
+    } else {
+      console.error('[relay] Fatal auth error. Exiting.');
+      shutdownRelay(1);
+    }
+  },
+
+  session_displaced(msg) {
+    pushEvent('system', `Session displaced: ${msg.reason || 'Another session logged in'}`);
+    console.log('[relay] Session displaced by another login. Exiting.');
+    serverShuttingDown = true;
+    shutdownRelay(0);
   },
 
   // Room / Movement
@@ -912,10 +947,24 @@ let ws = null;
 let pingTimer = null;
 let commandPollTimer = null;
 let serverShuttingDown = false;
+let reconnectAttempts = 0;
+let isProcessingCommand = false;
+let lastCommandHash = '';
+let lastCommandTime = 0;
 
 function send(msg) {
   if (ws && ws.readyState === WebSocket.OPEN) {
     ws.send(JSON.stringify(msg));
+  }
+}
+
+function retryAuth() {
+  if (stagingMode) {
+    send({ type: 'platform_login', characterName: characterOverride || null });
+  } else if (guestMode) {
+    send({ type: 'guest_login', characterName: guestOpts.charName, characterClass: guestOpts.charClass, race: guestOpts.race, gender: guestOpts.gender });
+  } else {
+    send({ type: 'login', username, password });
   }
 }
 
@@ -958,13 +1007,28 @@ function connect() {
   });
 
   ws.on('close', (code, reason) => {
+    cleanup();
+    state.connected = false;
+    state.loggedIn = false;
+    scheduleStateWrite();
+
     if (serverShuttingDown) {
       console.log(`[relay] Server shut down gracefully (code=${code}). Exiting.`);
       shutdownRelay(0);
-    } else {
-      console.error(`[relay] Connection lost (code=${code}). Exiting.`);
-      shutdownRelay(1);
+      return;
     }
+
+    if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+      console.error(`[relay] Max reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Exiting.`);
+      shutdownRelay(1);
+      return;
+    }
+
+    const delay = RECONNECT_BASE_MS * Math.pow(2, reconnectAttempts);
+    reconnectAttempts++;
+    console.log(`[relay] Connection lost (code=${code}). Reconnecting in ${delay}ms (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})...`);
+    pushEvent('system', `Connection lost. Reconnecting in ${delay / 1000}s...`);
+    setTimeout(() => connect(), delay);
   });
 
   ws.on('error', (err) => {
@@ -976,25 +1040,53 @@ function connect() {
 function cleanup() {
   if (pingTimer) { clearInterval(pingTimer); pingTimer = null; }
   if (commandPollTimer) { clearInterval(commandPollTimer); commandPollTimer = null; }
+  if (idleTimer) { clearInterval(idleTimer); idleTimer = null; }
 }
 
 // ---------------------------------------------------------------------------
 // Command file polling
 // ---------------------------------------------------------------------------
 async function pollCommandFile() {
-  if (!fs.existsSync(COMMAND_FILE)) return;
+  if (isProcessingCommand) return;
+  if (!state.loggedIn) {
+    if (fs.existsSync(COMMAND_FILE)) {
+      console.warn('[relay] Ignoring command — not logged in yet');
+    }
+    return;
+  }
 
+  // Atomic claim via rename (POSIX-atomic, prevents multi-fire)
+  try {
+    fs.renameSync(COMMAND_FILE, PROCESSING_FILE);
+  } catch (err) {
+    if (err.code === 'ENOENT') return;
+    console.error('[relay] Failed to claim command file:', err.message);
+    return;
+  }
+
+  isProcessingCommand = true;
   let commands;
   try {
-    const raw = fs.readFileSync(COMMAND_FILE, 'utf8');
+    const raw = fs.readFileSync(PROCESSING_FILE, 'utf8');
+    fs.unlinkSync(PROCESSING_FILE);
+
+    // Content-hash dedup: skip identical commands within dedup window
+    const hash = Buffer.from(raw).toString('base64').slice(0, 64);
+    const now = Date.now();
+    if (hash === lastCommandHash && now - lastCommandTime < COMMAND_DEDUP_MS) {
+      console.log('[relay] Skipping duplicate command');
+      return;
+    }
+    lastCommandHash = hash;
+    lastCommandTime = now;
+
     commands = JSON.parse(raw);
-    // Delete immediately so we don't re-process
-    fs.unlinkSync(COMMAND_FILE);
   } catch (err) {
     console.error('[relay] Failed to read command file:', err.message);
-    // Try to delete corrupt file
-    try { fs.unlinkSync(COMMAND_FILE); } catch {}
+    try { fs.unlinkSync(PROCESSING_FILE); } catch {}
     return;
+  } finally {
+    isProcessingCommand = false;
   }
 
   if (!Array.isArray(commands)) {
@@ -1002,6 +1094,7 @@ async function pollCommandFile() {
   }
 
   console.log(`[relay] Processing ${commands.length} command(s)`);
+  lastCommandAt = Date.now();
   for (const cmd of commands) {
     send(cmd);
     console.log(`[relay]   -> ${cmd.type}`);
@@ -1032,12 +1125,19 @@ function acquireLock() {
     const existing = fs.readFileSync(LOCK_FILE, 'utf8').trim();
     const pid = parseInt(existing, 10);
     if (!isNaN(pid) && pid !== process.pid && isProcessRunning(pid)) {
-      console.error(`[relay] Another relay is already running (PID ${pid}).`);
-      console.error('[relay] Kill it first or delete scripts/relay.lock to override.');
-      process.exit(1);
+      console.log(`[relay] Killing previous relay process (PID ${pid})...`);
+      try { process.kill(pid, 'SIGTERM'); } catch {}
+      // Brief wait for it to clean up
+      const deadline = Date.now() + 3000;
+      while (isProcessRunning(pid) && Date.now() < deadline) {
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100);
+      }
+      if (isProcessRunning(pid)) {
+        try { process.kill(pid, 'SIGKILL'); } catch {}
+      }
+    } else if (!isNaN(pid)) {
+      console.log(`[relay] Removing stale lock (PID ${pid})`);
     }
-    // Stale lock from a dead process — reclaim it
-    console.log(`[relay] Removing stale lock (PID ${pid})`);
   } catch {
     // No lock file exists — fine
   }
@@ -1066,6 +1166,7 @@ acquireLock();
 try { fs.unlinkSync(STATE_FILE); } catch {}
 try { fs.unlinkSync(COMMAND_FILE); } catch {}
 try { fs.unlinkSync(TEMP_STATE_FILE); } catch {}
+try { fs.unlinkSync(PROCESSING_FILE); } catch {}
 
 // Write initial state
 writeStateFile();
@@ -1089,3 +1190,22 @@ process.on('SIGTERM', () => {
   console.log('[relay] Received SIGTERM. Shutting down...');
   shutdownRelay(0);
 });
+process.on('uncaughtException', (err) => {
+  console.error('[relay] Uncaught exception:', err.message);
+  shutdownRelay(1);
+});
+process.on('unhandledRejection', (err) => {
+  console.error('[relay] Unhandled rejection:', err);
+  shutdownRelay(1);
+});
+
+// Idle timeout — auto-exit if no commands processed for 5 minutes.
+// Prevents orphaned relay processes when agents finish without stopping the relay.
+const IDLE_TIMEOUT_MS = 5 * 60 * 1000;
+let lastCommandAt = Date.now();
+let idleTimer = setInterval(() => {
+  if (Date.now() - lastCommandAt > IDLE_TIMEOUT_MS) {
+    console.log('[relay] No commands for 5 minutes. Shutting down.');
+    shutdownRelay(0);
+  }
+}, 60_000);

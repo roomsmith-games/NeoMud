@@ -1184,7 +1184,7 @@ class MessageSerializerTest {
 
     @Test
     fun platformLoginRoundTrip() {
-        val original = ClientMessage.PlatformLogin
+        val original = ClientMessage.PlatformLogin()
         val json = MessageSerializer.encodeClientMessage(original)
         val decoded = MessageSerializer.decodeClientMessage(json)
         assertEquals(original, decoded)

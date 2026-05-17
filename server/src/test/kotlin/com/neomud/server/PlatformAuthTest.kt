@@ -243,7 +243,7 @@ class PlatformAuthTest {
             assertIs<ServerMessage.PlatformAuthOk>(authOk)
             assertFalse(authOk.needsCharacterCreation)
 
-            send(Frame.Text(MessageSerializer.encodeClientMessage(ClientMessage.PlatformLogin)))
+            send(Frame.Text(MessageSerializer.encodeClientMessage(ClientMessage.PlatformLogin())))
 
             val loginOk = receiveServerMessage()
             assertIs<ServerMessage.LoginOk>(loginOk)

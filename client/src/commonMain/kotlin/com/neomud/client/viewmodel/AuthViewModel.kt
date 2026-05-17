@@ -275,7 +275,7 @@ class AuthViewModel(
     fun platformLogin() {
         _authState.value = AuthState.Loading
         viewModelScope.launch {
-            wsClient.send(ClientMessage.PlatformLogin)
+            wsClient.send(ClientMessage.PlatformLogin())
         }
     }
 

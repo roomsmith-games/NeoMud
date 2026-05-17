@@ -789,6 +789,9 @@ class GameViewModel(
             }
             // Handled by AuthViewModel, not GameViewModel
             is ServerMessage.PlatformAuthOk -> {}
+            is ServerMessage.SessionDisplaced -> {
+                addLog("Session displaced: ${message.reason}", MudColors.error)
+            }
             is ServerMessage.PlaceItemPrompt -> {
                 _placeItemPrompt.value = message
                 _showPlaceItem.value = true

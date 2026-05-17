@@ -23,6 +23,7 @@ sealed class ServerMessage {
     @SerialName("platform_auth_ok")
     data class PlatformAuthOk(
         val characterName: String? = null,
+        val characterNames: List<String> = emptyList(),
         val platformUserId: String,
         val needsCharacterCreation: Boolean,
         /**
@@ -242,6 +243,10 @@ sealed class ServerMessage {
     @Serializable
     @SerialName("server_shutdown")
     data class ServerShutdown(val message: String, val secondsRemaining: Int) : ServerMessage()
+
+    @Serializable
+    @SerialName("session_displaced")
+    data class SessionDisplaced(val reason: String = "Another session logged in") : ServerMessage()
 
     @Serializable
     @SerialName("error")

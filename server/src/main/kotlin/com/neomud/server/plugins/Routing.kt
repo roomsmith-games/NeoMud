@@ -186,7 +186,7 @@ fun Application.configureRouting(
                 }
 
                 val playerName = session.playerName
-                if (playerName != null) {
+                if (playerName != null && sessionManager.isLoggedIn(playerName)) {
                     val roomId = session.currentRoomId
 
                     if (session.isGuest) {

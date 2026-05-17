@@ -1,14 +1,18 @@
 package com.neomud.server.session
 
 import com.neomud.server.persistence.repository.PlayerRepository
+import com.neomud.shared.model.Direction
 import com.neomud.shared.model.PlayerInfo
 import com.neomud.shared.model.RoomId
 import com.neomud.shared.protocol.ServerMessage
+import io.ktor.websocket.*
+import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 
 class SessionManager {
+    private val logger = LoggerFactory.getLogger(SessionManager::class.java)
     private val sessions = ConcurrentHashMap<String, PlayerSession>()
     /** Maps login username (lowercase) → character name for duplicate login detection */
     private val usernameToCharacter = ConcurrentHashMap<String, String>()
@@ -58,6 +62,40 @@ class SessionManager {
         // Clean up username mapping
         usernameToCharacter.entries.removeIf { it.value == playerName }
         touchActivity()
+    }
+
+    /**
+     * Displace an existing session for the given login username. Sends a
+     * [ServerMessage.SessionDisplaced] to the old session, closes its WebSocket,
+     * removes it from tracking, and broadcasts a disconnect to the room.
+     * The caller can then proceed with a fresh login on the new connection.
+     */
+    suspend fun displaceSession(username: String) {
+        val characterName = usernameToCharacter[username.lowercase()] ?: return
+        val oldSession = sessions[characterName] ?: return
+
+        logger.info("Displacing session for $characterName (username=$username)")
+
+        try {
+            oldSession.send(ServerMessage.SessionDisplaced())
+        } catch (_: Exception) {}
+
+        val roomId = oldSession.currentRoomId
+
+        // Remove from tracking before closing WebSocket so the finally block
+        // in Routing.kt sees playerName is already gone and skips duplicate cleanup
+        removeSession(characterName)
+
+        if (roomId != null) {
+            broadcastToRoom(roomId, ServerMessage.PlayerLeft(characterName, roomId, Direction.NORTH))
+            broadcastToRoom(roomId, ServerMessage.SystemMessage("$characterName has disconnected."))
+        }
+
+        try {
+            oldSession.webSocketSession.close(
+                CloseReason(CloseReason.Codes.NORMAL, "Session displaced by new login")
+            )
+        } catch (_: Exception) {}
     }
 
     fun getSession(playerName: String): PlayerSession? = sessions[playerName]

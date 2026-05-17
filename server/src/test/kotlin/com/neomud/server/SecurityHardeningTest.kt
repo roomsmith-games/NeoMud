@@ -75,7 +75,7 @@ class SecurityHardeningTest {
     // ── Duplicate Login ──
 
     @Test
-    fun `duplicate login by username is blocked`() = testApplication {
+    fun `duplicate login by username displaces first session`() = testApplication {
         application { module(jdbcUrl = testDbUrl()) }
         val wsClient = createClient { install(WebSockets) }
 
@@ -93,15 +93,24 @@ class SecurityHardeningTest {
             send(sendMsg(ClientMessage.Login("dupuser", "pass1234")))
             assertIs<ServerMessage.LoginOk>(receiveServerMessage())
 
-            // Try second login while first is active
+            // Second login displaces the first — second should succeed
             val client2 = createClient { install(WebSockets) }
             client2.webSocket("/game") {
                 consumeCatalogSync()
                 send(sendMsg(ClientMessage.Login("dupuser", "pass1234")))
-                val response = receiveServerMessage()
-                assertIs<ServerMessage.AuthError>(response)
-                assertTrue(response.reason.contains("already logged in"))
+                assertIs<ServerMessage.LoginOk>(receiveServerMessage())
             }
+
+            // First session should receive SessionDisplaced (may be interleaved with other messages)
+            var foundDisplaced = false
+            repeat(10) {
+                val msg = try { receiveServerMessage() } catch (_: Exception) { return@repeat }
+                if (msg is ServerMessage.SessionDisplaced) {
+                    foundDisplaced = true
+                    return@repeat
+                }
+            }
+            assertTrue(foundDisplaced, "Expected SessionDisplaced message on first session")
         }
     }
 
@@ -277,7 +286,7 @@ class SecurityHardeningTest {
     }
 
     @Test
-    fun `duplicate passwordless login is blocked`() = testApplication {
+    fun `duplicate passwordless login displaces first session`() = testApplication {
         application { module(jdbcUrl = testDbUrl()) }
         val wsClient = createClient { install(WebSockets) }
 
@@ -297,10 +306,18 @@ class SecurityHardeningTest {
             client2.webSocket("/game") {
                 consumeCatalogSync()
                 send(sendMsg(ClientMessage.Login(characterName = "DupPassless")))
-                val response = receiveServerMessage()
-                assertIs<ServerMessage.AuthError>(response)
-                assertTrue(response.reason.contains("already logged in"))
+                assertIs<ServerMessage.LoginOk>(receiveServerMessage())
             }
+
+            var foundDisplaced = false
+            repeat(10) {
+                val msg = try { receiveServerMessage() } catch (_: Exception) { return@repeat }
+                if (msg is ServerMessage.SessionDisplaced) {
+                    foundDisplaced = true
+                    return@repeat
+                }
+            }
+            assertTrue(foundDisplaced, "Expected SessionDisplaced message on first session")
         }
     }
 

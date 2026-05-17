@@ -346,12 +346,30 @@ class PlayerRepository {
         }
     }
 
+    /** Find all players linked to a Platform user ID. */
+    fun findAllByPlatformUserId(platformUserId: String): List<Player> = transaction {
+        PlayersTable.selectAll().where {
+            PlayersTable.platformUserId eq platformUserId
+        }.map { rowToPlayer(it) }
+    }
+
     /** Load a player by Platform user ID without password check. */
     fun authenticateByPlatformId(platformUserId: String): Result<Player> = runCatching {
         transaction {
             val row = PlayersTable.selectAll().where {
                 PlayersTable.platformUserId eq platformUserId
             }.firstOrNull() ?: error("No character linked to this platform account")
+            rowToPlayer(row)
+        }
+    }
+
+    /** Load a specific character by Platform user ID and character name. */
+    fun authenticateByPlatformIdAndName(platformUserId: String, characterName: String): Result<Player> = runCatching {
+        transaction {
+            val row = PlayersTable.selectAll().where {
+                (PlayersTable.platformUserId eq platformUserId) and
+                (PlayersTable.characterName eq characterName)
+            }.firstOrNull() ?: error("No character '$characterName' linked to this platform account")
             rowToPlayer(row)
         }
     }

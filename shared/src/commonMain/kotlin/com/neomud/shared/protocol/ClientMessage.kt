@@ -189,7 +189,7 @@ sealed class ClientMessage {
     // Platform auth — auto-login with verified platform session (no credentials needed)
     @Serializable
     @SerialName("platform_login")
-    data object PlatformLogin : ClientMessage()
+    data class PlatformLogin(val characterName: String? = null) : ClientMessage()
 
     // Platform auth — create character for platform user (no username/password)
     @Serializable

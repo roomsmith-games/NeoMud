@@ -219,20 +219,21 @@ class CommandProcessor(
                     if (claims != null) {
                         session.platformUserId = claims.userId
                         session.platformRole = claims.role
-                        val existingPlayer = playerRepository.findByPlatformUserId(claims.userId)
+                        val existingPlayers = playerRepository.findAllByPlatformUserId(claims.userId)
                         session.send(ServerMessage.PlatformAuthOk(
-                            characterName = existingPlayer?.name,
+                            characterName = existingPlayers.firstOrNull()?.name,
+                            characterNames = existingPlayers.map { it.name },
                             platformUserId = claims.userId,
-                            needsCharacterCreation = existingPlayer == null,
+                            needsCharacterCreation = existingPlayers.isEmpty(),
                             role = claims.role
                         ))
-                        logger.info("Platform auth verified for userId=${claims.userId}, character=${existingPlayer?.name ?: "(new)"}")
+                        logger.info("Platform auth verified for userId=${claims.userId}, character=${existingPlayers.firstOrNull()?.name ?: "(new)"}")
                     } else {
                         logger.warn("Platform token invalid, falling back to password auth")
                     }
                 }
             }
-            is ClientMessage.PlatformLogin -> handlePlatformLogin(session)
+            is ClientMessage.PlatformLogin -> handlePlatformLogin(session, message)
             is ClientMessage.PlatformRegister -> handlePlatformRegister(session, message)
             is ClientMessage.GuestLogin -> handleGuestLogin(session, message)
             // All state-mutating commands acquire the global mutex
@@ -447,8 +448,8 @@ class CommandProcessor(
             // Legacy password-based auth
             internalUsername = msg.username
             if (sessionManager.isUsernameLoggedIn(internalUsername)) {
-                session.send(ServerMessage.AuthError("Account already logged in"))
-                return
+                logger.info("Displacing existing session for username: $internalUsername")
+                sessionManager.displaceSession(internalUsername)
             }
             if (!checkLoginRateLimit(internalUsername)) {
                 session.send(ServerMessage.AuthError("Too many failed attempts. Try again in a minute."))
@@ -477,8 +478,8 @@ class CommandProcessor(
             player = result.getOrThrow()
             internalUsername = player.name.lowercase().replace(" ", "_").replace(Regex("[^a-z0-9_]"), "")
             if (sessionManager.isUsernameLoggedIn(internalUsername)) {
-                session.send(ServerMessage.AuthError("Character already logged in"))
-                return
+                logger.info("Displacing existing session for character: ${player.name}")
+                sessionManager.displaceSession(internalUsername)
             }
         }
 
@@ -512,10 +513,16 @@ class CommandProcessor(
         session.seenTutorials.addAll(discovery.tutorials)
         session.visitedRooms.add(player.currentRoomId)
 
-        val added = sessionManager.addSession(player.name, session, username = username)
+        var added = sessionManager.addSession(player.name, session, username = username)
         if (!added) {
-            session.send(ServerMessage.AuthError("Account already logged in"))
-            return
+            // Race: session appeared between displacement and addSession — displace again
+            logger.info("Race in completeLogin: displacing lingering session for $username")
+            sessionManager.displaceSession(username)
+            added = sessionManager.addSession(player.name, session, username = username)
+            if (!added) {
+                session.send(ServerMessage.AuthError("Account already logged in"))
+                return
+            }
         }
         session.combatGraceTicks = GameConfig.Combat.GRACE_TICKS
 
@@ -572,7 +579,7 @@ class CommandProcessor(
 
     // ─── Platform auth handlers ─────────────────────────────
 
-    private suspend fun handlePlatformLogin(session: PlayerSession) {
+    private suspend fun handlePlatformLogin(session: PlayerSession, msg: ClientMessage.PlatformLogin) {
         if (session.isAuthenticated) {
             session.send(ServerMessage.AuthError("Already logged in"))
             return
@@ -583,13 +590,18 @@ class CommandProcessor(
             return
         }
 
-        val result = playerRepository.authenticateByPlatformId(platformUserId)
+        val requestedChar = msg.characterName
+        val result = if (requestedChar != null) {
+            playerRepository.authenticateByPlatformIdAndName(platformUserId, requestedChar)
+        } else {
+            playerRepository.authenticateByPlatformId(platformUserId)
+        }
         result.fold(
             onSuccess = { player ->
                 val internalUsername = "platform_$platformUserId"
                 if (sessionManager.isUsernameLoggedIn(internalUsername)) {
-                    session.send(ServerMessage.AuthError("Account already logged in"))
-                    return
+                    logger.info("Displacing existing session for platform user: $platformUserId")
+                    sessionManager.displaceSession(internalUsername)
                 }
                 completeLogin(session, player, username = internalUsername)
             },
