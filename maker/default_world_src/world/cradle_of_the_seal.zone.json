@@ -474,6 +474,30 @@
       "attackSound": "golem_slam",
       "missSound": "golem_miss",
       "deathSound": "golem_collapse",
+      "phases": [
+        {
+          "name": "Containment Protocol",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:seal_sentinel_phase2",
+          "damage": 44,
+          "accuracy": 28,
+          "defense": 30,
+          "evasion": 8,
+          "transitionMessage": "The golden glyph on the Sentinel's chest flares white-hot. Bronze plates shift and interlock across its torso as internal mechanisms grind to life — functions dormant for millennia activating in sequence. Its movements become precise, mechanical, inevitable. It is no longer fighting you. It is containing you.",
+          "transitionSound": "boss_phase_shift"
+        },
+        {
+          "name": "Termination Protocol",
+          "hpThresholdPercent": 0.2,
+          "spriteId": "npc:seal_sentinel_phase3",
+          "damage": 66,
+          "accuracy": 30,
+          "defense": 16,
+          "evasion": 0,
+          "transitionMessage": "WARNING. CONTAINMENT INSUFFICIENT. The Sentinel's chest plates blow outward in a shower of bronze shrapnel. The glyph within is now exposed — raw, pulsing, unstable. Every remaining ounce of warding energy redirects into its fists, which glow with killing heat. It has abandoned defense. It intends to end this.",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
       "imagePrompt": "Full-body massive twelve-foot stone and bronze construct guardian, single blazing golden glyph on chest, anvil-sized bronze fists, imposing stance, ancient warding construct, facing viewer. Single creature, isolated on solid white background.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, massive stone-bronze construct, blazing golden chest glyph",
       "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, small",
@@ -513,6 +537,30 @@
       "attackSound": "golem_slam",
       "missSound": "golem_miss",
       "deathSound": "golem_collapse",
+      "phases": [
+        {
+          "name": "Thirty Wardens' Vigil",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:first_seal_guardian_phase2",
+          "damage": 70,
+          "accuracy": 30,
+          "defense": 26,
+          "evasion": 18,
+          "transitionMessage": "The Guardian's golden form brightens — thirty distinct points of light ignite within its translucent body, each one a face, a name, a life freely given. The air fills with the whispered oath of the Wardens who became this thing: 'While we endure, nothing passes.' Its strikes now carry the weight of thirty wills united in purpose.",
+          "transitionSound": "boss_phase_shift"
+        },
+        {
+          "name": "Seal's Sacrifice",
+          "hpThresholdPercent": 0.2,
+          "spriteId": "npc:first_seal_guardian_phase3",
+          "damage": 82,
+          "accuracy": 34,
+          "defense": 14,
+          "evasion": 8,
+          "transitionMessage": "One by one, the lights within the Guardian begin to go out — each one a Warden's soul burning away to fuel a final stand. The golden form destabilizes, flickering between blinding radiance and guttering darkness. Its voice comes for the first and last time — thirty voices in unison, raw with the weight of millennia: 'WE. WILL NOT. FAIL.'",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
       "imagePrompt": "Full-body towering humanoid figure made entirely of golden warding energy and light, abstract shifting features, twin sun-bright eyes, radiating power, translucent with visible internal energy patterns, facing viewer. Single creature, isolated on solid white background.",
       "imageStyle": "fantasy creature sprite, full body, front-facing, clean edges, game asset, golden energy being, towering light guardian",
       "imageNegativePrompt": "background, scenery, ground, shadow, multiple creatures, portrait crop, modern, sci-fi, anime, solid body, armor",

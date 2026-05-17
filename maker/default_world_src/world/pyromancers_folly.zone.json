@@ -609,6 +609,30 @@
       "attackSound": "fire_burst",
       "missSound": "fire_miss",
       "deathSound": "lich_collapse",
+      "phases": [
+        {
+          "name": "Consuming Pyre",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:cinder_lich_vatric_phase2",
+          "damage": 68,
+          "accuracy": 28,
+          "defense": 12,
+          "evasion": 16,
+          "transitionMessage": "Vatric's staff shatters in his grip and the flames leap higher — no longer contained, no longer controlled. The blue-white fire turns hungry orange and spreads across the sanctum ceiling. His voice becomes the roar of a furnace given purpose: 'You want what I found? BURN FOR IT.'",
+          "transitionSound": "boss_phase_shift"
+        },
+        {
+          "name": "Cinder Nova",
+          "hpThresholdPercent": 0.2,
+          "spriteId": "npc:cinder_lich_vatric_phase3",
+          "damage": 76,
+          "accuracy": 30,
+          "defense": 8,
+          "evasion": 24,
+          "transitionMessage": "The skeleton within the flame finally gives way. Vatric's bones dissolve into pure fire — a whirling column of white-hot cinders that moves with terrible speed. What attacks you now is no longer a mage. It is the fire itself, remembering that it was once angry.",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
       "imagePrompt": "Full-body skeletal lich wreathed in perpetual orange flame, charred skull with blue-white burning eyes, tattered ash robes, clutching a staff of fused glass and bone, fire dancing across the entire form, undead pyromancer boss, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, cinder lich boss, flame and bone tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, fleshy, alive, green",

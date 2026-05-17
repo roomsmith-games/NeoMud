@@ -608,6 +608,30 @@
       "attackSound": "ghost_attack",
       "missSound": "ghost_miss",
       "deathSound": "ghost_death",
+      "phases": [
+        {
+          "name": "Barrow's Embrace",
+          "hpThresholdPercent": 0.5,
+          "spriteId": "npc:barrow_wight_esketh_phase2",
+          "damage": 48,
+          "accuracy": 18,
+          "defense": 28,
+          "evasion": 18,
+          "transitionMessage": "Esketh slams one hand against the barrow wall and the stone answers — grey light floods up through the floor, wreathing his form in layers of grave-dust and warding fog. His movements slow but each step carries the weight of the hill itself.",
+          "transitionSound": "boss_phase_shift"
+        },
+        {
+          "name": "Unbound Revenant",
+          "hpThresholdPercent": 0.2,
+          "spriteId": "npc:barrow_wight_esketh_phase3",
+          "damage": 58,
+          "accuracy": 24,
+          "defense": 14,
+          "evasion": 6,
+          "transitionMessage": "The diadem of finger-bones cracks and falls away. Esketh's form shudders — the careful restraint of millennia shattering in an instant. His eyes blaze white-hot and his limbs elongate, grave-linen tearing as something older and angrier tears its way out from within.",
+          "transitionSound": "boss_phase_shift"
+        }
+      ],
       "imagePrompt": "Full-body tall undead barrow-wight boss in tattered grey grave-linen, crowned with a diadem of fused human finger-bones, grey translucent flesh, two steady watchful pale-blue burning lights for eyes, hands at his sides bearing pale rune-tattoos, threatening but composed presence facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, solid white background, monumental dread, cold pale tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, modern, sci-fi, cute, cartoon",

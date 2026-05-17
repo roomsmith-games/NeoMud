@@ -114,7 +114,11 @@ jobs:
           set -euo pipefail
 
           VERSION=$(jq -r .version maker/default_world_src/manifest.json)
-          CHANGELOG="CI publish from $(echo '${{ github.sha }}' | head -c 7)"
+          CHANGELOG=$(jq -r '.releaseNotes // empty' maker/default_world_src/manifest.json)
+          if [ -z "$CHANGELOG" ]; then
+            echo "❌ manifest.json is missing releaseNotes — add release notes before deploying"
+            exit 1
+          fi
 
           echo "Publishing default-world v${VERSION}..."
 

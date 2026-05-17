@@ -117,7 +117,7 @@
     {
       "id": "forest:cave",
       "name": "Hidden Cave",
-      "description": "A narrow cave entrance hidden behind thick vines opens into a small, damp chamber. Water drips from the low ceiling, and patches of bioluminescent moss cast an eerie blue-green glow across the rough stone walls. The air smells of damp earth and something faintly metallic. Beyond the western mouth of the cave, the ground turns soft and waterlogged — the edge of a vast marsh.",
+      "description": "A narrow cave entrance hidden behind thick vines opens into a small, damp chamber. Water drips from the low ceiling, and patches of bioluminescent moss cast an eerie blue-green glow across the rough stone walls. The air smells of damp earth and something faintly metallic. The cave dead-ends at a collapsed western wall, half-buried under roots and loose stone.",
       "x": -1,
       "y": 4,
       "exits": {

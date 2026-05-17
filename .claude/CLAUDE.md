@@ -193,6 +193,16 @@ NPCs can define phase transitions that trigger at HP thresholds during combat. W
 - Both surfaces report into the `roomsmith-games` Sentry org. Tracing sample rate is `0.2` to match the platform-side SDKs (errors are 100%). Don't add new Sentry integrations that capture PII without a `beforeSend` scrubber.
 - See NeoMud-platform `CLAUDE.md` §Observability and `project_sentry_observability.md` (auto-memory) for the full architecture.
 
+### Deployment & Versioning
+
+CI deploys are driven by `.github/workflows/deploy-server.yml`. On every push to `master` touching `server/`, `shared/`, `Dockerfile`, or `maker/default_world_src/`, the workflow builds a Docker image, pushes it to GHCR, pulls it on the VPS, publishes the world bundle via the platform API, and polls until the game server is ONLINE.
+
+**Every deploy requires two things in `maker/default_world_src/manifest.json`:**
+1. **`version`** — must be bumped from the previous deploy. The publish API returns 409 if the version already exists, and CI treats 409 as a hard failure. Without a new version, the container is never restarted with the new Docker image.
+2. **`releaseNotes`** — human-written summary of what changed. CI fails if this field is empty or missing. These notes are displayed in the marketplace version history.
+
+The publish step uploads the `.nmd` bundle, retires the old version, and the platform orchestrator auto-restarts the game container with the new image. CI then polls `serverStatus` until ONLINE (150s timeout).
+
 ### Persistence
 - SQLite + Exposed ORM
 - Tables: `PlayersTable`, `InventoryTable`, `PlayerCoinsTable`, `PlayerDiscoveryTable`
