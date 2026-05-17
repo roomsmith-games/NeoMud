@@ -64,6 +64,7 @@ import com.neomud.client.ui.components.RiddleDialog
 import com.neomud.client.ui.components.KickDirectionPicker
 import com.neomud.client.ui.components.LockTargetPicker
 import com.neomud.client.ui.components.MapOverlay
+import com.neomud.client.ui.components.WorldAtlas
 import com.neomud.client.ui.components.PlayerTooltip
 import com.neomud.client.ui.components.MudIcons
 import com.neomud.client.viewmodel.GameViewModel
@@ -119,6 +120,8 @@ fun GameScreen(
 
     val showMap by gameViewModel.showMap.collectAsState()
     val visitedRooms by gameViewModel.visitedRooms.collectAsState()
+    val showAtlas by gameViewModel.showAtlas.collectAsState()
+    val atlasData by gameViewModel.atlasData.collectAsState()
 
     val showLockTargetPicker by gameViewModel.showLockTargetPicker.collectAsState()
     val showKickDirectionPicker by gameViewModel.showKickDirectionPicker.collectAsState()
@@ -356,6 +359,20 @@ fun GameScreen(
                         onClose = { gameViewModel.toggleMap() }
                     )
                 }
+            }
+        }
+
+        // World Atlas overlay
+        if (showAtlas) {
+            val data = atlasData
+            if (data != null) {
+                WorldAtlas(
+                    rooms = data.rooms,
+                    playerRoomId = data.playerRoomId,
+                    visitedRoomIds = visitedRooms,
+                    zoneNames = data.zoneNames,
+                    onClose = { gameViewModel.toggleAtlas() }
+                )
             }
         }
 
@@ -674,6 +691,7 @@ private fun GameScreenPortrait(
     val skillCatalog by gameViewModel.skillCatalog.collectAsState()
     val visitedRooms by gameViewModel.visitedRooms.collectAsState()
     val showMap by gameViewModel.showMap.collectAsState()
+    val showAtlas by gameViewModel.showAtlas.collectAsState()
 
     // Determine if player has TRACK / KICK skills
     val hasTrackSkill = player?.characterClass?.let { classCatalog[it] }?.skills?.contains("TRACK") == true
@@ -888,8 +906,8 @@ private fun GameScreenPortrait(
                         gameViewModel.openSpellPicker(0)
                     }
                     MapIconButton(
-                        active = showMap,
-                        onClick = { gameViewModel.toggleMap() }
+                        active = showAtlas,
+                        onClick = { gameViewModel.toggleAtlas() }
                     )
                     InventoryIconButton(
                         active = showInventory,
@@ -942,6 +960,7 @@ private fun GameScreenLandscape(
     val trackedDirection by gameViewModel.trackedDirection.collectAsState()
     val visitedRooms by gameViewModel.visitedRooms.collectAsState()
     val showMap by gameViewModel.showMap.collectAsState()
+    val showAtlas by gameViewModel.showAtlas.collectAsState()
 
     // Determine if player has TRACK / KICK skills
     val hasTrackSkill = player?.characterClass?.let { classCatalog[it] }?.skills?.contains("TRACK") == true
@@ -1135,8 +1154,8 @@ private fun GameScreenLandscape(
                                 gameViewModel.openSpellPicker(0)
                             }
                             MapIconButton(
-                                active = showMap,
-                                onClick = { gameViewModel.toggleMap() }
+                                active = showAtlas,
+                                onClick = { gameViewModel.toggleAtlas() }
                             )
                             InventoryIconButton(
                                 active = showInventory,

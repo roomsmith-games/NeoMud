@@ -167,6 +167,12 @@ class GameViewModel(
     private val _showMap = MutableStateFlow(false)
     val showMap: StateFlow<Boolean> = _showMap
 
+    // World Atlas
+    private val _atlasData = MutableStateFlow<ServerMessage.AtlasData?>(null)
+    val atlasData: StateFlow<ServerMessage.AtlasData?> = _atlasData
+    private val _showAtlas = MutableStateFlow(false)
+    val showAtlas: StateFlow<Boolean> = _showAtlas
+
     // Tracked direction (from TRACK skill)
     private val _trackedDirection = MutableStateFlow<Direction?>(null)
     val trackedDirection: StateFlow<Direction?> = _trackedDirection
@@ -339,6 +345,9 @@ class GameViewModel(
                     _visitedRooms.value = _visitedRooms.value + message.visitedRooms
                 }
                 _visitedRooms.value = _visitedRooms.value + message.playerRoomId
+            }
+            is ServerMessage.AtlasData -> {
+                _atlasData.value = message
             }
             is ServerMessage.PlayerEntered -> {
                 addLog("${message.playerName} has arrived.", MudColors.playerEvent)
@@ -973,8 +982,19 @@ class GameViewModel(
     fun toggleMap() {
         _showMap.value = !_showMap.value
         if (_showMap.value) {
+            _showAtlas.value = false
             _showInventory.value = false
             _showEquipment.value = false
+        }
+    }
+
+    fun toggleAtlas() {
+        _showAtlas.value = !_showAtlas.value
+        if (_showAtlas.value) {
+            _showMap.value = false
+            _showInventory.value = false
+            _showEquipment.value = false
+            viewModelScope.launch { wsClient.send(ClientMessage.RequestAtlas) }
         }
     }
 

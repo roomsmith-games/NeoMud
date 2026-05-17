@@ -88,6 +88,22 @@ class WorldGraph {
         return result
     }
 
+    fun getRoomsByIds(roomIds: Set<RoomId>): List<MapRoom> {
+        return roomIds.mapNotNull { id ->
+            rooms[id]?.let { room ->
+                MapRoom(
+                    id = room.id,
+                    name = room.name,
+                    x = room.x,
+                    y = room.y,
+                    z = room.z,
+                    exits = room.exits,
+                    zoneId = room.zoneId
+                )
+            }
+        }
+    }
+
     fun setDefaultSpawn(roomId: RoomId) {
         if (rooms.containsKey(roomId)) {
             defaultSpawnRoom = roomId

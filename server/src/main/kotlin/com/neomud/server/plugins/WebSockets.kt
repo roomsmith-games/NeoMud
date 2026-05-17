@@ -8,7 +8,7 @@ fun Application.configureWebSockets() {
     install(WebSockets) {
         pingPeriodMillis = 15_000
         timeoutMillis = 30_000
-        maxFrameSize = 65536 // 64KB — largest valid client message is ~200 bytes
+        maxFrameSize = 131072 // 128KB — atlas response can reach ~60KB for fully-explored worlds
         masking = false
     }
 }

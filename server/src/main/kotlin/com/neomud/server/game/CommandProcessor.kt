@@ -78,7 +78,8 @@ class CommandProcessor(
     private val platformTokenVerifier: PlatformTokenVerifier? = null,
     private val trapManager: com.neomud.server.game.trap.TrapManager? = null,
     private val dialogueCommand: DialogueCommand? = null,
-    private val worldOwnerPlatformUserId: String? = null
+    private val worldOwnerPlatformUserId: String? = null,
+    private val zoneNames: Map<String, String> = emptyMap()
 ) {
     private val logger = LoggerFactory.getLogger(CommandProcessor::class.java)
 
@@ -365,6 +366,9 @@ class CommandProcessor(
                     dialogueCommand?.execute(session, message.npcId)
                         ?: session.send(ServerMessage.SystemMessage("They don't seem to want to talk."))
                 }
+            }
+            is ClientMessage.RequestAtlas -> {
+                requireAuth(session) { handleRequestAtlas(session) }
             }
             else -> {} // Register, Login, Ping already handled in process()
         }
@@ -816,5 +820,29 @@ class CommandProcessor(
             return
         }
         block()
+    }
+
+    private suspend fun handleRequestAtlas(session: PlayerSession) {
+        val playerRoomId = session.currentRoomId ?: return
+        val visitedRoomIds = session.visitedRooms.toSet()
+        val visitedRooms = worldGraph.getRoomsByIds(visitedRoomIds)
+
+        val neighborIds = mutableSetOf<String>()
+        for (room in visitedRooms) {
+            for ((_, targetId) in room.exits) {
+                if (targetId !in visitedRoomIds) neighborIds.add(targetId)
+            }
+        }
+        val fogStubRooms = worldGraph.getRoomsByIds(neighborIds)
+
+        val enriched = MapRoomFilter.enrichForPlayer(
+            visitedRooms, session, worldGraph, sessionManager, npcManager
+        )
+
+        session.send(ServerMessage.AtlasData(
+            rooms = enriched + fogStubRooms,
+            playerRoomId = playerRoomId,
+            zoneNames = zoneNames
+        ))
     }
 }

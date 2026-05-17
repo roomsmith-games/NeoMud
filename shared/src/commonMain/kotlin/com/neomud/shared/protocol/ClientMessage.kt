@@ -212,4 +212,8 @@ sealed class ClientMessage {
         val gender: String = "neutral",
         val allocatedStats: Stats = Stats()
     ) : ClientMessage()
+
+    @Serializable
+    @SerialName("request_atlas")
+    data object RequestAtlas : ClientMessage()
 }

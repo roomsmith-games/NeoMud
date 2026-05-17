@@ -352,7 +352,7 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
         trainerCommand, spellCommand, spellCatalog, vendorCommand, lootService, lootTableCatalog,
         inventoryRepository, coinRepository, discoveryRepository, craftCommand, adminUsernames, movementTrailManager,
         pcSpriteCatalog, tutorialService, platformVerifier, trapManager, dialogueCommand,
-        worldOwnerPlatformUserId
+        worldOwnerPlatformUserId, loadResult.zoneNames
     )
     val gameLoop = GameLoop(sessionManager, npcManager, combatManager, worldGraph, lootService, lootTableCatalog, roomItemManager, playerRepository, skillCatalog, classCatalog, itemCatalog, inventoryRepository, coinRepository, movementTrailManager, spellCommand, spellCatalog, tutorialService, playerFlagsRepository)
     commandProcessor.setGameLoop(gameLoop)

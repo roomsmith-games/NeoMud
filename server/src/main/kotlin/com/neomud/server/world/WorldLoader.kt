@@ -28,7 +28,8 @@ object WorldLoader {
         val recipeCatalog: RecipeCatalog,
         val zoneSpawnConfigs: Map<String, SpawnConfig>,
         val roomMaxHostileNpcs: Map<String, Int>,
-        val manifest: WorldManifest? = null
+        val manifest: WorldManifest? = null,
+        val zoneNames: Map<String, String> = emptyMap()
     )
 
     fun load(source: WorldDataSource): LoadResult {
@@ -58,6 +59,7 @@ object WorldLoader {
         val allNpcData = mutableListOf<Pair<NpcData, String>>()
         val zoneSpawnConfigs = mutableMapOf<String, SpawnConfig>()
         val roomMaxHostileNpcs = mutableMapOf<String, Int>()
+        val zoneNames = mutableMapOf<String, String>()
         val zoneFiles = source.list("world/", ".zone.json")
         var dataDefinedSpawn: String? = null
 
@@ -137,6 +139,7 @@ object WorldLoader {
 
             allNpcData.addAll(zone.npcs.map { it to zone.id })
             zoneSpawnConfigs[zone.id] = zone.spawnConfig
+            zoneNames[zone.id] = zone.name
 
             if (dataDefinedSpawn == null && zone.spawnRoom != null) {
                 dataDefinedSpawn = zone.spawnRoom
@@ -488,7 +491,7 @@ object WorldLoader {
             }
         }
 
-        return LoadResult(worldGraph, allNpcData, classCatalog, itemCatalog, lootTableCatalog, skillCatalog, raceCatalog, spellCatalog, pcSpriteCatalog, recipeCatalog, zoneSpawnConfigs, roomMaxHostileNpcs, manifest)
+        return LoadResult(worldGraph, allNpcData, classCatalog, itemCatalog, lootTableCatalog, skillCatalog, raceCatalog, spellCatalog, pcSpriteCatalog, recipeCatalog, zoneSpawnConfigs, roomMaxHostileNpcs, manifest, zoneNames)
     }
 
     private fun validateSuccessDirection(room: Room, feat: RoomInteractable, actionType: String) {

@@ -77,6 +77,14 @@ sealed class ServerMessage {
         val visitedRooms: Set<RoomId> = emptySet()
     ) : ServerMessage()
 
+    @Serializable
+    @SerialName("atlas_data")
+    data class AtlasData(
+        val rooms: List<MapRoom>,
+        val playerRoomId: RoomId,
+        val zoneNames: Map<String, String> = emptyMap()
+    ) : ServerMessage()
+
     // Events
     @Serializable
     @SerialName("player_entered")

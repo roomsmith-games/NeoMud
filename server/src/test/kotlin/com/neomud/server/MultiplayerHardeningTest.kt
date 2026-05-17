@@ -288,8 +288,8 @@ class MultiplayerHardeningTest {
         wsClient.webSocket("/game") {
             consumeCatalogSync()
 
-            // Send a frame well over 64KB
-            val oversized = "x".repeat(100_000)
+            // Send a frame well over 128KB
+            val oversized = "x".repeat(200_000)
             send(Frame.Text(oversized))
 
             // The server should close the connection — next receive should fail or return Close
