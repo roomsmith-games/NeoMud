@@ -41,7 +41,8 @@ fun GameLog(
 ) {
     val listState = rememberLazyListState()
 
-    LaunchedEffect(entries.size) {
+    val lastEntryId = entries.lastOrNull()?.id ?: -1L
+    LaunchedEffect(lastEntryId) {
         if (entries.isNotEmpty()) {
             listState.animateScrollToItem(entries.size - 1)
         }
