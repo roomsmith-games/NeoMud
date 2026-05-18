@@ -123,7 +123,7 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
       bgm: zone.bgm,
       bgmPrompt: zone.bgmPrompt,
       bgmDuration: zone.bgmDuration,
-      spawnRoom: zone.spawnRoom,
+      spawnRoom: zone.spawnRoom || null,
       imageStyle: zone.imageStyle,
       imageNegativePrompt: zone.imageNegativePrompt,
       spawnConfig: {
@@ -578,7 +578,7 @@ exportRouter.get('/json', async (req, res) => {
         imageStyle: zone.imageStyle,
         imageNegativePrompt: zone.imageNegativePrompt,
         spawnConfig: {
-          spawnRoom: zone.spawnRoom,
+          spawnRoom: zone.spawnRoom || null,
           maxEntities: zone.spawnMaxEntities,
           maxPerRoom: zone.spawnMaxPerRoom,
           rateTicks: zone.spawnRateTicks,
