@@ -504,7 +504,7 @@ private fun SellItemRow(
 ) {
     val itemName = item?.name ?: inventoryItem.itemId
     val itemValue = item?.value ?: 0
-    var quantity by remember { mutableIntStateOf(inventoryItem.quantity) }
+    var quantity by remember { mutableIntStateOf(1) }
     val clampedQty = quantity.coerceIn(1, inventoryItem.quantity)
     val sellPriceCopper = if (itemValue > 0) Coins.sellPriceCopper(itemValue, clampedQty, playerCharm, hasHaggle) else 0L
     val sellPrice = Coins.fromCopper(sellPriceCopper)
@@ -584,34 +584,63 @@ private fun SellItemRow(
         }
         Spacer(Modifier.width(6.dp))
 
-        Box(
-            modifier = Modifier
-                .height(32.dp)
-                .background(
-                    if (canSell)
-                        Brush.verticalGradient(listOf(Color(0xFF2E7D32), Color(0xFF1B5E20)))
-                    else
-                        Brush.verticalGradient(listOf(StoneTheme.frameDark, Color(0xFF0D0A08))),
-                    RoundedCornerShape(4.dp)
-                )
-                .drawBehind {
-                    val w = size.width; val h = size.height
-                    if (canSell) {
-                        drawLine(VerdantUpgrade.copy(alpha = 0.5f), Offset(0f, 0f), Offset(w, 0f), 1f)
-                        drawLine(VerdantUpgrade.copy(alpha = 0.5f), Offset(0f, 0f), Offset(0f, h), 1f)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                modifier = Modifier
+                    .height(if (inventoryItem.quantity > 1 && canSell) 28.dp else 32.dp)
+                    .background(
+                        if (canSell)
+                            Brush.verticalGradient(listOf(Color(0xFF2E7D32), Color(0xFF1B5E20)))
+                        else
+                            Brush.verticalGradient(listOf(StoneTheme.frameDark, Color(0xFF0D0A08))),
+                        RoundedCornerShape(4.dp)
+                    )
+                    .drawBehind {
+                        val w = size.width; val h = size.height
+                        if (canSell) {
+                            drawLine(VerdantUpgrade.copy(alpha = 0.5f), Offset(0f, 0f), Offset(w, 0f), 1f)
+                            drawLine(VerdantUpgrade.copy(alpha = 0.5f), Offset(0f, 0f), Offset(0f, h), 1f)
+                        }
+                        drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
+                        drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
                     }
-                    drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
-                    drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
+                    .then(if (canSell) Modifier.clickable { onSell(clampedQty) } else Modifier)
+                    .padding(horizontal = 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Sell", fontSize = 12.sp,
+                    color = if (canSell) Color.White else AshGray,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            if (inventoryItem.quantity > 1 && canSell) {
+                Spacer(Modifier.height(3.dp))
+                Box(
+                    modifier = Modifier
+                        .height(28.dp)
+                        .background(
+                            Brush.verticalGradient(listOf(Color(0xFF8D6E37), Color(0xFF5C4520))),
+                            RoundedCornerShape(4.dp)
+                        )
+                        .drawBehind {
+                            val w = size.width; val h = size.height
+                            drawLine(BurnishedGold.copy(alpha = 0.5f), Offset(0f, 0f), Offset(w, 0f), 1f)
+                            drawLine(BurnishedGold.copy(alpha = 0.5f), Offset(0f, 0f), Offset(0f, h), 1f)
+                            drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
+                            drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
+                        }
+                        .clickable { onSell(inventoryItem.quantity) }
+                        .padding(horizontal = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Sell All", fontSize = 11.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
-                .then(if (canSell) Modifier.clickable { onSell(clampedQty) } else Modifier)
-                .padding(horizontal = 12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "Sell", fontSize = 12.sp,
-                color = if (canSell) Color.White else AshGray,
-                fontWeight = FontWeight.Bold
-            )
+            }
         }
     }
 }
