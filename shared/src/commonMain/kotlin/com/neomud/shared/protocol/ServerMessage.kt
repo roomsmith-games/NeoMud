@@ -253,6 +253,13 @@ sealed class ServerMessage {
     data class ServerShutdown(val message: String, val secondsRemaining: Int) : ServerMessage()
 
     @Serializable
+    @SerialName("session_conflict")
+    data class SessionConflict(
+        val characterName: String,
+        val message: String = "You already have an active session. Take over and log in here?"
+    ) : ServerMessage()
+
+    @Serializable
     @SerialName("session_displaced")
     data class SessionDisplaced(val reason: String = "Another session logged in") : ServerMessage()
 

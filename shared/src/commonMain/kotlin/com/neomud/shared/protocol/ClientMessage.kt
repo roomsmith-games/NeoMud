@@ -24,7 +24,8 @@ sealed class ClientMessage {
     data class Login(
         val username: String = "",
         val password: String = "",
-        val characterName: String = ""
+        val characterName: String = "",
+        val force: Boolean = false
     ) : ClientMessage()
 
     @Serializable
@@ -189,7 +190,7 @@ sealed class ClientMessage {
     // Platform auth — auto-login with verified platform session (no credentials needed)
     @Serializable
     @SerialName("platform_login")
-    data class PlatformLogin(val characterName: String? = null) : ClientMessage()
+    data class PlatformLogin(val characterName: String? = null, val force: Boolean = false) : ClientMessage()
 
     // Platform auth — create character for platform user (no username/password)
     @Serializable

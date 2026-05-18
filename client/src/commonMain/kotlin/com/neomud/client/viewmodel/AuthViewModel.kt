@@ -49,6 +49,8 @@ class AuthViewModel(
 
     private var pendingLoginCharacterName: String? = null
     private var pendingGuestLogin: Boolean = false
+    private var pendingForceLogin: ClientMessage.Login? = null
+    private var pendingForcePlatformLogin: ClientMessage.PlatformLogin? = null
 
     private val _initialRoomInfo = MutableStateFlow<ServerMessage.RoomInfo?>(null)
     val initialRoomInfo: StateFlow<ServerMessage.RoomInfo?> = _initialRoomInfo
@@ -131,6 +133,12 @@ class AuthViewModel(
                         is ServerMessage.AuthError -> {
                             pendingLoginCharacterName = null
                             _authState.value = AuthState.Error(message.reason)
+                        }
+                        is ServerMessage.SessionConflict -> {
+                            _authState.value = AuthState.SessionConflict(
+                                characterName = message.characterName,
+                                message = message.message
+                            )
                         }
                         is ServerMessage.NameCheckResult -> {
                             _nameAvailability.value = NameAvailability(
@@ -234,9 +242,13 @@ class AuthViewModel(
 
     fun login(characterName: String) {
         _authState.value = AuthState.Loading
+        val msg = ClientMessage.Login(characterName = characterName)
+        pendingForceLogin = msg
+        pendingForcePlatformLogin = null
         viewModelScope.launch {
-            val sent = wsClient.send(ClientMessage.Login(characterName = characterName))
+            val sent = wsClient.send(msg)
             if (!sent) {
+                pendingForceLogin = null
                 _authState.value = AuthState.Error("Not connected to server")
             }
         }
@@ -274,8 +286,11 @@ class AuthViewModel(
     /** Auto-login with verified platform session (returning player). */
     fun platformLogin() {
         _authState.value = AuthState.Loading
+        val msg = ClientMessage.PlatformLogin()
+        pendingForcePlatformLogin = msg
+        pendingForceLogin = null
         viewModelScope.launch {
-            wsClient.send(ClientMessage.PlatformLogin())
+            wsClient.send(msg)
         }
     }
 
@@ -317,7 +332,30 @@ class AuthViewModel(
         }
     }
 
+    fun forceLogin() {
+        val msg = pendingForceLogin?.copy(force = true)
+            ?: pendingForcePlatformLogin?.copy(force = true)
+        pendingForceLogin = null
+        pendingForcePlatformLogin = null
+        if (msg == null) {
+            _authState.value = AuthState.Error("Session expired, please try again")
+            return
+        }
+        _authState.value = AuthState.Loading
+        viewModelScope.launch {
+            wsClient.send(msg)
+        }
+    }
+
+    fun cancelForceLogin() {
+        pendingForceLogin = null
+        pendingForcePlatformLogin = null
+        _authState.value = AuthState.Idle
+    }
+
     fun logout() {
+        pendingForceLogin = null
+        pendingForcePlatformLogin = null
         wsClient.disconnect()
         _authState.value = AuthState.Idle
         _availableClasses.value = emptyList()
@@ -334,6 +372,8 @@ sealed class AuthState {
     data object Registered : AuthState()
     data class LoggedIn(val player: Player) : AuthState()
     data class Error(val message: String) : AuthState()
+    /** Server detected an existing session for this character — prompt player to force-displace */
+    data class SessionConflict(val characterName: String, val message: String) : AuthState()
     /** Platform token verified, returning player — show "Continue as [character]" */
     data class PlatformReady(val characterName: String, val platformUserId: String) : AuthState()
     /** Platform token verified, no character on this world — show character creation */

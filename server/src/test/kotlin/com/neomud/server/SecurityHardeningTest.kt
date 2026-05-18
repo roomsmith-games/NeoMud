@@ -75,7 +75,7 @@ class SecurityHardeningTest {
     // ── Duplicate Login ──
 
     @Test
-    fun `duplicate login by username displaces first session`() = testApplication {
+    fun `duplicate login without force returns SessionConflict`() = testApplication {
         application { module(jdbcUrl = testDbUrl()) }
         val wsClient = createClient { install(WebSockets) }
 
@@ -93,15 +93,46 @@ class SecurityHardeningTest {
             send(sendMsg(ClientMessage.Login("dupuser", "pass1234")))
             assertIs<ServerMessage.LoginOk>(receiveServerMessage())
 
-            // Second login displaces the first — second should succeed
+            // Second login without force should get SessionConflict
             val client2 = createClient { install(WebSockets) }
             client2.webSocket("/game") {
                 consumeCatalogSync()
                 send(sendMsg(ClientMessage.Login("dupuser", "pass1234")))
+                val response = receiveServerMessage()
+                assertIs<ServerMessage.SessionConflict>(response)
+                assertEquals("DupHero", response.characterName)
+            }
+        }
+    }
+
+    @Test
+    fun `duplicate login with force displaces first session`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        // Register
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register("dupuser2", "pass1234", "DupHero2", "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+
+        // Login first session
+        val client1 = createClient { install(WebSockets) }
+        client1.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Login("dupuser2", "pass1234")))
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+
+            // Second login with force should displace
+            val client2 = createClient { install(WebSockets) }
+            client2.webSocket("/game") {
+                consumeCatalogSync()
+                send(sendMsg(ClientMessage.Login("dupuser2", "pass1234", force = true)))
                 assertIs<ServerMessage.LoginOk>(receiveServerMessage())
             }
 
-            // First session should receive SessionDisplaced (may be interleaved with other messages)
+            // First session should receive SessionDisplaced
             var foundDisplaced = false
             repeat(10) {
                 val msg = try { receiveServerMessage() } catch (_: Exception) { return@repeat }
@@ -286,7 +317,7 @@ class SecurityHardeningTest {
     }
 
     @Test
-    fun `duplicate passwordless login displaces first session`() = testApplication {
+    fun `duplicate passwordless login without force returns SessionConflict`() = testApplication {
         application { module(jdbcUrl = testDbUrl()) }
         val wsClient = createClient { install(WebSockets) }
 
@@ -306,6 +337,34 @@ class SecurityHardeningTest {
             client2.webSocket("/game") {
                 consumeCatalogSync()
                 send(sendMsg(ClientMessage.Login(characterName = "DupPassless")))
+                val response = receiveServerMessage()
+                assertIs<ServerMessage.SessionConflict>(response)
+                assertEquals("DupPassless", response.characterName)
+            }
+        }
+    }
+
+    @Test
+    fun `duplicate passwordless login with force displaces first session`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Register(characterName = "DupPassless2", characterClass = "WARRIOR", allocatedStats = defaultStats)))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+        }
+
+        val client1 = createClient { install(WebSockets) }
+        client1.webSocket("/game") {
+            consumeCatalogSync()
+            send(sendMsg(ClientMessage.Login(characterName = "DupPassless2")))
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+
+            val client2 = createClient { install(WebSockets) }
+            client2.webSocket("/game") {
+                consumeCatalogSync()
+                send(sendMsg(ClientMessage.Login(characterName = "DupPassless2", force = true)))
                 assertIs<ServerMessage.LoginOk>(receiveServerMessage())
             }
 

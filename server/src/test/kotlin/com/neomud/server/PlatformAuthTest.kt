@@ -381,4 +381,111 @@ class PlatformAuthTest {
             )
         }
     }
+
+    // ── Session conflict ──
+
+    @Test
+    fun testPlatformLoginConflictWithoutForce() = testApplication {
+        application { module(jdbcUrl = testDbUrl(), platformVerifierOverride = testVerifier()) }
+        val wsClient = createClient { install(WebSockets) }
+        val token = makeToken("user-conflict")
+
+        // Register
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+            assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.PlatformRegister("ConflictChar", "WARRIOR", "HUMAN", allocatedStats = warriorStats)
+            )))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+            consumePostLogin()
+        }
+
+        // Login first session
+        val client1 = createClient { install(WebSockets) }
+        client1.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+            assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+            send(Frame.Text(MessageSerializer.encodeClientMessage(ClientMessage.PlatformLogin())))
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+
+            // Second session without force — should get SessionConflict
+            val client2 = createClient { install(WebSockets) }
+            client2.webSocket("/game") {
+                consumeCatalogSync()
+                send(Frame.Text(MessageSerializer.encodeClientMessage(
+                    ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+                )))
+                assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+                send(Frame.Text(MessageSerializer.encodeClientMessage(ClientMessage.PlatformLogin())))
+                val response = receiveServerMessage()
+                assertIs<ServerMessage.SessionConflict>(response)
+                assertEquals("ConflictChar", response.characterName)
+            }
+        }
+    }
+
+    @Test
+    fun testPlatformLoginConflictWithForce() = testApplication {
+        application { module(jdbcUrl = testDbUrl(), platformVerifierOverride = testVerifier()) }
+        val wsClient = createClient { install(WebSockets) }
+        val token = makeToken("user-conflict2")
+
+        // Register
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+            assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.PlatformRegister("ConflictChar2", "WARRIOR", "HUMAN", allocatedStats = warriorStats)
+            )))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+            consumePostLogin()
+        }
+
+        // Login first session
+        val client1 = createClient { install(WebSockets) }
+        client1.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+            )))
+            assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+            send(Frame.Text(MessageSerializer.encodeClientMessage(ClientMessage.PlatformLogin())))
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+
+            // Second session with force — should displace
+            val client2 = createClient { install(WebSockets) }
+            client2.webSocket("/game") {
+                consumeCatalogSync()
+                send(Frame.Text(MessageSerializer.encodeClientMessage(
+                    ClientMessage.ClientHello(clientVersion = NeoMudVersion.ENGINE_VERSION, protocolVersion = NeoMudVersion.PROTOCOL_VERSION, platformToken = token)
+                )))
+                assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+                send(Frame.Text(MessageSerializer.encodeClientMessage(ClientMessage.PlatformLogin(force = true))))
+                assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+            }
+
+            // First session should receive SessionDisplaced
+            var foundDisplaced = false
+            repeat(10) {
+                val msg = try { receiveServerMessage() } catch (_: Exception) { return@repeat }
+                if (msg is ServerMessage.SessionDisplaced) {
+                    foundDisplaced = true
+                    return@repeat
+                }
+            }
+            assertTrue(foundDisplaced, "Expected SessionDisplaced message on first session")
+        }
+    }
 }

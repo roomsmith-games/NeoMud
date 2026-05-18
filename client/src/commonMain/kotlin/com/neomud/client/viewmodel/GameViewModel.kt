@@ -805,6 +805,7 @@ class GameViewModel(
             }
             // Handled by AuthViewModel, not GameViewModel
             is ServerMessage.PlatformAuthOk -> {}
+            is ServerMessage.SessionConflict -> {}
             is ServerMessage.SessionDisplaced -> {
                 addLog("Session displaced: ${message.reason}", MudColors.error)
             }

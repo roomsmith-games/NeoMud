@@ -92,7 +92,9 @@ fun LoginScreen(
     onNavigateToRegister: () -> Unit,
     onClearError: () -> Unit,
     onPlatformLogin: () -> Unit = {},
-    onPlayAsGuest: () -> Unit = {}
+    onPlayAsGuest: () -> Unit = {},
+    onForceLogin: () -> Unit = {},
+    onCancelForceLogin: () -> Unit = {}
 ) {
     var host by remember { mutableStateOf(serverConfig.defaultHost) }
     var port by remember { mutableStateOf(serverConfig.defaultPort.toString()) }
@@ -424,6 +426,16 @@ fun LoginScreen(
             onDismiss = { showGuestWarning = false }
         )
     }
+
+    // Session conflict dialog
+    if (authState is AuthState.SessionConflict) {
+        SessionConflictDialog(
+            characterName = authState.characterName,
+            message = authState.message,
+            onForce = onForceLogin,
+            onCancel = onCancelForceLogin
+        )
+    }
 }
 
 @Composable
@@ -513,6 +525,97 @@ private fun GuestWarningDialog(
                 contentAlignment = Alignment.Center
             ) {
                 Text("Create Account Instead", fontSize = 13.sp, color = BurnishedGold)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SessionConflictDialog(
+    characterName: String,
+    message: String,
+    onForce: () -> Unit,
+    onCancel: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.7f))
+            .clickable(onClick = onCancel),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .widthIn(max = 360.dp)
+                .fillMaxWidth(0.85f)
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color(0xFF1A1510), Color(0xFF0D0B09))
+                    ),
+                    RoundedCornerShape(8.dp)
+                )
+                .border(1.dp, BurnishedGold.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                .clickable(enabled = false, onClick = {})
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Active Session Detected",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = BurnishedGold
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = message,
+                fontSize = 13.sp,
+                color = BoneWhite,
+                textAlign = TextAlign.Center,
+                lineHeight = 18.sp
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "Character: $characterName",
+                fontSize = 12.sp,
+                color = AshGray,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(Color(0xFF3A2A15), Color(0xFF2A1A0A))
+                        ),
+                        RoundedCornerShape(6.dp)
+                    )
+                    .border(1.dp, BurnishedGold.copy(alpha = 0.5f), RoundedCornerShape(6.dp))
+                    .clickable(onClick = onForce),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Take Over Session", fontSize = 13.sp, color = BurnishedGold)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(Color(0xFF2A2218), Color(0xFF1A1510))
+                        ),
+                        RoundedCornerShape(6.dp)
+                    )
+                    .border(1.dp, AshGray.copy(alpha = 0.5f), RoundedCornerShape(6.dp))
+                    .clickable(onClick = onCancel),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Cancel", fontSize = 13.sp, color = BoneWhite)
             }
         }
     }

@@ -224,7 +224,9 @@ fun NeoMudApp(
                 },
                 onClearError = { authViewModel.clearError() },
                 onPlatformLogin = { authViewModel.platformLogin() },
-                onPlayAsGuest = { authViewModel.startGuestSession() }
+                onPlayAsGuest = { authViewModel.startGuestSession() },
+                onForceLogin = { authViewModel.forceLogin() },
+                onCancelForceLogin = { authViewModel.cancelForceLogin() }
             )
         }
 

@@ -484,6 +484,22 @@ const handlers = {
     }
   },
 
+  session_conflict(msg) {
+    pushEvent('system', `Session conflict for ${msg.characterName} — forcing takeover`);
+    console.log('[relay] Session conflict detected — re-sending with force=true');
+    if (stagingMode) {
+      const charName = characterOverride || msg.characterName;
+      send({ type: 'platform_login', characterName: charName, force: true });
+    } else if (guestMode) {
+      // Guest sessions use unique UUID usernames and cannot conflict.
+      // If we get here, something is wrong — exit rather than silently re-register.
+      console.error('[relay] Unexpected session_conflict in guest mode');
+      shutdownRelay(1);
+    } else {
+      send({ type: 'login', username, password, force: true });
+    }
+  },
+
   session_displaced(msg) {
     pushEvent('system', `Session displaced: ${msg.reason || 'Another session logged in'}`);
     console.log('[relay] Session displaced by another login. Exiting.');

@@ -451,10 +451,6 @@ class CommandProcessor(
         if (msg.password.isNotBlank() && msg.username.isNotBlank()) {
             // Legacy password-based auth
             internalUsername = msg.username
-            if (sessionManager.isUsernameLoggedIn(internalUsername)) {
-                logger.info("Displacing existing session for username: $internalUsername")
-                sessionManager.displaceSession(internalUsername)
-            }
             if (!checkLoginRateLimit(internalUsername)) {
                 session.send(ServerMessage.AuthError("Too many failed attempts. Try again in a minute."))
                 return
@@ -467,6 +463,14 @@ class CommandProcessor(
             }
             clearFailedLogins(internalUsername)
             player = result.getOrThrow()
+            if (sessionManager.isUsernameLoggedIn(internalUsername)) {
+                if (!msg.force) {
+                    session.send(ServerMessage.SessionConflict(characterName = player.name))
+                    return
+                }
+                logger.info("Displacing existing session for username: $internalUsername (force=true)")
+                sessionManager.displaceSession(internalUsername)
+            }
         } else {
             // Passwordless auth by character name
             val charName = msg.characterName.ifBlank { msg.username }
@@ -482,7 +486,11 @@ class CommandProcessor(
             player = result.getOrThrow()
             internalUsername = player.name.lowercase().replace(" ", "_").replace(Regex("[^a-z0-9_]"), "")
             if (sessionManager.isUsernameLoggedIn(internalUsername)) {
-                logger.info("Displacing existing session for character: ${player.name}")
+                if (!msg.force) {
+                    session.send(ServerMessage.SessionConflict(characterName = player.name))
+                    return
+                }
+                logger.info("Displacing existing session for character: ${player.name} (force=true)")
                 sessionManager.displaceSession(internalUsername)
             }
         }
@@ -604,7 +612,11 @@ class CommandProcessor(
             onSuccess = { player ->
                 val internalUsername = "platform_$platformUserId"
                 if (sessionManager.isUsernameLoggedIn(internalUsername)) {
-                    logger.info("Displacing existing session for platform user: $platformUserId")
+                    if (!msg.force) {
+                        session.send(ServerMessage.SessionConflict(characterName = player.name))
+                        return
+                    }
+                    logger.info("Displacing existing session for platform user: $platformUserId (force=true)")
                     sessionManager.displaceSession(internalUsername)
                 }
                 completeLogin(session, player, username = internalUsername)
