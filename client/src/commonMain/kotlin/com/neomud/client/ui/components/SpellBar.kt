@@ -61,7 +61,9 @@ fun SpellBar(
                 isReadied -> Color(0x449B59FF)
                 else -> Color.Transparent
             }
+            val slotTooltip = spell?.name ?: "Empty Spell Slot"
 
+            StoneTooltip(slotTooltip) {
             Surface(
                 modifier = Modifier
                     .size(36.dp)
@@ -117,6 +119,7 @@ fun SpellBar(
                     }
                 }
             }
+            } // StoneTooltip
             }
         }
     }

@@ -70,6 +70,7 @@ fun DirectionPad(
             horizontalArrangement = Arrangement.spacedBy(H_GAP),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            StoneTooltip("Move Northwest") {
             StoneDPadButton(
                 text = "NW",
                 enabled = Direction.NORTHWEST in availableExits,
@@ -78,6 +79,8 @@ fun DirectionPad(
                 onClick = { onMove(Direction.NORTHWEST) },
                 size = SMALL_BUTTON_SIZE
             )
+            }
+            StoneTooltip("Move North") {
             StoneDPadButton(
                 text = "N",
                 enabled = Direction.NORTH in availableExits,
@@ -86,6 +89,8 @@ fun DirectionPad(
                 onClick = { onMove(Direction.NORTH) },
                 isCardinal = true
             )
+            }
+            StoneTooltip("Move Northeast") {
             StoneDPadButton(
                 text = "NE",
                 enabled = Direction.NORTHEAST in availableExits,
@@ -94,6 +99,7 @@ fun DirectionPad(
                 onClick = { onMove(Direction.NORTHEAST) },
                 size = SMALL_BUTTON_SIZE
             )
+            }
         }
 
         // Row 2: W, LOOK, E
@@ -101,6 +107,7 @@ fun DirectionPad(
             horizontalArrangement = Arrangement.spacedBy(H_GAP),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            StoneTooltip("Move West") {
             StoneDPadButton(
                 text = "W",
                 enabled = Direction.WEST in availableExits,
@@ -109,6 +116,8 @@ fun DirectionPad(
                 onClick = { onMove(Direction.WEST) },
                 isCardinal = true
             )
+            }
+            StoneTooltip("Look Around") {
             StoneDPadButton(
                 text = "",
                 enabled = true,
@@ -116,6 +125,8 @@ fun DirectionPad(
                 isLook = true,
                 icon = { LookIcon(color = LookText) }
             )
+            }
+            StoneTooltip("Move East") {
             StoneDPadButton(
                 text = "E",
                 enabled = Direction.EAST in availableExits,
@@ -124,6 +135,7 @@ fun DirectionPad(
                 onClick = { onMove(Direction.EAST) },
                 isCardinal = true
             )
+            }
         }
 
         // Row 3: SW, S, SE
@@ -131,6 +143,7 @@ fun DirectionPad(
             horizontalArrangement = Arrangement.spacedBy(H_GAP),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            StoneTooltip("Move Southwest") {
             StoneDPadButton(
                 text = "SW",
                 enabled = Direction.SOUTHWEST in availableExits,
@@ -139,6 +152,8 @@ fun DirectionPad(
                 onClick = { onMove(Direction.SOUTHWEST) },
                 size = SMALL_BUTTON_SIZE
             )
+            }
+            StoneTooltip("Move South") {
             StoneDPadButton(
                 text = "S",
                 enabled = Direction.SOUTH in availableExits,
@@ -147,6 +162,8 @@ fun DirectionPad(
                 onClick = { onMove(Direction.SOUTH) },
                 isCardinal = true
             )
+            }
+            StoneTooltip("Move Southeast") {
             StoneDPadButton(
                 text = "SE",
                 enabled = Direction.SOUTHEAST in availableExits,
@@ -155,6 +172,7 @@ fun DirectionPad(
                 onClick = { onMove(Direction.SOUTHEAST) },
                 size = SMALL_BUTTON_SIZE
             )
+            }
         }
 
         // Row 4: UP and DOWN — compact stone stair buttons
@@ -162,6 +180,7 @@ fun DirectionPad(
             horizontalArrangement = Arrangement.spacedBy(H_GAP),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            StoneTooltip("Go Up") {
             StoneStairButton(
                 label = "UP",
                 enabled = Direction.UP in availableExits,
@@ -169,7 +188,9 @@ fun DirectionPad(
                 tracked = trackedDirection == Direction.UP,
                 onClick = { onMove(Direction.UP) }
             )
+            }
             Spacer(modifier = Modifier.width(SMALL_BUTTON_SIZE - STAIR_WIDTH + H_GAP))
+            StoneTooltip("Go Down") {
             StoneStairButton(
                 label = "DN",
                 enabled = Direction.DOWN in availableExits,
@@ -177,6 +198,7 @@ fun DirectionPad(
                 tracked = trackedDirection == Direction.DOWN,
                 onClick = { onMove(Direction.DOWN) }
             )
+            }
         }
     }
 }

@@ -33,6 +33,7 @@ import com.neomud.client.ui.theme.MudColors
 import com.neomud.client.ui.theme.StoneTheme
 import com.neomud.client.ui.components.ReconnectOverlay
 import com.neomud.client.ui.components.StoneButton
+import com.neomud.client.ui.components.StoneTooltip
 import com.neomud.client.ui.components.StoneDivider
 import com.neomud.client.ui.components.ThemedFrame
 import com.neomud.client.ui.components.CharacterSheet
@@ -1288,6 +1289,12 @@ private fun ActionButtonRow(
             else -> Color.Gray
         }
         Box(modifier = Modifier.coachMarkTarget("attack_button", gameViewModel)) {
+            val attackTooltip = when {
+                showBackstab -> "Backstab"
+                attackMode -> "Disengage"
+                else -> "Attack"
+            }
+            StoneTooltip(attackTooltip) {
             ActionButton(
                 icon = MudIcons.Attack,
                 color = attackColor,
@@ -1295,6 +1302,7 @@ private fun ActionButtonRow(
                 enabled = hasHostiles || attackMode || showBackstab,
                 onClick = { gameViewModel.toggleAttackMode(!attackMode) }
             )
+            }
         }
 
         // Class skill buttons (filtered: non-passive)
@@ -1306,10 +1314,13 @@ private fun ActionButtonRow(
             val btnInfo = SKILL_BUTTON_MAP[skillId] ?: continue
 
             key(skillId) {
+            val skillName = skillDef?.name ?: skillId.lowercase().replaceFirstChar { it.uppercase() }
             // SNEAK is a special toggle
             if (skillId == "SNEAK") {
                 val sneakEnabled = !attackMode || isHidden
+                val sneakTooltip = if (isHidden) "Reveal" else skillName
                 Box(modifier = Modifier.coachMarkTarget("sneak_button", gameViewModel)) {
+                    StoneTooltip(sneakTooltip) {
                     ActionButton(
                         icon = btnInfo.icon,
                         color = if (isHidden) MudColors.stealth else btnInfo.activeColor,
@@ -1317,8 +1328,11 @@ private fun ActionButtonRow(
                         enabled = sneakEnabled,
                         onClick = { gameViewModel.toggleSneakMode(!isHidden) }
                     )
+                    }
                 }
             } else if (skillId == "MEDITATE") {
+                val medTooltip = if (isMeditating) "Stop Meditating" else skillName
+                StoneTooltip(medTooltip) {
                 ActionButton(
                     icon = btnInfo.icon,
                     color = if (isMeditating) MudColors.spell else btnInfo.activeColor,
@@ -1326,7 +1340,10 @@ private fun ActionButtonRow(
                     enabled = !attackMode || isMeditating,
                     onClick = { gameViewModel.useSkill("MEDITATE") }
                 )
+                }
             } else if (skillId == "REST") {
+                val restTooltip = if (isResting) "Stand Up" else skillName
+                StoneTooltip(restTooltip) {
                 ActionButton(
                     icon = btnInfo.icon,
                     color = if (isResting) MudColors.friendly else btnInfo.activeColor,
@@ -1334,24 +1351,31 @@ private fun ActionButtonRow(
                     enabled = !attackMode || isResting,
                     onClick = { gameViewModel.useSkill("REST") }
                 )
+                }
             } else if (skillId == "PICK_LOCK") {
+                StoneTooltip(skillName) {
                 ActionButton(
                     icon = btnInfo.icon,
                     color = btnInfo.activeColor,
                     onClick = { gameViewModel.showLockTargetPicker() }
                 )
+                }
             } else if (skillId == "KICK") {
+                StoneTooltip(skillName) {
                 ActionButton(
                     icon = btnInfo.icon,
                     color = btnInfo.activeColor,
                     onClick = { gameViewModel.showKickDirectionPicker() }
                 )
+                }
             } else {
+                StoneTooltip(skillName) {
                 ActionButton(
                     icon = btnInfo.icon,
                     color = btnInfo.activeColor,
                     onClick = { gameViewModel.useSkill(skillId) }
                 )
+                }
             }
             }
         }
@@ -1465,6 +1489,7 @@ private fun SpellUtilityButton(
 @Composable
 private fun CharacterSheetIconButton(onClick: () -> Unit) {
     val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    StoneTooltip("Character Sheet") {
     Box(
         modifier = Modifier
             .size(28.dp)
@@ -1479,11 +1504,13 @@ private fun CharacterSheetIconButton(onClick: () -> Unit) {
             modifier = Modifier.size(22.dp)
         )
     }
+    }
 }
 
 @Composable
 private fun InventoryIconButton(active: Boolean, onClick: () -> Unit) {
     val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    StoneTooltip("Inventory") {
     Box(
         modifier = Modifier
             .size(28.dp)
@@ -1498,11 +1525,13 @@ private fun InventoryIconButton(active: Boolean, onClick: () -> Unit) {
             modifier = Modifier.size(22.dp)
         )
     }
+    }
 }
 
 @Composable
 private fun EquipmentIconButton(active: Boolean, onClick: () -> Unit) {
     val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    StoneTooltip("Equipment") {
     Box(
         modifier = Modifier
             .size(28.dp)
@@ -1517,11 +1546,13 @@ private fun EquipmentIconButton(active: Boolean, onClick: () -> Unit) {
             modifier = Modifier.size(22.dp)
         )
     }
+    }
 }
 
 @Composable
 private fun MapIconButton(active: Boolean, onClick: () -> Unit) {
     val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    StoneTooltip("World Atlas") {
     Box(
         modifier = Modifier
             .size(28.dp)
@@ -1536,11 +1567,13 @@ private fun MapIconButton(active: Boolean, onClick: () -> Unit) {
             modifier = Modifier.size(22.dp)
         )
     }
+    }
 }
 
 @Composable
 private fun HelpIconButton(onClick: () -> Unit) {
     val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    StoneTooltip("Adventurer's Tome") {
     Box(
         modifier = Modifier
             .size(28.dp)
@@ -1555,11 +1588,13 @@ private fun HelpIconButton(onClick: () -> Unit) {
             modifier = Modifier.size(22.dp)
         )
     }
+    }
 }
 
 @Composable
 private fun SettingsGearButton(onClick: () -> Unit) {
     val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    StoneTooltip("Settings") {
     Box(
         modifier = Modifier
             .size(28.dp)
@@ -1573,6 +1608,7 @@ private fun SettingsGearButton(onClick: () -> Unit) {
             contentDescription = "Settings",
             modifier = Modifier.size(22.dp)
         )
+    }
     }
 }
 

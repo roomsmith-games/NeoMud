@@ -462,6 +462,8 @@ private fun BuyItemRow(
         }
         Spacer(Modifier.width(6.dp))
 
+        val buyTooltip = if (clampedQty > 1) "Buy $clampedQty ${item.name}" else "Buy ${item.name}"
+        StoneTooltip(buyTooltip) {
         Box(
             modifier = Modifier
                 .height(32.dp)
@@ -490,6 +492,7 @@ private fun BuyItemRow(
                 color = if (canBuy) Color.White else AshGray,
                 fontWeight = FontWeight.Bold
             )
+        }
         }
     }
 }
@@ -585,6 +588,8 @@ private fun SellItemRow(
         Spacer(Modifier.width(6.dp))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val sellTooltip = if (clampedQty > 1) "Sell $clampedQty $itemName" else "Sell $itemName"
+            StoneTooltip(sellTooltip) {
             Box(
                 modifier = Modifier
                     .height(if (inventoryItem.quantity > 1 && canSell) 28.dp else 32.dp)
@@ -614,8 +619,10 @@ private fun SellItemRow(
                     fontWeight = FontWeight.Bold
                 )
             }
+            }
             if (inventoryItem.quantity > 1 && canSell) {
                 Spacer(Modifier.height(3.dp))
+                StoneTooltip("Sell all $itemName") {
                 Box(
                     modifier = Modifier
                         .height(28.dp)
@@ -639,6 +646,7 @@ private fun SellItemRow(
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
+                }
                 }
             }
         }
