@@ -43,13 +43,19 @@ import sharp from 'sharp';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..');
-const ASSETS_ROOT = path.join(REPO_ROOT, 'maker/default_world_src/assets');
-const WORLD_DIR = path.join(REPO_ROOT, 'maker/default_world_src/world');
 
 const args = parseArgs(process.argv.slice(2));
 
+const BASE_DIR = args['base-dir']
+  ? path.resolve(args['base-dir'])
+  : path.join(REPO_ROOT, 'maker/default_world_src');
+const ASSETS_ROOT = path.join(BASE_DIR, 'assets');
+const WORLD_DIR = path.join(BASE_DIR, 'world');
+
 if (args.help) {
   console.log(`Usage: node scripts/slim-assets.mjs [options]
+  --base-dir <path>    root directory containing assets/ and world/ subdirs
+                       (default: maker/default_world_src)
   --category <name>    coins|items|rooms|npcs|players|audio|all (default: all)
   --only <names>       comma-separated basenames to process (others skipped)
   --dry-run            print projected changes, write nothing
@@ -296,9 +302,9 @@ async function processAudio(file) {
     return;
   }
 
-  // Tmp suffix has no .mp3 extension so a partial file from a crashed ffmpeg
-  // run won't be re-globbed as a BGM track on the next invocation.
-  const tmpFile = file + '.slim.tmp';
+  // Keep .mp3 extension so ffmpeg auto-detects the output muxer. The .slim
+  // infix prevents re-globbing on a crashed partial run.
+  const tmpFile = file.replace(/\.mp3$/i, '.slim.mp3');
   const channels = args.mono ? '1' : '2';
   try {
     execFileSync('ffmpeg', [

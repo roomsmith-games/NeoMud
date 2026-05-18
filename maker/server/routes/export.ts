@@ -20,6 +20,50 @@ function parseJsonField(value: string, fallback: any = {}): any {
   }
 }
 
+/**
+ * Normalize vendorItems to plain string IDs. The Maker stores rich objects
+ * ({itemId, price, stock}) but the game server expects List<String>.
+ */
+function normalizeVendorItems(raw: unknown[]): string[] {
+  return raw.map((entry) => {
+    if (typeof entry === 'string') return entry
+    if (entry && typeof entry === 'object' && 'itemId' in entry) return (entry as { itemId: string }).itemId
+    return String(entry)
+  })
+}
+
+/**
+ * Normalize hiddenExits from { DIR: dcValue } shorthand to the full
+ * { DIR: { perceptionDC, lockDifficulty, ... } } format the server expects.
+ */
+function normalizeHiddenExits(raw: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  for (const [dir, val] of Object.entries(raw)) {
+    if (typeof val === 'number') {
+      out[dir] = { perceptionDC: val, lockDifficulty: 0, hiddenResetTicks: 0, lockResetTicks: 0 }
+    } else {
+      out[dir] = val
+    }
+  }
+  return out
+}
+
+/**
+ * Normalize interactable actionData for game-server compatibility.
+ * - Rename 'direction' → 'successDirection' (Maker shorthand)
+ * - Remove null/undefined values (Map<String, String> can't have nulls)
+ * - Coerce all values to strings
+ */
+function normalizeActionData(raw: Record<string, unknown>): Record<string, string> {
+  const out: Record<string, string> = {}
+  for (const [key, val] of Object.entries(raw)) {
+    if (val == null) continue
+    const k = key === 'direction' ? 'successDirection' : key
+    out[k] = String(val)
+  }
+  return out
+}
+
 /** Build a .nmd ZIP bundle from the active project's data + assets. */
 export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): Promise<Buffer> {
   const zip = new AdmZip()
@@ -94,7 +138,7 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
         }
         const lockedExits = parseJsonField(room.lockedExits, {})
         const lockResetTicks = parseJsonField(room.lockResetTicks, {})
-        const hiddenExits = parseJsonField(room.hiddenExits, {})
+        const hiddenExits = normalizeHiddenExits(parseJsonField(room.hiddenExits, {}))
         return {
           id: room.id,
           name: room.name,
@@ -117,7 +161,14 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
           ...(Object.keys(lockedExits).length > 0 ? { lockedExits } : {}),
           ...(Object.keys(lockResetTicks).length > 0 ? { lockResetTicks } : {}),
           ...(Object.keys(hiddenExits).length > 0 ? { hiddenExits } : {}),
-          ...((() => { const i = parseJsonField(room.interactables, []); return i.length > 0 ? { interactables: i } : {}; })()),
+          ...((() => {
+            const i = parseJsonField(room.interactables, []) as any[];
+            if (i.length === 0) return {};
+            return { interactables: i.map((it: any) => ({
+              ...it,
+              ...(it.actionData ? { actionData: normalizeActionData(it.actionData) } : {}),
+            })) };
+          })()),
           ...((() => { const u = parseJsonField(room.unpickableExits, []); return u.length > 0 ? { unpickableExits: u } : {}; })()),
           ...(room.maxHostileNpcs != null ? { maxHostileNpcs: room.maxHostileNpcs } : {}),
         }
@@ -139,7 +190,7 @@ export async function buildNmdBundle(prisma: PrismaClient, assetsDir: string): P
         defense: npc.defense,
         evasion: npc.evasion,
         agility: npc.agility,
-        vendorItems: parseJsonField(npc.vendorItems, []),
+        vendorItems: normalizeVendorItems(parseJsonField(npc.vendorItems, [])),
         spawnPoints: parseJsonField(npc.spawnPoints, []),
         attackSound: npc.attackSound,
         missSound: npc.missSound,
@@ -439,7 +490,7 @@ exportRouter.get('/json', async (req, res) => {
         }
         const lockedExits = parseJsonField(room.lockedExits, {})
         const lockResetTicks = parseJsonField(room.lockResetTicks, {})
-        const hiddenExits = parseJsonField(room.hiddenExits, {})
+        const hiddenExits = normalizeHiddenExits(parseJsonField(room.hiddenExits, {}))
         roomsOut[room.id] = {
           name: room.name,
           description: room.description,
@@ -458,7 +509,14 @@ exportRouter.get('/json', async (req, res) => {
           ...(Object.keys(lockedExits).length > 0 ? { lockedExits } : {}),
           ...(Object.keys(lockResetTicks).length > 0 ? { lockResetTicks } : {}),
           ...(Object.keys(hiddenExits).length > 0 ? { hiddenExits } : {}),
-          ...((() => { const i = parseJsonField(room.interactables, []); return i.length > 0 ? { interactables: i } : {}; })()),
+          ...((() => {
+            const i = parseJsonField(room.interactables, []) as any[];
+            if (i.length === 0) return {};
+            return { interactables: i.map((it: any) => ({
+              ...it,
+              ...(it.actionData ? { actionData: normalizeActionData(it.actionData) } : {}),
+            })) };
+          })()),
           ...((() => { const u = parseJsonField(room.unpickableExits, []); return u.length > 0 ? { unpickableExits: u } : {}; })()),
           ...(room.maxHostileNpcs != null ? { maxHostileNpcs: room.maxHostileNpcs } : {}),
         }
@@ -484,7 +542,7 @@ exportRouter.get('/json', async (req, res) => {
           defense: npc.defense,
           evasion: npc.evasion,
           agility: npc.agility,
-          vendorItems: parseJsonField(npc.vendorItems, []),
+          vendorItems: normalizeVendorItems(parseJsonField(npc.vendorItems, [])),
           spawnPoints: parseJsonField(npc.spawnPoints, []),
           attackSound: npc.attackSound,
           missSound: npc.missSound,
