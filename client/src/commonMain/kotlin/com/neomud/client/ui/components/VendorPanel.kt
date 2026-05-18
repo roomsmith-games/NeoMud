@@ -584,10 +584,7 @@ private fun SellItemRow(
                     onQuantityChange = { quantity = it }
                 )
             }
-        }
-        Spacer(Modifier.width(6.dp))
-
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(Modifier.height(4.dp))
             val sellTooltip = if (clampedQty > 1) "Sell $clampedQty $itemName" else "Sell $itemName"
             StoneTooltip(sellTooltip) {
             Box(
