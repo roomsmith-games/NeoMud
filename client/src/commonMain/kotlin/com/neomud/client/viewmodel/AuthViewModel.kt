@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neomud.client.network.ConnectionState
 import com.neomud.client.network.GameConnection
+import com.neomud.client.network.ReconnectStatus
 import com.neomud.client.platform.PlatformLogger
 import com.neomud.client.platform.serverConfig
 import com.neomud.client.network.WebSocketClient
@@ -31,6 +32,7 @@ class AuthViewModel(
 
     val connectionState: StateFlow<ConnectionState> = wsClient.connectionState
     val connectionError: StateFlow<String?> = wsClient.connectionError
+    val reconnectStatus: StateFlow<ReconnectStatus> = wsClient.reconnectStatus
 
     private val _availableClasses = MutableStateFlow<List<CharacterClassDef>>(emptyList())
     val availableClasses: StateFlow<List<CharacterClassDef>> = _availableClasses
@@ -351,6 +353,10 @@ class AuthViewModel(
         pendingForceLogin = null
         pendingForcePlatformLogin = null
         _authState.value = AuthState.Idle
+    }
+
+    fun retryReconnect() {
+        wsClient.retryReconnect()
     }
 
     fun logout() {

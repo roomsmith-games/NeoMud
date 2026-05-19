@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.neomud.client.model.platform.WorldDetail
 import com.neomud.client.network.ConnectionState
 import com.neomud.client.network.PlatformApiClient
+import com.neomud.client.network.ReconnectStatus
 import com.neomud.client.network.parseServerEndpoint
 import com.neomud.client.platform.PlatformAudioManager
 import com.neomud.client.platform.returnToMarketplace
@@ -46,6 +47,7 @@ fun NeoMudApp(
     val authState by authViewModel.authState.collectAsState()
     val connectionState by authViewModel.connectionState.collectAsState()
     val connectionError by authViewModel.connectionError.collectAsState()
+    val reconnectStatus by authViewModel.reconnectStatus.collectAsState()
     val availableClasses by authViewModel.availableClasses.collectAsState()
     val availableRaces by authViewModel.availableRaces.collectAsState()
 
@@ -209,6 +211,7 @@ fun NeoMudApp(
                 connectionState = connectionState,
                 authState = authState,
                 connectionError = connectionError,
+                reconnectStatus = reconnectStatus,
                 onConnect = { host, port ->
                     val ep = parsedEndpoint
                     if (ep != null) {
@@ -226,7 +229,8 @@ fun NeoMudApp(
                 onPlatformLogin = { authViewModel.platformLogin() },
                 onPlayAsGuest = { authViewModel.startGuestSession() },
                 onForceLogin = { authViewModel.forceLogin() },
-                onCancelForceLogin = { authViewModel.cancelForceLogin() }
+                onCancelForceLogin = { authViewModel.cancelForceLogin() },
+                onRetryReconnect = { authViewModel.retryReconnect() }
             )
         }
 

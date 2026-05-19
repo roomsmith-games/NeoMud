@@ -447,9 +447,11 @@ fun GameScreen(
             )
         }
 
-        // Reconnect overlay — shown while the WebSocket is reconnecting
-        // after an unexpected close (e.g. Maker "Reload Playtest" cycles
-        // the container out from under us). Renders nothing when idle.
+        val shutdownNotice by gameViewModel.shutdownNotice.collectAsState()
+        if (shutdownNotice != null) {
+            ShutdownBanner(notice = shutdownNotice!!)
+        }
+
         val reconnectStatus by gameViewModel.reconnectStatus.collectAsState()
         ReconnectOverlay(
             status = reconnectStatus,
@@ -495,6 +497,37 @@ private fun DeathOverlay(
                 text = "Tap to continue",
                 fontSize = 12.sp,
                 color = Color(0xFF666666)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ShutdownBanner(notice: GameViewModel.ShutdownNotice) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(Color(0xFF4A1010), Color(0xFF6B1818), Color(0xFF4A1010))
+                    ),
+                    RoundedCornerShape(6.dp)
+                )
+                .border(1.dp, Color(0xFFCC4444).copy(alpha = 0.6f), RoundedCornerShape(6.dp))
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = notice.message,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFFFAAAA)
             )
         }
     }

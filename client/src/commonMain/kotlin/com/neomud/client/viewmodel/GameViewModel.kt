@@ -93,6 +93,11 @@ class GameViewModel(
     private val _isResting = MutableStateFlow(false)
     val isResting: StateFlow<Boolean> = _isResting
 
+    // Server shutdown banner
+    data class ShutdownNotice(val message: String, val secondsRemaining: Int)
+    private val _shutdownNotice = MutableStateFlow<ShutdownNotice?>(null)
+    val shutdownNotice: StateFlow<ShutdownNotice?> = _shutdownNotice
+
     // Skill catalog
     private val _skillCatalog = MutableStateFlow<Map<String, SkillDef>>(emptyMap())
     val skillCatalog: StateFlow<Map<String, SkillDef>> = _skillCatalog
@@ -787,6 +792,7 @@ class GameViewModel(
             }
             is ServerMessage.ServerShutdown -> {
                 addLog(message.message, MudColors.error)
+                _shutdownNotice.value = ShutdownNotice(message.message, message.secondsRemaining)
             }
             is ServerMessage.CraftingMenu -> {
                 if (!_showCrafting.value) npcSfx(message.interactSound, "npcs")

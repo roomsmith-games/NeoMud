@@ -39,7 +39,9 @@ import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.crossfade
 import com.neomud.client.network.ConnectionState
+import com.neomud.client.network.ReconnectStatus
 import com.neomud.client.platform.serverConfig
+import com.neomud.client.ui.components.ReconnectOverlay
 import com.neomud.client.ui.theme.StoneTheme
 import com.neomud.client.viewmodel.AuthState
 import com.neomud.shared.NeoMudVersion
@@ -87,6 +89,7 @@ fun LoginScreen(
     connectionState: ConnectionState,
     authState: AuthState,
     connectionError: String?,
+    reconnectStatus: ReconnectStatus = ReconnectStatus.Idle,
     onConnect: (String, Int) -> Unit,
     onLogin: (String) -> Unit,
     onNavigateToRegister: () -> Unit,
@@ -94,7 +97,8 @@ fun LoginScreen(
     onPlatformLogin: () -> Unit = {},
     onPlayAsGuest: () -> Unit = {},
     onForceLogin: () -> Unit = {},
-    onCancelForceLogin: () -> Unit = {}
+    onCancelForceLogin: () -> Unit = {},
+    onRetryReconnect: () -> Unit = {}
 ) {
     var host by remember { mutableStateOf(serverConfig.defaultHost) }
     var port by remember { mutableStateOf(serverConfig.defaultPort.toString()) }
@@ -410,6 +414,11 @@ fun LoginScreen(
                 }
             }
         }
+
+        ReconnectOverlay(
+            status = reconnectStatus,
+            onRetry = onRetryReconnect
+        )
     }
 
     // Guest warning dialog
