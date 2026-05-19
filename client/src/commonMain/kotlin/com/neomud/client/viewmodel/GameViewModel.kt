@@ -273,6 +273,17 @@ class GameViewModel(
         _visitedRooms.value = _visitedRooms.value + mapData.playerRoomId
     }
 
+    fun setInitialInventory(update: ServerMessage.InventoryUpdate) {
+        _inventory.value = update.inventory
+        _equipment.value = update.equipment
+        _playerCoins.value = update.coins
+    }
+
+    fun setInitialRoomItems(update: ServerMessage.RoomItemsUpdate) {
+        _roomGroundItems.value = update.items
+        _roomGroundCoins.value = update.coins
+    }
+
     fun setInitialTutorial(tutorial: ServerMessage.Tutorial) {
         if (tutorial.blocking) {
             enqueueBlockingTutorial(tutorial)

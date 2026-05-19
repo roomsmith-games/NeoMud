@@ -68,6 +68,12 @@ class AuthViewModel(
     private val _initialTutorials = MutableStateFlow<List<ServerMessage.Tutorial>>(emptyList())
     val initialTutorials: StateFlow<List<ServerMessage.Tutorial>> = _initialTutorials
 
+    private val _initialInventoryUpdate = MutableStateFlow<ServerMessage.InventoryUpdate?>(null)
+    val initialInventoryUpdate: StateFlow<ServerMessage.InventoryUpdate?> = _initialInventoryUpdate
+
+    private val _initialRoomItemsUpdate = MutableStateFlow<ServerMessage.RoomItemsUpdate?>(null)
+    val initialRoomItemsUpdate: StateFlow<ServerMessage.RoomItemsUpdate?> = _initialRoomItemsUpdate
+
     private val _serverInfo = MutableStateFlow(ServerInfo())
     val serverInfo: StateFlow<ServerInfo> = _serverInfo
 
@@ -100,6 +106,8 @@ class AuthViewModel(
                             _initialRoomInfo.value = null
                             _initialMapData.value = null
                             _initialTutorials.value = emptyList()
+                            _initialInventoryUpdate.value = null
+                            _initialRoomItemsUpdate.value = null
                             _authState.value = AuthState.LoggedIn(message.player)
                         }
                         is ServerMessage.RoomInfo -> {
@@ -117,6 +125,16 @@ class AuthViewModel(
                         is ServerMessage.Tutorial -> {
                             if (_authState.value is AuthState.LoggedIn) {
                                 _initialTutorials.value = _initialTutorials.value + message
+                            }
+                        }
+                        is ServerMessage.InventoryUpdate -> {
+                            if (_authState.value is AuthState.LoggedIn) {
+                                _initialInventoryUpdate.value = message
+                            }
+                        }
+                        is ServerMessage.RoomItemsUpdate -> {
+                            if (_authState.value is AuthState.LoggedIn) {
+                                _initialRoomItemsUpdate.value = message
                             }
                         }
                         is ServerMessage.RegisterOk -> {
