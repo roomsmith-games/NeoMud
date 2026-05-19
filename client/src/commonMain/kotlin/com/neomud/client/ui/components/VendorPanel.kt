@@ -444,7 +444,10 @@ private fun BuyItemRow(
             }
         }
 
-        Column(horizontalAlignment = Alignment.End) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
             Text(
                 text = if (clampedQty > 1)
                     Coins.fromCopper(unitPrice * clampedQty).displayString()
@@ -459,40 +462,38 @@ private fun BuyItemRow(
                     onQuantityChange = { quantity = it }
                 )
             }
-        }
-        Spacer(Modifier.width(6.dp))
-
-        val buyTooltip = if (clampedQty > 1) "Buy $clampedQty ${item.name}" else "Buy ${item.name}"
-        StoneTooltip(buyTooltip) {
-        Box(
-            modifier = Modifier
-                .height(32.dp)
-                .background(
-                    if (canBuy)
-                        Brush.verticalGradient(listOf(Color(0xFF1565C0), Color(0xFF0D47A1)))
-                    else
-                        Brush.verticalGradient(listOf(StoneTheme.frameDark, Color(0xFF0D0A08))),
-                    RoundedCornerShape(4.dp)
-                )
-                .drawBehind {
-                    val w = size.width; val h = size.height
-                    if (canBuy) {
-                        drawLine(Color(0xFF42A5F5).copy(alpha = 0.5f), Offset(0f, 0f), Offset(w, 0f), 1f)
-                        drawLine(Color(0xFF42A5F5).copy(alpha = 0.5f), Offset(0f, 0f), Offset(0f, h), 1f)
+            val buyTooltip = if (clampedQty > 1) "Buy $clampedQty ${item.name}" else "Buy ${item.name}"
+            StoneTooltip(buyTooltip) {
+            Box(
+                modifier = Modifier
+                    .height(32.dp)
+                    .background(
+                        if (canBuy)
+                            Brush.verticalGradient(listOf(Color(0xFF1565C0), Color(0xFF0D47A1)))
+                        else
+                            Brush.verticalGradient(listOf(StoneTheme.frameDark, Color(0xFF0D0A08))),
+                        RoundedCornerShape(4.dp)
+                    )
+                    .drawBehind {
+                        val w = size.width; val h = size.height
+                        if (canBuy) {
+                            drawLine(Color(0xFF42A5F5).copy(alpha = 0.5f), Offset(0f, 0f), Offset(w, 0f), 1f)
+                            drawLine(Color(0xFF42A5F5).copy(alpha = 0.5f), Offset(0f, 0f), Offset(0f, h), 1f)
+                        }
+                        drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
+                        drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
                     }
-                    drawLine(Color.Black.copy(alpha = 0.5f), Offset(0f, h - 1f), Offset(w, h - 1f), 1f)
-                    drawLine(Color.Black.copy(alpha = 0.5f), Offset(w - 1f, 0f), Offset(w - 1f, h), 1f)
-                }
-                .then(if (canBuy) Modifier.clickable { onBuy(clampedQty) } else Modifier)
-                .padding(horizontal = 12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "Buy", fontSize = 12.sp,
-                color = if (canBuy) Color.White else AshGray,
-                fontWeight = FontWeight.Bold
-            )
-        }
+                    .then(if (canBuy) Modifier.clickable { onBuy(clampedQty) } else Modifier)
+                    .padding(horizontal = 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Buy", fontSize = 12.sp,
+                    color = if (canBuy) Color.White else AshGray,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            }
         }
     }
 }
@@ -571,7 +572,10 @@ private fun SellItemRow(
             }
         }
 
-        Column(horizontalAlignment = Alignment.End) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
             Text(
                 text = if (canSell) sellPrice.displayString() else "No value",
                 fontSize = 12.sp,
@@ -584,12 +588,11 @@ private fun SellItemRow(
                     onQuantityChange = { quantity = it }
                 )
             }
-            Spacer(Modifier.height(4.dp))
             val sellTooltip = if (clampedQty > 1) "Sell $clampedQty $itemName" else "Sell $itemName"
             StoneTooltip(sellTooltip) {
             Box(
                 modifier = Modifier
-                    .height(if (inventoryItem.quantity > 1 && canSell) 28.dp else 32.dp)
+                    .height(32.dp)
                     .background(
                         if (canSell)
                             Brush.verticalGradient(listOf(Color(0xFF2E7D32), Color(0xFF1B5E20)))
@@ -618,11 +621,10 @@ private fun SellItemRow(
             }
             }
             if (inventoryItem.quantity > 1 && canSell) {
-                Spacer(Modifier.height(3.dp))
                 StoneTooltip("Sell all $itemName") {
                 Box(
                     modifier = Modifier
-                        .height(28.dp)
+                        .height(32.dp)
                         .background(
                             Brush.verticalGradient(listOf(Color(0xFF8D6E37), Color(0xFF5C4520))),
                             RoundedCornerShape(4.dp)
@@ -658,7 +660,7 @@ private fun QuantityStepper(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(top = 2.dp)
+        modifier = Modifier
     ) {
         Box(
             modifier = Modifier
