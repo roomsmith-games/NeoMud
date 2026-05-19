@@ -1,12 +1,14 @@
 import GenericCrudEditor from '../components/GenericCrudEditor';
 import type { FieldConfig } from '../components/GenericCrudEditor';
+import EditorPageHeader from '../components/EditorPageHeader';
 
 const fields: FieldConfig[] = [
-  { key: 'id', label: 'ID', type: 'text', placeholder: 'e.g. slash' },
-  { key: 'name', label: 'Name', type: 'text', placeholder: 'Slash' },
-  { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+  { key: 'id', label: 'ID', type: 'text', placeholder: 'e.g. slash', help: 'Unique identifier referenced by class skill lists' },
+  { key: 'name', label: 'Name', type: 'text', placeholder: 'Slash', help: 'Display name shown to players' },
+  { key: 'description', label: 'Description', type: 'textarea', rows: 3, help: 'Flavor text shown in the skill list' },
   {
     key: 'category', label: 'Category', type: 'select',
+    help: 'Determines when and how the skill is used',
     options: [
       { value: 'combat', label: 'Combat' },
       { value: 'defense', label: 'Defense' },
@@ -16,6 +18,7 @@ const fields: FieldConfig[] = [
   },
   {
     key: 'primaryStat', label: 'Primary Stat', type: 'select',
+    help: 'Main stat for the skill check roll',
     options: [
       { value: 'strength', label: 'Strength' },
       { value: 'agility', label: 'Agility' },
@@ -27,6 +30,7 @@ const fields: FieldConfig[] = [
   },
   {
     key: 'secondaryStat', label: 'Secondary Stat', type: 'select',
+    help: 'Optional secondary stat that adds a minor bonus to the check',
     options: [
       { value: '', label: 'None' },
       { value: 'strength', label: 'Strength' },
@@ -37,10 +41,10 @@ const fields: FieldConfig[] = [
       { value: 'charm', label: 'Charm' },
     ],
   },
-  { key: 'cooldownTicks', label: 'Cooldown (ticks)', type: 'number' },
-  { key: 'manaCost', label: 'Mana Cost', type: 'number' },
+  { key: 'cooldownTicks', label: 'Cooldown (ticks)', type: 'number', help: 'Turns before the skill can be used again (1 tick = 1.5s)' },
+  { key: 'manaCost', label: 'Mana Cost', type: 'number', help: 'MP consumed per use (0 for physical skills)' },
   { key: 'difficulty', label: 'Difficulty', type: 'number', help: 'Default check DC (15)' },
-  { key: 'isPassive', label: 'Passive', type: 'checkbox', placeholder: 'Is a passive skill' },
+  { key: 'isPassive', label: 'Passive', type: 'checkbox', placeholder: 'Is a passive skill', help: 'Passive skills are always active and need no cooldown' },
   {
     key: 'classRestrictions', label: 'Class Restrictions', type: 'checklist' as const,
     checklistOptions: [
@@ -70,8 +74,16 @@ const fields: FieldConfig[] = [
   { key: 'imageHeight', label: 'Image Height', type: 'number' },
 ];
 
+const pageHeader = (
+  <EditorPageHeader storageKey="skills">
+    Skills are active and passive abilities available to player classes. Active skills (Bash, Kick, Sneak)
+    have cooldowns and stat checks. Passive skills (Dodge, Parry, Perception) are always on.
+    Assign skills to classes in the Classes editor.
+  </EditorPageHeader>
+);
+
 function SkillEditor() {
-  return <GenericCrudEditor entityName="Skill" apiPath="/skills" fields={fields} imagePreview={{ entityType: 'skill', maxWidth: 256, maxHeight: 256 }} />;
+  return <GenericCrudEditor entityName="Skill" apiPath="/skills" fields={fields} imagePreview={{ entityType: 'skill', maxWidth: 256, maxHeight: 256 }} pageHeader={pageHeader} />;
 }
 
 export default SkillEditor;

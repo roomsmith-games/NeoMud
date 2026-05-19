@@ -297,7 +297,7 @@ function ProjectList() {
         </form>
         {error && <p style={styles.error}>{error}</p>}
         {projects.length === 0 ? (
-          <p style={styles.empty}>No projects yet. Create one above.</p>
+          <p style={styles.empty}>No projects yet. Type a name above and click "Create" to start building your world. Zones are a good first step — they hold the rooms your players will explore.</p>
         ) : (
           <ul style={styles.list}>
             {projects.map((proj) => (

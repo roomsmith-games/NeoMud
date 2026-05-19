@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
+import EditorPageHeader from '../components/EditorPageHeader';
 import type { CSSProperties } from 'react';
 
 type WorldMeta = Record<string, string>;
@@ -93,9 +94,10 @@ function WorldMetaEditor() {
   return (
     <form style={styles.page} onSubmit={(e) => { e.preventDefault(); save(); }}>
       <h2 style={styles.title}>World Manifest</h2>
-      <p style={styles.subtitle}>
-        These fields appear in the world's <code>manifest.json</code> on export and travel with every bundle.
-      </p>
+      <EditorPageHeader storageKey="world-meta">
+        These fields define your world's identity — they appear in the marketplace listing and ship
+        inside every .nmd bundle. The intro script is shown as a lore modal on each player's first login.
+      </EditorPageHeader>
 
       <div style={styles.card}>
         <div style={styles.sectionTitle}>Identity</div>

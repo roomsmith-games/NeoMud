@@ -5,17 +5,17 @@ import MenuBar from './MenuBar';
 import type { CSSProperties } from 'react';
 
 const navItems = [
-  { label: 'Zones', path: 'zones' },
-  { label: 'Items', path: 'items' },
-  { label: 'Recipes', path: 'recipes' },
-  { label: 'NPCs', path: 'npcs' },
-  { label: 'Classes', path: 'classes' },
-  { label: 'Races', path: 'races' },
-  { label: 'Skills', path: 'skills' },
-  { label: 'Spells', path: 'spells' },
-  { label: 'Default Players', path: 'default-players' },
-  { label: 'Default SFX', path: 'default-sfx' },
-  { label: 'World', path: 'world' },
+  { label: 'Zones', path: 'zones', description: 'Create and connect rooms on a visual map' },
+  { label: 'Items', path: 'items', description: 'Weapons, armor, consumables, crafting materials' },
+  { label: 'Recipes', path: 'recipes', description: 'Crafting recipes that combine items' },
+  { label: 'NPCs', path: 'npcs', description: 'Non-player characters: vendors, enemies, quest givers' },
+  { label: 'Classes', path: 'classes', description: 'Player classes with stats, skills, and magic schools' },
+  { label: 'Races', path: 'races', description: 'Player races with stat modifiers' },
+  { label: 'Skills', path: 'skills', description: 'Active and passive combat/utility abilities' },
+  { label: 'Spells', path: 'spells', description: 'Spells organized by magic school' },
+  { label: 'Default Players', path: 'default-players', description: 'Player character sprites per race/class/gender' },
+  { label: 'Default SFX', path: 'default-sfx', description: 'Default sound effects for combat, movement, etc.' },
+  { label: 'World', path: 'world', description: 'World name, author, intro script metadata' },
 ];
 
 const styles: Record<string, CSSProperties> = {
@@ -139,6 +139,7 @@ function Layout() {
             <NavLink
               key={item.path}
               to={item.path}
+              title={item.description}
               style={({ isActive }) => ({
                 ...styles.link,
                 ...(isActive ? styles.linkActive : {}),
@@ -152,6 +153,7 @@ function Layout() {
         <div style={styles.navBottom}>
           <NavLink
             to="settings"
+            title="AI provider API keys and configuration"
             style={({ isActive }) => ({
               ...styles.link,
               ...(isActive ? styles.linkActive : {}),

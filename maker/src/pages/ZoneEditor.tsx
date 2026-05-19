@@ -4,6 +4,8 @@ import MapCanvas, { inferDirection } from '../components/MapCanvas';
 import ImagePreview from '../components/ImagePreview';
 import AudioPreview from '../components/AudioPreview';
 import SfxPreview from '../components/SfxPreview';
+import HelpText from '../components/HelpText';
+import { INTERACTABLE_PRESETS, PRESET_CATEGORIES, ACTION_TYPE_DESCRIPTIONS } from '../data/interactablePresets';
 import type { CSSProperties } from 'react';
 
 interface Zone {
@@ -359,7 +361,11 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
               <input type="number" style={{ ...styles.input, fontSize: 11 }} value={feat.cooldownTicks} min={0} onChange={(e) => set(i, { cooldownTicks: parseInt(e.target.value) || 0 })} />
             </div>
           </div>
-          {/* Action-specific inputs */}
+          {ACTION_TYPE_DESCRIPTIONS[feat.actionType] && (
+            <div style={{ fontSize: 9, color: '#7c4dff', fontStyle: 'italic', marginTop: 4 }}>
+              {ACTION_TYPE_DESCRIPTIONS[feat.actionType]}
+            </div>
+          )}
           {feat.actionType === 'EXIT_OPEN' && (
             <div style={{ marginTop: 4, fontSize: 10 }}>
               <label style={{ color: '#666' }}>Direction</label>
@@ -658,10 +664,54 @@ function InteractablesEditor({ roomForm, setRoomForm }: {
           </div>
         </div>
       ))}
-      <button
-        style={{ ...styles.btnSmall, width: '100%' }}
-        onClick={() => update([...interactList, { id: `feat_${interactList.length + 1}`, label: 'New Feature', description: '', failureMessage: '', icon: '', actionType: 'EXIT_OPEN', actionData: {}, difficulty: 0, difficultyCheck: '', perceptionDC: 0, cooldownTicks: 0, resetTicks: 0, sound: '', triggerType: 'ON_ACTION' }])}
-      >+ Add Interactable</button>
+      <div style={{ display: 'flex', gap: 4 }}>
+        <select
+          style={{ ...styles.input, fontSize: 11, flex: 1 }}
+          defaultValue=""
+          onChange={(e) => {
+            const preset = INTERACTABLE_PRESETS.find((p) => p.id === e.target.value);
+            if (!preset) return;
+            const base: Interactable = {
+              id: `feat_${interactList.length + 1}`,
+              label: '',
+              description: '',
+              failureMessage: '',
+              icon: '',
+              difficulty: 0,
+              difficultyCheck: '',
+              perceptionDC: 0,
+              cooldownTicks: 0,
+              resetTicks: 0,
+              sound: '',
+              triggerType: 'ON_ACTION',
+              actionType: preset.actionType,
+              actionData: {},
+            };
+            const newFeat: Interactable = {
+              ...base,
+              ...preset.defaults,
+              actionType: preset.actionType,
+              triggerType: preset.triggerType,
+              actionData: { ...(preset.defaults.actionData || {}) },
+            };
+            update([...interactList, newFeat]);
+            e.target.value = '';
+          }}
+        >
+          <option value="" disabled>+ Add from preset...</option>
+          {PRESET_CATEGORIES.map((cat) => (
+            <optgroup key={cat} label={cat}>
+              {INTERACTABLE_PRESETS.filter((p) => p.category === cat).map((p) => (
+                <option key={p.id} value={p.id}>{p.label}</option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+        <button
+          style={{ ...styles.btnSmall, fontSize: 10, whiteSpace: 'nowrap' }}
+          onClick={() => update([...interactList, { id: `feat_${interactList.length + 1}`, label: 'New Feature', description: '', failureMessage: '', icon: '', actionType: 'EXIT_OPEN', actionData: {}, difficulty: 0, difficultyCheck: '', perceptionDC: 0, cooldownTicks: 0, resetTicks: 0, sound: '', triggerType: 'ON_ACTION' }])}
+        >+ Blank</button>
+      </div>
     </>
   );
 }
@@ -1439,6 +1489,7 @@ function ZoneEditor() {
               />{' '}
               Safe Zone
             </label>
+            <HelpText text="Players cannot be attacked in safe zones. Good for towns and social hubs." />
             <label style={styles.label}>BGM Track ID</label>
             <input
               style={styles.input}
@@ -1460,6 +1511,7 @@ function ZoneEditor() {
               value={zoneForm.spawnRoom || ''}
               onChange={(e) => setZoneForm((f) => ({ ...f, spawnRoom: e.target.value }))}
             />
+            <HelpText text="Room where hostile NPCs respawn. Leave empty to use each NPC's start room." />
             <label style={styles.label}>Max Entities</label>
             <input
               style={styles.input}
@@ -1469,6 +1521,7 @@ function ZoneEditor() {
                 setZoneForm((f) => ({ ...f, spawnMaxEntities: parseInt(e.target.value) || 0 }))
               }
             />
+            <HelpText text="Total hostile NPCs allowed alive in this zone at once (0 = unlimited)." />
             <label style={styles.label}>Max Per Room</label>
             <input
               style={styles.input}
@@ -1478,6 +1531,7 @@ function ZoneEditor() {
                 setZoneForm((f) => ({ ...f, spawnMaxPerRoom: parseInt(e.target.value) || 0 }))
               }
             />
+            <HelpText text="Max hostile NPCs per room. Rooms can override this individually below." />
             <label style={styles.label}>Spawn Rate (ticks)</label>
             <input
               style={styles.input}
@@ -1487,6 +1541,7 @@ function ZoneEditor() {
                 setZoneForm((f) => ({ ...f, spawnRateTicks: parseInt(e.target.value) || 0 }))
               }
             />
+            <HelpText text="Ticks between spawn attempts (1 tick = 1.5s). 0 = spawn immediately." />
             <label style={styles.label}>Image Style (zone default)</label>
             <input
               style={styles.input}

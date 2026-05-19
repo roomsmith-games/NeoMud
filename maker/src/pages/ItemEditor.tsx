@@ -1,16 +1,18 @@
 import GenericCrudEditor from '../components/GenericCrudEditor';
 import type { FieldConfig } from '../components/GenericCrudEditor';
+import EditorPageHeader from '../components/EditorPageHeader';
 
 const isEquipment = (f: Record<string, any>) => f.type === 'weapon' || f.type === 'armor';
 const isConsumable = (f: Record<string, any>) => f.type === 'consumable';
 const isStackable = (f: Record<string, any>) => !isEquipment(f);
 
 const fields: FieldConfig[] = [
-  { key: 'id', label: 'ID', type: 'text', placeholder: 'e.g. iron_sword' },
-  { key: 'name', label: 'Name', type: 'text', placeholder: 'e.g. My New Item' },
-  { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+  { key: 'id', label: 'ID', type: 'text', placeholder: 'e.g. iron_sword', help: 'Unique identifier used in loot tables, vendor inventories, and recipes' },
+  { key: 'name', label: 'Name', type: 'text', placeholder: 'e.g. My New Item', help: 'Display name shown to players' },
+  { key: 'description', label: 'Description', type: 'textarea', rows: 3, help: 'Flavor text shown when a player examines the item' },
   {
     key: 'type', label: 'Category', type: 'select',
+    help: 'Determines which fields appear below and how the item behaves in-game',
     options: [
       { value: 'weapon', label: 'Equipment — Weapon' },
       { value: 'armor', label: 'Equipment — Armor' },
@@ -19,12 +21,12 @@ const fields: FieldConfig[] = [
       { value: 'misc', label: 'Misc' },
     ],
   },
-  { key: 'value', label: 'Value (gold)', type: 'number' },
-  { key: 'weight', label: 'Weight', type: 'number' },
-  // Equipment fields
+  { key: 'value', label: 'Value (gold)', type: 'number', help: 'Base price in gold — vendors buy at a fraction of this' },
+  { key: 'weight', label: 'Weight', type: 'number', help: 'Encumbrance value (not currently enforced)' },
   {
     key: 'slot', label: 'Slot', type: 'select',
     visibleWhen: isEquipment,
+    help: 'Equipment slot this item occupies when worn',
     options: [
       { value: '', label: 'None' },
       { value: 'weapon', label: 'Main Hand' },
@@ -39,19 +41,16 @@ const fields: FieldConfig[] = [
       { value: 'back', label: 'Back' },
     ],
   },
-  { key: 'damageBonus', label: 'Damage Bonus', type: 'number', visibleWhen: isEquipment },
-  { key: 'damageRange', label: 'Damage Range', type: 'number', visibleWhen: isEquipment },
-  { key: 'armorValue', label: 'Armor Value', type: 'number', visibleWhen: isEquipment },
-  { key: 'levelRequirement', label: 'Level Requirement', type: 'number', visibleWhen: isEquipment },
+  { key: 'damageBonus', label: 'Damage Bonus', type: 'number', visibleWhen: isEquipment, help: 'Flat bonus added to melee attack rolls' },
+  { key: 'damageRange', label: 'Damage Range', type: 'number', visibleWhen: isEquipment, help: 'Random damage spread — attack rolls 0 to this value' },
+  { key: 'armorValue', label: 'Armor Value', type: 'number', visibleWhen: isEquipment, help: 'Damage reduction when equipped' },
+  { key: 'levelRequirement', label: 'Level Requirement', type: 'number', visibleWhen: isEquipment, help: 'Minimum player level to equip this item' },
   { key: 'attackSound', label: 'Attack Sound', type: 'sfx', audioCategory: 'items', visibleWhen: isEquipment },
   { key: 'missSound', label: 'Miss Sound', type: 'sfx', audioCategory: 'items', visibleWhen: isEquipment },
-  // Consumable fields
   { key: 'useEffect', label: 'Use Effect', type: 'text', help: 'Effect string applied on use (e.g. heal:25)', visibleWhen: isConsumable },
   { key: 'useSound', label: 'Use Sound', type: 'sfx', audioCategory: 'items', visibleWhen: isConsumable },
-  // Stacking (consumable, crafting, misc)
-  { key: 'stackable', label: 'Stackable', type: 'checkbox', visibleWhen: isStackable },
-  { key: 'maxStack', label: 'Max Stack', type: 'number', visibleWhen: isStackable },
-  // Image fields (always visible)
+  { key: 'stackable', label: 'Stackable', type: 'checkbox', visibleWhen: isStackable, help: 'Whether multiple units stack in one inventory slot' },
+  { key: 'maxStack', label: 'Max Stack', type: 'number', visibleWhen: isStackable, help: 'Maximum units per inventory slot (0 = unlimited)' },
   { key: 'imagePrompt', label: 'Image Prompt', type: 'textarea', rows: 3 },
   { key: 'imageStyle', label: 'Image Style', type: 'text' },
   { key: 'imageNegativePrompt', label: 'Image Negative Prompt', type: 'text' },
@@ -59,8 +58,16 @@ const fields: FieldConfig[] = [
   { key: 'imageHeight', label: 'Image Height (max 256)', type: 'number', max: 256 },
 ];
 
+const pageHeader = (
+  <EditorPageHeader storageKey="items">
+    Items are anything players can carry: weapons, armor, consumables, and crafting materials.
+    They appear in vendor inventories, NPC loot tables, and crafting recipes.
+    Choose a category to see the relevant fields — weapons and armor get combat stats, consumables get use effects.
+  </EditorPageHeader>
+);
+
 function ItemEditor() {
-  return <GenericCrudEditor entityName="Item" apiPath="/items" fields={fields} imagePreview={{ entityType: 'item', maxWidth: 256, maxHeight: 256 }} />;
+  return <GenericCrudEditor entityName="Item" apiPath="/items" fields={fields} imagePreview={{ entityType: 'item', maxWidth: 256, maxHeight: 256 }} pageHeader={pageHeader} />;
 }
 
 export default ItemEditor;

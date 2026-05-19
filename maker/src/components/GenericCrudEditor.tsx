@@ -43,6 +43,7 @@ interface GenericCrudEditorProps {
   imagePreview?: { entityType: string; maxWidth?: number; maxHeight?: number };
   disableCreate?: boolean;
   disableCreateMessage?: string;
+  pageHeader?: React.ReactNode;
 }
 
 const IMAGE_PREVIEW_KEYS = new Set(['imagePrompt', 'imageStyle', 'imageNegativePrompt', 'imageWidth', 'imageHeight']);
@@ -230,7 +231,7 @@ function prettyJson(value: string): string {
   }
 }
 
-function GenericCrudEditor({ entityName, apiPath, fields, idField = 'id', imagePreview, disableCreate, disableCreateMessage }: GenericCrudEditorProps) {
+function GenericCrudEditor({ entityName, apiPath, fields, idField = 'id', imagePreview, disableCreate, disableCreateMessage, pageHeader }: GenericCrudEditorProps) {
   const [items, setItems] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [form, setForm] = useState<Record<string, any>>({});
@@ -671,6 +672,7 @@ function GenericCrudEditor({ entityName, apiPath, fields, idField = 'id', imageP
           </>
         ) : (
           <div style={styles.empty}>
+            {pageHeader}
             Select {articleFor(entityName)} {/^[A-Z]{2,}$/.test(entityName) ? entityName : entityName.toLowerCase()} to edit, or click "+ New {entityName}" to create one.
           </div>
         )}

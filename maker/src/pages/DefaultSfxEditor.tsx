@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import SfxPreview from '../components/SfxPreview';
+import EditorPageHeader from '../components/EditorPageHeader';
 import type { CSSProperties } from 'react';
 
 interface DefaultSfx {
@@ -271,6 +272,11 @@ function DefaultSfxEditor() {
           </>
         ) : (
           <div style={styles.empty}>
+            <EditorPageHeader storageKey="default-sfx">
+              Default SFX are the shared sounds used across combat, movement, and item interactions.
+              Each sound has an AI generation prompt — edit it and regenerate to customize.
+              Entity-specific sounds (NPC attack, weapon swing) are set on the entity itself.
+            </EditorPageHeader>
             Select a sound effect from the list to preview and edit its AI generation prompt.
           </div>
         )}

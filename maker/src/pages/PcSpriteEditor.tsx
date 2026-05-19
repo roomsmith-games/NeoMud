@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api, { resolveUrl } from '../api';
 import { useSignedAssetUrls } from '../hooks/useSignedAssetUrl';
 import ImagePreview from '../components/ImagePreview';
+import EditorPageHeader from '../components/EditorPageHeader';
 import type { CSSProperties } from 'react';
 
 const RACES = ['HUMAN', 'DWARF', 'ELF', 'HALFLING', 'GNOME', 'HALF_ORC'];
@@ -562,6 +563,11 @@ function PcSpriteEditor() {
           </>
         ) : (
           <div style={styles.empty}>
+            <EditorPageHeader storageKey="pc-sprites">
+              Default player sprites are auto-generated for every race/gender/class combination.
+              Select a character to view its class stats and edit the AI image generation prompt.
+              Good prompts mention the race, gender, and class for consistent results.
+            </EditorPageHeader>
             Select a character from the list to view stats and edit image prompts.
           </div>
         )}

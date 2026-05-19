@@ -4,6 +4,7 @@ import MapCanvas from '../components/MapCanvas';
 import type { MapOverlay } from '../components/MapCanvas';
 import ImagePreview from '../components/ImagePreview';
 import SfxPreview from '../components/SfxPreview';
+import HelpText from '../components/HelpText';
 import type { CSSProperties } from 'react';
 
 interface Zone {
@@ -739,6 +740,7 @@ function NpcEditor() {
                 onChange={(e) => handleChange('hostile', e.target.checked)}
               />{' '}Hostile
             </label>
+            <HelpText text="Hostile NPCs attack on sight and have combat stats. Non-hostile NPCs are vendors, trainers, quest givers." />
 
             {/* Patrol Route (visual editor) */}
             {form.behaviorType === 'patrol' && (
@@ -848,6 +850,7 @@ function NpcEditor() {
 
             {/* Combat Stats */}
             <div style={styles.sectionTitle}>Combat Stats</div>
+            <HelpText text="Scale stats with level. Accuracy vs. Evasion determines hit rate. Perception detects hidden players. XP Reward is granted to the killing player." />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 12px' }}>
               {[
                 ['level', 'Level'], ['maxHp', 'Max HP'], ['damage', 'Damage'],
@@ -1405,7 +1408,11 @@ function NpcEditor() {
           </>
         ) : (
           <div style={styles.empty}>
-            Select an NPC to edit, or click "+ New NPC" to create one.
+            <p>Select an NPC to edit, or click "+ New NPC" to create one.</p>
+            <p style={{ fontSize: 11, color: '#aaa', marginTop: 8 }}>
+              NPCs need a zone to live in. Create zones first in the Zones editor, then place NPCs in them.
+              Behavior type determines what an NPC does: vendors sell items, trainers level players, hostile NPCs fight.
+            </p>
           </div>
         )}
       </div>

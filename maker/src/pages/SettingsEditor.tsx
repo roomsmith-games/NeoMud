@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
+import EditorPageHeader from '../components/EditorPageHeader';
 import type { CSSProperties } from 'react';
 
 interface ProviderConfig {
@@ -332,6 +333,11 @@ function SettingsEditor() {
   return (
     <form style={styles.page} onSubmit={(e) => { e.preventDefault(); save(); }} autoComplete="off">
       <h2 style={styles.title}>Settings</h2>
+      <EditorPageHeader storageKey="settings">
+        Configure AI providers for image and sound generation. Each provider needs an API URL and key.
+        Use "Test" to verify connectivity. The active provider dropdowns control which service is used
+        when generating assets from the Maker.
+      </EditorPageHeader>
 
       {/* Active Providers */}
       <div style={styles.card}>

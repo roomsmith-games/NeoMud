@@ -284,20 +284,20 @@ function MenuBar() {
   return (
     <>
       <div style={styles.bar}>
-        <button style={styles.btn} onClick={handleSaveAs} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+        <button style={styles.btn} onClick={handleSaveAs} onMouseEnter={hoverOn} onMouseLeave={hoverOff} title="Create a copy of this project under a new name">
           Save As
         </button>
-        <button style={styles.btn} onClick={handleSwitchProject} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+        <button style={styles.btn} onClick={handleSwitchProject} onMouseEnter={hoverOn} onMouseLeave={hoverOff} title="Return to the project list">
           Switch Project
         </button>
         <div style={styles.separator} />
-        <button style={styles.btn} onClick={handleValidate} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+        <button style={styles.btn} onClick={handleValidate} onMouseEnter={hoverOn} onMouseLeave={hoverOff} title="Check your world for errors and warnings">
           Validate
         </button>
-        <button style={styles.btn} onClick={handleExportNmd} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+        <button style={styles.btn} onClick={handleExportNmd} onMouseEnter={hoverOn} onMouseLeave={hoverOff} title="Download raw .nmd bundle (no validation)">
           Export .nmd
         </button>
-        <button style={styles.btn} onClick={handlePackage} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+        <button style={styles.btn} onClick={handlePackage} onMouseEnter={hoverOn} onMouseLeave={hoverOff} title="Validate, then download production-ready .nmd bundle">
           Package .nmd
         </button>
         <div style={styles.separator} />
@@ -307,6 +307,7 @@ function MenuBar() {
             onClick={handleReload}
             disabled={playtestStatus === 'reloading'}
             data-testid="reload-playtest-btn"
+            title="Hot-reload your changes into the running playtest"
           >
             {playtestStatus === 'reloading' ? 'Reloading…' : 'Reload Playtest'}
           </button>
@@ -316,6 +317,7 @@ function MenuBar() {
             onClick={handlePlaytest}
             disabled={playtestStatus === 'starting'}
             data-testid="playtest-btn"
+            title="Launch a live playtest server for this world"
           >
             {playtestStatus === 'starting' ? 'Starting…' : 'Playtest'}
           </button>
@@ -335,11 +337,12 @@ function MenuBar() {
           style={styles.btnPublish}
           onClick={() => setPublishOpen(true)}
           data-testid="publish-btn"
+          title="Publish this world to the NeoMud marketplace"
         >
           Publish
         </button>
         <div style={styles.spacer} />
-        <button style={{ ...styles.btn, color: '#ff6b6b' }} onClick={handleQuit} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+        <button style={{ ...styles.btn, color: '#ff6b6b' }} onClick={handleQuit} onMouseEnter={hoverOn} onMouseLeave={hoverOff} title="Shut down the Maker server process">
           Quit Server
         </button>
       </div>
