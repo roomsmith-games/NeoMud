@@ -158,4 +158,13 @@ class SessionManager {
                 }
             }
     }
+
+    suspend fun broadcastToParty(memberNames: List<String>, message: ServerMessage, exclude: String? = null) {
+        for (name in memberNames) {
+            if (name == exclude) continue
+            try {
+                sessions[name]?.send(message)
+            } catch (_: Exception) {}
+        }
+    }
 }

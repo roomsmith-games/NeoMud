@@ -217,4 +217,42 @@ sealed class ClientMessage {
     @Serializable
     @SerialName("request_atlas")
     data object RequestAtlas : ClientMessage()
+
+    // Party
+    @Serializable
+    @SerialName("party_invite")
+    data class PartyInvite(val targetName: String) : ClientMessage()
+
+    @Serializable
+    @SerialName("party_accept")
+    data class PartyAccept(val inviterName: String) : ClientMessage()
+
+    @Serializable
+    @SerialName("party_decline")
+    data class PartyDecline(val inviterName: String) : ClientMessage()
+
+    @Serializable
+    @SerialName("party_leave")
+    data object PartyLeave : ClientMessage()
+
+    @Serializable
+    @SerialName("party_kick")
+    data class PartyKick(val targetName: String) : ClientMessage()
+
+    @Serializable
+    @SerialName("party_say")
+    data class PartySay(val message: String) : ClientMessage()
+
+    // Follow
+    @Serializable
+    @SerialName("follow")
+    data class Follow(val targetName: String) : ClientMessage()
+
+    @Serializable
+    @SerialName("follow_stop")
+    data object FollowStop : ClientMessage()
+
+    @Serializable
+    @SerialName("rally")
+    data object Rally : ClientMessage()
 }

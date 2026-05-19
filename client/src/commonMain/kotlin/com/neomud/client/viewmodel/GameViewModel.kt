@@ -209,6 +209,31 @@ class GameViewModel(
     private val _showHelp = MutableStateFlow(false)
     val showHelp: StateFlow<Boolean> = _showHelp
 
+    // Party
+    private val _partyMembers = MutableStateFlow<List<PartyMember>>(emptyList())
+    val partyMembers: StateFlow<List<PartyMember>> = _partyMembers
+
+    private val _partyLeaderId = MutableStateFlow<String?>(null)
+    val partyLeaderId: StateFlow<String?> = _partyLeaderId
+
+    private val _partyId = MutableStateFlow<String?>(null)
+
+    private val _isInParty = MutableStateFlow(false)
+    val isInParty: StateFlow<Boolean> = _isInParty
+
+    private val _showPartyPanel = MutableStateFlow(false)
+    val showPartyPanel: StateFlow<Boolean> = _showPartyPanel
+
+    private val _partyInvite = MutableStateFlow<ServerMessage.PartyInviteReceived?>(null)
+    val partyInvite: StateFlow<ServerMessage.PartyInviteReceived?> = _partyInvite
+
+    // Follow
+    private val _followTarget = MutableStateFlow<String?>(null)
+    val followTarget: StateFlow<String?> = _followTarget
+
+    private val _followState = MutableStateFlow(FollowState.OFF)
+    val followState: StateFlow<FollowState> = _followState
+
     // Tutorial modal (blocking). The currently-shown tutorial is the head of [tutorialQueue];
     // additional incoming blocking Tutorials append to the tail and are shown sequentially as
     // each is dismissed. Required so that multi-step intros (#272: per-world intro then welcome)
@@ -282,6 +307,13 @@ class GameViewModel(
     fun setInitialRoomItems(update: ServerMessage.RoomItemsUpdate) {
         _roomGroundItems.value = update.items
         _roomGroundCoins.value = update.coins
+    }
+
+    fun setInitialPartyInfo(info: ServerMessage.PartyInfo) {
+        _partyId.value = info.partyId
+        _partyMembers.value = info.members
+        _partyLeaderId.value = info.leaderId
+        _isInParty.value = true
     }
 
     fun setInitialTutorial(tutorial: ServerMessage.Tutorial) {
@@ -477,7 +509,13 @@ class GameViewModel(
             is ServerMessage.NpcDied -> {
                 val dyingNpc = _roomEntities.value.find { it.id == message.npcId }
                 sfx(dyingNpc?.deathSound?.ifEmpty { null } ?: "enemy_death", "npcs")
-                addLog("${message.npcName} has been slain by ${message.killerName}!", MudColors.kill)
+                val killerInParty = _partyMembers.value.any { it.name == message.killerName }
+                val killMsg = if (killerInParty && _isInParty.value) {
+                    "Your party defeated ${message.npcName}!"
+                } else {
+                    "${message.npcName} has been slain by ${message.killerName}!"
+                }
+                addLog(killMsg, MudColors.kill)
                 _roomEntities.value = _roomEntities.value.filter { it.id != message.npcId }
                 if (_selectedTargetId.value == message.npcId) {
                     _selectedTargetId.value = null
@@ -838,6 +876,62 @@ class GameViewModel(
                 _choicePrompt.value = message
                 _showChoice.value = true
             }
+            is ServerMessage.PartyInviteReceived -> {
+                _partyInvite.value = message
+            }
+            is ServerMessage.PartyFormed -> {
+                _partyId.value = message.partyId
+                _partyMembers.value = message.members
+                _partyLeaderId.value = message.leaderId
+                _isInParty.value = true
+                addLog("Party formed!", MudColors.partyChat)
+            }
+            is ServerMessage.PartyMemberJoined -> {
+                _partyMembers.value = _partyMembers.value + message.member
+                addLog("${message.member.name} joined the party.", MudColors.partyChat)
+            }
+            is ServerMessage.PartyMemberLeft -> {
+                _partyMembers.value = _partyMembers.value.filter { it.name != message.memberName }
+                addLog("${message.memberName} ${message.reason} the party.", MudColors.partyChat)
+            }
+            is ServerMessage.PartyDisbanded -> {
+                _partyId.value = null
+                _partyMembers.value = emptyList()
+                _partyLeaderId.value = null
+                _isInParty.value = false
+                _showPartyPanel.value = false
+                _followTarget.value = null
+                _followState.value = FollowState.OFF
+                addLog("Party disbanded: ${message.reason}", MudColors.partyChat)
+            }
+            is ServerMessage.PartyMemberUpdate -> {
+                _partyMembers.value = _partyMembers.value.map { m ->
+                    if (m.name == message.memberName) m.copy(
+                        currentHp = message.currentHp, maxHp = message.maxHp,
+                        currentMp = message.currentMp, maxMp = message.maxMp,
+                        roomId = message.roomId
+                    ) else m
+                }
+            }
+            is ServerMessage.PartyChatMessage -> {
+                addLog("[Party] ${message.senderName}: ${message.message}", MudColors.partyChat)
+            }
+            is ServerMessage.PartyInfo -> {
+                _partyId.value = message.partyId
+                _partyMembers.value = message.members
+                _partyLeaderId.value = message.leaderId
+                _isInParty.value = true
+            }
+            is ServerMessage.FollowUpdate -> {
+                _followTarget.value = if (message.state == FollowState.OFF) null else message.targetName
+                _followState.value = message.state
+            }
+            is ServerMessage.RallyPing -> {
+                addLog("Rally from ${message.leaderName}: ${message.roomName} (${message.zoneName})", MudColors.partyChat)
+            }
+            is ServerMessage.FollowFailed -> {
+                addLog(message.reason, MudColors.error)
+            }
         }
     }
 
@@ -890,7 +984,20 @@ class GameViewModel(
 
     fun say(message: String) {
         viewModelScope.launch {
-            wsClient.send(ClientMessage.Say(message))
+            when {
+                message.startsWith("/p ", ignoreCase = true) ->
+                    wsClient.send(ClientMessage.PartySay(message.removePrefix("/p ").removePrefix("/P ")))
+                message.equals("/follow stop", ignoreCase = true) || message.equals("/unfollow", ignoreCase = true) ->
+                    wsClient.send(ClientMessage.FollowStop)
+                message.startsWith("/follow ", ignoreCase = true) ->
+                    wsClient.send(ClientMessage.Follow(message.substringAfter(" ").trim()))
+                message.equals("/rally", ignoreCase = true) ->
+                    wsClient.send(ClientMessage.Rally)
+                message.equals("/leave", ignoreCase = true) || message.equals("/party leave", ignoreCase = true) ->
+                    wsClient.send(ClientMessage.PartyLeave)
+                else ->
+                    wsClient.send(ClientMessage.Say(message))
+            }
         }
     }
 
@@ -1022,6 +1129,64 @@ class GameViewModel(
 
     fun toggleHelp() {
         _showHelp.value = !_showHelp.value
+    }
+
+    // ─── Party actions ──────────────────────────────────────
+
+    fun togglePartyPanel() {
+        if (_showPartyPanel.value) {
+            _showPartyPanel.value = false
+        } else {
+            _showInventory.value = false
+            _showEquipment.value = false
+            _showPartyPanel.value = true
+        }
+    }
+
+    fun inviteToParty(targetName: String) {
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyInvite(targetName)) }
+    }
+
+    fun acceptPartyInvite() {
+        val invite = _partyInvite.value ?: return
+        _partyInvite.value = null
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyAccept(invite.inviterName)) }
+    }
+
+    fun declinePartyInvite() {
+        val invite = _partyInvite.value ?: return
+        _partyInvite.value = null
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyDecline(invite.inviterName)) }
+    }
+
+    fun leaveParty() {
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyLeave) }
+    }
+
+    fun kickFromParty(targetName: String) {
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyKick(targetName)) }
+    }
+
+    fun partySay(message: String) {
+        viewModelScope.launch { wsClient.send(ClientMessage.PartySay(message)) }
+    }
+
+    fun followPlayer(targetName: String) {
+        viewModelScope.launch { wsClient.send(ClientMessage.Follow(targetName)) }
+    }
+
+    fun stopFollowing() {
+        viewModelScope.launch { wsClient.send(ClientMessage.FollowStop) }
+    }
+
+    fun rally() {
+        viewModelScope.launch { wsClient.send(ClientMessage.Rally) }
+    }
+
+    fun dismissPartyInvite() {
+        val invite = _partyInvite.value ?: return
+        _partyInvite.value = null
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyDecline(invite.inviterName)) }
     }
 
     fun dismissTutorial() {

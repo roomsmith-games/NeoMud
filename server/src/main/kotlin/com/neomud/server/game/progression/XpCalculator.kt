@@ -37,4 +37,11 @@ object XpCalculator {
     fun isReadyToLevel(currentXp: Long, xpToNextLevel: Long, level: Int): Boolean {
         return level < GameConfig.Progression.MAX_LEVEL && currentXp >= xpToNextLevel
     }
+
+    fun partyXpPerMember(baseXp: Long, membersInRoom: Int): Long {
+        if (membersInRoom <= 1) return baseXp
+        val n = membersInRoom.toDouble()
+        val modifier = 1.0 / n + GameConfig.Party.XP_BONUS_PER_MEMBER * (n - 1)
+        return (baseXp * modifier).roundToLong().coerceAtLeast(1)
+    }
 }

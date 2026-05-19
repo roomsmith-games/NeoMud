@@ -49,9 +49,14 @@ class GameLoop(
     private val spellCommand: SpellCommand? = null,
     private val spellCatalog: SpellCatalog? = null,
     private val tutorialService: TutorialService? = null,
-    private val playerFlagsRepository: com.neomud.server.persistence.repository.PlayerFlagsRepository? = null
+    private val playerFlagsRepository: com.neomud.server.persistence.repository.PlayerFlagsRepository? = null,
+    private val partyService: com.neomud.server.game.party.PartyService? = null
 ) {
     private val logger = LoggerFactory.getLogger(GameLoop::class.java)
+
+    @Volatile
+    var tickCount: Long = 0L
+        private set
 
     /** Remaining seconds until shutdown, or -1 if not shutting down. */
     @Volatile
@@ -769,6 +774,55 @@ class GameLoop(
 
         // 9. Prune expired ground items
         roomItemManager.pruneExpired()
+
+        // 10. Party tick: expire invites, grace periods, periodic member updates
+        tickCount++
+        if (partyService != null) {
+            partyService.tickExpireInvites(tickCount)
+            val removed = partyService.tickGracePeriods()
+            for (playerName in removed) {
+                val party = partyService.getPartyForPlayer(playerName)
+                if (party != null) {
+                    sessionManager.broadcastToParty(
+                        party.members,
+                        ServerMessage.PartyMemberLeft(playerName, "disconnected")
+                    )
+                }
+            }
+            // Auto-resume PAUSED followers who are now in the same room as their target and not in combat
+            for (session in sessionManager.getAllAuthenticatedSessions()) {
+                if (session.followState != com.neomud.shared.model.FollowState.PAUSED) continue
+                if (session.attackMode) continue
+                val target = session.followTarget ?: continue
+                val targetSession = sessionManager.getSession(target) ?: continue
+                if (session.currentRoomId == targetSession.currentRoomId) {
+                    session.followState = com.neomud.shared.model.FollowState.ACTIVE
+                    try {
+                        session.send(ServerMessage.FollowUpdate(
+                            session.playerName ?: continue, target,
+                            com.neomud.shared.model.FollowState.ACTIVE
+                        ))
+                        session.send(ServerMessage.SystemMessage("You resume following $target."))
+                    } catch (_: Exception) { }
+                }
+            }
+
+            if (tickCount % GameConfig.Party.MEMBER_UPDATE_TICKS == 0L) {
+                for (session in sessionManager.getAllAuthenticatedSessions()) {
+                    val party = partyService.getPartyForPlayer(session.playerName ?: continue) ?: continue
+                    val p = session.player ?: continue
+                    val update = ServerMessage.PartyMemberUpdate(
+                        memberName = p.name,
+                        currentHp = p.currentHp,
+                        maxHp = p.maxHp,
+                        currentMp = p.currentMp,
+                        maxMp = p.maxMp,
+                        roomId = session.currentRoomId ?: ""
+                    )
+                    sessionManager.broadcastToParty(party.members, update, exclude = p.name)
+                }
+            }
+        }
     }
 
     /**
@@ -1098,11 +1152,32 @@ class GameLoop(
         val coins = lootService.rollCoins(coinDrop)
 
         if (lootedItems.isNotEmpty() || !coins.isEmpty()) {
+            val inParty = partyService != null && partyService.isInParty(event.killerName)
+            val party = if (inParty) partyService!!.getPartyForPlayer(event.killerName) else null
+
             if (lootedItems.isNotEmpty()) {
-                roomItemManager.addItems(
-                    event.roomId,
-                    lootedItems.map { GroundItem(it.itemId, it.quantity) }
-                )
+                if (party != null) {
+                    val priorityTick = tickCount + GameConfig.Party.LOOT_PRIORITY_TICKS
+                    for (loot in lootedItems) {
+                        val recipient = partyService!!.nextLootRecipient(party.id) ?: event.killerName
+                        roomItemManager.addItemsWithAssignment(
+                            event.roomId,
+                            listOf(GroundItem(loot.itemId, loot.quantity)),
+                            recipient,
+                            priorityTick
+                        )
+                        val itemName = itemCatalog.getItem(loot.itemId)?.name ?: loot.itemId
+                        sessionManager.broadcastToParty(
+                            party.members,
+                            ServerMessage.SystemMessage("$recipient's turn: $itemName")
+                        )
+                    }
+                } else {
+                    roomItemManager.addItems(
+                        event.roomId,
+                        lootedItems.map { GroundItem(it.itemId, it.quantity) }
+                    )
+                }
             }
             roomItemManager.addCoins(event.roomId, coins)
 
@@ -1119,29 +1194,57 @@ class GameLoop(
             )
         }
 
-        // Award XP to killer
+        // Award XP — party members in the same room share via bonus pool
         if (event.xpReward > 0) {
             val killerSession = sessionManager.getSession(event.killerName)
-            val killerPlayer = killerSession?.player
-            if (killerSession != null && killerPlayer != null) {
-                val xpGained = XpCalculator.xpForKill(event.npcLevel, killerPlayer.level, event.xpReward)
-                val newXp = killerPlayer.currentXp + xpGained
-                killerSession.player = killerPlayer.copy(currentXp = newXp)
-                try {
-                    killerSession.send(ServerMessage.XpGained(xpGained, newXp, killerPlayer.xpToNextLevel))
-                    if (XpCalculator.isReadyToLevel(newXp, killerPlayer.xpToNextLevel, killerPlayer.level)) {
-                        killerSession.send(ServerMessage.SystemMessage("You have enough experience to level up! Visit a trainer."))
-                        // tut_level_up: non-blocking coach mark, fires immediately
-                        tutorialService?.trySend(killerSession, "tut_level_up")
-                    }
-                    playerRepository.savePlayerState(killerSession.player!!)
+            val partyMembers = if (partyService != null && partyService.isInParty(event.killerName)) {
+                partyService.getMembersInRoom(event.killerName, event.roomId) { name ->
+                    sessionManager.getSession(name)?.currentRoomId
+                }
+            } else {
+                listOf(event.killerName)
+            }
 
-                    // tut_first_kill: first NPC kill
-                    if (tutorialService != null && !killerSession.firstKillDone) {
-                        killerSession.firstKillDone = true
-                        tutorialService.trySend(killerSession, "tut_first_kill")
+            val membersInRoom = partyMembers.size
+            val partyBaseXp = XpCalculator.partyXpPerMember(event.xpReward, membersInRoom)
+
+            for (memberName in partyMembers) {
+                val memberSession = sessionManager.getSession(memberName) ?: continue
+                val memberPlayer = memberSession.player ?: continue
+                val xpGained = XpCalculator.xpForKill(event.npcLevel, memberPlayer.level, partyBaseXp)
+                val newXp = memberPlayer.currentXp + xpGained
+                memberSession.player = memberPlayer.copy(currentXp = newXp)
+                try {
+                    memberSession.send(ServerMessage.XpGained(xpGained, newXp, memberPlayer.xpToNextLevel))
+                    if (XpCalculator.isReadyToLevel(newXp, memberPlayer.xpToNextLevel, memberPlayer.level)) {
+                        memberSession.send(ServerMessage.SystemMessage("You have enough experience to level up! Visit a trainer."))
+                        tutorialService?.trySend(memberSession, "tut_level_up")
+                    }
+                    playerRepository.savePlayerState(memberSession.player!!)
+
+                    if (tutorialService != null && !memberSession.firstKillDone) {
+                        memberSession.firstKillDone = true
+                        tutorialService.trySend(memberSession, "tut_first_kill")
                     }
                 } catch (_: Exception) { }
+            }
+
+            // Party coin auto-split: divide evenly among room members, deposit directly
+            if (membersInRoom > 1 && !coins.isEmpty()) {
+                val splitCopper = coins.totalCopper() / membersInRoom
+                if (splitCopper > 0) {
+                    val splitCoins = com.neomud.shared.model.Coins.fromCopper(splitCopper)
+                    for (memberName in partyMembers) {
+                        val memberSession = sessionManager.getSession(memberName) ?: continue
+                        try {
+                            coinRepository.addCoins(memberName, splitCoins)
+                            sendInventoryUpdateForSession(memberSession)
+                            memberSession.send(ServerMessage.SystemMessage("You receive your share: ${splitCoins.displayString()}."))
+                        } catch (_: Exception) { }
+                    }
+                    // Remove coins from ground since they were auto-split
+                    roomItemManager.removeAllCoins(event.roomId)
+                }
             }
         }
 

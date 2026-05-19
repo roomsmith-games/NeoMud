@@ -298,6 +298,7 @@ fun NeoMudApp(
             val initialTutorials = authViewModel.initialTutorials.value
             val initialInventoryUpdate = authViewModel.initialInventoryUpdate.value
             val initialRoomItemsUpdate = authViewModel.initialRoomItemsUpdate.value
+            val initialPartyInfo = authViewModel.initialPartyInfo.value
             val gameViewModel = remember {
                 GameViewModel(authViewModel.wsClient, serverBaseUrl, audioManager).also {
                     if (initialPlayer != null) it.setInitialPlayer(initialPlayer)
@@ -307,6 +308,7 @@ fun NeoMudApp(
                     initialTutorials.forEach { t -> it.setInitialTutorial(t) }
                     if (initialInventoryUpdate != null) it.setInitialInventory(initialInventoryUpdate)
                     if (initialRoomItemsUpdate != null) it.setInitialRoomItems(initialRoomItemsUpdate)
+                    if (initialPartyInfo != null) it.setInitialPartyInfo(initialPartyInfo)
                     it.startCollecting()
                 }
             }

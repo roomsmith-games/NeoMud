@@ -9,7 +9,9 @@ class RoomItemManager {
 
     private data class TimestampedItem(
         val item: GroundItem,
-        val droppedAt: Long = System.currentTimeMillis()
+        val droppedAt: Long = System.currentTimeMillis(),
+        val assignedTo: String? = null,
+        val priorityExpiresTick: Long = 0
     )
 
     private data class RoomGroundState(
@@ -19,6 +21,36 @@ class RoomItemManager {
     )
 
     private val rooms = ConcurrentHashMap<String, RoomGroundState>()
+
+    fun addItemsWithAssignment(roomId: String, items: List<GroundItem>, assignedTo: String?, priorityExpiresTick: Long) {
+        val state = rooms.getOrPut(roomId) { RoomGroundState() }
+        val now = System.currentTimeMillis()
+        synchronized(state) {
+            for (item in items) {
+                state.items.add(TimestampedItem(item, now, assignedTo, priorityExpiresTick))
+            }
+            while (state.items.size > GameConfig.GroundItems.MAX_ITEMS_PER_ROOM) {
+                state.items.removeAt(0)
+            }
+        }
+    }
+
+    fun isItemAssignedToOther(roomId: String, itemId: String, playerName: String, currentTick: Long): Boolean {
+        val state = rooms[roomId] ?: return false
+        synchronized(state) {
+            val entry = state.items.find { it.item.itemId == itemId } ?: return false
+            val assigned = entry.assignedTo ?: return false
+            if (assigned == playerName) return false
+            return entry.priorityExpiresTick > currentTick
+        }
+    }
+
+    fun getAssignedTo(roomId: String, itemId: String): String? {
+        val state = rooms[roomId] ?: return null
+        synchronized(state) {
+            return state.items.find { it.item.itemId == itemId }?.assignedTo
+        }
+    }
 
     fun addItems(roomId: String, items: List<GroundItem>) {
         val state = rooms.getOrPut(roomId) { RoomGroundState() }

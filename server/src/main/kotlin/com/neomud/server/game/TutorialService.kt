@@ -155,6 +155,21 @@ class TutorialService(
             content = "This trainer has taught you all they can. Higher-tier trainers wait in distant lands — each one farther afield, " +
                 "each one demanding more of you to reach. Travel further to unlock greater levels and stats.",
             blocking = false
+        ),
+        "tut_party_invite" to TutorialDef(
+            key = "tut_party_invite",
+            title = "Party Invite!",
+            content = "Another adventurer wants to join forces! Accept to form a party of up to 4 players. " +
+                "Party members share XP bonuses and can see each other's health. " +
+                "Use /p to chat with your party, or /follow <name> to auto-follow a party member.",
+            blocking = false
+        ),
+        "tut_party_formed" to TutorialDef(
+            key = "tut_party_formed",
+            title = "Party Formed",
+            content = "You're now in a party! Your party's health bars appear in the top-left corner. " +
+                "Tap 'P' in the toolbar to manage your party. Party members in the same room earn bonus XP from kills.",
+            blocking = false
         )
     )
 

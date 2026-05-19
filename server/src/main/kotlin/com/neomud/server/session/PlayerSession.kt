@@ -4,6 +4,7 @@ import com.neomud.server.game.GameConfig
 import com.neomud.server.game.progression.Perception
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.shared.model.*
+import com.neomud.shared.model.FollowState
 import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
 import io.ktor.websocket.*
@@ -52,6 +53,11 @@ class PlayerSession(
     // Guest/ephemeral session — data deleted on disconnect
     var isGuest: Boolean = false
     var remoteIp: String = ""
+
+    // Party + follow
+    var partyId: String? = null
+    var followTarget: String? = null
+    var followState: FollowState = FollowState.OFF
 
     // Tutorial tracking
     val seenTutorials: MutableSet<String> = mutableSetOf()

@@ -71,6 +71,9 @@ class AuthViewModel(
     private val _initialInventoryUpdate = MutableStateFlow<ServerMessage.InventoryUpdate?>(null)
     val initialInventoryUpdate: StateFlow<ServerMessage.InventoryUpdate?> = _initialInventoryUpdate
 
+    private val _initialPartyInfo = MutableStateFlow<ServerMessage.PartyInfo?>(null)
+    val initialPartyInfo: StateFlow<ServerMessage.PartyInfo?> = _initialPartyInfo
+
     private val _initialRoomItemsUpdate = MutableStateFlow<ServerMessage.RoomItemsUpdate?>(null)
     val initialRoomItemsUpdate: StateFlow<ServerMessage.RoomItemsUpdate?> = _initialRoomItemsUpdate
 
@@ -108,6 +111,7 @@ class AuthViewModel(
                             _initialTutorials.value = emptyList()
                             _initialInventoryUpdate.value = null
                             _initialRoomItemsUpdate.value = null
+                            _initialPartyInfo.value = null
                             _authState.value = AuthState.LoggedIn(message.player)
                         }
                         is ServerMessage.RoomInfo -> {
@@ -135,6 +139,11 @@ class AuthViewModel(
                         is ServerMessage.RoomItemsUpdate -> {
                             if (_authState.value is AuthState.LoggedIn) {
                                 _initialRoomItemsUpdate.value = message
+                            }
+                        }
+                        is ServerMessage.PartyInfo -> {
+                            if (_authState.value is AuthState.LoggedIn) {
+                                _initialPartyInfo.value = message
                             }
                         }
                         is ServerMessage.RegisterOk -> {

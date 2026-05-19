@@ -20,6 +20,7 @@ class PickupCommand(
     private val sessionManager: SessionManager,
     private val tutorialService: com.neomud.server.game.TutorialService? = null
 ) {
+    var tickProvider: (() -> Long)? = null
     suspend fun handlePickupItem(session: PlayerSession, itemId: String, quantity: Int) {
         if (quantity < 1) return
         val playerName = session.playerName ?: return
@@ -28,6 +29,13 @@ class PickupCommand(
         MeditationUtils.breakMeditation(session, "You stop meditating.")
         RestUtils.breakRest(session, "You stop resting.")
         StealthUtils.breakStealth(session, sessionManager, "Picking up items reveals your presence!")
+
+        val currentTick = tickProvider?.invoke() ?: 0L
+        if (roomItemManager.isItemAssignedToOther(roomId, itemId, playerName, currentTick)) {
+            val assignee = roomItemManager.getAssignedTo(roomId, itemId)
+            session.send(ServerMessage.Error("That item is reserved for $assignee."))
+            return
+        }
 
         val removed = roomItemManager.removeItem(roomId, itemId, quantity)
         if (removed == 0) {

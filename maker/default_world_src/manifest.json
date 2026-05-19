@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "name": "Warden's Reckoning",
   "author": "NeoMud Team",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "description": "A world where ancient seals are weakening and the line between guardian and destroyer must be chosen.",
   "createdAt": "2026-02-15",
   "engineVersion": "0.1.0.0",
@@ -12,5 +12,5 @@
   "coverImage": "assets/images/rooms/town_square.webp",
   "loadingBgm": "assets/audio/bgm/intro_theme.mp3",
   "introScript": "A thousand years ago, the world cracked.\n\nThe Wardens sealed what crawled out, and paid for it with their bloodline.\n\nThe seals are weakening. The world has forgotten why they matter.\n\nYou are the last who can choose what the silence remembers.",
-  "releaseNotes": "Graceful restart: reconnect overlay on login screen, stone-themed reconnect UI, server shutdown countdown banner."
+  "releaseNotes": "Party system: 4-player parties with invite/accept/decline/leave/kick, party chat, follow system with auto-move and combat pause, bonus-pool XP sharing, coin auto-split, round-robin loot with priority windows, NPC threat awareness, party HUD overlay, rally ping, disconnect grace period with reconnect, party tutorials."
 }

@@ -35,6 +35,9 @@ object MudColors {
     // Stealth
     val stealth = Color(0xFF888888)     // dim grey - stealth messages
 
+    // Party
+    val partyChat = Color(0xFF55AAFF)   // light blue - party messages
+
     // Loot
     val loot = Color(0xFFFFD700)        // gold - loot messages
 

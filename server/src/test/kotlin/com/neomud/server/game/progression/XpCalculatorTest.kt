@@ -95,4 +95,61 @@ class XpCalculatorTest {
     fun testCannotExceedMaxLevel() {
         assertFalse(XpCalculator.isReadyToLevel(999999, 100, maxLevel))
     }
+
+    // ─── Party XP ───────────────────────────────────────────
+
+    @Test
+    fun testPartyXpSoloUnchanged() {
+        val baseXp = 100L
+        assertEquals(baseXp, XpCalculator.partyXpPerMember(baseXp, 1))
+    }
+
+    @Test
+    fun testPartyXpTwoMembers() {
+        val baseXp = 100L
+        val perMember = XpCalculator.partyXpPerMember(baseXp, 2)
+        // 1/2 + 0.20*(2-1) = 0.50 + 0.20 = 0.70 → 70
+        assertEquals(70L, perMember)
+    }
+
+    @Test
+    fun testPartyXpThreeMembers() {
+        val baseXp = 100L
+        val perMember = XpCalculator.partyXpPerMember(baseXp, 3)
+        // 1/3 + 0.20*(3-1) = 0.333 + 0.40 = 0.733 → 73
+        assertEquals(73L, perMember)
+    }
+
+    @Test
+    fun testPartyXpFourMembers() {
+        val baseXp = 100L
+        val perMember = XpCalculator.partyXpPerMember(baseXp, 4)
+        // 1/4 + 0.20*(4-1) = 0.25 + 0.60 = 0.85 → 85
+        assertEquals(85L, perMember)
+    }
+
+    @Test
+    fun testPartyXpNeverZero() {
+        assertEquals(1L, XpCalculator.partyXpPerMember(1L, 4))
+    }
+
+    @Test
+    fun testPartyXpTotalBonusIncreases() {
+        val baseXp = 100L
+        val total2 = XpCalculator.partyXpPerMember(baseXp, 2) * 2
+        val total3 = XpCalculator.partyXpPerMember(baseXp, 3) * 3
+        val total4 = XpCalculator.partyXpPerMember(baseXp, 4) * 4
+        assertTrue(total2 > baseXp, "2-player total ($total2) should exceed solo ($baseXp)")
+        assertTrue(total3 > total2, "3-player total ($total3) should exceed 2-player ($total2)")
+        assertTrue(total4 > total3, "4-player total ($total4) should exceed 3-player ($total3)")
+    }
+
+    @Test
+    fun testPartyXpAlwaysLessThanSolo() {
+        val baseXp = 100L
+        for (n in 2..4) {
+            val perMember = XpCalculator.partyXpPerMember(baseXp, n)
+            assertTrue(perMember < baseXp, "$n-member per-person ($perMember) should be less than solo ($baseXp)")
+        }
+    }
 }

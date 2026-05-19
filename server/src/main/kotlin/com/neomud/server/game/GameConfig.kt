@@ -238,6 +238,17 @@ object GameConfig {
     object Tutorial {
         const val TOAST_DISPLAY_MS = 8_000L
     }
+    object Party {
+        const val MAX_SIZE = 4
+        const val INVITE_EXPIRY_TICKS = 40
+        const val XP_BONUS_PER_MEMBER = 0.20
+        const val LOOT_PRIORITY_TICKS = 7
+        const val MEMBER_UPDATE_TICKS = 2
+        const val DISCONNECT_GRACE_TICKS = 20
+        const val FOLLOW_COMBAT_SUSPEND = true
+        const val FOLLOW_REVEAL_HIDDEN_EXITS = true
+        const val NPC_THREAT_ENGAGED_WEIGHT = 0.80
+    }
     object Trails {
         const val MAX_ENTRIES_PER_ROOM = 20
         const val LIFETIME_MS = 90_000L

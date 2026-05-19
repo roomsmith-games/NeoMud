@@ -4,6 +4,8 @@ import com.neomud.server.game.CommandProcessor
 import com.neomud.server.game.GameLoop
 import com.neomud.server.game.MovementTrailManager
 import com.neomud.server.game.TutorialService
+import com.neomud.server.game.party.PartyService
+import com.neomud.server.game.commands.PartyCommand
 import com.neomud.server.game.combat.CombatManager
 import com.neomud.server.game.commands.DialogueCommand
 import com.neomud.server.game.commands.InventoryCommand
@@ -346,15 +348,20 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
         }
     }
 
+    val partyService = PartyService()
+    val followCommand = com.neomud.server.game.commands.FollowCommand(partyService, sessionManager, worldGraph)
+    val gameLoop = GameLoop(sessionManager, npcManager, combatManager, worldGraph, lootService, lootTableCatalog, roomItemManager, playerRepository, skillCatalog, classCatalog, itemCatalog, inventoryRepository, coinRepository, movementTrailManager, spellCommand, spellCatalog, tutorialService, playerFlagsRepository, partyService)
+    val partyCommand = PartyCommand(partyService, sessionManager, { gameLoop.tickCount }, tutorialService)
+    partyCommand.followCommand = followCommand
+    pickupCommand.tickProvider = { gameLoop.tickCount }
     val commandProcessor = CommandProcessor(
         worldGraph, sessionManager, npcManager, playerRepository,
         classCatalog, itemCatalog, skillCatalog, raceCatalog, inventoryCommand, pickupCommand, roomItemManager,
         trainerCommand, spellCommand, spellCatalog, vendorCommand, lootService, lootTableCatalog,
         inventoryRepository, coinRepository, discoveryRepository, craftCommand, adminUsernames, movementTrailManager,
         pcSpriteCatalog, tutorialService, platformVerifier, trapManager, dialogueCommand,
-        worldOwnerPlatformUserId, loadResult.zoneNames
+        worldOwnerPlatformUserId, loadResult.zoneNames, partyCommand, followCommand, partyService
     )
-    val gameLoop = GameLoop(sessionManager, npcManager, combatManager, worldGraph, lootService, lootTableCatalog, roomItemManager, playerRepository, skillCatalog, classCatalog, itemCatalog, inventoryRepository, coinRepository, movementTrailManager, spellCommand, spellCatalog, tutorialService, playerFlagsRepository)
     commandProcessor.setGameLoop(gameLoop)
 
     // Save players and close resources when the application stops
@@ -389,7 +396,7 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
     // Install plugins
     configureForwardedHeaders()
     configureWebSockets()
-    configureRouting(sessionManager, commandProcessor, playerRepository, discoveryRepository, dataSource, loadResult.manifest)
+    configureRouting(sessionManager, commandProcessor, playerRepository, discoveryRepository, dataSource, loadResult.manifest, partyService)
 
     // Launch game loop
     launch {

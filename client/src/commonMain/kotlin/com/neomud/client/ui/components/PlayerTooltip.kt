@@ -20,6 +20,8 @@ import com.neomud.shared.model.PlayerInfo
 fun PlayerTooltip(
     playerInfo: PlayerInfo,
     onDismiss: () -> Unit,
+    onInviteToParty: ((String) -> Unit)? = null,
+    onFollow: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -31,7 +33,7 @@ fun PlayerTooltip(
         Card(
             modifier = Modifier
                 .widthIn(max = 220.dp)
-                .clickable(onClick = {}), // prevent dismiss when clicking card
+                .clickable(onClick = {}),
             shape = RoundedCornerShape(8.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xEE1a1a2e))
         ) {
@@ -58,6 +60,35 @@ fun PlayerTooltip(
                     fontSize = 13.sp,
                     color = Color(0xFFAAAAAA)
                 )
+                if (onInviteToParty != null || onFollow != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        if (onInviteToParty != null) {
+                            Text(
+                                "Invite",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF55AAFF),
+                                modifier = Modifier
+                                    .background(Color(0xFF222244), RoundedCornerShape(4.dp))
+                                    .clickable { onInviteToParty(playerInfo.name); onDismiss() }
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                            )
+                        }
+                        if (onFollow != null) {
+                            Text(
+                                "Follow",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF55FF55),
+                                modifier = Modifier
+                                    .background(Color(0xFF224422), RoundedCornerShape(4.dp))
+                                    .clickable { onFollow(playerInfo.name); onDismiss() }
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
     }

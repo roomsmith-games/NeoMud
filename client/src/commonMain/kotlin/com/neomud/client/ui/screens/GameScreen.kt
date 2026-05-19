@@ -66,6 +66,9 @@ import com.neomud.client.ui.components.KickDirectionPicker
 import com.neomud.client.ui.components.LockTargetPicker
 import com.neomud.client.ui.components.MapOverlay
 import com.neomud.client.ui.components.WorldAtlas
+import com.neomud.client.ui.components.PartyPanel
+import com.neomud.client.ui.components.PartyInviteDialog
+import com.neomud.client.ui.components.PartyHudOverlay
 import com.neomud.client.ui.components.PlayerTooltip
 import com.neomud.client.ui.components.MudIcons
 import com.neomud.client.viewmodel.GameViewModel
@@ -130,6 +133,14 @@ fun GameScreen(
 
     val roomPlayers by gameViewModel.roomPlayers.collectAsState()
     var tooltipPlayer by remember { mutableStateOf<PlayerInfo?>(null) }
+
+    val partyMembers by gameViewModel.partyMembers.collectAsState()
+    val partyLeaderId by gameViewModel.partyLeaderId.collectAsState()
+    val showPartyPanel by gameViewModel.showPartyPanel.collectAsState()
+    val partyInvite by gameViewModel.partyInvite.collectAsState()
+    val isInParty by gameViewModel.isInParty.collectAsState()
+    val followTarget by gameViewModel.followTarget.collectAsState()
+    val followState by gameViewModel.followState.collectAsState()
 
     var sayText by remember { mutableStateOf("") }
 
@@ -411,11 +422,37 @@ fun GameScreen(
             )
         }
 
+        // Party panel overlay
+        if (showPartyPanel) {
+            PartyPanel(
+                members = partyMembers,
+                leaderId = partyLeaderId,
+                playerName = player?.name,
+                onInvite = { gameViewModel.inviteToParty(it) },
+                onKick = { gameViewModel.kickFromParty(it) },
+                onLeave = { gameViewModel.leaveParty() },
+                onDismiss = { gameViewModel.togglePartyPanel() }
+            )
+        }
+
+        // Party invite dialog
+        if (partyInvite != null) {
+            PartyInviteDialog(
+                invite = partyInvite!!,
+                onAccept = { gameViewModel.acceptPartyInvite() },
+                onDecline = { gameViewModel.declinePartyInvite() }
+            )
+        }
+
         // Player tooltip overlay
         if (tooltipPlayer != null) {
+            val canInvite = !isInParty || (player?.name == partyLeaderId && partyMembers.size < 4)
+            val canFollow = isInParty && partyMembers.any { it.name == tooltipPlayer?.name }
             PlayerTooltip(
                 playerInfo = tooltipPlayer!!,
-                onDismiss = { tooltipPlayer = null }
+                onDismiss = { tooltipPlayer = null },
+                onInviteToParty = if (canInvite) { name -> gameViewModel.inviteToParty(name) } else null,
+                onFollow = if (canFollow) { name -> gameViewModel.followPlayer(name) } else null
             )
         }
 
@@ -727,6 +764,12 @@ private fun GameScreenPortrait(
     val showMap by gameViewModel.showMap.collectAsState()
     val showAtlas by gameViewModel.showAtlas.collectAsState()
 
+    val showPartyPanel by gameViewModel.showPartyPanel.collectAsState()
+    val isInParty by gameViewModel.isInParty.collectAsState()
+    val partyMembers by gameViewModel.partyMembers.collectAsState()
+    val followTarget by gameViewModel.followTarget.collectAsState()
+    val followState by gameViewModel.followState.collectAsState()
+
     // Determine if player has TRACK / KICK skills
     val hasTrackSkill = player?.characterClass?.let { classCatalog[it] }?.skills?.contains("TRACK") == true
     val hasKickSkill = player?.characterClass?.let { classCatalog[it] }?.skills?.contains("KICK") == true
@@ -794,6 +837,20 @@ private fun GameScreenPortrait(
                             .padding(end = 4.dp, top = 4.dp)
                     )
                 }
+            }
+
+            // Layer 2.5: Party HUD (top-left, below minimap)
+            if (partyMembers.size > 1) {
+                PartyHudOverlay(
+                    members = partyMembers,
+                    playerName = player?.name,
+                    followTarget = followTarget,
+                    followState = followState,
+                    onOpenPartyPanel = { gameViewModel.togglePartyPanel() },
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(start = 4.dp, top = 4.dp)
+                )
             }
 
             // Layer 3: Trainer/Vendor/Crafter/Interactable overlays (bottom-left of room view)
@@ -951,6 +1008,11 @@ private fun GameScreenPortrait(
                         active = showEquipmentState,
                         onClick = { gameViewModel.toggleEquipment() }
                     )
+                    PartyIconButton(
+                        active = showPartyPanel,
+                        isInParty = isInParty,
+                        onClick = { gameViewModel.togglePartyPanel() }
+                    )
                     HelpIconButton(onClick = { gameViewModel.toggleHelp() })
                     SettingsGearButton(onClick = { gameViewModel.toggleSettings() })
                 }
@@ -995,6 +1057,12 @@ private fun GameScreenLandscape(
     val visitedRooms by gameViewModel.visitedRooms.collectAsState()
     val showMap by gameViewModel.showMap.collectAsState()
     val showAtlas by gameViewModel.showAtlas.collectAsState()
+
+    val showPartyPanel by gameViewModel.showPartyPanel.collectAsState()
+    val isInParty by gameViewModel.isInParty.collectAsState()
+    val partyMembers by gameViewModel.partyMembers.collectAsState()
+    val followTarget by gameViewModel.followTarget.collectAsState()
+    val followState by gameViewModel.followState.collectAsState()
 
     // Determine if player has TRACK / KICK skills
     val hasTrackSkill = player?.characterClass?.let { classCatalog[it] }?.skills?.contains("TRACK") == true
@@ -1067,6 +1135,20 @@ private fun GameScreenLandscape(
                                 .padding(end = 4.dp, top = 4.dp)
                         )
                     }
+                }
+
+                // Layer 2.5: Party HUD (top-left, below minimap)
+                if (partyMembers.size > 1) {
+                    PartyHudOverlay(
+                        members = partyMembers,
+                        playerName = player?.name,
+                        followTarget = followTarget,
+                        followState = followState,
+                        onOpenPartyPanel = { gameViewModel.togglePartyPanel() },
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(start = 4.dp, top = 4.dp)
+                    )
                 }
 
                 // Layer 3: Trainer/Vendor/Crafter/Interactable overlays (bottom-left of room view)
@@ -1198,6 +1280,11 @@ private fun GameScreenLandscape(
                             EquipmentIconButton(
                                 active = showEquipmentState,
                                 onClick = { gameViewModel.toggleEquipment() }
+                            )
+                            PartyIconButton(
+                                active = showPartyPanel,
+                                isInParty = isInParty,
+                                onClick = { gameViewModel.togglePartyPanel() }
                             )
                             HelpIconButton(onClick = { gameViewModel.toggleHelp() })
                             SettingsGearButton(onClick = { gameViewModel.toggleSettings() })
@@ -1598,6 +1685,33 @@ private fun MapIconButton(active: Boolean, onClick: () -> Unit) {
             painter = painterResource(MudIcons.Map),
             contentDescription = "Map",
             modifier = Modifier.size(22.dp)
+        )
+    }
+    }
+}
+
+@Composable
+private fun PartyIconButton(active: Boolean, isInParty: Boolean, onClick: () -> Unit) {
+    val stoneBg = Brush.verticalGradient(listOf(StoneTheme.frameLight, StoneTheme.frameDark))
+    val label = if (isInParty) "Party" else "Party (none)"
+    StoneTooltip(label) {
+    Box(
+        modifier = Modifier
+            .size(28.dp)
+            .background(stoneBg, RoundedCornerShape(4.dp))
+            .border(
+                1.dp,
+                if (isInParty) Color(0xFF55AAFF) else StoneTheme.frameMid,
+                RoundedCornerShape(4.dp)
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            "P",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = if (isInParty) Color(0xFF55AAFF) else Color(0xFF999999)
         )
     }
     }

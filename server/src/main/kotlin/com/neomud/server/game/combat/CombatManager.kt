@@ -342,7 +342,7 @@ class CombatManager(
                     if (room != null && room.effects.any { it.type == "SANCTUARY" }) continue
                     val playersInRoom = playersByRoom[roomId] ?: continue
                     val visiblePlayers = playersInRoom.filter { !it.isHidden && !it.godMode && (it.player?.currentHp ?: 0) > 0 && it.combatGraceTicks <= 0 }
-                    val targetSession = visiblePlayers.randomOrNull() ?: continue
+                    val targetSession = selectNpcTarget(npc, visiblePlayers) ?: continue
                     val targetPlayer = targetSession.player ?: continue
 
                     val effStats = targetSession.effectiveStats()
@@ -666,6 +666,17 @@ class CombatManager(
             roomId = roomId
         ))
         logger.info("${npc.name} transitions to phase ${npc.currentPhase}: ${phase.name}")
+    }
+
+    internal fun selectNpcTarget(npc: NpcState, visiblePlayers: List<PlayerSession>): PlayerSession? {
+        if (visiblePlayers.isEmpty()) return null
+        val engaged = visiblePlayers.filter { it.playerName in npc.engagedPlayerIds }
+        if (engaged.isEmpty()) return visiblePlayers.random()
+        return if (Math.random() < GameConfig.Party.NPC_THREAT_ENGAGED_WEIGHT) {
+            engaged.random()
+        } else {
+            visiblePlayers.random()
+        }
     }
 
     private fun resolveTarget(session: PlayerSession, roomId: RoomId): NpcState? {

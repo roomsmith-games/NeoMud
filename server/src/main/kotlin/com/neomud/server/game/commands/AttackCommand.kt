@@ -39,6 +39,14 @@ class AttackCommand(
 
             session.attackMode = true
             session.send(ServerMessage.AttackModeUpdate(true))
+
+            if (session.followState == com.neomud.shared.model.FollowState.ACTIVE) {
+                session.followState = com.neomud.shared.model.FollowState.PAUSED
+                session.send(com.neomud.shared.protocol.ServerMessage.FollowUpdate(
+                    session.playerName ?: "", session.followTarget ?: "", com.neomud.shared.model.FollowState.PAUSED
+                ))
+                session.send(com.neomud.shared.protocol.ServerMessage.SystemMessage("Combat prevents you from following."))
+            }
         } else {
             session.attackMode = false
             session.selectedTargetId = null

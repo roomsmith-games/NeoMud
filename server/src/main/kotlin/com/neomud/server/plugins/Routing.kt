@@ -52,7 +52,8 @@ fun Application.configureRouting(
     playerRepository: PlayerRepository,
     discoveryRepository: DiscoveryRepository,
     dataSource: WorldDataSource,
-    worldManifest: WorldManifest? = null
+    worldManifest: WorldManifest? = null,
+    partyService: com.neomud.server.game.party.PartyService? = null
 ) {
     routing {
         get("/assets/{path...}") {
@@ -222,6 +223,9 @@ fun Application.configureRouting(
                             }
                         }
                     }
+
+                    // Mark party disconnect grace (if in a party, don't remove from party yet)
+                    partyService?.markDisconnected(playerName)
 
                     sessionManager.removeSession(playerName)
                     if (roomId != null) {

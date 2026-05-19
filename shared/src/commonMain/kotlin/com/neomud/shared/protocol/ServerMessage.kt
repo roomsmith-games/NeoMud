@@ -520,6 +520,88 @@ sealed class ServerMessage {
         val sound: String = ""
     ) : ServerMessage()
 
+    // Party
+    @Serializable
+    @SerialName("party_invite_received")
+    data class PartyInviteReceived(
+        val inviterName: String,
+        val partySize: Int
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_formed")
+    data class PartyFormed(
+        val partyId: String,
+        val members: List<PartyMember>,
+        val leaderId: String
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_member_joined")
+    data class PartyMemberJoined(val member: PartyMember) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_member_left")
+    data class PartyMemberLeft(
+        val memberName: String,
+        val reason: String = "left"
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_disbanded")
+    data class PartyDisbanded(val reason: String = "disbanded") : ServerMessage()
+
+    @Serializable
+    @SerialName("party_member_update")
+    data class PartyMemberUpdate(
+        val memberName: String,
+        val currentHp: Int,
+        val maxHp: Int,
+        val currentMp: Int = 0,
+        val maxMp: Int = 0,
+        val roomId: String = ""
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_chat")
+    data class PartyChatMessage(
+        val senderName: String,
+        val message: String
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_info")
+    data class PartyInfo(
+        val partyId: String,
+        val members: List<PartyMember>,
+        val leaderId: String
+    ) : ServerMessage()
+
+    // Follow
+    @Serializable
+    @SerialName("follow_update")
+    data class FollowUpdate(
+        val followerName: String,
+        val targetName: String,
+        val state: FollowState
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("rally_ping")
+    data class RallyPing(
+        val leaderName: String,
+        val roomId: String,
+        val roomName: String,
+        val zoneName: String = ""
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("follow_failed")
+    data class FollowFailed(
+        val followerName: String,
+        val reason: String
+    ) : ServerMessage()
+
     // Handshake — sent as the first message on WebSocket connect
     @Serializable
     @SerialName("server_hello")

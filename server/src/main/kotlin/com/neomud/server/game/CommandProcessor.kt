@@ -4,6 +4,10 @@ import com.neomud.server.game.commands.AdminCommand
 import com.neomud.server.game.commands.AttackCommand
 import com.neomud.server.game.commands.BashCommand
 import com.neomud.server.game.commands.DialogueCommand
+import com.neomud.server.game.commands.FollowCommand
+import com.neomud.server.game.commands.PartyCommand
+import com.neomud.server.game.party.PartyService
+import com.neomud.shared.model.PartyMember
 import com.neomud.server.game.commands.InventoryCommand
 import com.neomud.server.game.commands.KickCommand
 import com.neomud.server.game.commands.LookCommand
@@ -79,7 +83,10 @@ class CommandProcessor(
     private val trapManager: com.neomud.server.game.trap.TrapManager? = null,
     private val dialogueCommand: DialogueCommand? = null,
     private val worldOwnerPlatformUserId: String? = null,
-    private val zoneNames: Map<String, String> = emptyMap()
+    private val zoneNames: Map<String, String> = emptyMap(),
+    private val partyCommand: PartyCommand? = null,
+    private val followCommand: FollowCommand? = null,
+    private val partyService: PartyService? = null
 ) {
     private val logger = LoggerFactory.getLogger(CommandProcessor::class.java)
 
@@ -158,6 +165,43 @@ class CommandProcessor(
     fun setGameLoop(loop: GameLoop) {
         adminCommand.setGameLoop(loop)
         moveCommand.departureRecorder = loop::recordDeparture
+        moveCommand.followerMover = { followerSession, direction, targetRoomId ->
+            moveFollower(followerSession, direction, targetRoomId)
+        }
+    }
+
+    private suspend fun moveFollower(follower: PlayerSession, direction: com.neomud.shared.model.Direction, targetRoomId: String) {
+        val followerName = follower.playerName ?: return
+        val currentRoomId = follower.currentRoomId ?: return
+        val currentRoom = worldGraph.getRoom(currentRoomId) ?: return
+
+        // Check locked exit
+        if (currentRoom.lockedExits[direction] != null) {
+            follower.followState = com.neomud.shared.model.FollowState.PAUSED
+            follower.send(ServerMessage.FollowUpdate(followerName, follower.followTarget ?: return, com.neomud.shared.model.FollowState.PAUSED))
+            follower.send(ServerMessage.SystemMessage("You lose sight of ${follower.followTarget}."))
+            return
+        }
+
+        // Check hidden exit — pause if not discovered
+        val hiddenDefs = worldGraph.getHiddenExitDefs(currentRoomId)
+        if (direction in hiddenDefs && !follower.hasDiscoveredExit(currentRoomId, direction)) {
+            follower.followState = com.neomud.shared.model.FollowState.PAUSED
+            follower.send(ServerMessage.FollowUpdate(followerName, follower.followTarget ?: return, com.neomud.shared.model.FollowState.PAUSED))
+            follower.send(ServerMessage.SystemMessage("You lose sight of ${follower.followTarget}."))
+            return
+        }
+
+        // Check combat — pause if in combat
+        if (follower.attackMode) {
+            follower.followState = com.neomud.shared.model.FollowState.PAUSED
+            follower.send(ServerMessage.FollowUpdate(followerName, follower.followTarget ?: return, com.neomud.shared.model.FollowState.PAUSED))
+            follower.send(ServerMessage.SystemMessage("Combat prevents you from following."))
+            return
+        }
+
+        // Move the follower via normal MoveCommand
+        moveCommand.execute(follower, direction)
     }
 
     private val moveCommand = MoveCommand(worldGraph, sessionManager, npcManager, playerRepository, roomItemManager, skillCatalog, classCatalog, movementTrailManager, tutorialService, trapManager)
@@ -256,7 +300,12 @@ class CommandProcessor(
 
         when (message) {
             is ClientMessage.Move -> {
-                requireAuth(session) { moveCommand.execute(session, message.direction) }
+                requireAuth(session) {
+                    if (session.followState != com.neomud.shared.model.FollowState.OFF) {
+                        followCommand?.clearFollowAndNotify(session, "You stop following and move on your own.")
+                    }
+                    moveCommand.execute(session, message.direction)
+                }
             }
             is ClientMessage.Look -> {
                 requireAuth(session) { lookCommand.execute(session) }
@@ -369,6 +418,34 @@ class CommandProcessor(
             }
             is ClientMessage.RequestAtlas -> {
                 requireAuth(session) { handleRequestAtlas(session) }
+            }
+            // Party
+            is ClientMessage.PartyInvite -> {
+                requireAuth(session) { partyCommand?.handleInvite(session, message.targetName) }
+            }
+            is ClientMessage.PartyAccept -> {
+                requireAuth(session) { partyCommand?.handleAccept(session, message.inviterName) }
+            }
+            is ClientMessage.PartyDecline -> {
+                requireAuth(session) { partyCommand?.handleDecline(session, message.inviterName) }
+            }
+            is ClientMessage.PartyLeave -> {
+                requireAuth(session) { partyCommand?.handleLeave(session) }
+            }
+            is ClientMessage.PartyKick -> {
+                requireAuth(session) { partyCommand?.handleKick(session, message.targetName) }
+            }
+            is ClientMessage.PartySay -> {
+                requireAuth(session) { partyCommand?.handleSay(session, message.message) }
+            }
+            is ClientMessage.Follow -> {
+                requireAuth(session) { followCommand?.handleFollow(session, message.targetName) }
+            }
+            is ClientMessage.FollowStop -> {
+                requireAuth(session) { followCommand?.handleStop(session) }
+            }
+            is ClientMessage.Rally -> {
+                requireAuth(session) { followCommand?.handleRally(session) }
             }
             else -> {} // Register, Login, Ping already handled in process()
         }
@@ -585,6 +662,28 @@ class CommandProcessor(
         val groundItems = roomItemManager.getGroundItems(player.currentRoomId)
         val groundCoins = roomItemManager.getGroundCoins(player.currentRoomId)
         session.send(ServerMessage.RoomItemsUpdate(groundItems, groundCoins))
+
+        val reconnectedParty = partyService?.tryReconnect(player.name)
+        if (reconnectedParty != null) {
+            val members = reconnectedParty.members.mapNotNull { name ->
+                val s = sessionManager.getSession(name) ?: return@mapNotNull null
+                val p = s.player ?: return@mapNotNull null
+                partyService.buildPartyMember(
+                    name = p.name, characterClass = p.characterClass, race = p.race,
+                    level = p.level, currentHp = p.currentHp, maxHp = p.maxHp,
+                    currentMp = p.currentMp, maxMp = p.maxMp,
+                    roomId = s.currentRoomId ?: "", leaderId = reconnectedParty.leaderId
+                )
+            }
+            session.send(ServerMessage.PartyInfo(reconnectedParty.id, members, reconnectedParty.leaderId))
+            for (name in reconnectedParty.members) {
+                if (name != player.name) {
+                    sessionManager.getSession(name)?.send(
+                        ServerMessage.SystemMessage("${player.name} has reconnected.")
+                    )
+                }
+            }
+        }
 
         logger.info("Player logged in: ${player.name}${if (player.isAdmin) " [ADMIN]" else ""}")
     }

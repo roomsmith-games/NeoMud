@@ -34,6 +34,8 @@ class MoveCommand(
     private val trapManager: com.neomud.server.game.trap.TrapManager? = null
 ) {
     var departureRecorder: ((String, String, Direction) -> Unit)? = null
+    var followerMover: (suspend (PlayerSession, Direction, String) -> Unit)? = null
+    private var isFollowMove = false
     suspend fun execute(session: PlayerSession, direction: Direction) {
         MeditationUtils.breakMeditation(session, "You stop meditating.")
         RestUtils.breakRest(session, "You stop resting.")
@@ -282,6 +284,23 @@ class MoveCommand(
             val targetZone = targetRoom.zoneId
             if (currentZone != targetZone && targetZone in tutorialService.dangerZones) {
                 tutorialService.trySend(session, "tut_danger_ahead")
+            }
+        }
+
+        // Propagate direct followers only (no recursive chains)
+        if (!isFollowMove) {
+            followerMover?.let { mover ->
+                val followers = sessionManager.getSessionsInRoom(currentRoomId).filter {
+                    it.followTarget == playerName && it.followState == com.neomud.shared.model.FollowState.ACTIVE
+                }
+                for (follower in followers) {
+                    isFollowMove = true
+                    try {
+                        mover(follower, direction, targetRoomId)
+                    } finally {
+                        isFollowMove = false
+                    }
+                }
             }
         }
 
