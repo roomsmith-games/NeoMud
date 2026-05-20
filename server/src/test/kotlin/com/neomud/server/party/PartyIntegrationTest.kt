@@ -642,6 +642,153 @@ class PartyIntegrationTest {
         }
     }
 
+    // ── Disconnect Notifications ──────────────────────────────────────
+
+    @Test
+    fun `disconnect in 2-person party sends PartyDisbanded immediately`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val ws = createClient { install(WebSockets) }
+
+        ws.webSocket("/game") { register("dc2_a", "Vera", "WARRIOR") }
+        ws.webSocket("/game") { register("dc2_b", "Walt", "WARRIOR") }
+
+        coroutineScope {
+            val veraReady = CompletableDeferred<Unit>()
+            val waltReady = CompletableDeferred<Unit>()
+            val partyFormed = CompletableDeferred<Unit>()
+            val testDone = CompletableDeferred<Unit>()
+
+            val sessionA = async {
+                ws.webSocket("/game") {
+                    login("dc2_a")
+                    veraReady.complete(Unit)
+                    waltReady.await()
+                    delay(200)
+
+                    send(encode(ClientMessage.PartyInvite("Walt")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyFormed.complete(Unit)
+
+                    // Walt disconnects — Vera should receive PartyDisbanded immediately
+                    val disbanded = drainUntil({ it is ServerMessage.PartyDisbanded })
+                    assertNotNull(disbanded, "Vera should receive PartyDisbanded when Walt disconnects")
+
+                    testDone.complete(Unit)
+                    delay(500)
+                }
+            }
+
+            val sessionB = async {
+                veraReady.await()
+                delay(200)
+                ws.webSocket("/game") {
+                    login("dc2_b")
+                    waltReady.complete(Unit)
+
+                    val invite = drainUntil({ it is ServerMessage.PartyInviteReceived })
+                    assertNotNull(invite)
+                    send(encode(ClientMessage.PartyAccept("Vera")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyFormed.await()
+                    // Disconnect by exiting the block
+                }
+                testDone.await()
+            }
+
+            sessionA.await()
+            sessionB.await()
+        }
+    }
+
+    @Test
+    fun `disconnect in 3-person party sends PartyMemberLeft immediately`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val ws = createClient { install(WebSockets) }
+
+        ws.webSocket("/game") { register("dc3_a", "Xena", "WARRIOR") }
+        ws.webSocket("/game") { register("dc3_b", "Yuri", "WARRIOR") }
+        ws.webSocket("/game") { register("dc3_c", "Zara", "WARRIOR") }
+
+        coroutineScope {
+            val xenaReady = CompletableDeferred<Unit>()
+            val yuriReady = CompletableDeferred<Unit>()
+            val zaraReady = CompletableDeferred<Unit>()
+            val partyFormed = CompletableDeferred<Unit>()
+            val yuriDisconnected = CompletableDeferred<Unit>()
+            val testDone = CompletableDeferred<Unit>()
+
+            val sessionA = async {
+                ws.webSocket("/game") {
+                    login("dc3_a")
+                    xenaReady.complete(Unit)
+                    yuriReady.await(); zaraReady.await()
+                    delay(200)
+
+                    send(encode(ClientMessage.PartyInvite("Yuri")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    delay(200)
+                    send(encode(ClientMessage.PartyInvite("Zara")))
+                    drainUntil({ it is ServerMessage.PartyMemberJoined })
+                    partyFormed.complete(Unit)
+
+                    // Yuri disconnects — Xena should receive PartyMemberLeft immediately
+                    val left = drainUntil({ it is ServerMessage.PartyMemberLeft })
+                    assertNotNull(left, "Xena should receive PartyMemberLeft when Yuri disconnects")
+                    assertIs<ServerMessage.PartyMemberLeft>(left)
+                    assertEquals("Yuri", left.memberName)
+                    assertEquals("disconnected", left.reason)
+
+                    testDone.complete(Unit)
+                    delay(500)
+                }
+            }
+
+            val sessionB = async {
+                xenaReady.await()
+                delay(200)
+                ws.webSocket("/game") {
+                    login("dc3_b")
+                    yuriReady.complete(Unit)
+
+                    val invite = drainUntil({ it is ServerMessage.PartyInviteReceived })
+                    assertNotNull(invite)
+                    send(encode(ClientMessage.PartyAccept("Xena")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyFormed.await()
+                    // Disconnect
+                }
+                yuriDisconnected.complete(Unit)
+                testDone.await()
+            }
+
+            val sessionC = async {
+                xenaReady.await()
+                delay(400)
+                ws.webSocket("/game") {
+                    login("dc3_c")
+                    zaraReady.complete(Unit)
+
+                    val invite = drainUntil({ it is ServerMessage.PartyInviteReceived })
+                    assertNotNull(invite)
+                    send(encode(ClientMessage.PartyAccept("Xena")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyFormed.await()
+
+                    yuriDisconnected.await()
+                    val left = drainUntil({ it is ServerMessage.PartyMemberLeft })
+                    assertNotNull(left, "Zara should receive PartyMemberLeft when Yuri disconnects")
+
+                    testDone.await()
+                    delay(500)
+                }
+            }
+
+            sessionA.await()
+            sessionB.await()
+            sessionC.await()
+        }
+    }
+
     // ── Disconnect Grace Period ─────────────────────────────────────
 
     @Test

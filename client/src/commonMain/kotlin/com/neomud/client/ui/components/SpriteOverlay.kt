@@ -28,12 +28,14 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.crossfade
+import com.neomud.client.ui.theme.MudColors
 import com.neomud.client.ui.theme.StoneTheme
 import com.neomud.shared.model.CharacterClassDef
 import com.neomud.shared.model.Coins
 import com.neomud.shared.model.GroundItem
 import com.neomud.shared.model.Item
 import com.neomud.shared.model.Npc
+import com.neomud.shared.model.PartyMember
 import com.neomud.shared.model.PlayerInfo
 import com.neomud.shared.model.SpellDef
 import com.neomud.shared.model.TargetType
@@ -90,6 +92,8 @@ fun SpriteOverlay(
     onAttackTarget: ((String) -> Unit)? = null,
     onTrackTarget: ((String) -> Unit)? = null,
     onKickTarget: ((String) -> Unit)? = null,
+    partyMembersInfo: Map<String, PartyMember> = emptyMap(),
+    partyLeaderName: String? = null,
     modifier: Modifier = Modifier
 ) {
     val serverBaseUrl = LocalServerBaseUrl.current
@@ -149,6 +153,8 @@ fun SpriteOverlay(
                                 onAttackTarget = onAttackTarget,
                                 onTrackTarget = onTrackTarget,
                                 onKickTarget = onKickTarget,
+                                partyMembersInfo = partyMembersInfo,
+                                partyLeaderName = partyLeaderName,
                                 scale = 0.75f,
                                 modifier = Modifier
                                     .weight(1f, fill = false)
@@ -190,6 +196,8 @@ fun SpriteOverlay(
                                 onAttackTarget = onAttackTarget,
                                 onTrackTarget = onTrackTarget,
                                 onKickTarget = onKickTarget,
+                                partyMembersInfo = partyMembersInfo,
+                                partyLeaderName = partyLeaderName,
                                 scale = 1.0f,
                                 modifier = Modifier
                                     .weight(1f, fill = false)
@@ -288,6 +296,8 @@ private fun EntitySprite(
     onAttackTarget: ((String) -> Unit)?,
     onTrackTarget: ((String) -> Unit)?,
     onKickTarget: ((String) -> Unit)?,
+    partyMembersInfo: Map<String, PartyMember>,
+    partyLeaderName: String?,
     scale: Float,
     modifier: Modifier = Modifier
 ) {
@@ -375,8 +385,18 @@ private fun EntitySprite(
         }
         is RoomEntity.PcEntity -> {
             val info = entity.info
+            val partyMember = partyMembersInfo[info.name]
+            val isPartyMember = partyMember != null
+            val isLeader = info.name == partyLeaderName
             Column(
                 modifier = modifier
+                    .then(
+                        if (isPartyMember) Modifier.border(
+                            1.5.dp,
+                            MudColors.partyChat.copy(alpha = 0.6f),
+                            RoundedCornerShape(4.dp)
+                        ) else Modifier
+                    )
                     .combinedClickable(
                         onClick = { onPlayerTap?.invoke(info) },
                         onLongClick = { onPlayerLongPress?.invoke(info) }
@@ -399,9 +419,10 @@ private fun EntitySprite(
                     modifier = Modifier
                         .weight(1f, fill = false)
                 )
-                // Name label below sprite
+                val displayName = if (isLeader) "♕ ${info.name}" else info.name
+                val nameBgColor = if (isPartyMember) Color(0xAA2255AA) else Color(0xAA000000)
                 Text(
-                    text = info.name,
+                    text = displayName,
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -409,9 +430,46 @@ private fun EntitySprite(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .background(Color(0xAA000000), RoundedCornerShape(3.dp))
+                        .background(nameBgColor, RoundedCornerShape(3.dp))
                         .padding(horizontal = 4.dp, vertical = 1.dp)
                 )
+                if (partyMember != null) {
+                    val hpPct = if (partyMember.maxHp > 0) partyMember.currentHp.toFloat() / partyMember.maxHp else 0f
+                    val hpColor = when {
+                        hpPct > 0.6f -> Color(0xFF55FF55)
+                        hpPct > 0.3f -> Color(0xFFFFFF55)
+                        else -> Color(0xFFFF5555)
+                    }
+                    Box(
+                        modifier = Modifier
+                            .width(48.dp)
+                            .height(4.dp)
+                            .background(Color(0xFF1A1A1A), RoundedCornerShape(2.dp))
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(hpPct.coerceIn(0f, 1f))
+                                .background(hpColor, RoundedCornerShape(2.dp))
+                        )
+                    }
+                    if (partyMember.maxMp > 0) {
+                        val mpPct = partyMember.currentMp.toFloat() / partyMember.maxMp
+                        Box(
+                            modifier = Modifier
+                                .width(48.dp)
+                                .height(3.dp)
+                                .background(Color(0xFF1A1A1A), RoundedCornerShape(2.dp))
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .fillMaxWidth(mpPct.coerceIn(0f, 1f))
+                                    .background(Color(0xFF5555FF), RoundedCornerShape(2.dp))
+                            )
+                        }
+                    }
+                }
             }
         }
     }

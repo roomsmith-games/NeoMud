@@ -779,15 +779,11 @@ class GameLoop(
         tickCount++
         if (partyService != null) {
             partyService.tickExpireInvites(tickCount)
-            val removed = partyService.tickGracePeriods()
-            for (playerName in removed) {
-                val party = partyService.getPartyForPlayer(playerName)
-                if (party != null) {
-                    sessionManager.broadcastToParty(
-                        party.members,
-                        ServerMessage.PartyMemberLeft(playerName, "disconnected")
-                    )
-                }
+            val graceExpiries = partyService.tickGracePeriods()
+            for (expiry in graceExpiries) {
+                sessionManager.getSession(expiry.lastRemainingMember)?.send(
+                    ServerMessage.PartyDisbanded("party too small")
+                )
             }
             // Auto-resume PAUSED followers who are now in the same room as their target and not in combat
             for (session in sessionManager.getAllAuthenticatedSessions()) {
@@ -1229,20 +1225,23 @@ class GameLoop(
                 } catch (_: Exception) { }
             }
 
-            // Party coin auto-split: divide evenly among room members, deposit directly
+            // Party coin auto-split: divide evenly among room members, remainder to killer
             if (membersInRoom > 1 && !coins.isEmpty()) {
-                val splitCopper = coins.totalCopper() / membersInRoom
-                if (splitCopper > 0) {
-                    val splitCoins = com.neomud.shared.model.Coins.fromCopper(splitCopper)
+                val totalCopper = coins.totalCopper()
+                val shareCopper = totalCopper / membersInRoom
+                val remainder = totalCopper % membersInRoom
+                if (shareCopper > 0 || remainder > 0) {
                     for (memberName in partyMembers) {
                         val memberSession = sessionManager.getSession(memberName) ?: continue
+                        val memberCopper = if (memberName == event.killerName) shareCopper + remainder else shareCopper
+                        if (memberCopper <= 0) continue
+                        val memberCoins = com.neomud.shared.model.Coins.fromCopper(memberCopper)
                         try {
-                            coinRepository.addCoins(memberName, splitCoins)
+                            coinRepository.addCoins(memberName, memberCoins)
                             sendInventoryUpdateForSession(memberSession)
-                            memberSession.send(ServerMessage.SystemMessage("You receive your share: ${splitCoins.displayString()}."))
+                            memberSession.send(ServerMessage.SystemMessage("You receive your share: ${memberCoins.displayString()}."))
                         } catch (_: Exception) { }
                     }
-                    // Remove coins from ground since they were auto-split
                     roomItemManager.removeAllCoins(event.roomId)
                 }
             }

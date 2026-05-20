@@ -676,11 +676,17 @@ class CommandProcessor(
                 )
             }
             session.send(ServerMessage.PartyInfo(reconnectedParty.id, members, reconnectedParty.leaderId))
+            val rejoiningMember = partyService.buildPartyMember(
+                name = player.name, characterClass = player.characterClass, race = player.race,
+                level = player.level, currentHp = player.currentHp, maxHp = player.maxHp,
+                currentMp = player.currentMp, maxMp = player.maxMp,
+                roomId = session.currentRoomId ?: "", leaderId = reconnectedParty.leaderId
+            )
             for (name in reconnectedParty.members) {
                 if (name != player.name) {
-                    sessionManager.getSession(name)?.send(
-                        ServerMessage.SystemMessage("${player.name} has reconnected.")
-                    )
+                    val s = sessionManager.getSession(name)
+                    s?.send(ServerMessage.PartyMemberJoined(rejoiningMember))
+                    s?.send(ServerMessage.SystemMessage("${player.name} has reconnected."))
                 }
             }
         }

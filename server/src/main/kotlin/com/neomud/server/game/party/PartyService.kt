@@ -139,9 +139,27 @@ class PartyService {
         return KickResult.Kicked(party)
     }
 
-    fun markDisconnected(playerName: String, graceTicks: Int = GameConfig.Party.DISCONNECT_GRACE_TICKS) {
-        val party = getPartyForPlayer(playerName) ?: return
+    fun markDisconnected(playerName: String, graceTicks: Int = GameConfig.Party.DISCONNECT_GRACE_TICKS): DisconnectResult {
+        val party = getPartyForPlayer(playerName) ?: return DisconnectResult.NotInParty
+        val otherMembers = party.members.filter { it != playerName }
+
+        if (party.members.size <= 2) {
+            party.members.remove(playerName)
+            party.disconnected.remove(playerName)
+            playerParty.remove(playerName)
+            lootRotation.remove(party.id)
+            val remaining = party.members.firstOrNull()
+            if (remaining != null) playerParty.remove(remaining)
+            parties.remove(party.id)
+            return DisconnectResult.Disbanded(otherMembers)
+        }
+
         party.disconnected[playerName] = graceTicks
+        val newLeader = if (party.leaderId == playerName) {
+            party.leaderId = party.members.first { it != playerName }
+            party.leaderId
+        } else null
+        return DisconnectResult.GracePeriod(otherMembers, newLeader)
     }
 
     fun tryReconnect(playerName: String): Party? {
@@ -166,8 +184,8 @@ class PartyService {
         return expired
     }
 
-    fun tickGracePeriods(): List<String> {
-        val removed = mutableListOf<String>()
+    fun tickGracePeriods(): List<GraceExpiry> {
+        val expired = mutableListOf<GraceExpiry>()
         for (party in parties.values.toList()) {
             val dcIterator = party.disconnected.entries.iterator()
             while (dcIterator.hasNext()) {
@@ -178,21 +196,25 @@ class PartyService {
                     dcIterator.remove()
                     party.members.remove(playerName)
                     playerParty.remove(playerName)
-                    removed.add(playerName)
 
                     if (party.members.size <= 1) {
                         val remaining = party.members.firstOrNull()
                         if (remaining != null) playerParty.remove(remaining)
                         parties.remove(party.id)
                         lootRotation.remove(party.id)
+                        if (remaining != null) {
+                            expired.add(GraceExpiry(playerName, remaining))
+                        }
                     } else if (party.leaderId == playerName) {
                         party.leaderId = party.members.first()
                     }
                 }
             }
         }
-        return removed
+        return expired
     }
+
+    data class GraceExpiry(val expiredPlayer: String, val lastRemainingMember: String)
 
     fun nextLootRecipient(partyId: String): String? {
         val party = parties[partyId] ?: return null
@@ -257,5 +279,11 @@ class PartyService {
         data object NotLeader : KickResult()
         data object CannotKickSelf : KickResult()
         data object TargetNotInParty : KickResult()
+    }
+
+    sealed class DisconnectResult {
+        data class GracePeriod(val otherMembers: List<String>, val newLeader: String?) : DisconnectResult()
+        data class Disbanded(val otherMembers: List<String>) : DisconnectResult()
+        data object NotInParty : DisconnectResult()
     }
 }

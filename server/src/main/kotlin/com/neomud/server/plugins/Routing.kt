@@ -224,8 +224,34 @@ fun Application.configureRouting(
                         }
                     }
 
-                    // Mark party disconnect grace (if in a party, don't remove from party yet)
-                    partyService?.markDisconnected(playerName)
+                    // Notify party members immediately; keep grace period for reconnect
+                    val partyResult = partyService?.markDisconnected(playerName)
+                    if (partyResult != null) {
+                        when (partyResult) {
+                            is com.neomud.server.game.party.PartyService.DisconnectResult.GracePeriod -> {
+                                for (name in partyResult.otherMembers) {
+                                    sessionManager.getSession(name)?.send(
+                                        ServerMessage.PartyMemberLeft(playerName, "disconnected")
+                                    )
+                                }
+                                if (partyResult.newLeader != null) {
+                                    for (name in partyResult.otherMembers) {
+                                        sessionManager.getSession(name)?.send(
+                                            ServerMessage.SystemMessage("${partyResult.newLeader} is now the party leader.")
+                                        )
+                                    }
+                                }
+                            }
+                            is com.neomud.server.game.party.PartyService.DisconnectResult.Disbanded -> {
+                                for (name in partyResult.otherMembers) {
+                                    sessionManager.getSession(name)?.send(
+                                        ServerMessage.PartyDisbanded("party too small")
+                                    )
+                                }
+                            }
+                            is com.neomud.server.game.party.PartyService.DisconnectResult.NotInParty -> {}
+                        }
+                    }
 
                     sessionManager.removeSession(playerName)
                     if (roomId != null) {

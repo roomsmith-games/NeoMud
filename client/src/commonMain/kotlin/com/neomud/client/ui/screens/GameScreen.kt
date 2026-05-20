@@ -820,6 +820,8 @@ private fun GameScreenPortrait(
                 onAttackTarget = { gameViewModel.attackTarget(it) },
                 onTrackTarget = if (hasTrackSkill) { npcId: String -> gameViewModel.useSkill("TRACK", npcId) } else null,
                 onKickTarget = if (hasKickSkill) { npcId: String -> gameViewModel.showKickDirectionPicker(npcId) } else null,
+                partyMembersInfo = partyMembers.associateBy { it.name },
+                partyLeaderName = partyMembers.firstOrNull { it.isLeader }?.name,
                 modifier = Modifier.fillMaxSize()
                     .coachMarkTarget("npc_sprites", gameViewModel)
             )
@@ -1119,6 +1121,8 @@ private fun GameScreenLandscape(
                     onAttackTarget = { gameViewModel.attackTarget(it) },
                     onTrackTarget = if (hasTrackSkill) { npcId: String -> gameViewModel.useSkill("TRACK", npcId) } else null,
                     onKickTarget = if (hasKickSkill) { npcId: String -> gameViewModel.showKickDirectionPicker(npcId) } else null,
+                    partyMembersInfo = partyMembers.associateBy { it.name },
+                    partyLeaderName = partyMembers.firstOrNull { it.isLeader }?.name,
                     modifier = Modifier.fillMaxSize()
                 )
 

@@ -262,13 +262,30 @@ class PartyServiceTest {
         assertTrue(result is PartyService.KickResult.TargetNotInParty)
     }
 
-    // ─── Disconnect grace ───────────────────────────────────
+    // ─── Disconnect ───────────────────────────────────────────
 
     @Test
-    fun `disconnect grace period ticks down`() {
+    fun `disconnect immediately disbands two-person party`() {
         val ps = service()
         formParty(ps, "Alice", "Bob")
-        ps.markDisconnected("Bob", 3)
+        val result = ps.markDisconnected("Bob")
+
+        assertTrue(result is PartyService.DisconnectResult.Disbanded)
+        assertEquals(listOf("Alice"), (result as PartyService.DisconnectResult.Disbanded).otherMembers)
+        assertFalse(ps.isInParty("Alice"))
+        assertFalse(ps.isInParty("Bob"))
+    }
+
+    @Test
+    fun `disconnect in 3-person party starts grace period`() {
+        val ps = service()
+        formParty(ps, "Alice", "Bob")
+        ps.createInvite("Alice", "Charlie", 1)
+        ps.acceptInvite("Charlie", "Alice", 1)
+
+        val result = ps.markDisconnected("Bob", 3)
+        assertTrue(result is PartyService.DisconnectResult.GracePeriod)
+        assertTrue(ps.isInParty("Bob"))
 
         ps.tickGracePeriods() // 3→2
         assertTrue(ps.isInParty("Bob"))
@@ -281,12 +298,13 @@ class PartyServiceTest {
     @Test
     fun `reconnect during grace period preserves party`() {
         val ps = service()
-        val party = formParty(ps, "Alice", "Bob")
-        ps.markDisconnected("Bob", 10)
+        formParty(ps, "Alice", "Bob")
+        ps.createInvite("Alice", "Charlie", 1)
+        ps.acceptInvite("Charlie", "Alice", 1)
 
+        ps.markDisconnected("Bob", 10)
         val reconnected = ps.tryReconnect("Bob")
         assertNotNull(reconnected)
-        assertEquals(party.id, reconnected.id)
         assertTrue(ps.isInParty("Bob"))
     }
 
@@ -297,23 +315,50 @@ class PartyServiceTest {
         ps.createInvite("Alice", "Charlie", 1)
         ps.acceptInvite("Charlie", "Alice", 1)
 
-        ps.markDisconnected("Alice", 1)
-        ps.tickGracePeriods()
+        val result = ps.markDisconnected("Alice", 1)
+        assertTrue(result is PartyService.DisconnectResult.GracePeriod)
+        assertEquals("Bob", (result as PartyService.DisconnectResult.GracePeriod).newLeader)
 
+        ps.tickGracePeriods()
         val party = ps.getPartyForPlayer("Bob")
         assertNotNull(party)
         assertEquals("Bob", party.leaderId)
     }
 
     @Test
-    fun `grace expiry disbands two-person party`() {
+    fun `grace expiry disbands when party drops to one member`() {
         val ps = service()
         formParty(ps, "Alice", "Bob")
+        ps.createInvite("Alice", "Charlie", 1)
+        ps.acceptInvite("Charlie", "Alice", 1)
+
         ps.markDisconnected("Bob", 1)
-        ps.tickGracePeriods()
+        ps.markDisconnected("Charlie", 1)
+        val expiries = ps.tickGracePeriods()
 
         assertFalse(ps.isInParty("Alice"))
-        assertFalse(ps.isInParty("Bob"))
+        assertTrue(expiries.any { it.lastRemainingMember == "Alice" })
+    }
+
+    @Test
+    fun `disconnect returns NotInParty when player has no party`() {
+        val ps = service()
+        val result = ps.markDisconnected("Alice")
+        assertTrue(result is PartyService.DisconnectResult.NotInParty)
+    }
+
+    @Test
+    fun `leader disconnect in 3-person party promotes next member`() {
+        val ps = service()
+        formParty(ps, "Alice", "Bob")
+        ps.createInvite("Alice", "Charlie", 1)
+        ps.acceptInvite("Charlie", "Alice", 1)
+
+        val result = ps.markDisconnected("Alice")
+        assertTrue(result is PartyService.DisconnectResult.GracePeriod)
+        val gp = result as PartyService.DisconnectResult.GracePeriod
+        assertNotNull(gp.newLeader)
+        assertEquals("Bob", gp.newLeader)
     }
 
     // ─── Invite expiry ──────────────────────────────────────
