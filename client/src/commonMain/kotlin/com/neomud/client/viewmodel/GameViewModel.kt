@@ -949,6 +949,22 @@ class GameViewModel(
                     LogSpan(message.message, MudColors.tellOutgoing)
                 )))
             }
+            is ServerMessage.NpcAbilityEffect -> {
+                if (message.message.isNotEmpty()) {
+                    addLog(message.message, MudColors.combatEnemy)
+                }
+                val myName = _player.value?.name
+                for (result in message.results) {
+                    val savedTag = if (result.saved) " (saved!)" else ""
+                    if (result.targetName == myName) {
+                        addLog("You take ${result.damage} damage from ${message.abilityName}!$savedTag", MudColors.combatEnemy)
+                        _player.value = _player.value?.copy(currentHp = result.newHp)
+                    } else {
+                        addLog("${result.targetName} takes ${result.damage} damage from ${message.abilityName}!$savedTag", MudColors.combatEnemy)
+                    }
+                }
+                if (message.sound.isNotEmpty()) sfx(message.sound, "npcs")
+            }
             is ServerMessage.WhoList -> {
                 addLog("--- Online Players (${message.players.size}) ---", MudColors.roomName)
                 for (p in message.players) {
@@ -1416,6 +1432,12 @@ class GameViewModel(
             return
         }
 
+        // PARTY_ROOM: immediate cast like SELF (hits all party in room)
+        if (spell.targetType == TargetType.PARTY_ROOM) {
+            castSpell(spellId)
+            return
+        }
+
         // Toggle off if same spell
         if (_readiedSpellId.value == spellId) {
             _readiedSpellId.value = null
@@ -1424,7 +1446,17 @@ class GameViewModel(
             return
         }
 
-        // Auto-select first hostile, engage attack
+        // ALLY: ready spell but don't auto-select hostile or toggle attack
+        if (spell.targetType == TargetType.ALLY) {
+            _readiedSpellId.value = spellId
+            viewModelScope.launch {
+                wsClient.send(ClientMessage.ReadySpell(spellId))
+                wsClient.send(ClientMessage.AttackToggle(true))
+            }
+            return
+        }
+
+        // ENEMY: auto-select first hostile, engage attack
         _readiedSpellId.value = spellId
         val target = _roomEntities.value.firstOrNull { it.hostile }
         if (target != null) _selectedTargetId.value = target.id
@@ -1432,6 +1464,13 @@ class GameViewModel(
             wsClient.send(ClientMessage.ReadySpell(spellId))
             if (target != null) wsClient.send(ClientMessage.SelectTarget(target.id))
             wsClient.send(ClientMessage.AttackToggle(true))
+        }
+    }
+
+    fun castAllySpell(targetPlayerName: String) {
+        val spellId = _readiedSpellId.value ?: return
+        viewModelScope.launch {
+            wsClient.send(ClientMessage.CastSpell(spellId, targetPlayerName))
         }
     }
 

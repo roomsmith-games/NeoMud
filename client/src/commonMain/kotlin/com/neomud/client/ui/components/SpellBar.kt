@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neomud.client.ui.theme.MudColors
 import com.neomud.shared.model.SpellDef
+import com.neomud.shared.model.TargetType
 import org.jetbrains.compose.resources.painterResource
 
 fun schoolColor(school: String): Color = when (school) {
@@ -51,13 +52,16 @@ fun SpellBar(
             val isReadied = spell != null && spellId == readiedSpellId
             val hasEnoughMp = spell == null || currentMp >= spell.manaCost
 
+            val isAllySpell = spell != null && (spell.targetType == TargetType.ALLY || spell.targetType == TargetType.PARTY_ROOM)
             val borderColor = when {
+                isReadied && isAllySpell -> MudColors.healTarget
                 isReadied -> MudColors.spell
                 spell != null && hasEnoughMp -> schoolColor(spell.school)
                 spell != null -> Color.Gray
                 else -> Color(0xFF555555)
             }
             val bgColor = when {
+                isReadied && isAllySpell -> Color(0x4444CC44)
                 isReadied -> Color(0x449B59FF)
                 else -> Color.Transparent
             }

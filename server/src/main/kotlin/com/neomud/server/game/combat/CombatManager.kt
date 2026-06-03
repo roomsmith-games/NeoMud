@@ -92,6 +92,16 @@ sealed class CombatEvent {
         val interactSound: String = "",
         val exitSound: String = ""
     ) : CombatEvent()
+
+    data class NpcAbilityUsed(
+        val npcId: String,
+        val npcName: String,
+        val abilityName: String,
+        val message: String,
+        val roomId: RoomId,
+        val results: List<ServerMessage.AbilityHitResult>,
+        val sound: String
+    ) : CombatEvent()
 }
 
 class CombatManager(
@@ -188,6 +198,18 @@ class CombatManager(
                     // Priority 3: Auto-cast readied spell
                     val readiedSpell = session.readiedSpellId
                     if (readiedSpell != null && spellCommand != null) {
+                        val spellDef = spellCatalog?.getSpell(readiedSpell)
+                        val isAllySpell = spellDef != null && (
+                            spellDef.targetType == com.neomud.shared.model.TargetType.ALLY ||
+                            spellDef.targetType == com.neomud.shared.model.TargetType.SELF ||
+                            spellDef.targetType == com.neomud.shared.model.TargetType.PARTY_ROOM
+                        )
+
+                        if (isAllySpell) {
+                            spellCommand.autoCast(session, readiedSpell, null, roomId)
+                            continue
+                        }
+
                         val spellTarget = resolveTarget(session, roomId)
                         if (spellTarget == null) {
                             session.attackMode = false
@@ -342,6 +364,11 @@ class CombatManager(
                     if (room != null && room.effects.any { it.type == "SANCTUARY" }) continue
                     val playersInRoom = playersByRoom[roomId] ?: continue
                     val visiblePlayers = playersInRoom.filter { !it.isHidden && !it.godMode && (it.player?.currentHp ?: 0) > 0 && it.combatGraceTicks <= 0 }
+                    if (visiblePlayers.isEmpty()) continue
+
+                    // Boss ability check — fires AoE instead of melee when available
+                    if (resolveNpcAbility(npc, roomId, visiblePlayers, events)) continue
+
                     val targetSession = selectNpcTarget(npc, visiblePlayers) ?: continue
                     val targetPlayer = targetSession.player ?: continue
 
@@ -666,6 +693,104 @@ class CombatManager(
             roomId = roomId
         ))
         logger.info("${npc.name} transitions to phase ${npc.currentPhase}: ${phase.name}")
+    }
+
+    internal suspend fun resolveNpcAbility(
+        npc: NpcState,
+        roomId: RoomId,
+        visiblePlayers: List<PlayerSession>,
+        events: MutableList<CombatEvent>
+    ): Boolean {
+        if (npc.abilities.isEmpty()) return false
+
+        val eligible = npc.abilities.filter { ability ->
+            (npc.abilityCooldowns[ability.id] ?: 0) <= 0 &&
+                npc.currentPhase >= ability.phaseRequired
+        }
+        if (eligible.isEmpty()) return false
+
+        val ability = eligible.random()
+        val results = mutableListOf<ServerMessage.AbilityHitResult>()
+
+        for (target in visiblePlayers) {
+            val player = target.player ?: continue
+            val baseDamage = ability.damage + if (ability.damageVariance > 0) (1..ability.damageVariance).random() else 0
+
+            val saved = if (ability.saveStat.isNotEmpty()) {
+                val effStats = target.effectiveStats()
+                val statValue = when (ability.saveStat.lowercase()) {
+                    "strength", "str" -> effStats.strength
+                    "agility", "agi" -> effStats.agility
+                    "intellect", "int" -> effStats.intellect
+                    "willpower", "wil" -> effStats.willpower
+                    "health", "hea" -> effStats.health
+                    else -> effStats.willpower
+                }
+                val roll = (1..GameConfig.NpcAbility.SAVE_DICE_SIZE).random()
+                val saveTotal = statValue + player.level / GameConfig.NpcAbility.SAVE_LEVEL_DIVISOR + roll
+                saveTotal >= ability.saveDC
+            } else false
+
+            val damage = if (saved && ability.saveHalves) {
+                (baseDamage / 2).coerceAtLeast(1)
+            } else {
+                baseDamage
+            }
+
+            val newHp = (player.currentHp - damage).coerceAtLeast(0)
+            target.player = player.copy(currentHp = newHp)
+
+            if (target.isMeditating) {
+                com.neomud.server.game.MeditationUtils.breakMeditation(target, "You are hit and lose concentration!")
+            }
+            if (target.isResting) {
+                com.neomud.server.game.RestUtils.breakRest(target, "You are hit and can no longer rest!")
+            }
+
+            results.add(ServerMessage.AbilityHitResult(
+                targetName = player.name,
+                damage = damage,
+                saved = saved,
+                newHp = newHp,
+                maxHp = player.maxHp
+            ))
+
+            if (newHp <= 0) {
+                events.add(CombatEvent.PlayerKilled(
+                    playerSession = target,
+                    killerName = npc.name,
+                    respawnRoomId = worldGraph.defaultSpawnRoom,
+                    respawnHp = player.maxHp,
+                    respawnMp = player.maxMp
+                ))
+            }
+        }
+
+        npc.abilityCooldowns[ability.id] = ability.cooldownTicks
+
+        events.add(CombatEvent.NpcAbilityUsed(
+            npcId = npc.id,
+            npcName = npc.name,
+            abilityName = ability.name,
+            message = ability.message,
+            roomId = roomId,
+            results = results,
+            sound = ability.sound
+        ))
+
+        logger.info("${npc.name} uses ability ${ability.name} in $roomId, hitting ${results.size} players")
+        return true
+    }
+
+    fun tickNpcAbilityCooldowns() {
+        for (npc in npcManager.getAllLivingHostileNpcs()) {
+            val iter = npc.abilityCooldowns.iterator()
+            while (iter.hasNext()) {
+                val entry = iter.next()
+                entry.setValue(entry.value - 1)
+                if (entry.value <= 0) iter.remove()
+            }
+        }
     }
 
     internal fun selectNpcTarget(npc: NpcState, visiblePlayers: List<PlayerSession>): PlayerSession? {

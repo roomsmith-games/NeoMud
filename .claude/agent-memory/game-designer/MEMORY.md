@@ -1,5 +1,8 @@
 # Game Designer Agent Memory
 
+## Design Decisions
+- [Targeting & spell system design](targeting_spell_system_design.md) -- ALLY/PARTY_ROOM targets, 6 new spells, NPC ability system, heal threat model
+
 ## Key File Locations
 - Data files: `maker/default_world_src/world/` (classes.json, races.json, items.json, skills.json, spells.json, recipes.json)
 - Zone files: `maker/default_world_src/world/*.zone.json` (23 zones total)

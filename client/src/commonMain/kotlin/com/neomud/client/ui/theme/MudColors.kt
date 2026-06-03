@@ -51,6 +51,7 @@ object MudColors {
 
     // Spells
     val spell = Color(0xFF9B59FF)       // purple - spell messages
+    val healTarget = Color(0xFF44CC44)  // green - heal/ally targeting
 
     // Default
     val default = Color(0xFFCCCCCC)     // light grey

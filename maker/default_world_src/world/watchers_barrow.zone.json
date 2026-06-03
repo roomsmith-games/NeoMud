@@ -632,6 +632,34 @@
           "transitionSound": "boss_phase_shift"
         }
       ],
+      "abilities": [
+        {
+          "id": "grave_chill",
+          "name": "Grave Chill",
+          "damage": 18,
+          "damageVariance": 6,
+          "cooldownTicks": 3,
+          "saveStat": "health",
+          "saveDC": 14,
+          "saveHalves": true,
+          "phaseRequired": 0,
+          "message": "Esketh exhales a wave of barrow-cold that seeps into your very bones!",
+          "sound": "ghost_attack"
+        },
+        {
+          "id": "barrow_collapse",
+          "name": "Barrow Collapse",
+          "damage": 32,
+          "damageVariance": 8,
+          "cooldownTicks": 5,
+          "saveStat": "agility",
+          "saveDC": 18,
+          "saveHalves": true,
+          "phaseRequired": 1,
+          "message": "Esketh slams the floor and the barrow ceiling cracks — stones rain down on all who stand within!",
+          "sound": "ghost_attack"
+        }
+      ],
       "imagePrompt": "Full-body tall undead barrow-wight boss in tattered grey grave-linen, crowned with a diadem of fused human finger-bones, grey translucent flesh, two steady watchful pale-blue burning lights for eyes, hands at his sides bearing pale rune-tattoos, threatening but composed presence facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, solid white background, monumental dread, cold pale tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple characters, portrait crop, modern, sci-fi, cute, cartoon",

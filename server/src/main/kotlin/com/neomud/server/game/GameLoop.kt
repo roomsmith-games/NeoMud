@@ -432,6 +432,20 @@ class GameLoop(
                     )
                 }
 
+                is CombatEvent.NpcAbilityUsed -> {
+                    sessionManager.broadcastToRoom(
+                        event.roomId,
+                        ServerMessage.NpcAbilityEffect(
+                            npcName = event.npcName,
+                            npcId = event.npcId,
+                            abilityName = event.abilityName,
+                            message = event.message,
+                            results = event.results,
+                            sound = event.sound
+                        )
+                    )
+                }
+
                 is CombatEvent.PlayerKilled -> {
                     val session = event.playerSession
                     val playerName = session.playerName ?: continue
@@ -542,6 +556,9 @@ class GameLoop(
                 if (entry.value <= 0) iter.remove()
             }
         }
+
+        // 3a. Tick down NPC ability cooldowns
+        combatManager.tickNpcAbilityCooldowns()
 
         // 3b. Tick exit reset timers (lock re-lock, hidden re-hide)
         val resetEvents = worldGraph.tickResetTimers()

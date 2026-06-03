@@ -1,6 +1,7 @@
 package com.neomud.client.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,8 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.neomud.client.ui.theme.MudColors
 import com.neomud.shared.model.FollowState
 import com.neomud.shared.model.PartyMember
+import com.neomud.shared.model.SpellDef
+import com.neomud.shared.model.TargetType
 
 @Composable
 fun PartyHudOverlay(
@@ -22,11 +26,17 @@ fun PartyHudOverlay(
     playerName: String?,
     followTarget: String?,
     followState: FollowState,
+    readiedSpellId: String? = null,
+    spellCatalog: Map<String, SpellDef> = emptyMap(),
+    onCastAllySpell: ((String) -> Unit)? = null,
     onOpenPartyPanel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val otherMembers = members.filter { it.name != playerName }
     if (otherMembers.isEmpty()) return
+
+    val readiedSpell = readiedSpellId?.let { spellCatalog[it] }
+    val isAllySpellReadied = readiedSpell?.targetType == TargetType.ALLY
 
     Column(
         modifier = modifier
@@ -39,7 +49,11 @@ fun PartyHudOverlay(
         for (member in otherMembers) {
             PartyHudMemberRow(
                 member = member,
-                isFollowTarget = followTarget == member.name && followState != FollowState.OFF
+                isFollowTarget = followTarget == member.name && followState != FollowState.OFF,
+                isAllyTargetable = isAllySpellReadied,
+                onTap = if (isAllySpellReadied) {
+                    { onCastAllySpell?.invoke(member.name) }
+                } else null
             )
         }
     }
@@ -48,7 +62,9 @@ fun PartyHudOverlay(
 @Composable
 private fun PartyHudMemberRow(
     member: PartyMember,
-    isFollowTarget: Boolean
+    isFollowTarget: Boolean,
+    isAllyTargetable: Boolean = false,
+    onTap: (() -> Unit)? = null
 ) {
     val hpPct = if (member.maxHp > 0) member.currentHp.toFloat() / member.maxHp else 0f
     val hpColor = when {
@@ -62,7 +78,15 @@ private fun PartyHudMemberRow(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier
+            .then(
+                if (isAllyTargetable) Modifier
+                    .border(1.dp, MudColors.healTarget.copy(alpha = 0.7f), RoundedCornerShape(3.dp))
+                    .clickable { onTap?.invoke() }
+                    .padding(2.dp)
+                else Modifier
+            )
     ) {
         Box(
             modifier = Modifier

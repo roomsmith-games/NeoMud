@@ -10,6 +10,7 @@ import com.neomud.server.game.npc.behavior.PursuitBehavior
 import com.neomud.server.game.npc.behavior.WanderBehavior
 import com.neomud.server.session.SessionManager
 import com.neomud.server.world.BossPhaseData
+import com.neomud.server.world.NpcAbility
 import com.neomud.server.world.NpcData
 import com.neomud.server.world.SpawnConfig
 import com.neomud.server.world.TrainerConfig
@@ -53,6 +54,7 @@ data class NpcState(
     val grantItemFlag: String = "",
     val repeatDialogueScript: String = "",
     val phases: List<BossPhaseData> = emptyList(),
+    val abilities: List<NpcAbility> = emptyList(),
     var currentPhase: Int = 0,
     var spriteOverride: String = "",
     val onKillFlags: Map<String, String> = emptyMap(),
@@ -71,6 +73,8 @@ data class NpcState(
     var originalBehavior: BehaviorNode? = null
     /** Tracks all players who have engaged this NPC in combat. */
     val engagedPlayerIds: MutableSet<String> = mutableSetOf()
+    /** Per-ability cooldown tracking (ability ID → remaining ticks). */
+    val abilityCooldowns: MutableMap<String, Int> = mutableMapOf()
 }
 
 data class NpcEvent(
@@ -177,6 +181,7 @@ class NpcManager(
             grantItemFlag = data.grantItemFlag,
             repeatDialogueScript = data.repeatDialogueScript,
             phases = data.phases,
+            abilities = data.abilities,
             onKillFlags = data.onKillFlags,
             onSpawnRelockExits = data.onSpawnRelockExits
         )
@@ -387,6 +392,9 @@ class NpcManager(
 
     fun getLivingNpcsWithEffects(): List<NpcState> =
         npcs.filter { it.isAlive && it.activeEffects.isNotEmpty() }
+
+    fun getAllLivingHostileNpcs(): List<NpcState> =
+        npcs.filter { it.isAlive && it.hostile }
 
     fun getTrainerInRoom(roomId: RoomId): NpcState? =
         npcs.find { it.currentRoomId == roomId && it.behaviorType == "trainer" && it.isAlive }

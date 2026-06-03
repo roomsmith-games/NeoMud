@@ -429,7 +429,8 @@ sealed class ServerMessage {
         val spellName: String,
         val message: String,
         val newMp: Int,
-        val newHp: Int? = null
+        val newHp: Int? = null,
+        val targetName: String? = null
     ) : ServerMessage()
 
     @Serializable
@@ -531,6 +532,27 @@ sealed class ServerMessage {
         val message: String,
         val currentHp: Int,
         val maxHp: Int,
+        val sound: String = ""
+    ) : ServerMessage()
+
+    // NPC Abilities (boss AoE)
+    @Serializable
+    data class AbilityHitResult(
+        val targetName: String,
+        val damage: Int,
+        val saved: Boolean,
+        val newHp: Int,
+        val maxHp: Int
+    )
+
+    @Serializable
+    @SerialName("npc_ability_effect")
+    data class NpcAbilityEffect(
+        val npcName: String,
+        val npcId: String,
+        val abilityName: String,
+        val message: String,
+        val results: List<AbilityHitResult>,
         val sound: String = ""
     ) : ServerMessage()
 

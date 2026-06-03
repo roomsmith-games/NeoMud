@@ -88,6 +88,21 @@ data class BossPhaseData(
 )
 
 @Serializable
+data class NpcAbility(
+    val id: String,
+    val name: String,
+    val damage: Int,
+    val damageVariance: Int = 0,
+    val cooldownTicks: Int = 3,
+    val saveStat: String = "",
+    val saveDC: Int = 15,
+    val saveHalves: Boolean = true,
+    val phaseRequired: Int = 0,
+    val message: String = "",
+    val sound: String = ""
+)
+
+@Serializable
 data class NpcData(
     val id: String,
     val name: String,
@@ -126,6 +141,7 @@ data class NpcData(
     val imageWidth: Int = 384,
     val imageHeight: Int = 512,
     val phases: List<BossPhaseData> = emptyList(),
+    val abilities: List<NpcAbility> = emptyList(),
     val onKillFlags: Map<String, String> = emptyMap(),
     val onSpawnRelockExits: List<RelockExitData> = emptyList()
 )

@@ -77,6 +77,7 @@ import com.neomud.shared.model.PartyMember
 import com.neomud.shared.model.PlayerInfo
 import com.neomud.shared.model.RoomId
 import com.neomud.shared.model.RoomInteractable
+import com.neomud.shared.model.TargetType
 
 @Composable
 fun GameScreen(
@@ -164,6 +165,15 @@ fun GameScreen(
 
     CompositionLocalProvider(LocalServerBaseUrl provides gameViewModel.serverBaseUrl) {
     Box(modifier = Modifier.fillMaxSize().background(StoneTheme.panelBg).windowInsetsPadding(WindowInsets.safeDrawing)) {
+        val handlePlayerTap: (PlayerInfo) -> Unit = { info ->
+            val spell = readiedSpellId?.let { spellCatalogState[it] }
+            if (spell?.targetType == TargetType.ALLY) {
+                gameViewModel.castAllySpell(info.name)
+            } else {
+                gameViewModel.selectTarget(info.name)
+            }
+        }
+
         if (isLandscape) {
             GameScreenLandscape(
                 gameViewModel = gameViewModel,
@@ -175,7 +185,7 @@ fun GameScreen(
                 sayText = sayText,
                 onSayTextChange = { sayText = it },
                 roomPlayers = roomPlayers,
-                onPlayerTap = { gameViewModel.selectTarget(it.name) },
+                onPlayerTap = handlePlayerTap,
                 onPlayerLongPress = { tooltipPlayer = it }
             )
         } else {
@@ -189,7 +199,7 @@ fun GameScreen(
                 sayText = sayText,
                 onSayTextChange = { sayText = it },
                 roomPlayers = roomPlayers,
-                onPlayerTap = { gameViewModel.selectTarget(it.name) },
+                onPlayerTap = handlePlayerTap,
                 onPlayerLongPress = { tooltipPlayer = it }
             )
         }
@@ -852,6 +862,9 @@ private fun GameScreenPortrait(
                     playerName = player?.name,
                     followTarget = followTarget,
                     followState = followState,
+                    readiedSpellId = readiedSpellId,
+                    spellCatalog = spellCatalogState,
+                    onCastAllySpell = { targetName -> gameViewModel.castAllySpell(targetName) },
                     onOpenPartyPanel = { gameViewModel.togglePartyPanel() },
                     modifier = Modifier
                         .align(Alignment.TopStart)
@@ -1154,6 +1167,9 @@ private fun GameScreenLandscape(
                         playerName = player?.name,
                         followTarget = followTarget,
                         followState = followState,
+                        readiedSpellId = readiedSpellId,
+                        spellCatalog = spellCatalogState,
+                        onCastAllySpell = { targetName -> gameViewModel.castAllySpell(targetName) },
                         onOpenPartyPanel = { gameViewModel.togglePartyPanel() },
                         modifier = Modifier
                             .align(Alignment.TopStart)

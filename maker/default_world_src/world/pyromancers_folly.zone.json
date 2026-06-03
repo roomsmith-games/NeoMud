@@ -633,6 +633,34 @@
           "transitionSound": "boss_phase_shift"
         }
       ],
+      "abilities": [
+        {
+          "id": "flame_wave",
+          "name": "Flame Wave",
+          "damage": 28,
+          "damageVariance": 10,
+          "cooldownTicks": 4,
+          "saveStat": "agility",
+          "saveDC": 18,
+          "saveHalves": true,
+          "phaseRequired": 0,
+          "message": "Vatric hurls a sheet of blue-white flame that rolls across the sanctum floor!",
+          "sound": "fire_burst"
+        },
+        {
+          "id": "pyroclasm",
+          "name": "Pyroclasm",
+          "damage": 42,
+          "damageVariance": 12,
+          "cooldownTicks": 6,
+          "saveStat": "willpower",
+          "saveDC": 22,
+          "saveHalves": true,
+          "phaseRequired": 2,
+          "message": "The cinder nova contracts and ERUPTS — white-hot fire explodes outward in all directions!",
+          "sound": "fire_burst"
+        }
+      ],
       "imagePrompt": "Full-body skeletal lich wreathed in perpetual orange flame, charred skull with blue-white burning eyes, tattered ash robes, clutching a staff of fused glass and bone, fire dancing across the entire form, undead pyromancer boss, facing the viewer. Single creature, isolated on solid white background, no ground, no scenery.",
       "imageStyle": "fantasy creature boss sprite, full body, front-facing, clean edges, game asset, cinder lich boss, flame and bone tones",
       "imageNegativePrompt": "background, scenery, ground, shadow on floor, multiple creatures, portrait crop, modern, sci-fi, cute, cartoon, fleshy, alive, green",

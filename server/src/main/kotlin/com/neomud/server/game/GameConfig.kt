@@ -114,6 +114,8 @@ object GameConfig {
         /** Heal/HoT spells use a smaller stat divisor for tighter scaling at low levels */
         const val HEAL_STAT_DIVISOR = 4
         const val DOT_INITIAL_DAMAGE_DIVISOR = 2
+        const val AUTO_HEAL_SELF_PRIORITY_THRESHOLD = 0.25
+        const val GROUP_HEAL_POWER_RATIO = 0.55
         const val PICK_LOCK_COOLDOWN_TICKS = 3
         const val PICK_LOCK_DICE_SIZE = 20
         const val PICK_LOCK_INT_DIVISOR = 2
@@ -156,6 +158,10 @@ object GameConfig {
     object Rest {
         const val HEALTH_DIVISOR = 10
         const val RESTORE_BASE = 1
+    }
+    object NpcAbility {
+        const val SAVE_DICE_SIZE = 20
+        const val SAVE_LEVEL_DIVISOR = 2
     }
     object Npc {
         const val WANDER_MOVE_TICKS = 15

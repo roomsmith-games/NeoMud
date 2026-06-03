@@ -9,7 +9,7 @@ enum class SpellType {
 
 @Serializable
 enum class TargetType {
-    ENEMY, SELF
+    ENEMY, SELF, ALLY, PARTY_ROOM
 }
 
 @Serializable

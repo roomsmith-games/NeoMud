@@ -304,7 +304,8 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
     val roomItemManager = RoomItemManager()
     val inventoryCommand = InventoryCommand(inventoryRepository, itemCatalog, coinRepository, worldGraph, sessionManager)
     val movementTrailManager = MovementTrailManager()
-    val spellCommand = SpellCommand(spellCatalog, classCatalog, npcManager, sessionManager, playerRepository)
+    val partyService = PartyService()
+    val spellCommand = SpellCommand(spellCatalog, classCatalog, npcManager, sessionManager, playerRepository, partyService)
     val combatManager = CombatManager(npcManager, sessionManager, worldGraph, equipmentService, skillCatalog, spellCommand, spellCatalog, movementTrailManager)
     val trapManager = com.neomud.server.game.trap.TrapManager(worldGraph)
     val tutorialService = TutorialService(discoveryRepository, classCatalog, loadResult.manifest)
@@ -348,7 +349,6 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
         }
     }
 
-    val partyService = PartyService()
     val followCommand = com.neomud.server.game.commands.FollowCommand(partyService, sessionManager, worldGraph)
     val gameLoop = GameLoop(sessionManager, npcManager, combatManager, worldGraph, lootService, lootTableCatalog, roomItemManager, playerRepository, skillCatalog, classCatalog, itemCatalog, inventoryRepository, coinRepository, movementTrailManager, spellCommand, spellCatalog, tutorialService, playerFlagsRepository, partyService)
     val partyCommand = PartyCommand(partyService, sessionManager, { gameLoop.tickCount }, tutorialService)

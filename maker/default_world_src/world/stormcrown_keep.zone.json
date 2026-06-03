@@ -906,6 +906,34 @@
           "transitionSound": "boss_phase_shift"
         }
       ],
+      "abilities": [
+        {
+          "id": "storm_cleave",
+          "name": "Storm Cleave",
+          "damage": 38,
+          "damageVariance": 12,
+          "cooldownTicks": 4,
+          "saveStat": "agility",
+          "saveDC": 20,
+          "saveHalves": true,
+          "phaseRequired": 0,
+          "message": "The Stormcrown sweeps his lightning-wreathed greatsword in a devastating arc!",
+          "sound": "sword_swing"
+        },
+        {
+          "id": "dark_storm",
+          "name": "Dark Storm",
+          "damage": 52,
+          "damageVariance": 15,
+          "cooldownTicks": 7,
+          "saveStat": "willpower",
+          "saveDC": 24,
+          "saveHalves": true,
+          "phaseRequired": 1,
+          "message": "The Stormcrown raises one hand and the throne room erupts in crackling violet lightning!",
+          "sound": "sword_swing"
+        }
+      ],
       "lootItems": [
         {
           "itemId": "item:stormcrowns_seal_shard",
