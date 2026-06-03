@@ -450,7 +450,15 @@
       },
       "backgroundImage": "/assets/images/rooms/highmoor_hermit_outpost.webp",
       "departSound": "footstep_stone",
-      "maxHostileNpcs": 1,
+      "effects": [
+        {
+          "type": "SANCTUARY",
+          "value": 0,
+          "message": "The outpost's sheltering warmth keeps hostile creatures at bay.",
+          "sound": ""
+        }
+      ],
+      "maxHostileNpcs": 0,
       "healPerTick": 1,
       "imagePrompt": "First-person view of a spare stone hut crouched against a low boulder on a high plateau, the door long rotted off, soot-stained hearth still warm, a neat pile of dry firewood stacked nearby, sense of recent careful inhabitation, late afternoon cold light.",
       "imageStyle": "fantasy digital painting, rich colors, atmospheric high-plateau lighting, slightly painterly, fixed perspective, JRPG background, stage-like composition, windswept tundra, lonely hut",
