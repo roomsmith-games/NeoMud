@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "name": "Warden's Reckoning",
   "author": "NeoMud Team",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "A world where ancient seals are weakening and the line between guardian and destroyer must be chosen.",
   "createdAt": "2026-02-15",
   "engineVersion": "0.1.0.0",
@@ -12,5 +12,5 @@
   "coverImage": "assets/images/rooms/town_square.webp",
   "loadingBgm": "assets/audio/bgm/intro_theme.mp3",
   "introScript": "A thousand years ago, the world cracked.\n\nThe Wardens sealed what crawled out, and paid for it with their bloodline.\n\nThe seals are weakening. The world has forgotten why they matter.\n\nYou are the last who can choose what the silence remembers.",
-  "releaseNotes": "Party bug fixes: immediate disconnect notifications (PartyMemberLeft/PartyDisbanded sent on disconnect instead of after grace expiry), coin split rounding fix (remainder to killer), PartyMemberJoined on reconnect. Party member sprite indicators: blue border, tinted name label, leader crown, live HP/MP bars on party member sprites in room view."
+  "releaseNotes": "Relay: full protocol coverage for party, follow, social, combat, crafting, and NPC dialogue (21 handlers). Multi-instance relay support (--id flag). Server: ready_spell confirmation messages, health potion blocked at full HP. Playtester agent command reference expanded with party/social commands."
 }

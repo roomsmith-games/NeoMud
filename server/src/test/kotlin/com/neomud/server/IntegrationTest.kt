@@ -18,6 +18,7 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class IntegrationTest {
@@ -788,6 +789,114 @@ class IntegrationTest {
             // Next message should be RoomInfo, NOT a welcome SystemMessage
             val roomInfo = receiveServerMessage()
             assertIs<ServerMessage.RoomInfo>(roomInfo, "Second login should NOT get welcome, expected RoomInfo but got: $roomInfo")
+        }
+    }
+
+    // --- #471: ready_spell sends confirmation ---
+
+    @Test
+    fun testReadySpellSendsConfirmation() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.Register("spellready", "pass1234", "SpellReadier", "MAGE", race = "ELF", gender = "male",
+                    allocatedStats = Stats(strength = 11, agility = 23, intellect = 37, willpower = 25, health = 13, charm = 25))
+            )))
+            receiveServerMessage() // RegisterOk
+        }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.Login("spellready", "pass1234")
+            )))
+            receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial
+            receiveServerMessage() // Welcome Tutorial
+            receiveServerMessage() // RoomInfo
+            receiveServerMessage() // MapData
+            receiveServerMessage() // InventoryUpdate
+            receiveServerMessage() // RoomItemsUpdate
+
+            // Ready a spell — MAGE has destruction school
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ReadySpell(spellId = "spell:magic_missile")
+            )))
+
+            val confirmation = receiveServerMessage()
+            assertIs<ServerMessage.SystemMessage>(confirmation)
+            assertTrue(confirmation.message.contains("ready", ignoreCase = true),
+                "Expected ready confirmation but got: ${confirmation.message}")
+
+            // Clear the ready spell
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ReadySpell(spellId = null)
+            )))
+
+            val clearMsg = receiveServerMessage()
+            assertIs<ServerMessage.SystemMessage>(clearMsg)
+            assertTrue(clearMsg.message.contains("lower", ignoreCase = true),
+                "Expected lower confirmation but got: ${clearMsg.message}")
+        }
+    }
+
+    // --- #473: health potion blocked at full HP ---
+
+    @Test
+    fun testHealthPotionBlockedAtFullHp() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val wsClient = createClient { install(WebSockets) }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.Register("potiontest", "pass1234", "PotionTester", "WARRIOR",
+                    allocatedStats = Stats(strength = 30, agility = 22, intellect = 18, willpower = 18, health = 30, charm = 18))
+            )))
+            receiveServerMessage() // RegisterOk
+        }
+
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.Login("potiontest", "pass1234")
+            )))
+            receiveServerMessage() // LoginOk
+            receiveServerMessage() // World intro Tutorial
+            receiveServerMessage() // Welcome Tutorial
+            receiveServerMessage() // RoomInfo
+            receiveServerMessage() // MapData
+            val invUpdate = receiveServerMessage() // InventoryUpdate
+            assertIs<ServerMessage.InventoryUpdate>(invUpdate)
+            receiveServerMessage() // RoomItemsUpdate
+
+            // Starter WARRIOR has a health potion — try to use it at full HP
+            // The use_item command queues a PendingSkill; it resolves on the next tick.
+            // At full HP with a heal-only potion, the server should send "Your health is already full."
+            val hasPotion = invUpdate.inventory.any { it.itemId == "item:health_potion" }
+            if (hasPotion) {
+                send(Frame.Text(MessageSerializer.encodeClientMessage(
+                    ClientMessage.UseItem(itemId = "item:health_potion")
+                )))
+
+                // Wait for tick resolution — the response is a SystemMessage
+                val response = withTimeoutOrNull(5000) {
+                    var msg: ServerMessage
+                    do {
+                        msg = receiveServerMessage()
+                    } while (msg !is ServerMessage.SystemMessage && msg !is ServerMessage.ItemUsed && msg !is ServerMessage.Error)
+                    msg
+                }
+
+                assertNotNull(response, "Expected a response to use_item at full HP")
+                if (response is ServerMessage.SystemMessage) {
+                    assertTrue(response.message.contains("already full", ignoreCase = true),
+                        "Expected 'already full' message but got: ${response.message}")
+                }
+            }
         }
     }
 

@@ -124,6 +124,11 @@ object UseEffectProcessor {
         return if (anyApplied) Result(current, newEffects, messages, cureDot, targetDamage) else null
     }
 
+    fun isHealOnly(effectString: String): Boolean {
+        val effects = effectString.split(',').map { it.trim().split(':').first() }
+        return effects.isNotEmpty() && effects.all { it == "heal" }
+    }
+
     private val STAT_TO_EFFECT_TYPE = mapOf(
         "strength" to EffectType.BUFF_STRENGTH,
         "agility" to EffectType.BUFF_AGILITY,

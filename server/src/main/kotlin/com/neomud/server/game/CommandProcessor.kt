@@ -888,6 +888,7 @@ class CommandProcessor(
 
         if (spellId == null) {
             session.readiedSpellId = null
+            session.send(ServerMessage.SystemMessage("You lower your ready spell."))
             return
         }
 
@@ -913,6 +914,7 @@ class CommandProcessor(
         }
 
         session.readiedSpellId = spellId
+        session.send(ServerMessage.SystemMessage("You ready ${spell.name}."))
 
         // Entering spell combat breaks meditation, rest, stealth, and grace period
         MeditationUtils.breakMeditation(session, "You stop meditating.")

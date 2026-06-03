@@ -27,11 +27,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const STATE_FILE = path.join(__dirname, 'relay-state.json');
-const COMMAND_FILE = path.join(__dirname, 'relay-command.json');
-const TEMP_STATE_FILE = path.join(__dirname, '.relay-state.tmp');
-const PROCESSING_FILE = path.join(__dirname, '.relay-command.processing');
-const LOCK_FILE = path.join(__dirname, 'relay.lock');
+
+// --id <suffix> enables multiple relay instances (separate state/command/lock files)
+const idIdx = process.argv.indexOf('--id');
+const INSTANCE_ID = idIdx !== -1 && idIdx + 1 < process.argv.length ? process.argv[idIdx + 1] : null;
+const fileSuffix = INSTANCE_ID ? `-${INSTANCE_ID}` : '';
+
+const STATE_FILE = path.join(__dirname, `relay-state${fileSuffix}.json`);
+const COMMAND_FILE = path.join(__dirname, `relay-command${fileSuffix}.json`);
+const TEMP_STATE_FILE = path.join(__dirname, `.relay-state${fileSuffix}.tmp`);
+const PROCESSING_FILE = path.join(__dirname, `.relay-command${fileSuffix}.processing`);
+const LOCK_FILE = path.join(__dirname, `relay${fileSuffix}.lock`);
 
 const COMMAND_POLL_MS = 250;
 const PING_INTERVAL_MS = 30_000;
@@ -58,7 +64,7 @@ let platformAccessToken = null;
 let characterOverride = null;
 let username, password;
 
-// Extract --url, --staging, and --character flags first
+// Extract --url, --staging, --character, and --id flags first
 const args = [];
 for (let i = 0; i < rawArgs.length; i++) {
   if (rawArgs[i] === '--url' && i + 1 < rawArgs.length) {
@@ -68,6 +74,8 @@ for (let i = 0; i < rawArgs.length; i++) {
     stagingSlug = rawArgs[++i];
   } else if (rawArgs[i] === '--character' && i + 1 < rawArgs.length) {
     characterOverride = rawArgs[++i];
+  } else if (rawArgs[i] === '--id' && i + 1 < rawArgs.length) {
+    i++; // already parsed above
   } else {
     args.push(rawArgs[i]);
   }
@@ -362,6 +370,9 @@ const state = {
   activeEffects: [],
   availableSkills: [],
   availableSpells: [],
+  party: null,
+  following: null,
+  pendingPartyInvites: [],
   pendingPrompt: null,
   recentEvents: [],
 };
@@ -506,6 +517,15 @@ const handlers = {
     serverShuttingDown = true;
     shutdownRelay(0);
   },
+  connection_rejected(msg) {
+    pushEvent('error', `Connection rejected: ${msg.reason}`);
+    console.error(`[relay] Connection rejected: ${msg.reason}`);
+    shutdownRelay(1);
+  },
+  name_check_result(msg) {
+    const charStatus = msg.characterNameAvailable ? 'available' : 'taken';
+    pushEvent('system', `Name check: character name is ${charStatus}`);
+  },
 
   // Room / Movement
   room_info(msg) {
@@ -556,6 +576,94 @@ const handlers = {
   // Chat
   player_says(msg) {
     pushEvent('chat', `${msg.playerName} says: "${msg.message}"`);
+  },
+  tell_received(msg) {
+    pushEvent('tell', `${msg.senderName} tells you: "${msg.message}"`);
+  },
+  tell_sent(msg) {
+    pushEvent('tell', `You tell ${msg.targetName}: "${msg.message}"`);
+  },
+  who_list(msg) {
+    const players = (msg.players || []);
+    const names = players.map(p => `${p.name} (Lv${p.level} ${p.characterClass})`).join(', ');
+    pushEvent('who', `${players.length} online: ${names}`);
+  },
+
+  // Party
+  party_invite_received(msg) {
+    state.pendingPartyInvites.push({ from: msg.inviterName, partySize: msg.partySize || 1 });
+    pushEvent('party', `${msg.inviterName} invited you to a party (${msg.partySize || 1} members)`);
+  },
+  party_formed(msg) {
+    state.party = {
+      id: msg.partyId,
+      leader: msg.leaderId,
+      members: (msg.members || []).map(formatPartyMember),
+    };
+    state.pendingPartyInvites = [];
+    const names = (msg.members || []).map(m => m.name).join(', ');
+    pushEvent('party', `Party formed: ${names} (leader: ${msg.leaderId})`);
+  },
+  party_member_joined(msg) {
+    if (state.party) {
+      state.party.members.push(formatPartyMember(msg.member));
+    }
+    pushEvent('party', `${msg.member.name} joined the party`);
+  },
+  party_member_left(msg) {
+    if (state.party) {
+      state.party.members = state.party.members.filter(m => m.name !== msg.memberName);
+    }
+    const action = msg.reason === 'kicked' ? 'was kicked from' : 'left';
+    pushEvent('party', `${msg.memberName} ${action} the party`);
+  },
+  party_disbanded(msg) {
+    state.party = null;
+    state.following = null;
+    pushEvent('party', `Party disbanded: ${msg.reason || 'disbanded'}`);
+  },
+  party_member_update(msg) {
+    if (!state.party) return;
+    const member = state.party.members.find(m => m.name === msg.memberName);
+    if (member) {
+      if (msg.currentHp != null) member.hp = msg.currentHp;
+      if (msg.maxHp != null) member.maxHp = msg.maxHp;
+      if (msg.currentMp != null) member.mp = msg.currentMp;
+      if (msg.maxMp != null) member.maxMp = msg.maxMp;
+      if (msg.roomId != null) member.roomId = msg.roomId;
+    }
+    scheduleStateWrite();
+  },
+  party_chat(msg) {
+    pushEvent('party_chat', `[Party] ${msg.senderName}: ${msg.message}`);
+  },
+  party_info(msg) {
+    state.party = {
+      id: msg.partyId,
+      leader: msg.leaderId,
+      members: (msg.members || []).map(formatPartyMember),
+    };
+    pushEvent('party', 'Party info restored');
+  },
+
+  // Follow
+  follow_update(msg) {
+    if (state.player && msg.followerName === state.player.name) {
+      if (msg.state === 'OFF') {
+        state.following = null;
+      } else {
+        state.following = { target: msg.targetName, state: msg.state };
+      }
+    }
+    pushEvent('follow', `${msg.followerName} ${msg.state === 'OFF' ? 'stopped following' : 'is following'} ${msg.targetName}`);
+  },
+  follow_failed(msg) {
+    pushEvent('follow', `Follow failed: ${msg.reason}`);
+  },
+
+  // Rally
+  rally_ping(msg) {
+    pushEvent('rally', `${msg.leaderName} rallies the party! (${msg.roomName} in ${msg.zoneName})`);
   },
 
   // Combat
@@ -814,6 +922,20 @@ const handlers = {
   npc_phase_shift(msg) {
     pushEvent('phase_shift', `⚡ ${msg.npcName} — ${msg.phaseName}: ${msg.message} (${msg.currentHp}/${msg.maxHp} HP)`);
   },
+  npc_ability_effect(msg) {
+    for (const r of (msg.results || [])) {
+      if (state.player && r.targetName === state.player.name && r.newHp != null) {
+        state.player.hp = r.newHp;
+      }
+    }
+    const hits = (msg.results || []).map(r => `${r.targetName}: ${r.damage} dmg${r.saved ? ' (saved)' : ''}`).join(', ');
+    pushEvent('ability', `${msg.npcName} uses ${msg.abilityName}: ${hits}`);
+  },
+  npc_dialogue(msg) {
+    pushEvent('dialogue', `${msg.npc_name}: ${msg.content}`);
+    state.pendingPrompt = { type: 'dialogue', npcId: msg.npc_id, npcName: msg.npc_name, content: msg.content };
+    scheduleStateWrite();
+  },
   choice_prompt(msg) {
     const opts = (msg.options || []).map(o => `[${o.id}] ${o.label}`).join(', ');
     pushEvent('choice_prompt', `${msg.label}: ${msg.question} — Options: ${opts}`);
@@ -831,6 +953,22 @@ const handlers = {
     pushEvent('riddle_prompt', `${msg.label}: ${msg.question}${hint}`);
     state.pendingPrompt = { type: 'riddle', featureId: msg.featureId, label: msg.label, question: msg.question, hint: msg.hint };
     scheduleStateWrite();
+  },
+
+  // Crafting
+  crafting_menu(msg) {
+    const recipes = (msg.recipes || []).map(r => `${r.name || r.recipeId} [${r.recipeId}]`).join(', ');
+    pushEvent('crafting', `${msg.crafterName} offers: ${recipes}`);
+    state.pendingPrompt = { type: 'crafting', crafterName: msg.crafterName, recipes: msg.recipes };
+    scheduleStateWrite();
+  },
+  craft_result(msg) {
+    if (msg.success) {
+      state.inventory = (msg.updatedInventory || []).map(formatInventoryItem);
+      state.equipment = msg.equipment || state.equipment;
+      if (msg.updatedCoins) state.coins = formatCoins(msg.updatedCoins);
+    }
+    pushEvent('crafting', `Craft: ${msg.message}`);
   },
 
   // System
@@ -932,6 +1070,20 @@ function formatPlayerInfo(p) {
   };
 }
 
+function formatPartyMember(m) {
+  return {
+    name: m.name || '',
+    class: m.characterClass || '',
+    level: m.level || 0,
+    hp: m.currentHp ?? m.hp ?? 0,
+    maxHp: m.maxHp || 0,
+    mp: m.currentMp ?? m.mp ?? 0,
+    maxMp: m.maxMp || 0,
+    roomId: m.roomId || '',
+    isLeader: m.isLeader || false,
+  };
+}
+
 function formatInventoryItem(i) {
   return {
     itemId: i.itemId,
@@ -1026,6 +1178,9 @@ function connect() {
     cleanup();
     state.connected = false;
     state.loggedIn = false;
+    state.party = null;
+    state.following = null;
+    state.pendingPartyInvites = [];
     scheduleStateWrite();
 
     if (serverShuttingDown) {

@@ -100,6 +100,16 @@ echo '[{"type": "select_target", "npcId": "npc:wolf_0"}, {"type": "attack_toggle
 | Cast spell | `{"type": "cast_spell", "spellId": "spell:fireball"}` | Requires sufficient MP |
 | Ready spell | `{"type": "ready_spell", "spellId": "spell:fireball"}` | Auto-casts each combat tick |
 | Say | `{"type": "say", "message": "Hello!"}` | Chat in current room |
+| Tell (DM) | `{"type": "say", "message": "/tell Name message"}` | Private message — uses say with /tell prefix |
+| Party invite | `{"type": "party_invite", "targetName": "Bob"}` | Invite player to party |
+| Party accept | `{"type": "party_accept", "inviterName": "Bob"}` | Accept pending party invite |
+| Party decline | `{"type": "party_decline", "inviterName": "Bob"}` | Decline party invite |
+| Party leave | `{"type": "party_leave"}` | Leave current party |
+| Party kick | `{"type": "party_kick", "targetName": "Bob"}` | Kick member (leader only) |
+| Party chat | `{"type": "party_say", "message": "Hello team!"}` | Chat with party members only |
+| Follow | `{"type": "follow", "targetName": "Bob"}` | Follow a party member |
+| Follow stop | `{"type": "follow_stop"}` | Stop following |
+| Rally | `{"type": "rally"}` | Rally party to your location (leader) |
 | Interact vendor | `{"type": "interact_vendor"}` | Opens shop at current room's vendor |
 | Interact trainer | `{"type": "interact_trainer"}` | Opens trainer at current room |
 | Interact feature | `{"type": "interact_feature", "featureId": "cave_chest"}` | Interact with room feature — use `id` from `room.interactables` |

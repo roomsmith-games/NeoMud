@@ -235,6 +235,52 @@ class ConsumableUseTest {
         assertNull(session.pendingSkill)
     }
 
+    // --- Full HP guard for heal-only items (#473) ---
+
+    @Test
+    fun testUseEffectProcessorHealAtFullHpStillCalculates() {
+        val player = createTestPlayer(currentHp = 50, maxHp = 50)
+        val result = UseEffectProcessor.process("heal:25", player, "Health Potion")
+        assertNotNull(result)
+        assertEquals(50, result.updatedPlayer.currentHp)
+    }
+
+    @Test
+    fun testUseEffectProcessorHealManaComboAtFullHp() {
+        val player = createTestPlayer(currentHp = 50, maxHp = 50, currentMp = 10, maxMp = 30)
+        val result = UseEffectProcessor.process("heal:25,mana:15", player, "Restoration Potion")
+        assertNotNull(result)
+        assertEquals(50, result.updatedPlayer.currentHp)
+        assertEquals(25, result.updatedPlayer.currentMp)
+    }
+
+    // --- isHealOnly helper (#473) ---
+
+    @Test
+    fun testIsHealOnlyTrueForPureHeal() {
+        assertTrue(UseEffectProcessor.isHealOnly("heal:25"))
+    }
+
+    @Test
+    fun testIsHealOnlyFalseForHealPlusMana() {
+        assertFalse(UseEffectProcessor.isHealOnly("heal:25,mana:15"))
+    }
+
+    @Test
+    fun testIsHealOnlyFalseForHealPlusBuff() {
+        assertFalse(UseEffectProcessor.isHealOnly("heal:25,buff:strength:3:20"))
+    }
+
+    @Test
+    fun testIsHealOnlyFalseForDamageScroll() {
+        assertFalse(UseEffectProcessor.isHealOnly("damage:10"))
+    }
+
+    @Test
+    fun testIsHealOnlyFalseForEmptyString() {
+        assertFalse(UseEffectProcessor.isHealOnly(""))
+    }
+
     // --- Validates item ownership at resolution ---
 
     @Test

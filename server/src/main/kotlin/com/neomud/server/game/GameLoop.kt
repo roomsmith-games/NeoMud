@@ -1031,6 +1031,11 @@ class GameLoop(
             return
         }
 
+        if (UseEffectProcessor.isHealOnly(item.useEffect) && player.currentHp >= session.effectiveMaxHp()) {
+            try { session.send(ServerMessage.SystemMessage("Your health is already full.")) } catch (_: Exception) {}
+            return
+        }
+
         val result = UseEffectProcessor.process(item.useEffect, player, item.name, effectiveMaxHp = session.effectiveMaxHp())
         if (result == null) {
             try { session.send(ServerMessage.Error("${item.name} has no usable effect.")) } catch (_: Exception) {}
@@ -1526,4 +1531,5 @@ class GameLoop(
             }
         }
     }
+
 }
