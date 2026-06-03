@@ -20,6 +20,7 @@ fun FloatingMiniMap(
     rooms: List<MapRoom>,
     playerRoomId: RoomId,
     visitedRoomIds: Set<RoomId> = emptySet(),
+    partyMemberRoomIds: Map<Int, RoomId> = emptyMap(),
     modifier: Modifier = Modifier
 ) {
     val isLandscape = LocalIsLandscape.current
@@ -39,6 +40,7 @@ fun FloatingMiniMap(
             rooms = rooms,
             playerRoomId = playerRoomId,
             visitedRoomIds = visitedRoomIds,
+            partyMemberRoomIds = partyMemberRoomIds,
             fogOfWar = true,
             cellSize = cellSize,
             roomSize = roomSize

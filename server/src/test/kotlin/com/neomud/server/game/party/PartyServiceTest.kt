@@ -418,15 +418,14 @@ class PartyServiceTest {
     @Test
     fun `party cannot exceed MAX_SIZE`() {
         val ps = service()
-        formParty(ps, "A", "B")
-        ps.createInvite("A", "C", 1)
-        ps.acceptInvite("C", "A", 1)
-        // Invite E while party has 3 members (below max)
-        ps.createInvite("A", "E", 2)
-        ps.createInvite("A", "D", 2)
-        ps.acceptInvite("D", "A", 2)
-        // Party now at max (4). E's invite was created before full, but accept should reject.
-        val result = ps.acceptInvite("E", "A", 2)
-        assertTrue(result is PartyService.AcceptResult.PartyFull)
+        formParty(ps, "A", "B", tick = 0)
+        // Space invites across throttle windows to avoid rate limiting
+        ps.createInvite("A", "C", 100)
+        ps.acceptInvite("C", "A", 100)
+        ps.createInvite("A", "D", 200)
+        ps.acceptInvite("D", "A", 200)
+        // Party now at max (4). Create invite for E — should fail at invite time.
+        val inviteResult = ps.createInvite("A", "E", 300)
+        assertTrue(inviteResult is PartyService.InviteResult.PartyFull)
     }
 }

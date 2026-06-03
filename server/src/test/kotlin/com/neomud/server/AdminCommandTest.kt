@@ -155,7 +155,7 @@ class AdminCommandTest {
 
             send(sendMsg(ClientMessage.Say("/help")))
             val msg = drainUntil<ServerMessage.SystemMessage>()
-            assertEquals("Unknown command.", msg.message)
+            assertTrue(msg.message.startsWith("Unknown command: /help"))
         }
     }
 

@@ -16,6 +16,9 @@ class PartyService {
 
     private val lootRotation = ConcurrentHashMap<String, Int>()
 
+    // Invite throttling: inviterName -> throttle state
+    private val inviteThrottles = ConcurrentHashMap<String, InviteThrottle>()
+
     fun getParty(partyId: String): Party? = parties[partyId]
 
     fun getPartyForPlayer(playerName: String): Party? {
@@ -45,12 +48,40 @@ class PartyService {
             if (inviterParty.members.size >= GameConfig.Party.MAX_SIZE) return InviteResult.PartyFull
         }
 
+        // Throttle checks
+        val throttle = inviteThrottles.getOrPut(inviterName) { InviteThrottle() }
+        val targetKey = targetName.lowercase()
+
+        val perTargetLast = throttle.perTargetCooldown[targetKey]
+        if (perTargetLast != null && currentTick - perTargetLast < GameConfig.Party.INVITE_PER_TARGET_COOLDOWN_TICKS) {
+            return InviteResult.Throttled("You must wait before inviting $targetName again.")
+        }
+        val declineLast = throttle.declineCooldown[targetKey]
+        if (declineLast != null && currentTick - declineLast < GameConfig.Party.INVITE_DECLINE_COOLDOWN_TICKS) {
+            return InviteResult.Throttled("$targetName declined recently. Try again later.")
+        }
+        if (currentTick - throttle.globalWindowStart >= GameConfig.Party.INVITE_GLOBAL_WINDOW_TICKS) {
+            throttle.globalWindowStart = currentTick
+            throttle.globalInviteCount = 0
+        }
+        if (throttle.globalInviteCount >= GameConfig.Party.INVITE_GLOBAL_MAX_PER_WINDOW) {
+            return InviteResult.Throttled("You are sending invites too quickly.")
+        }
+
+        throttle.perTargetCooldown[targetKey] = currentTick
+        throttle.globalInviteCount++
+
         val existing = pendingInvites.getOrPut(targetName) { mutableListOf() }
         existing.removeAll { it.inviterName == inviterName }
         existing.add(PendingInvite(inviterName, targetName, currentTick + GameConfig.Party.INVITE_EXPIRY_TICKS))
 
         val currentSize = inviterParty?.members?.size ?: 1
         return InviteResult.Success(currentSize)
+    }
+
+    fun recordDecline(inviterName: String, targetName: String, currentTick: Long) {
+        val throttle = inviteThrottles.getOrPut(inviterName) { InviteThrottle() }
+        throttle.declineCooldown[targetName.lowercase()] = currentTick
     }
 
     fun acceptInvite(targetName: String, inviterName: String, currentTick: Long): AcceptResult {
@@ -255,6 +286,7 @@ class PartyService {
         data object TargetAlreadyInParty : InviteResult()
         data object NotLeader : InviteResult()
         data object PartyFull : InviteResult()
+        data class Throttled(val reason: String) : InviteResult()
     }
 
     sealed class AcceptResult {

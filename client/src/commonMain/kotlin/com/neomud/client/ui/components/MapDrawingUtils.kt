@@ -22,6 +22,13 @@ internal val RoomColorPlayers = Color(0xFF42A5F5)
 internal val RoomColorNpcs = Color(0xFFFF9800)
 internal val RoomColorDefault = Color(0xFF555555)
 
+internal val PartyDotColors = listOf(
+    Color(0xFF66BB6A),
+    Color(0xFF42A5F5),
+    Color(0xFFFF8A65),
+    Color(0xFFAB47BC)
+)
+
 internal fun zoneColor(zoneId: String): Color {
     if (zoneId.isEmpty()) return RoomColorDefault
     val hash = zoneId.hashCode()

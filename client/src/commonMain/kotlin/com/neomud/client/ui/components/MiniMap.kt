@@ -17,6 +17,7 @@ fun MiniMap(
     rooms: List<MapRoom>,
     playerRoomId: RoomId,
     visitedRoomIds: Set<RoomId> = emptySet(),
+    partyMemberRoomIds: Map<Int, RoomId> = emptyMap(),
     fogOfWar: Boolean = false,
     cellSize: Float = 48f,
     roomSize: Float = 36f,
@@ -125,6 +126,24 @@ fun MiniMap(
                 val offsetY = if (hasSouth) roomSize / 2 + triSize + 3f else roomSize / 2 + 3f
                 drawDownTriangle(pos.x, pos.y + offsetY, triSize, downColor, UpDownOutline)
             }
+        }
+
+        // Party member dots — visible even on fogged rooms
+        val dotOffsets = listOf(
+            Offset(-roomSize / 4, roomSize / 4),
+            Offset(roomSize / 4, roomSize / 4),
+            Offset(-roomSize / 4, -roomSize / 4)
+        )
+        for ((colorIndex, memberRoomId) in partyMemberRoomIds) {
+            val pos = roomPositions[memberRoomId] ?: continue
+            val color = PartyDotColors[colorIndex % PartyDotColors.size]
+            val slotIndex = colorIndex.coerceAtMost(dotOffsets.size - 1)
+            val offset = dotOffsets[slotIndex]
+            drawCircle(
+                color = color,
+                radius = 4f,
+                center = Offset(pos.x + offset.x, pos.y + offset.y)
+            )
         }
     }
 }

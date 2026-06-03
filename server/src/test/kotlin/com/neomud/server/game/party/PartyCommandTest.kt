@@ -138,21 +138,24 @@ class PartyCommandTest {
     }
 
     @Test
-    fun `invite player in different room sends error`() = runBlocking {
+    fun `invite player in different room succeeds (cross-room invites)`() = runBlocking {
         val (_, sm, pc) = setup()
         val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
         val alice = createTestSession("Alice", aliceOut)
-        val bob = createTestSession("Bob")
+        val bob = createTestSession("Bob", bobOut)
         bob.currentRoomId = "test:room2"
         sm.addSession("Alice", alice)
         sm.addSession("Bob", bob)
 
         pc.handleInvite(alice, "Bob")
 
-        val messages = drainMessages(aliceOut)
-        assertTrue(messages.any {
-            it is ServerMessage.SystemMessage && it.message.contains("not in this room")
+        val aliceMsgs = drainMessages(aliceOut)
+        assertTrue(aliceMsgs.any {
+            it is ServerMessage.SystemMessage && it.message.contains("invited")
         })
+        val bobMsgs = drainMessages(bobOut)
+        assertTrue(bobMsgs.any { it is ServerMessage.PartyInviteReceived })
     }
 
     @Test

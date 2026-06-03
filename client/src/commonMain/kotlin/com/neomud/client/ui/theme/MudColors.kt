@@ -38,6 +38,10 @@ object MudColors {
     // Party
     val partyChat = Color(0xFF55AAFF)   // light blue - party messages
 
+    // Tell (direct messages)
+    val tellIncoming = Color(0xFFFF8855) // warm orange - incoming tells
+    val tellOutgoing = Color(0xFFBB7744) // dim orange - outgoing tells
+
     // Loot
     val loot = Color(0xFFFFD700)        // gold - loot messages
 

@@ -6,6 +6,9 @@ import com.neomud.server.game.commands.BashCommand
 import com.neomud.server.game.commands.DialogueCommand
 import com.neomud.server.game.commands.FollowCommand
 import com.neomud.server.game.commands.PartyCommand
+import com.neomud.server.game.commands.PlayerCommandRouter
+import com.neomud.server.game.commands.TellCommand
+import com.neomud.server.game.commands.WhoCommand
 import com.neomud.server.game.party.PartyService
 import com.neomud.shared.model.PartyMember
 import com.neomud.server.game.commands.InventoryCommand
@@ -206,7 +209,12 @@ class CommandProcessor(
 
     private val moveCommand = MoveCommand(worldGraph, sessionManager, npcManager, playerRepository, roomItemManager, skillCatalog, classCatalog, movementTrailManager, tutorialService, trapManager)
     private val lookCommand = LookCommand(worldGraph, sessionManager, npcManager, roomItemManager, skillCatalog, classCatalog, tutorialService)
-    private val sayCommand = SayCommand(sessionManager, adminCommand)
+    private val tellCommand = TellCommand(sessionManager)
+    private val whoCommand = WhoCommand(sessionManager, zoneNames)
+    private val playerCommandRouter = PlayerCommandRouter(
+        tellCommand, whoCommand, sessionManager, partyCommand, followCommand
+    )
+    private val sayCommand = SayCommand(sessionManager, adminCommand, playerCommandRouter)
     private val attackCommand = AttackCommand(npcManager, worldGraph)
     private val sneakCommand = SneakCommand(sessionManager, npcManager, skillCatalog, classCatalog)
     private val bashCommand = BashCommand(npcManager, sessionManager)

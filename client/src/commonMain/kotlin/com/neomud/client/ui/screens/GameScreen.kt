@@ -73,7 +73,9 @@ import com.neomud.client.ui.components.PlayerTooltip
 import com.neomud.client.ui.components.MudIcons
 import com.neomud.client.viewmodel.GameViewModel
 import com.neomud.shared.model.Direction
+import com.neomud.shared.model.PartyMember
 import com.neomud.shared.model.PlayerInfo
+import com.neomud.shared.model.RoomId
 import com.neomud.shared.model.RoomInteractable
 
 @Composable
@@ -829,11 +831,13 @@ private fun GameScreenPortrait(
             // Layer 2: Floating minimap
             val data = mapData
             if (data != null) {
+                val partyDots = buildPartyDotMap(partyMembers, player?.name)
                 key(data.playerRoomId) {
                     FloatingMiniMap(
                         rooms = data.rooms,
                         playerRoomId = data.playerRoomId,
                         visitedRoomIds = visitedRooms,
+                        partyMemberRoomIds = partyDots,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(end = 4.dp, top = 4.dp)
@@ -1129,11 +1133,13 @@ private fun GameScreenLandscape(
                 // Layer 2: Floating minimap
                 val data = mapData
                 if (data != null) {
+                    val partyDots = buildPartyDotMap(partyMembers, player?.name)
                     key(data.playerRoomId) {
                         FloatingMiniMap(
                             rooms = data.rooms,
                             playerRoomId = data.playerRoomId,
                             visitedRoomIds = visitedRooms,
+                            partyMemberRoomIds = partyDots,
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
                                 .padding(end = 4.dp, top = 4.dp)
@@ -1763,6 +1769,11 @@ private fun SettingsGearButton(onClick: () -> Unit) {
     }
 }
 
+private val PLAYER_COMMANDS = listOf(
+    "/follow", "/ignore", "/invite", "/leave",
+    "/p", "/party leave", "/rally", "/reply", "/tell", "/unfollow", "/unignore", "/who"
+)
+
 private val ADMIN_COMMANDS = listOf(
     "/broadcast", "/godmode", "/grantcp", "/grantitem", "/grantxp",
     "/heal", "/help", "/kill", "/setlevel", "/setstat", "/shutdown", "/spawn", "/teleport"
@@ -1800,11 +1811,11 @@ private fun SayBar(
                 val isTypingForward = newText.length > tfv.text.length ||
                     (newText.length == tfv.text.length && newTfv.selection.collapsed && !tfv.selection.collapsed)
 
-                if (isAdmin && newText.startsWith("/") && !newText.contains(" ") && isTypingForward && newTfv.selection.collapsed) {
+                if (newText.startsWith("/") && !newText.contains(" ") && isTypingForward && newTfv.selection.collapsed) {
                     val prefix = newText.lowercase()
-                    val match = ADMIN_COMMANDS.firstOrNull { it.startsWith(prefix) && it != prefix }
+                    val allCommands = if (isAdmin) PLAYER_COMMANDS + ADMIN_COMMANDS else PLAYER_COMMANDS
+                    val match = allCommands.firstOrNull { it.startsWith(prefix) && it != prefix }
                     if (match != null) {
-                        // Fill in the completion with the suffix selected
                         tfv = TextFieldValue(
                             text = match,
                             selection = TextRange(cursorPos, match.length)
@@ -1820,7 +1831,17 @@ private fun SayBar(
             singleLine = true,
             textStyle = TextStyle(
                 fontSize = 13.sp,
-                color = if (isAdmin && tfv.text.startsWith("/")) Color(0xFF1565C0) else Color(0xFFCCCCCC)
+                color = run {
+                    val text = tfv.text.lowercase()
+                    when {
+                        text.startsWith("/p ") -> MudColors.partyChat
+                        text.startsWith("/tell ") || text.startsWith("/t ") -> MudColors.tellIncoming
+                        text.startsWith("/reply ") || text.startsWith("/r ") -> MudColors.tellOutgoing
+                        isAdmin && text.startsWith("/") -> Color(0xFF1565C0)
+                        text.startsWith("/") -> Color(0xFF88AACC)
+                        else -> Color(0xFFCCCCCC)
+                    }
+                }
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             modifier = Modifier
@@ -1879,4 +1900,9 @@ private fun SayBar(
             )
         }
     }
+}
+
+private fun buildPartyDotMap(members: List<PartyMember>, selfName: String?): Map<Int, RoomId> {
+    val others = members.filter { it.name != selfName && it.roomId.isNotEmpty() }
+    return others.withIndex().associate { (i, m) -> i to m.roomId }
 }

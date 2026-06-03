@@ -234,6 +234,10 @@ class GameViewModel(
     private val _followState = MutableStateFlow(FollowState.OFF)
     val followState: StateFlow<FollowState> = _followState
 
+    // Tell (direct messages)
+    private val _lastTellSender = MutableStateFlow<String?>(null)
+    val lastTellSender: StateFlow<String?> = _lastTellSender
+
     // Tutorial modal (blocking). The currently-shown tutorial is the head of [tutorialQueue];
     // additional incoming blocking Tutorials append to the tail and are shown sequentially as
     // each is dismissed. Required so that multi-step intros (#272: per-world intro then welcome)
@@ -931,6 +935,29 @@ class GameViewModel(
             }
             is ServerMessage.FollowFailed -> {
                 addLog(message.reason, MudColors.error)
+            }
+            is ServerMessage.TellReceived -> {
+                addEntry(LogEntry(listOf(
+                    LogSpan("[Tell from ${message.senderName}] ", MudColors.tellIncoming),
+                    LogSpan(message.message, MudColors.tellIncoming)
+                )))
+                _lastTellSender.value = message.senderName
+            }
+            is ServerMessage.TellSent -> {
+                addEntry(LogEntry(listOf(
+                    LogSpan("[Tell to ${message.targetName}] ", MudColors.tellOutgoing),
+                    LogSpan(message.message, MudColors.tellOutgoing)
+                )))
+            }
+            is ServerMessage.WhoList -> {
+                addLog("--- Online Players (${message.players.size}) ---", MudColors.roomName)
+                for (p in message.players) {
+                    addEntry(LogEntry(listOf(
+                        LogSpan("  ${p.name}", MudColors.playerName),
+                        LogSpan(" Lv.${p.level} ${p.characterClass}", MudColors.default),
+                        LogSpan(" — ${p.zone}", MudColors.roomDesc)
+                    )))
+                }
             }
         }
     }

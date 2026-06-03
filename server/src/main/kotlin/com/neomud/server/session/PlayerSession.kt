@@ -59,6 +59,10 @@ class PlayerSession(
     var followTarget: String? = null
     var followState: FollowState = FollowState.OFF
 
+    // Social — tell / ignore
+    var lastTellSender: String? = null
+    val ignoredPlayers: MutableSet<String> = mutableSetOf()
+
     // Tutorial tracking
     val seenTutorials: MutableSet<String> = mutableSetOf()
     var firstKillDone: Boolean = false

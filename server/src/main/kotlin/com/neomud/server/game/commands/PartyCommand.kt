@@ -24,8 +24,10 @@ class PartyCommand(
             session.send(ServerMessage.SystemMessage("$targetName is not online."))
             return
         }
-        if (targetSession.currentRoomId != session.currentRoomId) {
-            session.send(ServerMessage.SystemMessage("$targetName is not in this room."))
+
+        // Block invite if target is ignoring inviter
+        if (inviterName.lowercase() in targetSession.ignoredPlayers) {
+            session.send(ServerMessage.SystemMessage("$targetName is not online."))
             return
         }
 
@@ -43,6 +45,8 @@ class PartyCommand(
                 session.send(ServerMessage.SystemMessage("Only the party leader can invite."))
             is PartyService.InviteResult.PartyFull ->
                 session.send(ServerMessage.SystemMessage("Your party is full."))
+            is PartyService.InviteResult.Throttled ->
+                session.send(ServerMessage.SystemMessage(result.reason))
         }
     }
 
@@ -95,6 +99,7 @@ class PartyCommand(
             session.send(ServerMessage.SystemMessage("No pending invite from $inviterName."))
             return
         }
+        partyService.recordDecline(inviterName, targetName, tickCounter())
         session.send(ServerMessage.SystemMessage("You declined the invite from $inviterName."))
         sessionManager.getSession(inviterName)?.send(
             ServerMessage.SystemMessage("$targetName declined your party invite.")

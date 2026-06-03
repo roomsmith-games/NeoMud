@@ -248,6 +248,10 @@ object GameConfig {
         const val FOLLOW_COMBAT_SUSPEND = true
         const val FOLLOW_REVEAL_HIDDEN_EXITS = true
         const val NPC_THREAT_ENGAGED_WEIGHT = 0.80
+        const val INVITE_PER_TARGET_COOLDOWN_TICKS = 40L
+        const val INVITE_DECLINE_COOLDOWN_TICKS = 200L
+        const val INVITE_GLOBAL_MAX_PER_WINDOW = 3
+        const val INVITE_GLOBAL_WINDOW_TICKS = 40L
     }
     object Trails {
         const val MAX_ENTRIES_PER_ROOM = 20

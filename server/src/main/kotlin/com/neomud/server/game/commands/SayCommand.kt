@@ -8,18 +8,25 @@ import com.neomud.shared.protocol.ServerMessage
 
 class SayCommand(
     private val sessionManager: SessionManager,
-    private val adminCommand: AdminCommand
+    private val adminCommand: AdminCommand,
+    private val playerCommandRouter: PlayerCommandRouter? = null
 ) {
     suspend fun execute(session: PlayerSession, message: String) {
         val roomId = session.currentRoomId ?: return
         val playerName = session.playerName ?: return
 
-        // Intercept slash commands
+        // Intercept slash commands: player commands first, then admin
         if (message.startsWith("/")) {
-            if (session.player?.isAdmin == true) {
-                adminCommand.execute(session, message)
-            } else {
-                session.send(ServerMessage.SystemMessage("Unknown command."))
+            val handled = playerCommandRouter?.tryExecute(session, message) ?: false
+            if (!handled) {
+                if (session.player?.isAdmin == true) {
+                    adminCommand.execute(session, message)
+                } else {
+                    val suggestion = playerCommandRouter?.suggestCommand(message)
+                    val hint = if (suggestion != null) " Did you mean: $suggestion?" else " Type /help for commands."
+                    val cmd = message.trimStart('/').split(" ")[0]
+                    session.send(ServerMessage.SystemMessage("Unknown command: /$cmd.$hint"))
+                }
             }
             return
         }

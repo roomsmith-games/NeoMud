@@ -125,6 +125,20 @@ sealed class ServerMessage {
     @SerialName("player_says")
     data class PlayerSays(val playerName: String, val message: String) : ServerMessage()
 
+    // Tell (direct messages)
+    @Serializable
+    @SerialName("tell_received")
+    data class TellReceived(val senderName: String, val message: String) : ServerMessage()
+
+    @Serializable
+    @SerialName("tell_sent")
+    data class TellSent(val targetName: String, val message: String) : ServerMessage()
+
+    // Who list
+    @Serializable
+    @SerialName("who_list")
+    data class WhoList(val players: List<OnlinePlayer>) : ServerMessage()
+
     // Combat
     @Serializable
     @SerialName("combat_hit")

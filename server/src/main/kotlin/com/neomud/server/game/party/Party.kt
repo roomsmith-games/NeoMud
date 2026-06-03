@@ -13,3 +13,10 @@ data class PendingInvite(
     val targetName: String,
     val expiresAtTick: Long
 )
+
+data class InviteThrottle(
+    val perTargetCooldown: MutableMap<String, Long> = mutableMapOf(),
+    val declineCooldown: MutableMap<String, Long> = mutableMapOf(),
+    var globalInviteCount: Int = 0,
+    var globalWindowStart: Long = 0
+)
