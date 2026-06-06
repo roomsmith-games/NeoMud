@@ -128,6 +128,9 @@ class PartyCommand(
                 if (result.newLeader != null) {
                     for (name in result.party.members) {
                         sessionManager.getSession(name)?.send(
+                            ServerMessage.PartyLeaderChanged(result.newLeader, result.newLeader)
+                        )
+                        sessionManager.getSession(name)?.send(
                             ServerMessage.SystemMessage("${result.newLeader} is now the party leader.")
                         )
                     }

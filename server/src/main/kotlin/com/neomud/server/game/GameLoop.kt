@@ -799,7 +799,7 @@ class GameLoop(
             val graceExpiries = partyService.tickGracePeriods()
             for (expiry in graceExpiries) {
                 sessionManager.getSession(expiry.lastRemainingMember)?.send(
-                    ServerMessage.PartyDisbanded("party too small")
+                    ServerMessage.PartyDisbanded("${expiry.expiredPlayer} disconnected — party too small to continue.")
                 )
             }
             // Auto-resume PAUSED followers who are now in the same room as their target and not in combat

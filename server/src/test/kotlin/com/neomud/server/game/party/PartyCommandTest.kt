@@ -222,6 +222,42 @@ class PartyCommandTest {
         })
     }
 
+    // ─── Leader leave sends PartyLeaderChanged ──────────────
+
+    @Test
+    fun `leader leaving 3-member party sends PartyLeaderChanged to remaining`() = runBlocking {
+        val (ps, sm, pc) = setup()
+        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val charlieOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice", aliceOut)
+        val bob = createTestSession("Bob", bobOut)
+        val charlie = createTestSession("Charlie", charlieOut)
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+        sm.addSession("Charlie", charlie)
+
+        ps.createInvite("Alice", "Bob", 0)
+        ps.acceptInvite("Bob", "Alice", 0)
+        ps.createInvite("Alice", "Charlie", 1)
+        ps.acceptInvite("Charlie", "Alice", 1)
+        drainMessages(aliceOut)
+        drainMessages(bobOut)
+        drainMessages(charlieOut)
+
+        pc.handleLeave(alice)
+
+        val bobMessages = drainMessages(bobOut)
+        val leaderChanged = bobMessages.filterIsInstance<ServerMessage.PartyLeaderChanged>().firstOrNull()
+        assertNotNull(leaderChanged, "Bob should receive PartyLeaderChanged when leader leaves")
+
+        val charlieMessages = drainMessages(charlieOut)
+        val charlieLeaderChanged = charlieMessages.filterIsInstance<ServerMessage.PartyLeaderChanged>().firstOrNull()
+        assertNotNull(charlieLeaderChanged, "Charlie should receive PartyLeaderChanged when leader leaves")
+
+        assertEquals(leaderChanged.newLeaderId, charlieLeaderChanged.newLeaderId)
+    }
+
     // ─── Invite includes class/level (#475) ──────────────────
 
     @Test

@@ -237,6 +237,9 @@ fun Application.configureRouting(
                                 if (partyResult.newLeader != null) {
                                     for (name in partyResult.otherMembers) {
                                         sessionManager.getSession(name)?.send(
+                                            ServerMessage.PartyLeaderChanged(partyResult.newLeader, partyResult.newLeader)
+                                        )
+                                        sessionManager.getSession(name)?.send(
                                             ServerMessage.SystemMessage("${partyResult.newLeader} is now the party leader.")
                                         )
                                     }
@@ -245,7 +248,7 @@ fun Application.configureRouting(
                             is com.neomud.server.game.party.PartyService.DisconnectResult.Disbanded -> {
                                 for (name in partyResult.otherMembers) {
                                     sessionManager.getSession(name)?.send(
-                                        ServerMessage.PartyDisbanded("party too small")
+                                        ServerMessage.PartyDisbanded("$playerName disconnected — party too small to continue.")
                                     )
                                 }
                             }

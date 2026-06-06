@@ -637,6 +637,15 @@ const handlers = {
   party_chat(msg) {
     pushEvent('party_chat', `[Party] ${msg.senderName}: ${msg.message}`);
   },
+  party_leader_changed(msg) {
+    if (state.party) {
+      state.party.leader = msg.newLeaderId;
+      for (const m of state.party.members) {
+        m.isLeader = m.name === msg.newLeaderId;
+      }
+    }
+    pushEvent('party', `${msg.newLeaderId} is now the party leader`);
+  },
   party_info(msg) {
     state.party = {
       id: msg.partyId,
