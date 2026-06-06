@@ -188,7 +188,7 @@ fun PartyPanel(
 
             Spacer(Modifier.height(8.dp))
 
-            if (isLeader && members.size < 4) {
+            if ((isLeader || members.size <= 1) && members.size < 4) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
