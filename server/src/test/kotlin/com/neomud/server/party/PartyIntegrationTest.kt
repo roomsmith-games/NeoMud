@@ -949,4 +949,167 @@ class PartyIntegrationTest {
             sessionB.await()
         }
     }
+
+    // ── Invite includes class and level (#475) ─────────────────────
+
+    @Test
+    fun `party invite includes inviter class and level`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val ws = createClient { install(WebSockets) }
+
+        ws.webSocket("/game") { register("inv475_a", "Korrath", "WARRIOR") }
+        ws.webSocket("/game") { register("inv475_b", "Yelindra", "MAGE",
+            stats = Stats(strength = 10, agility = 18, intellect = 30, willpower = 22, health = 18, charm = 18)) }
+
+        coroutineScope {
+            val aReady = CompletableDeferred<Unit>()
+            val bReady = CompletableDeferred<Unit>()
+            val testDone = CompletableDeferred<Unit>()
+
+            val sessionA = async {
+                ws.webSocket("/game") {
+                    login("inv475_a")
+                    aReady.complete(Unit)
+                    bReady.await()
+                    delay(200)
+                    send(encode(ClientMessage.PartyInvite("Yelindra")))
+                    testDone.await()
+                    delay(500)
+                }
+            }
+
+            val sessionB = async {
+                aReady.await()
+                delay(200)
+                ws.webSocket("/game") {
+                    login("inv475_b")
+                    bReady.complete(Unit)
+                    val invite = drainUntil({ it is ServerMessage.PartyInviteReceived })
+                    assertNotNull(invite, "Should receive party invite")
+                    val pi = invite as ServerMessage.PartyInviteReceived
+                    assertEquals("Korrath", pi.inviterName)
+                    assertEquals("WARRIOR", pi.inviterClass)
+                    assertEquals(1, pi.inviterLevel)
+                    testDone.complete(Unit)
+                }
+            }
+
+            sessionA.await()
+            sessionB.await()
+        }
+    }
+
+    // ── Disband reason includes player name (#469) ─────────────────
+
+    @Test
+    fun `disband reason includes leaving player name`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val ws = createClient { install(WebSockets) }
+
+        ws.webSocket("/game") { register("dis469_a", "Valdris", "WARRIOR") }
+        ws.webSocket("/game") { register("dis469_b", "Thandor", "WARRIOR") }
+
+        coroutineScope {
+            val aReady = CompletableDeferred<Unit>()
+            val bReady = CompletableDeferred<Unit>()
+            val partyReady = CompletableDeferred<Unit>()
+            val leftDone = CompletableDeferred<Unit>()
+
+            val sessionA = async {
+                ws.webSocket("/game") {
+                    login("dis469_a")
+                    aReady.complete(Unit)
+                    bReady.await()
+                    delay(200)
+                    send(encode(ClientMessage.PartyInvite("Thandor")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyReady.complete(Unit)
+                    send(encode(ClientMessage.PartyLeave))
+                    drainUntil({ it is ServerMessage.SystemMessage })
+                    leftDone.complete(Unit)
+                    delay(500)
+                }
+            }
+
+            val sessionB = async {
+                aReady.await()
+                delay(200)
+                ws.webSocket("/game") {
+                    login("dis469_b")
+                    bReady.complete(Unit)
+                    drainUntil({ it is ServerMessage.PartyInviteReceived })
+                    send(encode(ClientMessage.PartyAccept("Valdris")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyReady.await()
+                    leftDone.await()
+                    val disbanded = drainUntil({ it is ServerMessage.PartyDisbanded })
+                    assertNotNull(disbanded, "Thandor should receive PartyDisbanded")
+                    val reason = (disbanded as ServerMessage.PartyDisbanded).reason
+                    assertTrue(reason.contains("Valdris"), "Disband reason should include leaver's name, got: $reason")
+                }
+            }
+
+            sessionA.await()
+            sessionB.await()
+        }
+    }
+
+    // ── Promote (#476) ─────────────────────────────────────────────
+
+    @Test
+    fun `leader can promote another member`() = testApplication {
+        application { module(jdbcUrl = testDbUrl()) }
+        val ws = createClient { install(WebSockets) }
+
+        ws.webSocket("/game") { register("promo_a", "Bryndor", "WARRIOR") }
+        ws.webSocket("/game") { register("promo_b", "Kaelith", "MAGE",
+            stats = Stats(strength = 10, agility = 18, intellect = 30, willpower = 22, health = 18, charm = 18)) }
+
+        coroutineScope {
+            val aReady = CompletableDeferred<Unit>()
+            val bReady = CompletableDeferred<Unit>()
+            val partyReady = CompletableDeferred<Unit>()
+            val promoteDone = CompletableDeferred<Unit>()
+
+            val sessionA = async {
+                ws.webSocket("/game") {
+                    login("promo_a")
+                    aReady.complete(Unit)
+                    bReady.await()
+                    delay(200)
+                    send(encode(ClientMessage.PartyInvite("Kaelith")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyReady.complete(Unit)
+
+                    send(encode(ClientMessage.PartyPromote("Kaelith")))
+                    val leaderChanged = drainUntil({ it is ServerMessage.PartyLeaderChanged })
+                    assertNotNull(leaderChanged, "Should receive PartyLeaderChanged")
+                    assertEquals("Kaelith", (leaderChanged as ServerMessage.PartyLeaderChanged).newLeaderId)
+                    promoteDone.complete(Unit)
+                    delay(500)
+                }
+            }
+
+            val sessionB = async {
+                aReady.await()
+                delay(200)
+                ws.webSocket("/game") {
+                    login("promo_b")
+                    bReady.complete(Unit)
+                    drainUntil({ it is ServerMessage.PartyInviteReceived })
+                    send(encode(ClientMessage.PartyAccept("Bryndor")))
+                    drainUntil({ it is ServerMessage.PartyFormed })
+                    partyReady.await()
+
+                    val leaderChanged = drainUntil({ it is ServerMessage.PartyLeaderChanged })
+                    assertNotNull(leaderChanged, "New leader should also receive PartyLeaderChanged")
+                    assertEquals("Kaelith", (leaderChanged as ServerMessage.PartyLeaderChanged).newLeaderId)
+                    promoteDone.await()
+                }
+            }
+
+            sessionA.await()
+            sessionB.await()
+        }
+    }
 }

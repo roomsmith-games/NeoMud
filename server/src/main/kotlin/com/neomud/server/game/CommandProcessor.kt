@@ -446,6 +446,9 @@ class CommandProcessor(
             is ClientMessage.PartySay -> {
                 requireAuth(session) { partyCommand?.handleSay(session, message.message) }
             }
+            is ClientMessage.PartyPromote -> {
+                requireAuth(session) { partyCommand?.handlePromote(session, message.targetName) }
+            }
             is ClientMessage.Follow -> {
                 requireAuth(session) { followCommand?.handleFollow(session, message.targetName) }
             }

@@ -222,6 +222,28 @@ class PartyCommandTest {
         })
     }
 
+    // ─── Invite includes class/level (#475) ──────────────────
+
+    @Test
+    fun `invite sends class and level in PartyInviteReceived`() = runBlocking {
+        val (_, sm, pc) = setup()
+        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice", aliceOut)
+        alice.player = alice.player!!.copy(level = 12, characterClass = "MAGE")
+        val bob = createTestSession("Bob", bobOut)
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+
+        pc.handleInvite(alice, "Bob")
+
+        val bobMessages = drainMessages(bobOut)
+        val invite = bobMessages.filterIsInstance<ServerMessage.PartyInviteReceived>().firstOrNull()
+        assertNotNull(invite)
+        assertEquals(12, invite.inviterLevel)
+        assertEquals("MAGE", invite.inviterClass)
+    }
+
     // ─── Leave ──────────────────────────────────────────────
 
     @Test
@@ -237,6 +259,34 @@ class PartyCommandTest {
         assertTrue(messages.any {
             it is ServerMessage.SystemMessage && it.message.contains("not in a party")
         })
+    }
+
+    @Test
+    fun `leave 2-member party sends disband with leaver name`() = runBlocking {
+        val (ps, sm, pc) = setup()
+        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice", aliceOut)
+        val bob = createTestSession("Bob", bobOut)
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+
+        ps.createInvite("Alice", "Bob", 0)
+        ps.acceptInvite("Bob", "Alice", 0)
+        drainMessages(aliceOut)
+        drainMessages(bobOut)
+
+        pc.handleLeave(bob)
+
+        val bobMessages = drainMessages(bobOut)
+        assertTrue(bobMessages.any {
+            it is ServerMessage.SystemMessage && it.message.contains("You left")
+        })
+
+        val aliceMessages = drainMessages(aliceOut)
+        val disbanded = aliceMessages.filterIsInstance<ServerMessage.PartyDisbanded>().firstOrNull()
+        assertNotNull(disbanded)
+        assertTrue(disbanded.reason.contains("Bob"), "Disband reason should mention leaver: ${disbanded.reason}")
     }
 
     // ─── Kick ───────────────────────────────────────────────
@@ -280,6 +330,107 @@ class PartyCommandTest {
         val messages = drainMessages(bobOut)
         assertTrue(messages.any {
             it is ServerMessage.SystemMessage && it.message.contains("Only the party leader")
+        })
+    }
+
+    @Test
+    fun `kick reason includes kicker name`() = runBlocking {
+        val (ps, sm, pc) = setup()
+        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val charlieOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice", aliceOut)
+        val bob = createTestSession("Bob", bobOut)
+        val charlie = createTestSession("Charlie", charlieOut)
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+        sm.addSession("Charlie", charlie)
+
+        ps.createInvite("Alice", "Bob", 0)
+        ps.acceptInvite("Bob", "Alice", 0)
+        ps.createInvite("Alice", "Charlie", 1)
+        ps.acceptInvite("Charlie", "Alice", 1)
+        drainMessages(aliceOut)
+        drainMessages(bobOut)
+        drainMessages(charlieOut)
+
+        pc.handleKick(alice, "Bob")
+
+        val bobMessages = drainMessages(bobOut)
+        val disbanded = bobMessages.filterIsInstance<ServerMessage.PartyDisbanded>().firstOrNull()
+        assertNotNull(disbanded)
+        assertTrue(disbanded.reason.contains("Alice"), "Kick reason should mention kicker: ${disbanded.reason}")
+    }
+
+    // ─── Promote (#476) ─────────────────────────────────────
+
+    @Test
+    fun `promote sends PartyLeaderChanged to all members`() = runBlocking {
+        val (ps, sm, pc) = setup()
+        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice", aliceOut)
+        val bob = createTestSession("Bob", bobOut)
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+
+        ps.createInvite("Alice", "Bob", 0)
+        ps.acceptInvite("Bob", "Alice", 0)
+        drainMessages(aliceOut)
+        drainMessages(bobOut)
+
+        pc.handlePromote(alice, "Bob")
+
+        val aliceMessages = drainMessages(aliceOut)
+        val leaderChanged = aliceMessages.filterIsInstance<ServerMessage.PartyLeaderChanged>().firstOrNull()
+        assertNotNull(leaderChanged)
+        assertEquals("Bob", leaderChanged.newLeaderId)
+
+        val bobMessages = drainMessages(bobOut)
+        val bobLeaderChanged = bobMessages.filterIsInstance<ServerMessage.PartyLeaderChanged>().firstOrNull()
+        assertNotNull(bobLeaderChanged)
+        assertEquals("Bob", bobLeaderChanged.newLeaderId)
+    }
+
+    @Test
+    fun `non-leader promote sends error`() = runBlocking {
+        val (ps, sm, pc) = setup()
+        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice")
+        val bob = createTestSession("Bob", bobOut)
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+
+        ps.createInvite("Alice", "Bob", 0)
+        ps.acceptInvite("Bob", "Alice", 0)
+        drainMessages(bobOut)
+
+        pc.handlePromote(bob, "Alice")
+
+        val messages = drainMessages(bobOut)
+        assertTrue(messages.any {
+            it is ServerMessage.SystemMessage && it.message.contains("Only the party leader")
+        })
+    }
+
+    @Test
+    fun `promote target not in party sends error`() = runBlocking {
+        val (ps, sm, pc) = setup()
+        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
+        val alice = createTestSession("Alice", aliceOut)
+        val bob = createTestSession("Bob")
+        sm.addSession("Alice", alice)
+        sm.addSession("Bob", bob)
+
+        ps.createInvite("Alice", "Bob", 0)
+        ps.acceptInvite("Bob", "Alice", 0)
+        drainMessages(aliceOut)
+
+        pc.handlePromote(alice, "Charlie")
+
+        val messages = drainMessages(aliceOut)
+        assertTrue(messages.any {
+            it is ServerMessage.SystemMessage && it.message.contains("not in your party")
         })
     }
 }

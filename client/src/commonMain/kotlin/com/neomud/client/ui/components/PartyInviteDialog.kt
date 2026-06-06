@@ -82,6 +82,14 @@ fun PartyInviteDialog(
                 fontSize = 14.sp,
                 color = Color(0xFFCCCCCC)
             )
+            if (invite.inviterClass.isNotEmpty()) {
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    "Lv.${invite.inviterLevel} ${invite.inviterClass}",
+                    fontSize = 12.sp,
+                    color = Color(0xFFAAAAAA)
+                )
+            }
             Spacer(Modifier.height(4.dp))
             Text(
                 "Party size: ${invite.partySize}/4",

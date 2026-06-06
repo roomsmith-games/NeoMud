@@ -440,9 +440,12 @@ fun GameScreen(
                 members = partyMembers,
                 leaderId = partyLeaderId,
                 playerName = player?.name,
+                playerRoomId = roomInfo?.room?.id,
                 onInvite = { gameViewModel.inviteToParty(it) },
                 onKick = { gameViewModel.kickFromParty(it) },
                 onLeave = { gameViewModel.leaveParty() },
+                onFollow = { gameViewModel.followPlayer(it) },
+                onPromote = { gameViewModel.promoteToLeader(it) },
                 onDismiss = { gameViewModel.togglePartyPanel() }
             )
         }
@@ -860,6 +863,7 @@ private fun GameScreenPortrait(
                 PartyHudOverlay(
                     members = partyMembers,
                     playerName = player?.name,
+                    playerRoomId = roomInfo?.room?.id,
                     followTarget = followTarget,
                     followState = followState,
                     readiedSpellId = readiedSpellId,
@@ -1007,6 +1011,7 @@ private fun GameScreenPortrait(
                     onSayTextChange = onSayTextChange,
                     onSay = { gameViewModel.say(it) },
                     isAdmin = player?.isAdmin == true,
+                    isInParty = isInParty,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
@@ -1165,6 +1170,7 @@ private fun GameScreenLandscape(
                     PartyHudOverlay(
                         members = partyMembers,
                         playerName = player?.name,
+                        playerRoomId = roomInfo?.room?.id,
                         followTarget = followTarget,
                         followState = followState,
                         readiedSpellId = readiedSpellId,
@@ -1356,6 +1362,7 @@ private fun GameScreenLandscape(
                 onSayTextChange = onSayTextChange,
                 onSay = { gameViewModel.say(it) },
                 isAdmin = player?.isAdmin == true,
+                isInParty = isInParty,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
             )
         }
@@ -1801,6 +1808,7 @@ private fun SayBar(
     onSayTextChange: (String) -> Unit,
     onSay: (String) -> Unit,
     isAdmin: Boolean = false,
+    isInParty: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     // Internal TextFieldValue for selection control
@@ -1879,9 +1887,32 @@ private fun SayBar(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     if (tfv.text.isEmpty()) {
-                        Text("Say...", fontSize = 13.sp, color = Color(0xFF777777))
+                        Text(
+                            if (isInParty) "Say... (/p for party)" else "Say...",
+                            fontSize = 13.sp,
+                            color = Color(0xFF777777)
+                        )
                     }
-                    innerTextField()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        if (tfv.text.lowercase().startsWith("/p ")) {
+                            Text(
+                                "PARTY",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MudColors.partyChat,
+                                modifier = Modifier
+                                    .background(MudColors.partyChat.copy(alpha = 0.15f), RoundedCornerShape(3.dp))
+                                    .padding(horizontal = 4.dp, vertical = 1.dp)
+                            )
+                            Spacer(Modifier.width(4.dp))
+                        }
+                        Box(modifier = Modifier.weight(1f)) {
+                            innerTextField()
+                        }
+                    }
                 }
             }
         )

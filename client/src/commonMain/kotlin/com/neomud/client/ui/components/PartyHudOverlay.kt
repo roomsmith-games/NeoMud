@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +25,7 @@ import com.neomud.shared.model.TargetType
 fun PartyHudOverlay(
     members: List<PartyMember>,
     playerName: String?,
+    playerRoomId: String?,
     followTarget: String?,
     followState: FollowState,
     readiedSpellId: String? = null,
@@ -47,10 +49,12 @@ fun PartyHudOverlay(
         verticalArrangement = Arrangement.spacedBy(3.dp)
     ) {
         for (member in otherMembers) {
+            val inDifferentRoom = playerRoomId != null && member.roomId.isNotEmpty() && member.roomId != playerRoomId
             PartyHudMemberRow(
                 member = member,
                 isFollowTarget = followTarget == member.name && followState != FollowState.OFF,
                 isAllyTargetable = isAllySpellReadied,
+                inDifferentRoom = inDifferentRoom,
                 onTap = if (isAllySpellReadied) {
                     { onCastAllySpell?.invoke(member.name) }
                 } else null
@@ -64,6 +68,7 @@ private fun PartyHudMemberRow(
     member: PartyMember,
     isFollowTarget: Boolean,
     isAllyTargetable: Boolean = false,
+    inDifferentRoom: Boolean = false,
     onTap: (() -> Unit)? = null
 ) {
     val hpPct = if (member.maxHp > 0) member.currentHp.toFloat() / member.maxHp else 0f
@@ -72,14 +77,17 @@ private fun PartyHudMemberRow(
         hpPct > 0.3f -> Color(0xFFFFFF55)
         else -> Color(0xFFFF5555)
     }
+    val mpPct = if (member.maxMp > 0) member.currentMp.toFloat() / member.maxMp else 0f
     val classInitial = member.characterClass.firstOrNull()?.uppercase() ?: "?"
     val crown = if (member.isLeader) " ♕" else ""
     val followArrow = if (isFollowTarget) " →" else ""
+    val rowAlpha = if (inDifferentRoom) 0.4f else 1f
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier
+            .alpha(rowAlpha)
             .then(
                 if (isAllyTargetable) Modifier
                     .border(1.dp, MudColors.healTarget.copy(alpha = 0.7f), RoundedCornerShape(3.dp))
@@ -97,23 +105,41 @@ private fun PartyHudMemberRow(
             Text(classInitial, fontSize = 9.sp, fontWeight = FontWeight.Bold, color = Color(0xFFCCCCCC))
         }
         Text(
-            "${member.name.take(8)}$crown$followArrow",
+            "${member.name.take(12)}$crown$followArrow",
             fontSize = 10.sp,
             color = Color(0xFFCCCCCC),
             maxLines = 1
         )
-        Box(
-            modifier = Modifier
-                .width(40.dp)
-                .height(5.dp)
-                .background(Color(0xFF1A1A1A), RoundedCornerShape(2.dp))
-        ) {
+        Column {
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(hpPct)
-                    .background(hpColor, RoundedCornerShape(2.dp))
-            )
+                    .width(40.dp)
+                    .height(5.dp)
+                    .background(Color(0xFF1A1A1A), RoundedCornerShape(2.dp))
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(hpPct)
+                        .background(hpColor, RoundedCornerShape(2.dp))
+                )
+            }
+            if (member.maxMp > 0) {
+                Spacer(Modifier.height(1.dp))
+                Box(
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(3.dp)
+                        .background(Color(0xFF1A1A1A), RoundedCornerShape(1.dp))
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(mpPct)
+                            .background(Color(0xFF5555FF), RoundedCornerShape(1.dp))
+                    )
+                }
+            }
         }
     }
 }

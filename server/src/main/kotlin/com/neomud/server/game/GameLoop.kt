@@ -1170,32 +1170,11 @@ class GameLoop(
         val coins = lootService.rollCoins(coinDrop)
 
         if (lootedItems.isNotEmpty() || !coins.isEmpty()) {
-            val inParty = partyService != null && partyService.isInParty(event.killerName)
-            val party = if (inParty) partyService!!.getPartyForPlayer(event.killerName) else null
-
             if (lootedItems.isNotEmpty()) {
-                if (party != null) {
-                    val priorityTick = tickCount + GameConfig.Party.LOOT_PRIORITY_TICKS
-                    for (loot in lootedItems) {
-                        val recipient = partyService!!.nextLootRecipient(party.id) ?: event.killerName
-                        roomItemManager.addItemsWithAssignment(
-                            event.roomId,
-                            listOf(GroundItem(loot.itemId, loot.quantity)),
-                            recipient,
-                            priorityTick
-                        )
-                        val itemName = itemCatalog.getItem(loot.itemId)?.name ?: loot.itemId
-                        sessionManager.broadcastToParty(
-                            party.members,
-                            ServerMessage.SystemMessage("$recipient's turn: $itemName")
-                        )
-                    }
-                } else {
-                    roomItemManager.addItems(
-                        event.roomId,
-                        lootedItems.map { GroundItem(it.itemId, it.quantity) }
-                    )
-                }
+                roomItemManager.addItems(
+                    event.roomId,
+                    lootedItems.map { GroundItem(it.itemId, it.quantity) }
+                )
             }
             roomItemManager.addCoins(event.roomId, coins)
 
@@ -1247,26 +1226,6 @@ class GameLoop(
                 } catch (_: Exception) { }
             }
 
-            // Party coin auto-split: divide evenly among room members, remainder to killer
-            if (membersInRoom > 1 && !coins.isEmpty()) {
-                val totalCopper = coins.totalCopper()
-                val shareCopper = totalCopper / membersInRoom
-                val remainder = totalCopper % membersInRoom
-                if (shareCopper > 0 || remainder > 0) {
-                    for (memberName in partyMembers) {
-                        val memberSession = sessionManager.getSession(memberName) ?: continue
-                        val memberCopper = if (memberName == event.killerName) shareCopper + remainder else shareCopper
-                        if (memberCopper <= 0) continue
-                        val memberCoins = com.neomud.shared.model.Coins.fromCopper(memberCopper)
-                        try {
-                            coinRepository.addCoins(memberName, memberCoins)
-                            sendInventoryUpdateForSession(memberSession)
-                            memberSession.send(ServerMessage.SystemMessage("You receive your share: ${memberCoins.displayString()}."))
-                        } catch (_: Exception) { }
-                    }
-                    roomItemManager.removeAllCoins(event.roomId)
-                }
-            }
         }
 
         // Set kill flags on the killer (e.g., boss-gated exits).

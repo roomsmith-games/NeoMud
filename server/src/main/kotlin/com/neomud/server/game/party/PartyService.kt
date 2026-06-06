@@ -14,8 +14,6 @@ class PartyService {
     private val playerParty = ConcurrentHashMap<String, String>()
     private val pendingInvites = ConcurrentHashMap<String, MutableList<PendingInvite>>()
 
-    private val lootRotation = ConcurrentHashMap<String, Int>()
-
     // Invite throttling: inviterName -> throttle state
     private val inviteThrottles = ConcurrentHashMap<String, InviteThrottle>()
 
@@ -130,7 +128,7 @@ class PartyService {
         party.members.remove(playerName)
         party.disconnected.remove(playerName)
         playerParty.remove(playerName)
-        lootRotation.remove(party.id)
+
 
         if (party.members.size <= 1) {
             val remaining = party.members.firstOrNull()
@@ -157,7 +155,7 @@ class PartyService {
         party.members.remove(targetName)
         party.disconnected.remove(targetName)
         playerParty.remove(targetName)
-        lootRotation.remove(party.id)
+
 
         if (party.members.size <= 1) {
             val remaining = party.members.firstOrNull()
@@ -178,7 +176,7 @@ class PartyService {
             party.members.remove(playerName)
             party.disconnected.remove(playerName)
             playerParty.remove(playerName)
-            lootRotation.remove(party.id)
+    
             val remaining = party.members.firstOrNull()
             if (remaining != null) playerParty.remove(remaining)
             parties.remove(party.id)
@@ -232,7 +230,7 @@ class PartyService {
                         val remaining = party.members.firstOrNull()
                         if (remaining != null) playerParty.remove(remaining)
                         parties.remove(party.id)
-                        lootRotation.remove(party.id)
+                
                         if (remaining != null) {
                             expired.add(GraceExpiry(playerName, remaining))
                         }
@@ -246,15 +244,6 @@ class PartyService {
     }
 
     data class GraceExpiry(val expiredPlayer: String, val lastRemainingMember: String)
-
-    fun nextLootRecipient(partyId: String): String? {
-        val party = parties[partyId] ?: return null
-        if (party.members.isEmpty()) return null
-        val idx = lootRotation.getOrPut(partyId) { 0 }
-        val member = party.members[idx % party.members.size]
-        lootRotation[partyId] = (idx + 1) % party.members.size
-        return member
-    }
 
     fun buildPartyMember(
         name: String,
@@ -311,6 +300,23 @@ class PartyService {
         data object NotLeader : KickResult()
         data object CannotKickSelf : KickResult()
         data object TargetNotInParty : KickResult()
+    }
+
+    fun promoteLeader(promoterName: String, targetName: String): PromoteResult {
+        val party = getPartyForPlayer(promoterName) ?: return PromoteResult.NotInParty
+        if (party.leaderId != promoterName) return PromoteResult.NotLeader
+        if (targetName !in party.members) return PromoteResult.TargetNotInParty
+        if (targetName == promoterName) return PromoteResult.AlreadyLeader
+        party.leaderId = targetName
+        return PromoteResult.Promoted(party)
+    }
+
+    sealed class PromoteResult {
+        data class Promoted(val party: Party) : PromoteResult()
+        data object NotInParty : PromoteResult()
+        data object NotLeader : PromoteResult()
+        data object TargetNotInParty : PromoteResult()
+        data object AlreadyLeader : PromoteResult()
     }
 
     sealed class DisconnectResult {

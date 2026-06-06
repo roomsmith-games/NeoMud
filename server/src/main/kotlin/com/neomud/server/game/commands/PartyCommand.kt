@@ -34,7 +34,13 @@ class PartyCommand(
         when (val result = partyService.createInvite(inviterName, targetName, tickCounter())) {
             is PartyService.InviteResult.Success -> {
                 session.send(ServerMessage.SystemMessage("You invited $targetName to your party."))
-                targetSession.send(ServerMessage.PartyInviteReceived(inviterName, result.partySize))
+                val inviterPlayer = session.player
+                targetSession.send(ServerMessage.PartyInviteReceived(
+                    inviterName = inviterName,
+                    partySize = result.partySize,
+                    inviterLevel = inviterPlayer?.level ?: 0,
+                    inviterClass = inviterPlayer?.characterClass ?: ""
+                ))
                 tutorialService?.trySend(targetSession, "tut_party_invite")
             }
             is PartyService.InviteResult.CannotInviteSelf ->
@@ -133,7 +139,7 @@ class PartyCommand(
                 val remaining = result.remainingMember
                 if (remaining != null) {
                     sessionManager.getSession(remaining)?.send(
-                        ServerMessage.PartyDisbanded("party too small")
+                        ServerMessage.PartyDisbanded("$playerName left — party too small to continue.")
                     )
                 }
                 logger.info("Party ${result.partyId} disbanded")
@@ -151,7 +157,7 @@ class PartyCommand(
             is PartyService.KickResult.Kicked -> {
                 clearFollowForDeparture(targetName, partyMembersBefore)
                 sessionManager.getSession(targetName)?.send(
-                    ServerMessage.PartyDisbanded("You were kicked from the party.")
+                    ServerMessage.PartyDisbanded("You were kicked from the party by $kickerName.")
                 )
                 for (name in result.party.members) {
                     sessionManager.getSession(name)?.send(
@@ -162,12 +168,12 @@ class PartyCommand(
             is PartyService.KickResult.Disbanded -> {
                 clearFollowForDisband(partyMembersBefore)
                 sessionManager.getSession(targetName)?.send(
-                    ServerMessage.PartyDisbanded("You were kicked from the party.")
+                    ServerMessage.PartyDisbanded("You were kicked from the party by $kickerName.")
                 )
                 val remaining = result.remainingMember
                 if (remaining != null) {
                     sessionManager.getSession(remaining)?.send(
-                        ServerMessage.PartyDisbanded("party too small")
+                        ServerMessage.PartyDisbanded("$targetName was kicked — party too small to continue.")
                     )
                 }
             }
@@ -193,6 +199,30 @@ class PartyCommand(
             sessionManager.getSession(name)?.send(
                 ServerMessage.PartyChatMessage(senderName, message)
             )
+        }
+    }
+
+    suspend fun handlePromote(session: PlayerSession, targetName: String) {
+        val playerName = session.playerName ?: return
+        when (val result = partyService.promoteLeader(playerName, targetName)) {
+            is PartyService.PromoteResult.Promoted -> {
+                for (name in result.party.members) {
+                    sessionManager.getSession(name)?.send(
+                        ServerMessage.PartyLeaderChanged(targetName, targetName)
+                    )
+                    sessionManager.getSession(name)?.send(
+                        ServerMessage.SystemMessage("$targetName is now the party leader.")
+                    )
+                }
+            }
+            is PartyService.PromoteResult.NotInParty ->
+                session.send(ServerMessage.SystemMessage("You are not in a party."))
+            is PartyService.PromoteResult.NotLeader ->
+                session.send(ServerMessage.SystemMessage("Only the party leader can promote."))
+            is PartyService.PromoteResult.TargetNotInParty ->
+                session.send(ServerMessage.SystemMessage("$targetName is not in your party."))
+            is PartyService.PromoteResult.AlreadyLeader ->
+                session.send(ServerMessage.SystemMessage("$targetName is already the leader."))
         }
     }
 

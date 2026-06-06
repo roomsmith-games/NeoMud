@@ -399,18 +399,48 @@ class PartyServiceTest {
         assertEquals(emptyList(), ps.getPartyMembers("Alice"))
     }
 
-    // ─── Loot rotation ──────────────────────────────────────
+    // ─── Max party size ─────────────────────────────────────
+
+    // ─── Promote ─────────────────────────────────────────────
 
     @Test
-    fun `nextLootRecipient rotates through members`() {
+    fun `leader can promote another member`() {
         val ps = service()
         val party = formParty(ps, "Alice", "Bob")
-        val first = ps.nextLootRecipient(party.id)
-        val second = ps.nextLootRecipient(party.id)
-        val third = ps.nextLootRecipient(party.id)
-        assertEquals("Alice", first)
-        assertEquals("Bob", second)
-        assertEquals("Alice", third)
+        val result = ps.promoteLeader("Alice", "Bob")
+        assertTrue(result is PartyService.PromoteResult.Promoted)
+        assertEquals("Bob", party.leaderId)
+    }
+
+    @Test
+    fun `non-leader cannot promote`() {
+        val ps = service()
+        formParty(ps, "Alice", "Bob")
+        val result = ps.promoteLeader("Bob", "Bob")
+        assertTrue(result is PartyService.PromoteResult.NotLeader)
+    }
+
+    @Test
+    fun `cannot promote player not in party`() {
+        val ps = service()
+        formParty(ps, "Alice", "Bob")
+        val result = ps.promoteLeader("Alice", "Charlie")
+        assertTrue(result is PartyService.PromoteResult.TargetNotInParty)
+    }
+
+    @Test
+    fun `cannot promote self when already leader`() {
+        val ps = service()
+        formParty(ps, "Alice", "Bob")
+        val result = ps.promoteLeader("Alice", "Alice")
+        assertTrue(result is PartyService.PromoteResult.AlreadyLeader)
+    }
+
+    @Test
+    fun `promote returns not in party for non-member`() {
+        val ps = service()
+        val result = ps.promoteLeader("Alice", "Bob")
+        assertTrue(result is PartyService.PromoteResult.NotInParty)
     }
 
     // ─── Max party size ─────────────────────────────────────

@@ -1,6 +1,7 @@
 package com.neomud.client.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -25,8 +26,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.neomud.client.ui.theme.StoneTheme
 import com.neomud.shared.model.PartyMember
 
@@ -35,12 +38,16 @@ fun PartyPanel(
     members: List<PartyMember>,
     leaderId: String?,
     playerName: String?,
+    playerRoomId: String?,
     onInvite: (String) -> Unit,
     onKick: (String) -> Unit,
     onLeave: () -> Unit,
+    onFollow: (String) -> Unit,
+    onPromote: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     var inviteName by remember { mutableStateOf("") }
+    var showLeaveConfirmation by remember { mutableStateOf(false) }
     val isLeader = playerName == leaderId
 
     Box(
@@ -81,28 +88,89 @@ fun PartyPanel(
                 for (member in members) {
                     val isMe = member.name == playerName
                     val crown = if (member.isLeader) " ♕" else ""
+                    val inDifferentRoom = playerRoomId != null && member.roomId.isNotEmpty() && member.roomId != playerRoomId
+                    val nameColor = when {
+                        isMe -> Color(0xFF55FF55)
+                        inDifferentRoom -> Color(0xFF888888)
+                        else -> Color.White
+                    }
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                "${member.name}$crown",
-                                color = if (isMe) Color(0xFF55FF55) else Color.White,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    "${member.name}$crown",
+                                    color = nameColor,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                if (inDifferentRoom) {
+                                    Spacer(Modifier.width(4.dp))
+                                    Text(
+                                        "(elsewhere)",
+                                        color = Color(0xFF666666),
+                                        fontSize = 10.sp
+                                    )
+                                }
+                            }
                             Text(
                                 "Lv.${member.level} ${member.characterClass}",
                                 color = Color(0xFFAAAAAA),
                                 fontSize = 11.sp
                             )
+                            if (!isMe) {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                    modifier = Modifier.padding(top = 2.dp)
+                                ) {
+                                    Text(
+                                        "Follow",
+                                        color = Color(0xFF55AAFF),
+                                        fontSize = 10.sp,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(3.dp))
+                                            .background(Color(0xFF1A2A3A))
+                                            .clickable { onFollow(member.name) }
+                                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                                    )
+                                    if (isLeader) {
+                                        Text(
+                                            "Promote",
+                                            color = StoneTheme.metalGold,
+                                            fontSize = 10.sp,
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(3.dp))
+                                                .background(Color(0xFF2A2A1A))
+                                                .clickable { onPromote(member.name) }
+                                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                                        )
+                                    }
+                                }
+                            }
                         }
                         Column(horizontalAlignment = Alignment.End) {
-                            HpBar(member.currentHp, member.maxHp)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    "${member.currentHp}/${member.maxHp}",
+                                    color = Color(0xFF999999),
+                                    fontSize = 9.sp
+                                )
+                                Spacer(Modifier.width(4.dp))
+                                HpBar(member.currentHp, member.maxHp)
+                            }
                             if (member.maxMp > 0) {
                                 Spacer(Modifier.height(2.dp))
-                                MpBar(member.currentMp, member.maxMp)
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        "${member.currentMp}/${member.maxMp}",
+                                        color = Color(0xFF999999),
+                                        fontSize = 9.sp
+                                    )
+                                    Spacer(Modifier.width(4.dp))
+                                    MpBar(member.currentMp, member.maxMp)
+                                }
                             }
                         }
                         if (isLeader && !isMe) {
@@ -176,9 +244,92 @@ fun PartyPanel(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
                     .background(Color(0xFF331111))
-                    .clickable { onLeave(); onDismiss() }
+                    .clickable { showLeaveConfirmation = true }
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             )
+        }
+
+        if (showLeaveConfirmation) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(10f)
+                    .background(Color.Black.copy(alpha = 0.7f))
+                    .clickable(onClick = { showLeaveConfirmation = false }),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .widthIn(max = 320.dp)
+                        .fillMaxWidth(0.8f)
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(Color(0xFF1A1510), Color(0xFF0D0B09))
+                            ),
+                            RoundedCornerShape(8.dp)
+                        )
+                        .border(1.dp, Color(0xFFFF5555).copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                        .clickable(enabled = false, onClick = {})
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Leave Party?",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFF5555)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "Are you sure you want to leave the party?",
+                        fontSize = 13.sp,
+                        color = Color(0xFFCCCCCC),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 18.sp
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    listOf(Color(0xFF3A1515), Color(0xFF2A0A0A))
+                                ),
+                                RoundedCornerShape(6.dp)
+                            )
+                            .border(1.dp, Color(0xFFFF5555).copy(alpha = 0.5f), RoundedCornerShape(6.dp))
+                            .clickable(onClick = {
+                                showLeaveConfirmation = false
+                                onLeave()
+                                onDismiss()
+                            }),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Leave", fontSize = 13.sp, color = Color(0xFFFF5555))
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    listOf(Color(0xFF2A2218), Color(0xFF1A1510))
+                                ),
+                                RoundedCornerShape(6.dp)
+                            )
+                            .border(1.dp, Color(0xFF888888).copy(alpha = 0.5f), RoundedCornerShape(6.dp))
+                            .clickable(onClick = { showLeaveConfirmation = false }),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Cancel", fontSize = 13.sp, color = Color(0xFFCCCCCC))
+                    }
+                }
+            }
         }
     }
 }

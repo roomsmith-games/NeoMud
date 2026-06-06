@@ -36,7 +36,7 @@ object MudColors {
     val stealth = Color(0xFF888888)     // dim grey - stealth messages
 
     // Party
-    val partyChat = Color(0xFF55AAFF)   // light blue - party messages
+    val partyChat = Color(0xFF00FFCC)   // bright cyan-green - party messages
 
     // Tell (direct messages)
     val tellIncoming = Color(0xFFFF8855) // warm orange - incoming tells

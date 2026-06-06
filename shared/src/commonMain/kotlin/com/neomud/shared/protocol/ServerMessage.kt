@@ -561,7 +561,9 @@ sealed class ServerMessage {
     @SerialName("party_invite_received")
     data class PartyInviteReceived(
         val inviterName: String,
-        val partySize: Int
+        val partySize: Int,
+        val inviterLevel: Int = 0,
+        val inviterClass: String = ""
     ) : ServerMessage()
 
     @Serializable
@@ -611,6 +613,13 @@ sealed class ServerMessage {
         val partyId: String,
         val members: List<PartyMember>,
         val leaderId: String
+    ) : ServerMessage()
+
+    @Serializable
+    @SerialName("party_leader_changed")
+    data class PartyLeaderChanged(
+        val newLeaderId: String,
+        val newLeaderName: String
     ) : ServerMessage()
 
     // Follow

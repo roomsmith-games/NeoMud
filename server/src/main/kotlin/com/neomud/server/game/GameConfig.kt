@@ -248,7 +248,6 @@ object GameConfig {
         const val MAX_SIZE = 4
         const val INVITE_EXPIRY_TICKS = 40
         const val XP_BONUS_PER_MEMBER = 0.20
-        const val LOOT_PRIORITY_TICKS = 7
         const val MEMBER_UPDATE_TICKS = 2
         const val DISCONNECT_GRACE_TICKS = 20
         const val FOLLOW_COMBAT_SUSPEND = true

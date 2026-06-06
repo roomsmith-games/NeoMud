@@ -243,6 +243,10 @@ sealed class ClientMessage {
     @SerialName("party_say")
     data class PartySay(val message: String) : ClientMessage()
 
+    @Serializable
+    @SerialName("party_promote")
+    data class PartyPromote(val targetName: String) : ClientMessage()
+
     // Follow
     @Serializable
     @SerialName("follow")

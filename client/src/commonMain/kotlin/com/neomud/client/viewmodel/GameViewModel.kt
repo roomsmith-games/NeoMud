@@ -926,6 +926,12 @@ class GameViewModel(
                 _partyLeaderId.value = message.leaderId
                 _isInParty.value = true
             }
+            is ServerMessage.PartyLeaderChanged -> {
+                _partyLeaderId.value = message.newLeaderId
+                _partyMembers.value = _partyMembers.value.map { m ->
+                    m.copy(isLeader = m.name == message.newLeaderId)
+                }
+            }
             is ServerMessage.FollowUpdate -> {
                 _followTarget.value = if (message.state == FollowState.OFF) null else message.targetName
                 _followState.value = message.state
@@ -1212,6 +1218,10 @@ class GameViewModel(
 
     fun partySay(message: String) {
         viewModelScope.launch { wsClient.send(ClientMessage.PartySay(message)) }
+    }
+
+    fun promoteToLeader(targetName: String) {
+        viewModelScope.launch { wsClient.send(ClientMessage.PartyPromote(targetName)) }
     }
 
     fun followPlayer(targetName: String) {
