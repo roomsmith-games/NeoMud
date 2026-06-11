@@ -293,6 +293,19 @@
         }, 300000);
     </script>
     <!-- Sentry error tracking (CDN loader with baked-in DSN, catches all JS errors) -->
+    <!-- Environment tag: staging for stage-*/localhost hosts, production otherwise -->
+    <script>
+        window.sentryOnLoad = function () {
+            var env = location.hostname.indexOf("stage") === 0 || location.hostname.indexOf("localhost") === 0
+                ? "staging"
+                : "production";
+            // Sentry.init option-merge inside sentryOnLoad only works on
+            // SDK v8+ (v7 silently ignores a second init). setTag works on
+            // both, so the environment label survives either loader SDK.
+            Sentry.setTag("environment", env);
+            Sentry.init({ environment: env });
+        };
+    </script>
     <script src="https://js.sentry-cdn.com/ed49ac2687b7b9cc5c0cd45c2bf1e1f1.min.js" crossorigin="anonymous"></script>
     <script src="neomud-audio.js"></script>
     <script src="neomud.js"></script>

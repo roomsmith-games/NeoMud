@@ -65,13 +65,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Version-tag only — :latest is owned by the staging deploy workflows
+      # and :prod by promote-server.yml. Release builds are pure artifacts.
       - name: Build and push game server image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/neomud-server:latest
             ghcr.io/${{ github.repository_owner }}/neomud-server:${{ github.ref_name }}
 
       - name: Build and push maker image
@@ -80,36 +81,4 @@ jobs:
           context: ./maker
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/neomud-maker:latest
             ghcr.io/${{ github.repository_owner }}/neomud-maker:${{ github.ref_name }}
-
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY_STAGING }}
-          script: |
-            docker pull ghcr.io/${{ github.repository_owner }}/neomud-server:latest
-            docker pull ghcr.io/${{ github.repository_owner }}/neomud-maker:latest
-            docker image prune -f
-
-      - name: Upload world bundle and WASM client to VPS
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY_STAGING }}
-          source: "server/build/worlds/default-world.nmd"
-          target: /srv/neomud-assets/
-          strip_components: 3
-
-      - name: Upload WASM client to VPS
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY_STAGING }}
-          source: "client/build/dist/wasmJs/productionExecutable/*"
-          target: /srv/neomud-wasm-stage/
-          strip_components: 5
