@@ -4,6 +4,11 @@ name: Promote Game Server to Production
 # (no rebuild — promotion means shipping exactly what staging validated),
 # pulls them on the production droplet, and publishes the world bundle via
 # the production platform API. Gated by the GitHub "production" environment.
+#
+# CONTRACT: dispatch this only when master HEAD matches the commit the last
+# staging deploy built — the :latest image carries that commit's JAR, while
+# the world bundle in step [4/7] is rebuilt from THIS checkout. Promoting
+# with not-yet-staged commits on master ships a JAR/world-data skew.
 on:
   workflow_dispatch:
 
