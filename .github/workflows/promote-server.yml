@@ -1,0 +1,166 @@
+name: Promote Game Server to Production
+
+# Manual-only promotion: retags the staging-validated :latest images to :prod
+# (no rebuild — promotion means shipping exactly what staging validated),
+# pulls them on the production droplet, and publishes the world bundle via
+# the production platform API. Gated by the GitHub "production" environment.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: "[1/7] Log in to GHCR"
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "[2/7] Retag :latest → :prod (registry-side, no rebuild)"
+        run: |
+          echo "[2/7] Promoting staging-validated images to :prod..."
+          docker buildx imagetools create \
+            -t ghcr.io/${{ github.repository_owner }}/neomud-server:prod \
+            ghcr.io/${{ github.repository_owner }}/neomud-server:latest
+          docker buildx imagetools create \
+            -t ghcr.io/${{ github.repository_owner }}/neomud-maker:prod \
+            ghcr.io/${{ github.repository_owner }}/neomud-maker:latest
+          echo "[2/7] ✓ Images retagged"
+
+      - name: "[3/7] Pull :prod images on production droplet"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            echo "[3/7] Pulling :prod images..."
+            docker pull ghcr.io/${{ github.repository_owner }}/neomud-server:prod
+            docker pull ghcr.io/${{ github.repository_owner }}/neomud-maker:prod
+            docker image prune -f
+            echo "[3/7] ✓ Images ready"
+
+      - name: "[4/7] Build world bundle"
+        run: |
+          echo "[4/7] Building world bundle..."
+          ./gradlew packageWorld --rerun-tasks
+          ls -lh server/build/worlds/default-world.nmd || { echo "[4/7] ✗ FATAL: world bundle not found"; exit 1; }
+          echo "[4/7] ✓ World bundle built"
+
+      - name: "[5/7] Upload seed bundle (first-boot safety net)"
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          source: "server/build/worlds/default-world.nmd"
+          target: /srv/neomud-assets/
+          strip_components: 3
+          overwrite: true
+
+      - name: "[6/7] Publish world via API + verify"
+        env:
+          PROD_API: https://api.neomud.app
+          ADMIN_EMAIL: ${{ secrets.PROD_ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.PROD_ADMIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          VERSION=$(jq -r .version maker/default_world_src/manifest.json)
+          CHANGELOG=$(jq -r '.releaseNotes // empty' maker/default_world_src/manifest.json)
+          if [ -z "$CHANGELOG" ]; then
+            echo "❌ manifest.json is missing releaseNotes — add release notes before deploying"
+            exit 1
+          fi
+
+          echo "Publishing default-world v${VERSION}..."
+
+          # 1) Authenticate (retry up to 3× on rate-limit 429)
+          TOKEN=""
+          for attempt in 1 2 3; do
+            LOGIN_RESP=$(curl -sS -w '\n%{http_code}' -X POST "$PROD_API/api/v1/auth/login" \
+              -H "Content-Type: application/json" \
+              -d "{\"email\":\"$ADMIN_EMAIL\",\"password\":\"$ADMIN_PASSWORD\"}")
+            LOGIN_HTTP=$(echo "$LOGIN_RESP" | tail -1)
+            LOGIN_BODY=$(echo "$LOGIN_RESP" | sed '$d')
+            if [ "$LOGIN_HTTP" = "200" ]; then
+              TOKEN=$(echo "$LOGIN_BODY" | jq -r '.accessToken')
+              break
+            fi
+            if [ "$LOGIN_HTTP" = "429" ] && [ "$attempt" -lt 3 ]; then
+              WAIT=$(echo "$LOGIN_BODY" | jq -r '.retryAfterSeconds // 60')
+              echo "  Rate limited, waiting ${WAIT}s (attempt $attempt/3)..."
+              sleep "$WAIT"
+            else
+              echo "❌ Login failed (HTTP $LOGIN_HTTP): $LOGIN_BODY"
+              exit 1
+            fi
+          done
+          [ -n "$TOKEN" ] && [ "$TOKEN" != "null" ] || { echo "❌ Login failed after retries"; exit 1; }
+          echo "✓ Authenticated"
+
+          # 2) Resolve world ID from slug
+          WORLD_ID=$(curl -fsS "$PROD_API/api/v1/worlds/default-world" \
+            | jq -r '.id')
+          [ -n "$WORLD_ID" ] && [ "$WORLD_ID" != "null" ] || { echo "❌ World not found"; exit 1; }
+          echo "✓ World ID: $WORLD_ID"
+
+          # 3) Publish version (uploads bundle, retires old, auto-starts)
+          HTTP_CODE=$(curl -sS -o /tmp/publish-response.json -w '%{http_code}' \
+            -X POST "$PROD_API/api/v1/worlds/$WORLD_ID/versions" \
+            -H "Authorization: Bearer $TOKEN" \
+            -F "version=$VERSION" \
+            -F "changelog=$CHANGELOG" \
+            -F "bundle=@server/build/worlds/default-world.nmd")
+          if [ "$HTTP_CODE" = "409" ]; then
+            echo "❌ Version $VERSION already exists — bump version in maker/default_world_src/manifest.json"
+            echo "   Without a new version, the container will NOT restart with the new Docker image."
+            echo "   This is the #1 cause of 'deploy succeeded but staging is broken.'"
+            exit 1
+          elif [ "$HTTP_CODE" -ge 400 ]; then
+            echo "❌ Publish failed (HTTP $HTTP_CODE):"
+            cat /tmp/publish-response.json
+            exit 1
+          else
+            echo "✓ Published: $(jq -c '{id,version,checksum}' /tmp/publish-response.json)"
+          fi
+
+          # 4) Poll until game server is ONLINE (150s timeout)
+          echo "Waiting for game server..."
+          for i in $(seq 1 30); do
+            STATUS=$(curl -fsS "$PROD_API/api/v1/worlds/default-world" \
+              | jq -r '.serverStatus // "UNKNOWN"')
+            if [ "$STATUS" = "ONLINE" ]; then
+              echo "✅ Game server ONLINE — v${VERSION} deployed"
+              exit 0
+            fi
+            echo "  [$i/30] serverStatus=$STATUS"
+            sleep 5
+          done
+          echo "⚠️ Game server not ONLINE after 150s (status=$STATUS)"
+          exit 1
+
+      - name: "[7/7] Promotion summary"
+        run: |
+          echo "✅ Promotion complete:"
+          echo "  - neomud-server:prod and neomud-maker:prod retagged from :latest"
+          echo "  - Images pulled on production droplet"
+          echo "  - World bundle published via $PROD_API"
+        env:
+          PROD_API: https://api.neomud.app
