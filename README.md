@@ -2,6 +2,10 @@
 
 A love letter to the MUDs of the '90s, built with modern tools and vibes. 100% vibe-coded with AI.
 
+> ### ⚔️ NeoMud is live — [play it at neomud.app](https://neomud.app)
+> No download, no account required. Click a world, roll a character, walk into Millhaven.
+> Launched June 12, 2026 — four months to the day after the first commit.
+
 <p align="center">
   <img src="docs/screenshots/town_square.png" width="180" alt="Town Square — room art, NPC sprites, minimap, and game log" />
   <img src="docs/screenshots/whispering_forest.png" width="180" alt="Combat in the Whispering Forest" />
@@ -29,7 +33,7 @@ Because MUDs were the original MMOs, and they got a lot of things right that mod
 - **Emergent multiplayer.** You share a room with other players. You see them arrive and leave. You talk. You fight the same monsters. No instancing, no sharding — just a shared world.
 - **Mechanical transparency.** You know your stats. You know your weapon damage. You can reason about the systems, and that reasoning is the game.
 
-This project is vibe-coded — built iteratively with AI assistance, following intuition over architecture docs, letting the design emerge from play. It's not production software. It's a playground.
+This project is vibe-coded — built iteratively with AI assistance, following intuition over architecture docs, letting the design emerge from play. An earlier version of this paragraph said "it's not production software, it's a playground." As of June 2026 it is, in fact, production software — with a real domain, encrypted off-host backups, uptime monitors, and a deploy pipeline that promotes only what staging has already validated. It is *also* still a playground. It turns out you can be both.
 
 ## The World: Warden's Reckoning
 
@@ -200,14 +204,17 @@ NeoMud/
 | Metric | Count |
 |--------|-------|
 | Lines of code | ~67,000 (53k Kotlin, 14k TypeScript) |
-| Commits | 602 |
+| Commits | 672 (plus 203 in the companion platform repo) |
+| First commit → production launch | Feb 12 → Jun 12, 2026 — four months to the day |
 | Assets | 1,081 (955 images, 124 audio) |
 | Player sprites | 270 (6 races x 3 genders x 15 classes) |
 | World content | 23 zones, 335 rooms, 139 NPCs, 206 items, 26 spells, 12 skills, 22 recipes, 15 classes, 6 races |
 
 ## Running It
 
-There are two ways to play: **download the fat JAR** (easiest — just need Java) or **build from source** (for development).
+The easiest way to play is to not run anything at all: **[neomud.app](https://neomud.app)** hosts the live marketplace, and the WASM client runs in your browser.
+
+For running your own server, there are two ways: **download the fat JAR** (easiest — just need Java) or **build from source** (for development).
 
 ---
 
@@ -425,27 +432,44 @@ Agent memory in `.claude/agent-memory/` persists findings across sessions — th
 ## Roadmap
 
 ### Completed
+- [x] **Production launch** — live at [neomud.app](https://neomud.app) since June 12, 2026
 - [x] **Warden's Reckoning** — full story arc across 23 zones, 335 rooms (L1–30)
+- [x] Party system — invites, shared combat, party chat, leader promotion, HUD overlay
 - [x] Boss phase system with HP-threshold transitions
 - [x] Interactable system (traps, puzzles, riddles, branching choices)
 - [x] Crafting system with 22 recipes
 - [x] WASM web client — zero-install browser play
 - [x] Desktop (JVM) and iOS clients with full feature parity
 - [x] Tutorial system for new players
-- [x] CI/CD pipeline with automated staging deployment
-- [x] Sentry observability (server + WASM client)
+- [x] CI/CD pipeline — staging on every push, promote-to-production workflow, smoke-checked deploys
+- [x] Sentry observability (server + WASM client), uptime monitoring, encrypted off-host backups
+- [x] Slash commands, /tell, cross-room invites
 
 ### Future
 - [ ] Endless Spire — procedural endgame dungeon
-- [ ] Party system with shared XP and group combat
 - [ ] PvP — dueling, arenas, or PvP zones
 - [ ] World events — timed spawns, invasions
 - [ ] Player guilds and social features
 - [ ] Disarm skill
 - [ ] Chat UI improvements
 
+## Launch Day
+
+On the night of June 11–12, 2026, this project crossed the line from "deployed to staging" to "on the internet." Four months to the day after the first commit, the DNS records flipped, Let's Encrypt minted five certificates in four seconds, and the smoke suite came back 13 for 13.
+
+The launch itself was unglamorous in exactly the way you'd hope. The interesting part is what the URL stands on:
+
+- **Nothing gets built for production.** The deploy workflow re-tags the exact container images that staging already validated — promotion means shipping the same bytes, not compiling new ones and hoping.
+- **The database speaks to two users**: one that can migrate the schema, and one that can only read and write rows. The first production deploy failed *because* of this — the migration tool was quietly using the wrong one — and that failure was the system working as intended.
+- **Backups leave the building.** Every night the database and world bundles are encrypted client-side and synced off-host, a heartbeat monitor tattles if the job ever silently dies, and the restore path is tested — the first backup was pulled back from cold storage and restored into a scratch database before launch, not after the first disaster.
+- **Every config that matters lives in version control.** The two launch-night bugs were both "this value existed only as a hand-edit on a server somewhere." Both fixes landed as tracked files, so neither can drift back.
+
+None of this is novel infrastructure. It's just the boring, load-bearing kind — which felt right for a tribute to games that ran on a single box in someone's garage and somehow stayed up for years.
+
+There are two worlds live at launch: **Warden's Reckoning**, the default world this README describes, and **The Shattered Reach**, a post-apocalyptic clockwork sibling built in the Maker. More will come — that's what the Maker is for.
+
 ## The Spirit of the Thing
 
-This isn't a finished game. It's a living sketch — a place to experiment with what a MUD looks like when you can see it, when the protocol is type-safe, when the world data lives in version control alongside the code, and when an AI can playtest its own creation.
+This isn't a finished game. It's a living sketch — a place to experiment with what a MUD looks like when you can see it, when the protocol is type-safe, when the world data lives in version control alongside the code, and when an AI can playtest its own creation. The sketch just happens to be live now, the way the best MUDs always were — perpetually unfinished, and open anyway.
 
-If you played MUDs in the '90s, you'll recognize the bones. If you didn't, maybe this will show you what all the fuss was about.
+If you played MUDs in the '90s, you'll recognize the bones. If you didn't, maybe [this will show you](https://neomud.app) what all the fuss was about.
