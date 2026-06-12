@@ -35,7 +35,11 @@ interface LogEventPayload {
 
 function emit(level: LogLevel, message: string, extras: LogEventPayload): void {
   const ts = new Date().toISOString()
-  const line = JSON.stringify({ ts, level, message, ...extras })
+  // Environment tag mirrors the platform logger: prod and staging shared
+  // a Better Stack source at launch and unlabeled events were
+  // indistinguishable in Live Tail.
+  const env = process.env.NODE_ENV || 'development'
+  const line = JSON.stringify({ ts, level, env, message, ...extras })
   // Stdout first — the contract is "stdout never lies". docker logs
   // remains the authoritative view if Better Stack drops events.
   if (level === 'error' || level === 'warn') {
@@ -70,6 +74,7 @@ function shipToBetterStack(
     body: JSON.stringify({
       dt: ts,
       level,
+      env: process.env.NODE_ENV || 'development',
       message,
       ...extras,
     }),

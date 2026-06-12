@@ -109,6 +109,24 @@ describe('logger — Better Stack ingestion', () => {
     expect(typeof body.dt).toBe('string')
   })
 
+  it('tags every event with its environment (stdout and ingest payload)', async () => {
+    // Mirrors the platform logger: prod and staging shared one Better
+    // Stack source at launch and unlabeled events were indistinguishable
+    // in Live Tail — the env field is the guard.
+    vi.stubEnv('NODE_ENV', 'production')
+    setIngestionEnv('tok-env', 'ingest.example.com')
+    const fetchSpy = vi.fn().mockResolvedValue(new Response('', { status: 202 }))
+    vi.stubGlobal('fetch', fetchSpy)
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+
+    logger.info('tagged event', {})
+    await new Promise((resolve) => setImmediate(resolve))
+
+    expect(JSON.parse(logSpy.mock.calls[0][0] as string).env).toBe('production')
+    expect(JSON.parse(fetchSpy.mock.calls[0][1].body).env).toBe('production')
+    vi.unstubAllEnvs()
+  })
+
   it('does not throw when Better Stack is unreachable (network error)', async () => {
     setIngestionEnv('tok', 'offline.example.com')
     const fetchSpy = vi.fn().mockRejectedValue(new Error('ENOTFOUND'))
