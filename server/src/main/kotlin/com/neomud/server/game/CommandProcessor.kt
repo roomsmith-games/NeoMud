@@ -214,7 +214,7 @@ class CommandProcessor(
     private val playerCommandRouter = PlayerCommandRouter(
         tellCommand, whoCommand, sessionManager, partyCommand, followCommand
     )
-    private val sayCommand = SayCommand(sessionManager, adminCommand, playerCommandRouter)
+    private val sayCommand = SayCommand(sessionManager, adminCommand, playerCommandRouter, tutorialService)
     private val attackCommand = AttackCommand(npcManager, worldGraph)
     private val sneakCommand = SneakCommand(sessionManager, npcManager, skillCatalog, classCatalog)
     private val bashCommand = BashCommand(npcManager, sessionManager)

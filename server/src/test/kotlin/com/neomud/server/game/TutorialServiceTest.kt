@@ -366,4 +366,48 @@ class TutorialServiceTest {
         assertEquals("tut_hidden_exit", tutorials[0].key)
         assertFalse(tutorials[0].blocking, "Hidden exit tutorial should be non-blocking")
     }
+
+    @Test
+    fun slashCommandsTutorialFiresOnceAndDedups() = runBlocking {
+        val service = createService()
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+
+        val first = service.trySend(session, "tut_slash_commands")
+        val second = service.trySend(session, "tut_slash_commands")
+        assertTrue(first, "First send should fire")
+        assertFalse(second, "Second send should dedup")
+
+        val tutorials = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>()
+        assertEquals(1, tutorials.size)
+        assertEquals("tut_slash_commands", tutorials[0].key)
+        assertFalse(tutorials[0].blocking, "Slash-commands tip should be a passive coach mark")
+        assertTrue(tutorials[0].content.contains("/tell"), "Should teach /tell")
+        assertTrue(tutorials[0].content.contains("/p"), "Should teach party chat")
+    }
+
+    @Test
+    fun partyFormedTutorialCoversCurrentLootAndPromotionRules() = runBlocking {
+        // Guards against stale text: the loot system was simplified
+        // (everything drops to the ground, no assignments) and leader
+        // promotion was added after the original party tutorials shipped.
+        val service = createService()
+        val outgoing = Channel<Frame>(Channel.UNLIMITED)
+        val session = createTestSession(outgoing)
+        session.playerName = "TestPlayer"
+
+        service.trySend(session, "tut_party_formed")
+
+        val tutorials = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>()
+        assertEquals(1, tutorials.size)
+        assertTrue(
+            tutorials[0].content.contains("first come, first served"),
+            "Party tutorial must describe ground-drop loot, not the removed assignment system"
+        )
+        assertTrue(
+            tutorials[0].content.contains("promote"),
+            "Party tutorial should mention leader promotion"
+        )
+    }
 }

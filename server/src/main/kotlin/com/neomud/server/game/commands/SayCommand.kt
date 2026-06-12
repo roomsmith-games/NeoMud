@@ -2,6 +2,7 @@ package com.neomud.server.game.commands
 
 import com.neomud.server.game.MeditationUtils
 import com.neomud.server.game.RestUtils
+import com.neomud.server.game.TutorialService
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
 import com.neomud.shared.protocol.ServerMessage
@@ -9,7 +10,8 @@ import com.neomud.shared.protocol.ServerMessage
 class SayCommand(
     private val sessionManager: SessionManager,
     private val adminCommand: AdminCommand,
-    private val playerCommandRouter: PlayerCommandRouter? = null
+    private val playerCommandRouter: PlayerCommandRouter? = null,
+    private val tutorialService: TutorialService? = null
 ) {
     suspend fun execute(session: PlayerSession, message: String) {
         val roomId = session.currentRoomId ?: return
@@ -52,5 +54,10 @@ class SayCommand(
             roomId,
             ServerMessage.PlayerSays(playerName, sanitized)
         )
+
+        // First plain (non-slash) say → one-time slash-commands tip. Players
+        // who already speak in slash commands don't need it (and trySend
+        // dedups for everyone else).
+        tutorialService?.trySend(session, "tut_slash_commands")
     }
 }

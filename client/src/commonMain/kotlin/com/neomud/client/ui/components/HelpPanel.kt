@@ -93,12 +93,14 @@ private val helpSections = listOf(
         HelpEntry("Attack Mode", "Tap the crossed-swords button to toggle attack mode. While active, your character automatically attacks the selected target each combat tick (1.5 seconds).", icon = MudIcons.Attack),
         HelpEntry("Melee Damage", "Melee damage is based on your Strength, equipped weapon, and a random roll. Armor reduces incoming damage."),
         HelpEntry("Death & Respawn", "If your HP reaches zero, you die and respawn at the town entrance with full health. You keep your inventory and equipment."),
-        HelpEntry("NPC Context Menu", "Long-press a hostile NPC for quick actions: attack, track, kick, or cast a spell directly on it.")
+        HelpEntry("NPC Context Menu", "Long-press a hostile NPC for quick actions: attack, track, kick, or cast a spell directly on it."),
+        HelpEntry("Monster Abilities", "Bosses and tougher monsters have special abilities — area attacks that hit everyone in the room, and dramatic phase changes at low health. High stats let you partially resist some abilities. Watch the combat log and adapt.")
     )),
     HelpSection(MudIcons.SchoolMage, "Spells & Magic", listOf(
         HelpEntry("Spell Schools", "There are five schools of magic: Mage, Priest, Druid, Kai, and Bard. Your class determines which schools you can learn."),
         HelpEntry("Spell Slots", "You have four spell slots in the spell bar. Tap a slot to ready that spell, or long-press to assign a different spell from the spell picker."),
         HelpEntry("Casting", "A readied spell auto-casts on your target during the next combat tick. Some spells target enemies, others heal you or buff allies."),
+        HelpEntry("Ally & Group Spells", "Healers can cast on party members — tap an ally’s sprite or their HUD bar to target them. Group spells like Prayer of Mending and War Hymn heal or buff every party member in the room at once, at reduced power per target."),
         HelpEntry("Mana", "Spells cost mana (MP). When you run low, use the Meditate skill to regenerate MP, or drink a mana potion.", icon = MudIcons.Meditate)
     )),
     HelpSection(MudIcons.Bash, "Skills", listOf(
@@ -129,8 +131,18 @@ private val helpSections = listOf(
         HelpEntry("Materials", "Gather crafting materials by defeating monsters or buying from vendors. Check a recipe\u2019s requirements to see what you need."),
         HelpEntry("Crafting an Item", "Select a recipe, ensure you have the required materials in your inventory, and tap Craft. The crafter produces the item instantly.")
     )),
+    HelpSection(MudIcons.InteractDefault, "Party Play", listOf(
+        HelpEntry("Forming a Party", "Type /invite <name> (or use the invite field in the party panel) to invite another player \u2014 invites work across rooms and show your level and class. Up to 4 players per party."),
+        HelpEntry("The Party Panel", "Tap the P button in the toolbar to open the party panel: see every member\u2019s HP/MP, follow a member, promote a new leader, or leave the party."),
+        HelpEntry("Party HUD", "While in a party, member health bars float in the top-left corner. Members in a different room appear dimmed with an \u201celsewhere\u201d label."),
+        HelpEntry("XP & Loot", "Party members in the same room earn bonus XP from kills. All loot and coins drop to the ground \u2014 first come, first served, no assignments."),
+        HelpEntry("Party Chat", "Start a message with /p to talk only to your party. Party chat appears in cyan-green, and the say bar shows a PARTY badge while you\u2019re typing one."),
+        HelpEntry("Following & the Map", "Use /follow <name> to automatically walk with a party member. Party members appear as colored dots on your minimap.")
+    )),
     HelpSection(MudIcons.InteractDefault, "Chat & Social", listOf(
         HelpEntry("Say", "Type in the text bar at the bottom and press Enter to speak to all players in your current room."),
+        HelpEntry("Slash Commands", "Start a message with / to use commands \u2014 an autocomplete menu suggests matches as you type. /help lists every command."),
+        HelpEntry("Tells", "/tell <name> <message> whispers privately to a player anywhere in the world \u2014 no need to share a room."),
         HelpEntry("Other Players", "You can see other players\u2019 sprites in the room. Their names appear below their character.")
     )),
     HelpSection(MudIcons.Help, "Stats & Character", listOf(

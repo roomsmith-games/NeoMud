@@ -168,7 +168,17 @@ class TutorialService(
             key = "tut_party_formed",
             title = "Party Formed",
             content = "You're now in a party! Your party's health bars appear in the top-left corner. " +
-                "Tap 'P' in the toolbar to manage your party. Party members in the same room earn bonus XP from kills.",
+                "Tap 'P' in the toolbar to manage your party. Party members in the same room earn bonus XP from kills. " +
+                "Loot from party kills drops to the ground for anyone to grab — first come, first served. " +
+                "The leader can promote another member to lead from the party panel.",
+            blocking = false
+        ),
+        "tut_slash_commands" to TutorialDef(
+            key = "tut_slash_commands",
+            title = "Slash Commands",
+            content = "Start a message with / to use commands — an autocomplete menu appears as you type. " +
+                "/tell <name> whispers to a player anywhere in the world, /p talks to your party, " +
+                "/invite <name> asks someone to join your party, and /help lists everything.",
             blocking = false
         )
     )
