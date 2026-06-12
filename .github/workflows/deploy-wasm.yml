@@ -36,6 +36,19 @@ jobs:
           ./gradlew :client:wasmJsBrowserDistribution --no-daemon
           echo "[2/7] ✓ Build complete"
 
+      - name: "[2b/7] Stamp build provenance"
+        # build-info.json travels with the client through every copy
+        # (staging → promote → prod) so any environment can be asked
+        # exactly which commit it serves: curl .../client/build-info.json.
+        # Added after prod served a May client for a month with all
+        # pipelines green (legacy platform-deploy step clobbered staging
+        # from a frozen /srv/neomud-wasm-stage copy — no stamp, no alarm).
+        run: |
+          cat > client/build/dist/wasmJs/productionExecutable/build-info.json <<EOF
+          {"sha": "${{ github.sha }}", "ref": "${{ github.ref_name }}", "builtAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", "workflow": "deploy-wasm"}
+          EOF
+          cat client/build/dist/wasmJs/productionExecutable/build-info.json
+
       - name: "[3/7] Verify build artifacts"
         run: |
           echo "[3/7] Verifying build artifacts..."
@@ -102,10 +115,21 @@ jobs:
             fi
             FILE_COUNT=$(ls /srv/neomud-web-stage/client/*.js /srv/neomud-web-stage/client/*.wasm 2>/dev/null | wc -l)
             echo "[6/7] ✓ Verified: neomud.js → $WASM_REF ($FILE_COUNT files deployed)"
+            DEPLOYED_SHA=$(grep -o '"sha": "[0-9a-f]*"' /srv/neomud-web-stage/client/build-info.json | cut -d'"' -f4)
+            if [ "$DEPLOYED_SHA" != "${{ github.sha }}" ]; then
+              echo "[6/7] ✗ FATAL: deployed build-info sha ($DEPLOYED_SHA) != workflow sha (${{ github.sha }})"
+              exit 1
+            fi
+            echo "[6/7] ✓ Provenance: deployed client is commit $DEPLOYED_SHA"
 
       - name: "[7/7] Health check"
         run: |
           echo "[7/7] Running health checks..."
           sleep 5
           curl -sf https://stage.neomud.app/client/index.html -o /dev/null || { echo "[7/7] ✗ WASM client not accessible"; exit 1; }
-          echo "[7/7] ✓ WASM client accessible at https://stage.neomud.app/client/"
+          SERVED_SHA=$(curl -sf https://stage.neomud.app/client/build-info.json | grep -o '"sha": "[0-9a-f]*"' | cut -d'"' -f4)
+          if [ "$SERVED_SHA" != "${{ github.sha }}" ]; then
+            echo "[7/7] ✗ FATAL: live staging serves commit '$SERVED_SHA', expected ${{ github.sha }}"
+            exit 1
+          fi
+          echo "[7/7] ✓ WASM client live at https://stage.neomud.app/client/ — commit $SERVED_SHA"
