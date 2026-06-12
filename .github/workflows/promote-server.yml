@@ -11,6 +11,12 @@ name: Promote Game Server to Production
 # with not-yet-staged commits on master ships a JAR/world-data skew.
 on:
   workflow_dispatch:
+    inputs:
+      skip_publish:
+        description: 'Skip the API publish (pre-cutover: api.neomud.app still resolves to staging; prod first boot seeds from the uploaded bundle instead)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -80,6 +86,7 @@ jobs:
           overwrite: true
 
       - name: "[6/7] Publish world via API + verify"
+        if: ${{ !inputs.skip_publish }}
         env:
           PROD_API: https://api.neomud.app
           ADMIN_EMAIL: ${{ secrets.PROD_ADMIN_EMAIL }}
@@ -166,6 +173,11 @@ jobs:
           echo "✅ Promotion complete:"
           echo "  - neomud-server:prod and neomud-maker:prod retagged from :latest"
           echo "  - Images pulled on production droplet"
-          echo "  - World bundle published via $PROD_API"
+          if [ "$SKIP_PUBLISH" = "true" ]; then
+            echo "  - API publish SKIPPED (pre-cutover run — prod seeds from the uploaded bundle on first boot)"
+          else
+            echo "  - World bundle published via $PROD_API"
+          fi
         env:
           PROD_API: https://api.neomud.app
+          SKIP_PUBLISH: ${{ inputs.skip_publish }}
