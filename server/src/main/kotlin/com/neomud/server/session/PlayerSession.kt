@@ -5,9 +5,7 @@ import com.neomud.server.game.progression.Perception
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.shared.model.*
 import com.neomud.shared.model.FollowState
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
 
 sealed class PendingSkill {
     data class Bash(val targetId: String?) : PendingSkill()
@@ -22,7 +20,7 @@ sealed class PendingSkill {
 }
 
 class PlayerSession(
-    val webSocketSession: WebSocketSession
+    val transport: TransportSession
 ) {
     var playerName: String? = null
     var currentRoomId: RoomId? = null
@@ -172,8 +170,7 @@ class PlayerSession(
     }
 
     suspend fun send(message: ServerMessage) {
-        val text = MessageSerializer.encodeServerMessage(message)
-        webSocketSession.send(Frame.Text(text))
+        transport.sendMessage(message)
     }
 
     companion object {

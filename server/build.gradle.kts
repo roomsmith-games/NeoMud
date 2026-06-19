@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.forwarded.header)
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.network)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)

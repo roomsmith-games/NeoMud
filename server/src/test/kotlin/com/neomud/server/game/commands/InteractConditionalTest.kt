@@ -17,13 +17,9 @@ import com.neomud.shared.model.Player
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.RoomInteractable
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -48,20 +44,12 @@ class InteractConditionalTest {
             owned.map { InventoryItem(itemId = it, quantity = 1, equipped = false, slot = "") }
     }
 
-    private fun newSession(level: Int = 5): PlayerSession {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(level: Int = 5): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = Player(
             name = testPlayerName,
             characterClass = "WARRIOR",
@@ -73,17 +61,7 @@ class InteractConditionalTest {
         )
         session.playerName = testPlayerName
         session.currentRoomId = testRoom
-        return session
-    }
-
-    private fun drainMessages(session: PlayerSession): List<ServerMessage> {
-        val out = session.webSocketSession.outgoing as Channel<Frame>
-        val msgs = mutableListOf<ServerMessage>()
-        while (true) {
-            val f = out.tryReceive().getOrNull() ?: break
-            if (f is Frame.Text) msgs.add(MessageSerializer.decodeServerMessage(f.readText()))
-        }
-        return msgs
+        return session to received
     }
 
     private fun buildCommand(
@@ -146,11 +124,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg, inv = inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(result.success)
         assertEquals("The gate opens.", result.message)
@@ -166,11 +144,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg, inv = inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(!result.success)
         assertEquals("You need the Storm Key.", result.message)
@@ -189,11 +167,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(result.success)
     }
@@ -209,11 +187,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(!result.success)
     }
@@ -228,11 +206,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(!result.success)
     }
@@ -247,11 +225,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession(level = 10)
+        val (session, received) = newSession(level = 10)
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(result.success)
     }
@@ -265,11 +243,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession(level = 10)
+        val (session, received) = newSession(level = 10)
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(!result.success)
         assertEquals("Too weak.", result.message)
@@ -282,11 +260,11 @@ class InteractConditionalTest {
         ))
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gate_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().first()
         assertTrue(!result.success)
     }

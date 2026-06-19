@@ -12,19 +12,15 @@ import com.neomud.server.world.ItemCatalog
 import com.neomud.server.world.NpcData
 import com.neomud.server.world.SkillCatalog
 import com.neomud.server.world.WorldGraph
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.model.CharacterClassDef
 import com.neomud.shared.model.Item
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import java.io.File
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -84,24 +80,16 @@ class VendorCommandTest {
         return repo
     }
 
-    private fun newSession(player: Player): Pair<PlayerSession, Channel<Frame>> {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(player: Player): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = player
         session.playerName = player.name
         session.currentRoomId = testRoomId
-        return session to outgoing
+        return session to received
     }
 
     private fun buildNpcManager(): NpcManager {
@@ -139,16 +127,6 @@ class VendorCommandTest {
         stats = Stats(strength = 15, agility = 10, intellect = 5, willpower = 5, health = 15, charm = 5)
     )
 
-    private suspend fun drainMessages(outgoing: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = outgoing.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                messages.add(MessageSerializer.decodeServerMessage(frame.readText()))
-            }
-        }
-        return messages
-    }
 
     @Test
     fun `sell single item from stack of 5`() = runBlocking {
@@ -171,7 +149,7 @@ class VendorCommandTest {
         val finalCoins = coinRepo.getCoins(testCharacterName)
         assertTrue(finalCoins.totalCopper() > initialCoins.totalCopper(), "Player should have gained coins")
 
-        val messages = drainMessages(outgoing)
+        val messages = outgoing
         val sellResult = messages.filterIsInstance<ServerMessage.SellResult>().firstOrNull()
         assertTrue(sellResult != null, "Should receive SellResult")
         assertTrue(sellResult.success, "Sell should succeed")
@@ -195,7 +173,7 @@ class VendorCommandTest {
         val remaining = inventory.filter { it.itemId == testItem.id }.sumOf { it.quantity }
         assertEquals(0, remaining, "Should have 0 remaining after selling all 5")
 
-        val messages = drainMessages(outgoing)
+        val messages = outgoing
         val sellResult = messages.filterIsInstance<ServerMessage.SellResult>().firstOrNull()
         assertTrue(sellResult != null, "Should receive SellResult")
         assertTrue(sellResult.message.contains("x5"), "Message should mention quantity")
@@ -218,7 +196,7 @@ class VendorCommandTest {
         val remaining = inventory.filter { it.itemId == testItem.id }.sumOf { it.quantity }
         assertEquals(0, remaining, "Should sell all 3 even though 10 requested")
 
-        val messages = drainMessages(outgoing)
+        val messages = outgoing
         val sellResult = messages.filterIsInstance<ServerMessage.SellResult>().firstOrNull()
         assertTrue(sellResult != null, "Should receive SellResult")
         assertTrue(sellResult.success, "Sell should succeed")

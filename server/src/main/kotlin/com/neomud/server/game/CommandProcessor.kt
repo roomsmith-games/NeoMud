@@ -50,8 +50,6 @@ import com.neomud.server.world.WorldGraph
 import com.neomud.shared.NeoMudVersion
 import com.neomud.shared.protocol.ClientMessage
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.CloseReason
-import io.ktor.websocket.close
 
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ConcurrentHashMap
@@ -259,9 +257,7 @@ class CommandProcessor(
                         minClientVersion = NeoMudVersion.MIN_CLIENT_VERSION,
                         updateUrl = "https://neomud.app/update"
                     ))
-                    session.webSocketSession.close(
-                        CloseReason(CloseReason.Codes.VIOLATED_POLICY, "Client version too old")
-                    )
+                    session.transport.close("Client version too old")
                     return
                 }
 

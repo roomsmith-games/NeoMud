@@ -10,15 +10,11 @@ import com.neomud.server.persistence.repository.InventoryRepository
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.session.TransportSession
 import com.neomud.server.world.*
 import com.neomud.shared.model.*
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -114,8 +110,8 @@ class ShutdownTest {
         val sessionManager = SessionManager()
         val gameLoop = createTestGameLoop(sessionManager)
 
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = createTestSession(received)
         session.playerName = "TestPlayer"
         session.player = createTestPlayer()
         session.currentRoomId = "test:room"
@@ -125,7 +121,7 @@ class ShutdownTest {
         gameLoop.processShutdownTick()
 
         // Check messages sent to the session's outgoing channel
-        val messages = drainMessages(outgoing)
+        val messages = received
         val shutdownMsgs = messages.filterIsInstance<ServerMessage.ServerShutdown>()
         assertTrue(shutdownMsgs.isNotEmpty(), "Expected at least one shutdown broadcast")
         val fiveSecMsg = shutdownMsgs.find { it.secondsRemaining == 5 }
@@ -137,8 +133,8 @@ class ShutdownTest {
         val sessionManager = SessionManager()
         val gameLoop = createTestGameLoop(sessionManager)
 
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = createTestSession(received)
         session.playerName = "TestPlayer"
         session.player = createTestPlayer()
         session.currentRoomId = "test:room"
@@ -147,7 +143,7 @@ class ShutdownTest {
         gameLoop.initiateShutdown(0)
         gameLoop.processShutdownTick()
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val finalMsg = messages.filterIsInstance<ServerMessage.ServerShutdown>()
             .find { it.secondsRemaining == 0 }
         assertTrue(finalMsg != null, "Expected final shutdown broadcast")
@@ -159,8 +155,8 @@ class ShutdownTest {
         val sessionManager = SessionManager()
         val gameLoop = createTestGameLoop(sessionManager)
 
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = createTestSession(received)
         session.playerName = "TestPlayer"
         session.player = createTestPlayer()
         session.currentRoomId = "test:room"
@@ -170,7 +166,7 @@ class ShutdownTest {
         gameLoop.processShutdownTick() // 5 -> 4 (broadcasts 5s warning)
         gameLoop.processShutdownTick() // 4 -> 3
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val fiveSecWarnings = messages.filterIsInstance<ServerMessage.ServerShutdown>()
             .filter { it.secondsRemaining == 5 }
         assertEquals(1, fiveSecWarnings.size, "Should only broadcast 5s warning once")
@@ -204,30 +200,11 @@ class ShutdownTest {
         )
     }
 
-    private fun createTestSession(outgoing: Channel<Frame>): PlayerSession {
-        return PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+    private fun createTestSession(received: MutableList<com.neomud.shared.protocol.ServerMessage> = mutableListOf()): PlayerSession {
+        return PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
         })
-    }
-
-    private fun drainMessages(channel: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = channel.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                val text = frame.readText()
-                messages.add(MessageSerializer.decodeServerMessage(text))
-            }
-        }
-        return messages
     }
 
     private fun createTestPlayer(): Player = Player(

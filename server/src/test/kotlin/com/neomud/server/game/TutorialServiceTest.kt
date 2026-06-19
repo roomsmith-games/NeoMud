@@ -2,43 +2,23 @@ package com.neomud.server.game
 
 import com.neomud.server.persistence.repository.DiscoveryRepository
 import com.neomud.server.session.PlayerSession
+import com.neomud.server.session.TransportSession
 import com.neomud.server.world.ClassCatalog
 import com.neomud.server.world.WorldManifest
 import com.neomud.shared.model.*
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.*
 
 class TutorialServiceTest {
 
-    private fun createTestSession(outgoing: Channel<Frame>): PlayerSession {
-        return PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+    private fun createTestSession(): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
         })
-    }
-
-    private fun drainMessages(channel: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = channel.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                messages.add(MessageSerializer.decodeServerMessage(frame.readText()))
-            }
-        }
-        return messages
+        return session to received
     }
 
     private fun createService(): TutorialService {
@@ -99,15 +79,14 @@ class TutorialServiceTest {
     @Test
     fun worldIntroFiresOnceWhenScriptPresent() = runBlocking {
         val service = createServiceWithManifest("A thousand years ago, the world cracked.", name = "Wardens")
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         val first = service.trySendWorldIntro(session)
         assertTrue(first, "First send should fire")
         assertTrue("tut_world_intro" in session.seenTutorials)
 
-        val tutorials = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>()
+        val tutorials = received.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("tut_world_intro", tutorials[0].key)
         assertEquals("Wardens", tutorials[0].title)
@@ -118,65 +97,60 @@ class TutorialServiceTest {
     @Test
     fun worldIntroSkipsAlreadySeen() = runBlocking {
         val service = createServiceWithManifest("Some lore.")
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
         session.seenTutorials.add("tut_world_intro")
 
         val result = service.trySendWorldIntro(session)
         assertFalse(result, "Should not re-fire")
-        assertTrue(drainMessages(outgoing).isEmpty())
+        assertTrue(received.isEmpty())
     }
 
     @Test
     fun worldIntroNoOpWhenScriptEmpty() = runBlocking {
         val service = createServiceWithManifest("")
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         val result = service.trySendWorldIntro(session)
         assertFalse(result, "Empty introScript should be a no-op")
         assertFalse("tut_world_intro" in session.seenTutorials, "No-op should not mark seen")
-        assertTrue(drainMessages(outgoing).isEmpty())
+        assertTrue(received.isEmpty())
     }
 
     @Test
     fun worldIntroNoOpWhenManifestAbsent() = runBlocking {
         val service = createService() // no manifest
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         val result = service.trySendWorldIntro(session)
         assertFalse(result, "Missing manifest should be a no-op")
-        assertTrue(drainMessages(outgoing).isEmpty())
+        assertTrue(received.isEmpty())
     }
 
     @Test
     fun worldIntroFallsBackToWelcomeTitleWhenWorldNameBlank() = runBlocking {
         val service = createServiceWithManifest("Lore here.", name = "")
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySendWorldIntro(session)
-        val tutorial = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>().first()
+        val tutorial = received.filterIsInstance<ServerMessage.Tutorial>().first()
         assertEquals("Welcome", tutorial.title)
     }
 
     @Test
     fun testTrySendMarksAsSeen() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         val result = service.trySend(session, "welcome")
         assertTrue(result, "trySend should return true for unseen tutorial")
         assertTrue("welcome" in session.seenTutorials, "Tutorial should be marked as seen")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("welcome", tutorials[0].key)
@@ -185,23 +159,20 @@ class TutorialServiceTest {
     @Test
     fun testTrySendSkipsAlreadySeen() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
         session.seenTutorials.add("welcome")
 
         val result = service.trySend(session, "welcome")
         assertFalse(result, "trySend should return false for already-seen tutorial")
 
-        val messages = drainMessages(outgoing)
-        assertTrue(messages.isEmpty(), "No messages should be sent for already-seen tutorial")
+        assertTrue(received.isEmpty(), "No messages should be sent for already-seen tutorial")
     }
 
     @Test
     fun testMultipleTutorialsFireImmediately() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         // All should fire immediately — no throttle
@@ -209,7 +180,7 @@ class TutorialServiceTest {
         service.trySend(session, "tut_hostile_npc")
         service.trySend(session, "tut_low_hp")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(3, tutorials.size, "All three tutorials should fire immediately")
         assertEquals("welcome", tutorials[0].key)
@@ -224,14 +195,13 @@ class TutorialServiceTest {
     @Test
     fun testSecondCallForSameKeyIsIgnored() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         assertTrue(service.trySend(session, "tut_hostile_npc"))
         assertFalse(service.trySend(session, "tut_hostile_npc"), "Second call for same key should be ignored")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         assertEquals(1, messages.size, "Should only send once")
     }
 
@@ -265,13 +235,12 @@ class TutorialServiceTest {
     @Test
     fun testContentOverride() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySend(session, "welcome", contentOverride = "Custom welcome!")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("Custom welcome!", tutorials[0].content)
@@ -281,13 +250,12 @@ class TutorialServiceTest {
     @Test
     fun testNonBlockingTutorialFields() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySend(session, "tut_hostile_npc")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals(false, tutorials[0].blocking)
@@ -302,8 +270,7 @@ class TutorialServiceTest {
     @Test
     fun testUnknownKeyReturnsFalse() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, _) = createTestSession()
         session.playerName = "TestPlayer"
 
         val result = service.trySend(session, "nonexistent_key")
@@ -312,8 +279,7 @@ class TutorialServiceTest {
 
     @Test
     fun testPlayerSessionTutorialFields() {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, _) = createTestSession()
 
         assertFalse(session.firstKillDone)
         assertFalse(session.inCombat)
@@ -322,13 +288,12 @@ class TutorialServiceTest {
     @Test
     fun testInventoryTutorialIsNonBlocking() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySend(session, "tut_inventory")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("tut_inventory", tutorials[0].key)
@@ -338,13 +303,12 @@ class TutorialServiceTest {
     @Test
     fun testLockedExitTutorialIsNonBlocking() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySend(session, "tut_locked_exit")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("tut_locked_exit", tutorials[0].key)
@@ -354,13 +318,12 @@ class TutorialServiceTest {
     @Test
     fun testHiddenExitTutorialIsNonBlocking() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySend(session, "tut_hidden_exit")
 
-        val messages = drainMessages(outgoing)
+        val messages = received
         val tutorials = messages.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("tut_hidden_exit", tutorials[0].key)
@@ -370,8 +333,7 @@ class TutorialServiceTest {
     @Test
     fun slashCommandsTutorialFiresOnceAndDedups() = runBlocking {
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         val first = service.trySend(session, "tut_slash_commands")
@@ -379,7 +341,7 @@ class TutorialServiceTest {
         assertTrue(first, "First send should fire")
         assertFalse(second, "Second send should dedup")
 
-        val tutorials = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>()
+        val tutorials = received.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertEquals("tut_slash_commands", tutorials[0].key)
         assertFalse(tutorials[0].blocking, "Slash-commands tip should be a passive coach mark")
@@ -393,13 +355,12 @@ class TutorialServiceTest {
         // (everything drops to the ground, no assignments) and leader
         // promotion was added after the original party tutorials shipped.
         val service = createService()
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val session = createTestSession(outgoing)
+        val (session, received) = createTestSession()
         session.playerName = "TestPlayer"
 
         service.trySend(session, "tut_party_formed")
 
-        val tutorials = drainMessages(outgoing).filterIsInstance<ServerMessage.Tutorial>()
+        val tutorials = received.filterIsInstance<ServerMessage.Tutorial>()
         assertEquals(1, tutorials.size)
         assertTrue(
             tutorials[0].content.contains("first come, first served"),

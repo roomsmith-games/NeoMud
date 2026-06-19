@@ -5,15 +5,8 @@ import com.neomud.server.game.npc.NpcManager
 import com.neomud.server.game.npc.NpcState
 import com.neomud.server.game.npc.behavior.IdleBehavior
 import com.neomud.server.game.npc.behavior.PatrolBehavior
-import com.neomud.server.session.PlayerSession
-import com.neomud.server.session.SessionManager
 import com.neomud.server.world.WorldGraph
-import com.neomud.shared.model.Direction
 import com.neomud.shared.model.Room
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

@@ -17,13 +17,9 @@ import com.neomud.shared.model.Player
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.RoomInteractable
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -60,20 +56,12 @@ class InteractChoiceTest {
         override suspend fun sendInventoryUpdate(session: PlayerSession) {}
     }
 
-    private fun newSession(): PlayerSession {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = Player(
             name = testPlayerName,
             characterClass = "WARRIOR",
@@ -85,17 +73,7 @@ class InteractChoiceTest {
         )
         session.playerName = testPlayerName
         session.currentRoomId = testRoom
-        return session
-    }
-
-    private fun drainMessages(session: PlayerSession): List<ServerMessage> {
-        val out = session.webSocketSession.outgoing as Channel<Frame>
-        val msgs = mutableListOf<ServerMessage>()
-        while (true) {
-            val f = out.tryReceive().getOrNull() ?: break
-            if (f is Frame.Text) msgs.add(MessageSerializer.decodeServerMessage(f.readText()))
-        }
-        return msgs
+        return session to received
     }
 
     private val fakeFlagsRepo = FakePlayerFlagsRepository()
@@ -156,11 +134,11 @@ class InteractChoiceTest {
         val feat = choiceFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "test_choice")
 
-        val prompt = drainMessages(session).filterIsInstance<ServerMessage.ChoicePrompt>().firstOrNull()
+        val prompt = received.filterIsInstance<ServerMessage.ChoicePrompt>().firstOrNull()
         assertNotNull(prompt, "Tapping a CHOICE_PROMPT should emit ChoicePrompt")
         assertEquals("test_choice", prompt.featureId)
         assertEquals("Choose your path.", prompt.question)
@@ -174,7 +152,7 @@ class InteractChoiceTest {
         val feat = choiceFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleMakeChoice(session, "test_choice", "seal")
 
@@ -183,7 +161,7 @@ class InteractChoiceTest {
         assertEquals(0, westLock ?: 0, "WEST exit should be unlocked for seal choice")
         val eastLock = wg.getRoom(testRoom)!!.lockedExits[Direction.EAST]
         assertEquals(99, eastLock, "EAST exit should remain locked")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success)
         assertTrue(res.message.contains("seal"))
@@ -194,14 +172,14 @@ class InteractChoiceTest {
         val feat = choiceFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleMakeChoice(session, "test_choice", "sunder")
 
         assertEquals("sunder", fakeFlagsRepo.peekFlag(testPlayerName, "choice:test_ending"))
         val eastLock = wg.getRoom(testRoom)!!.lockedExits[Direction.EAST]
         assertEquals(0, eastLock ?: 0, "EAST exit should be unlocked for sunder choice")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success)
         assertTrue(res.message.contains("sunder"))
@@ -212,11 +190,11 @@ class InteractChoiceTest {
         val feat = choiceFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleMakeChoice(session, "test_choice", "invalid_option")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
         assertTrue(res.message.contains("not a valid choice"))
@@ -227,13 +205,13 @@ class InteractChoiceTest {
         val feat = choiceFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleMakeChoice(session, "test_choice", "seal")
-        drainMessages(session)
+        received.clear()
 
         cmd.handleMakeChoice(session, "test_choice", "sunder")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
     }
@@ -243,13 +221,13 @@ class InteractChoiceTest {
         val feat = choiceFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         fakeFlagsRepo.setFlag(testPlayerName, "choice:test_ending", "seal")
 
         cmd.execute(session, "test_choice")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val prompt = msgs.filterIsInstance<ServerMessage.ChoicePrompt>().firstOrNull()
         assertEquals(null, prompt, "Should NOT send ChoicePrompt when flag already set")
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()

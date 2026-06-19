@@ -7,6 +7,7 @@ import com.neomud.server.persistence.repository.PlayerDiscoveryData
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.session.WebSocketTransport
 import com.neomud.server.world.WorldDataSource
 import com.neomud.server.world.WorldManifest
 import com.neomud.shared.NeoMudVersion
@@ -143,7 +144,7 @@ fun Application.configureRouting(
                 return@webSocket
             }
 
-            val session = PlayerSession(this)
+            val session = PlayerSession(WebSocketTransport(this))
             session.remoteIp = remoteIp
             logger.info("New WebSocket connection from $remoteIp")
 

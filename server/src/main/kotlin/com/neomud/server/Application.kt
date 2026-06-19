@@ -53,7 +53,8 @@ data class ServerConfig(
     val dbPath: String = System.getenv("NEOMUD_DB") ?: "neomud.db",
     val admins: Set<String> = System.getenv("NEOMUD_ADMINS")
         ?.split(",")?.map { it.trim().lowercase() }?.filter { it.isNotEmpty() }?.toSet()
-        ?: emptySet()
+        ?: emptySet(),
+    val telnetEnabled: Boolean = System.getenv("NEOMUD_TELNET_ENABLED")?.lowercase() != "false",
 )
 
 fun parseArgs(args: Array<String>): ServerConfig {
@@ -61,6 +62,7 @@ fun parseArgs(args: Array<String>): ServerConfig {
     var worldFile: String? = null
     var dbPath: String? = null
     var admins: Set<String>? = null
+    var telnetEnabled: Boolean? = null
 
     var i = 0
     while (i < args.size) {
@@ -102,6 +104,7 @@ fun parseArgs(args: Array<String>): ServerConfig {
                 }
                 admins = value.split(",").map { it.trim().lowercase() }.filter { it.isNotEmpty() }.toSet()
             }
+            "--no-telnet" -> telnetEnabled = false
             else -> {
                 System.err.println("Unknown argument: ${args[i]}")
                 printHelp()
@@ -116,7 +119,8 @@ fun parseArgs(args: Array<String>): ServerConfig {
         port = port ?: base.port,
         worldFile = worldFile ?: base.worldFile,
         dbPath = dbPath ?: base.dbPath,
-        admins = admins ?: base.admins
+        admins = admins ?: base.admins,
+        telnetEnabled = telnetEnabled ?: base.telnetEnabled,
     )
 }
 
@@ -131,6 +135,7 @@ Options:
   --world, -w <path>      World bundle .nmd file (default: bundled world, env: NEOMUD_WORLD)
   --db <path>             SQLite database path (default: neomud.db, env: NEOMUD_DB)
   --admins <names>        Comma-separated admin character names (env: NEOMUD_ADMINS)
+  --no-telnet             Disable telnet server (env: NEOMUD_TELNET_ENABLED=false)
   --help, -h              Show this help message
 
 Examples:
@@ -238,7 +243,8 @@ fun main(args: Array<String>) {
         module(
             jdbcUrl = "jdbc:sqlite:${config.dbPath}",
             worldFile = worldFile.absolutePath,
-            adminUsernamesOverride = config.admins.ifEmpty { null }
+            adminUsernamesOverride = config.admins.ifEmpty { null },
+            telnetEnabled = config.telnetEnabled,
         )
     }
 
@@ -251,7 +257,7 @@ fun main(args: Array<String>) {
     server.start(wait = true)
 }
 
-fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: String = "build/worlds/default-world.nmd", adminUsernamesOverride: Set<String>? = null, platformVerifierOverride: com.neomud.server.auth.PlatformTokenVerifier? = null, worldOwnerPlatformUserIdOverride: String? = null) {
+fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: String = "build/worlds/default-world.nmd", adminUsernamesOverride: Set<String>? = null, platformVerifierOverride: com.neomud.server.auth.PlatformTokenVerifier? = null, worldOwnerPlatformUserIdOverride: String? = null, telnetEnabled: Boolean = ServerConfig().telnetEnabled, telnetPortOverride: Int? = null, preAuthSecretOverride: String? = null) {
     // Initialize database
     DatabaseFactory.init(jdbcUrl)
 
@@ -402,5 +408,37 @@ fun Application.module(jdbcUrl: String = "jdbc:sqlite:neomud.db", worldFile: Str
     launch {
         gameLoop.run()
         logger.info("Game loop ended.")
+    }
+
+    // Launch telnet server
+    if (telnetEnabled) {
+        val telnetPort = telnetPortOverride
+            ?: System.getenv("NEOMUD_TELNET_PORT")?.toIntOrNull()
+            ?: com.neomud.server.telnet.TelnetServer.DEFAULT_PORT
+        val platformApiUrl = System.getenv("PLATFORM_API_URL")?.takeIf { it.isNotBlank() }
+        val platformApiClient = platformApiUrl?.let {
+            com.neomud.server.platform.PlatformApiClient(it)
+        }
+        val preAuthSecret = preAuthSecretOverride ?: System.getenv("TELNET_PRE_AUTH_SECRET")?.takeIf { it.isNotBlank() }
+        if (preAuthSecret != null) {
+            logger.info("Telnet pre-auth header verification enabled")
+        }
+        val telnetServer = com.neomud.server.telnet.TelnetServer(
+            port = telnetPort,
+            commandProcessor = commandProcessor,
+            playerRepository = playerRepository,
+            classCatalog = classCatalog,
+            raceCatalog = raceCatalog,
+            worldName = loadResult.manifest?.name,
+            preAuthSecret = preAuthSecret,
+            platformApiClient = platformApiClient,
+        )
+        launch(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                telnetServer.start()
+            } catch (e: Exception) {
+                logger.error("Telnet server failed: ${e.message}", e)
+            }
+        }
     }
 }

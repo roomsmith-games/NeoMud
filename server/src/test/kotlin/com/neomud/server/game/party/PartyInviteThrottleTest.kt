@@ -4,30 +4,19 @@ import com.neomud.server.game.GameConfig
 import com.neomud.server.game.commands.PartyCommand
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.*
 
 class PartyInviteThrottleTest {
 
-    private fun createTestSession(name: String, roomId: String = "test:room1", outgoing: Channel<Frame> = Channel(Channel.UNLIMITED)): PlayerSession {
-        val session = PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+    private fun createTestSession(name: String, roomId: String = "test:room1", received: MutableList<com.neomud.shared.protocol.ServerMessage> = mutableListOf()): PlayerSession {
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
         })
         session.playerName = name
         session.currentRoomId = roomId
@@ -40,17 +29,6 @@ class PartyInviteThrottleTest {
         return session
     }
 
-    private fun drainMessages(channel: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = channel.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                messages.add(MessageSerializer.decodeServerMessage(frame.readText()))
-            }
-        }
-        return messages
-    }
-
     @Test
     fun `cross-room invite succeeds`() = runBlocking {
         val ps = PartyService()
@@ -58,18 +36,18 @@ class PartyInviteThrottleTest {
         var tick = 0L
         val pc = PartyCommand(ps, sm, { tick })
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", "zone:room1", aliceOut)
-        val bob = createTestSession("Bob", "zone:room2", bobOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", "zone:room1", aliceReceived)
+        val bob = createTestSession("Bob", "zone:room2", bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 
         pc.handleInvite(alice, "Bob")
 
-        val aliceMsgs = drainMessages(aliceOut)
+        val aliceMsgs = aliceReceived
         assertTrue(aliceMsgs.any { it is ServerMessage.SystemMessage && "invited" in (it as ServerMessage.SystemMessage).message })
-        val bobMsgs = drainMessages(bobOut)
+        val bobMsgs = bobReceived
         assertTrue(bobMsgs.any { it is ServerMessage.PartyInviteReceived })
     }
 
@@ -145,8 +123,8 @@ class PartyInviteThrottleTest {
         val sm = SessionManager()
         val pc = PartyCommand(ps, sm, { 0L })
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", "zone:room1", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", "zone:room1", aliceReceived)
         val bob = createTestSession("Bob", "zone:room2")
         bob.ignoredPlayers.add("alice")
         sm.addSession("Alice", alice, username = "alice")
@@ -154,7 +132,7 @@ class PartyInviteThrottleTest {
 
         pc.handleInvite(alice, "Bob")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "not online" in (it as ServerMessage.SystemMessage).message })
     }
 
@@ -166,8 +144,8 @@ class PartyInviteThrottleTest {
         val pc = PartyCommand(ps, sm, { tick })
 
         val alice = createTestSession("Alice")
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
-        val bob = createTestSession("Bob", outgoing = bobOut)
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val bob = createTestSession("Bob", received = bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 

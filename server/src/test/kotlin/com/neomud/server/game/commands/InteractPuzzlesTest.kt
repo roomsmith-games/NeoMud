@@ -17,13 +17,9 @@ import com.neomud.shared.model.Player
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.RoomInteractable
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -68,20 +64,12 @@ class InteractPuzzlesTest {
         override suspend fun sendInventoryUpdate(session: PlayerSession) { sendCount++ }
     }
 
-    private fun newSession(): PlayerSession {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = Player(
             name = testPlayerName,
             characterClass = "WARRIOR",
@@ -93,17 +81,7 @@ class InteractPuzzlesTest {
         )
         session.playerName = testPlayerName
         session.currentRoomId = testRoom
-        return session
-    }
-
-    private fun drainMessages(session: PlayerSession): List<ServerMessage> {
-        val out = session.webSocketSession.outgoing as Channel<Frame>
-        val msgs = mutableListOf<ServerMessage>()
-        while (true) {
-            val f = out.tryReceive().getOrNull() ?: break
-            if (f is Frame.Text) msgs.add(MessageSerializer.decodeServerMessage(f.readText()))
-        }
-        return msgs
+        return session to received
     }
 
     private fun buildCommand(
@@ -165,11 +143,11 @@ class InteractPuzzlesTest {
         )
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "altar")
 
-        val prompt = drainMessages(session).filterIsInstance<ServerMessage.PlaceItemPrompt>().firstOrNull()
+        val prompt = received.filterIsInstance<ServerMessage.PlaceItemPrompt>().firstOrNull()
         assertNotNull(prompt, "Tapping a PLACE_ITEM should emit PlaceItemPrompt")
         assertEquals("altar", prompt.featureId)
         assertEquals(listOf("item:warden_token", "item:bronze_key"), prompt.acceptedItems)
@@ -191,7 +169,7 @@ class InteractPuzzlesTest {
         val wg = setupWorld(feat)
         val inv = FakeInventoryRepository(mutableSetOf("item:warden_token"))
         val cmd = buildCommand(wg, inv = inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handlePlaceItem(session, "altar", "item:warden_token")
 
@@ -201,7 +179,7 @@ class InteractPuzzlesTest {
         val northLock = wg.getRoom(testRoom)!!.lockedExits[Direction.NORTH]
         assertEquals(0, northLock ?: 0, "NORTH exit should be unlocked (lock removed)")
         // Player got success message.
-        val msgs = drainMessages(session)
+        val msgs = received
         val res = msgs.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success)
@@ -222,12 +200,12 @@ class InteractPuzzlesTest {
         val wg = setupWorld(feat)
         val inv = FakeInventoryRepository(mutableSetOf("item:rustic_dagger"))
         val cmd = buildCommand(wg, inv = inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handlePlaceItem(session, "altar", "item:rustic_dagger")
 
         assertTrue(inv.removed.isEmpty(), "Wrong item must NOT be consumed")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
         assertTrue(res.message.contains("Not the right offering"))
@@ -243,12 +221,12 @@ class InteractPuzzlesTest {
         val wg = setupWorld(feat)
         val inv = FakeInventoryRepository(mutableSetOf())  // empty inventory
         val cmd = buildCommand(wg, inv = inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handlePlaceItem(session, "altar", "item:warden_token")
 
         assertTrue(inv.removed.isEmpty())
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
     }
@@ -267,7 +245,7 @@ class InteractPuzzlesTest {
         val wg = setupWorld(feat)
         val inv = FakeInventoryRepository(mutableSetOf("item:warden_token"))
         val cmd = buildCommand(wg, inv = inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handlePlaceItem(session, "altar", "item:warden_token")
 
@@ -300,7 +278,7 @@ class InteractPuzzlesTest {
         wg.storeInteractableDefs(testRoom, listOf(step0, step1))
 
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         // Step 0
         cmd.execute(session, "pillar_a")
@@ -310,7 +288,7 @@ class InteractPuzzlesTest {
         // Door now unlocked
         val northLock = wg.getRoom(testRoom)!!.lockedExits[Direction.NORTH]
         assertEquals(0, northLock ?: 0, "After completion, NORTH should be unlocked")
-        val msgs = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>()
+        val msgs = received.filterIsInstance<ServerMessage.InteractResult>()
         assertTrue(msgs.any { it.message.contains("harmony") }, "Should see the success message")
     }
 
@@ -332,7 +310,7 @@ class InteractPuzzlesTest {
         wg.addRoom(Room(id = "test:beyond", name = "B", description = "", exits = emptyMap(), zoneId = "test", x = 0, y = 1))
         wg.storeInteractableDefs(testRoom, listOf(finalStep))
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "pillar_b")
 
@@ -340,7 +318,7 @@ class InteractPuzzlesTest {
         assertEquals("2", flags.getFlag(testPlayerName, "puzzle:ancient_seq:step"),
             "Re-tap on completed puzzle must NOT reset the flag")
         // Should see the already-solved message, not the success message.
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.message.contains("still"),
             "Expected alreadySolvedMessage; got: ${res.message}")
@@ -363,12 +341,12 @@ class InteractPuzzlesTest {
         wg.storeInteractableDefs(testRoom, listOf(step0))
 
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "pillar_a")  // expected step 0, but flags say 2 — wrong
 
         assertEquals("0", flags.getFlag(testPlayerName, "puzzle:ancient_seq:step"), "Wrong step must reset progress to 0")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
         assertTrue(res.message.contains("sequence is lost"))
@@ -395,11 +373,11 @@ class InteractPuzzlesTest {
         )
         val wg = setupWorld(step)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "bell_dawn")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
         assertTrue(res.message.contains("don't know the hymn"))
@@ -423,13 +401,13 @@ class InteractPuzzlesTest {
         )
         val wg = setupWorld(step)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "bell_dawn")
 
         assertEquals("1", flags.getFlag(testPlayerName, "puzzle:tide_bells:step"),
             "Progress should advance when requiredFlag is present")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success)
         assertTrue(res.message.contains("bell sings"))
@@ -452,7 +430,7 @@ class InteractPuzzlesTest {
         )
         val wg = setupWorld(step0)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "lever_a")
 
@@ -480,11 +458,11 @@ class InteractPuzzlesTest {
         )
         val wg = setupWorld(step)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "gated_lever")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success, "Already-solved result should be success=true, not a flag-gate failure")
         assertTrue(res.message.contains("already pulled"),
@@ -508,7 +486,7 @@ class InteractPuzzlesTest {
         val wg = setupWorld(feat)
         val inv = FakeInventoryRepository(mutableSetOf("item:warden_token"))
         val cmd = buildCommand(wg, inv = inv, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handlePlaceItem(session, "altar", "item:warden_token")
 

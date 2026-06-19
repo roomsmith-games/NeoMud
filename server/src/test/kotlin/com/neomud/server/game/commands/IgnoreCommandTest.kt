@@ -2,30 +2,19 @@ package com.neomud.server.game.commands
 
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.*
 
 class IgnoreCommandTest {
 
-    private fun createTestSession(name: String, outgoing: Channel<Frame> = Channel(Channel.UNLIMITED)): PlayerSession {
-        val session = PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+    private fun createTestSession(name: String, received: MutableList<com.neomud.shared.protocol.ServerMessage> = mutableListOf()): PlayerSession {
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
         })
         session.playerName = name
         session.currentRoomId = "test:room1"
@@ -38,17 +27,6 @@ class IgnoreCommandTest {
         return session
     }
 
-    private fun drainMessages(channel: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = channel.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                messages.add(MessageSerializer.decodeServerMessage(frame.readText()))
-            }
-        }
-        return messages
-    }
-
     private fun setup(): Triple<SessionManager, TellCommand, PlayerCommandRouter> {
         val sm = SessionManager()
         val tc = TellCommand(sm)
@@ -59,112 +37,112 @@ class IgnoreCommandTest {
     @Test
     fun `ignore adds player to ignore list`() = runBlocking {
         val (sm, _, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         router.tryExecute(alice, "/ignore Bob")
 
         assertTrue("bob" in alice.ignoredPlayers)
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "Now ignoring Bob" in (it as ServerMessage.SystemMessage).message })
     }
 
     @Test
     fun `ignore with no args shows usage`() = runBlocking {
         val (sm, _, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         router.tryExecute(alice, "/ignore")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "Usage" in (it as ServerMessage.SystemMessage).message })
     }
 
     @Test
     fun `ignore self is rejected`() = runBlocking {
         val (sm, _, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         router.tryExecute(alice, "/ignore Alice")
 
         assertFalse("alice" in alice.ignoredPlayers)
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "yourself" in (it as ServerMessage.SystemMessage).message })
     }
 
     @Test
     fun `unignore removes player from ignore list`() = runBlocking {
         val (sm, _, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         alice.ignoredPlayers.add("bob")
         router.tryExecute(alice, "/unignore Bob")
 
         assertFalse("bob" in alice.ignoredPlayers)
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "No longer ignoring Bob" in (it as ServerMessage.SystemMessage).message })
     }
 
     @Test
     fun `unignore player not on list shows message`() = runBlocking {
         val (sm, _, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         router.tryExecute(alice, "/unignore Bob")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "not on your ignore list" in (it as ServerMessage.SystemMessage).message })
     }
 
     @Test
     fun `unignore with no args shows usage`() = runBlocking {
         val (sm, _, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         router.tryExecute(alice, "/unignore")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "Usage" in (it as ServerMessage.SystemMessage).message })
     }
 
     @Test
     fun `ignored player tell is silently blocked`() = runBlocking {
         val (sm, tc, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
-        val bob = createTestSession("Bob", bobOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
+        val bob = createTestSession("Bob", bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 
         router.tryExecute(bob, "/ignore Alice")
-        drainMessages(bobOut)
+        bobReceived.clear()
 
         tc.executeTell(alice, "Bob hello")
 
-        val aliceMsgs = drainMessages(aliceOut)
+        val aliceMsgs = aliceReceived
         assertTrue(aliceMsgs.any { it is ServerMessage.SystemMessage && "not online" in (it as ServerMessage.SystemMessage).message })
 
-        val bobMsgs = drainMessages(bobOut)
+        val bobMsgs = bobReceived
         assertTrue(bobMsgs.filterIsInstance<ServerMessage.TellReceived>().isEmpty())
     }
 
     @Test
     fun `ignored player party invite is blocked`() = runBlocking {
         val (sm, tc, router) = setup()
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         val bob = createTestSession("Bob")
         bob.ignoredPlayers.add("alice")
         sm.addSession("Alice", alice, username = "alice")
@@ -174,7 +152,7 @@ class IgnoreCommandTest {
         val pc = PartyCommand(ps, sm, { 0L })
         pc.handleInvite(alice, "Bob")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "not online" in (it as ServerMessage.SystemMessage).message })
     }
 }

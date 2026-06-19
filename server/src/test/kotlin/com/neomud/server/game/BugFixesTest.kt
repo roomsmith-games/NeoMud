@@ -12,15 +12,11 @@ import com.neomud.server.persistence.repository.PlayerDiscoveryData
 import com.neomud.server.persistence.repository.PlayerRepository
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.session.TransportSession
 import com.neomud.server.world.*
 import com.neomud.shared.model.*
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -84,15 +80,14 @@ class BugFixesTest {
         val sessionManager = SessionManager()
 
         // Create two players in same room
-        val outgoing1 = Channel<Frame>(Channel.UNLIMITED)
-        val session1 = createTestSession(outgoing1)
+        val session1 = createTestSession()
         session1.playerName = "Player1"
         session1.player = createTestPlayer("Player1")
         session1.currentRoomId = "test:room"
         sessionManager.addSession("Player1", session1)
 
-        val outgoing2 = Channel<Frame>(Channel.UNLIMITED)
-        val session2 = createTestSession(outgoing2)
+        val received2 = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session2 = createTestSession(received2)
         session2.playerName = "Player2"
         session2.player = createTestPlayer("Player2")
         session2.currentRoomId = "test:room"
@@ -112,7 +107,7 @@ class BugFixesTest {
         )
 
         // Player2 should receive both messages
-        val messages = drainMessages(outgoing2)
+        val messages = received2
         val playerLeftMsgs = messages.filterIsInstance<ServerMessage.PlayerLeft>()
         assertTrue(playerLeftMsgs.isNotEmpty(), "Player2 should receive PlayerLeft broadcast")
         assertEquals("Player1", playerLeftMsgs.first().playerName)
@@ -525,30 +520,11 @@ class BugFixesTest {
 
     // --- Helpers ---
 
-    private fun createTestSession(outgoing: Channel<Frame> = Channel(Channel.UNLIMITED)): PlayerSession {
-        return PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+    private fun createTestSession(received: MutableList<com.neomud.shared.protocol.ServerMessage> = mutableListOf()): PlayerSession {
+        return PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
         })
-    }
-
-    private fun drainMessages(channel: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = channel.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                val text = frame.readText()
-                messages.add(MessageSerializer.decodeServerMessage(text))
-            }
-        }
-        return messages
     }
 
     private fun createTestPlayer(name: String = "TestPlayer"): Player = Player(

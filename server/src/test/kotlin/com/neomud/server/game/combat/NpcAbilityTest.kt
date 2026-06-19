@@ -17,13 +17,10 @@ import com.neomud.shared.model.Player
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.Stats
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
+import com.neomud.server.session.TransportSession
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import java.io.File
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.*
 
 class NpcAbilityTest {
@@ -36,16 +33,9 @@ class NpcAbilityTest {
     }
 
     private fun createTestSession(): PlayerSession {
-        return PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = Channel(Channel.UNLIMITED)
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+        return PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) {}
+            override suspend fun close(reason: String) {}
         })
     }
 

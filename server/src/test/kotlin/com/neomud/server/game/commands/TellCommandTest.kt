@@ -2,30 +2,19 @@ package com.neomud.server.game.commands
 
 import com.neomud.server.session.PlayerSession
 import com.neomud.server.session.SessionManager
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.*
 
 class TellCommandTest {
 
-    private fun createTestSession(name: String, outgoing: Channel<Frame> = Channel(Channel.UNLIMITED)): PlayerSession {
-        val session = PlayerSession(object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
+    private fun createTestSession(name: String, received: MutableList<com.neomud.shared.protocol.ServerMessage> = mutableListOf()): PlayerSession {
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
         })
         session.playerName = name
         session.currentRoomId = "test:room1"
@@ -38,33 +27,22 @@ class TellCommandTest {
         return session
     }
 
-    private fun drainMessages(channel: Channel<Frame>): List<ServerMessage> {
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = channel.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                messages.add(MessageSerializer.decodeServerMessage(frame.readText()))
-            }
-        }
-        return messages
-    }
-
     @Test
     fun `tell sends message to target and echo to sender`() = runBlocking {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
-        val bob = createTestSession("Bob", bobOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
+        val bob = createTestSession("Bob", bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 
         tc.executeTell(alice, "Bob hello there")
 
-        val bobMsgs = drainMessages(bobOut)
-        val aliceMsgs = drainMessages(aliceOut)
+        val bobMsgs = bobReceived
+        val aliceMsgs = aliceReceived
 
         val tellReceived = bobMsgs.filterIsInstance<ServerMessage.TellReceived>()
         assertEquals(1, tellReceived.size)
@@ -97,13 +75,13 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         tc.executeTell(alice, "Nobody hello")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "not online" in (it as ServerMessage.SystemMessage).message })
     }
 
@@ -112,13 +90,13 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         tc.executeTell(alice, "Alice hello")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "yourself" in (it as ServerMessage.SystemMessage).message })
     }
 
@@ -127,13 +105,13 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         tc.executeTell(alice, "Bob")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "Usage" in (it as ServerMessage.SystemMessage).message })
     }
 
@@ -142,13 +120,13 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         tc.executeTell(alice, "")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "Usage" in (it as ServerMessage.SystemMessage).message })
     }
 
@@ -157,10 +135,10 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
-        val bob = createTestSession("Bob", bobOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
+        val bob = createTestSession("Bob", bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 
@@ -168,10 +146,10 @@ class TellCommandTest {
 
         tc.executeTell(alice, "Bob hello")
 
-        val aliceMsgs = drainMessages(aliceOut)
+        val aliceMsgs = aliceReceived
         assertTrue(aliceMsgs.any { it is ServerMessage.SystemMessage && "not online" in (it as ServerMessage.SystemMessage).message })
 
-        val bobMsgs = drainMessages(bobOut)
+        val bobMsgs = bobReceived
         assertTrue(bobMsgs.filterIsInstance<ServerMessage.TellReceived>().isEmpty())
     }
 
@@ -180,22 +158,22 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
-        val bob = createTestSession("Bob", bobOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
+        val bob = createTestSession("Bob", bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 
         // Alice tells Bob
         tc.executeTell(alice, "Bob hey")
-        drainMessages(aliceOut)
-        drainMessages(bobOut)
+        aliceReceived.clear()
+        bobReceived.clear()
 
         // Bob replies
         tc.executeReply(bob, "hey back")
 
-        val aliceMsgs = drainMessages(aliceOut)
+        val aliceMsgs = aliceReceived
         val tellReceived = aliceMsgs.filterIsInstance<ServerMessage.TellReceived>()
         assertEquals(1, tellReceived.size)
         assertEquals("Bob", tellReceived[0].senderName)
@@ -207,13 +185,13 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val aliceOut = Channel<Frame>(Channel.UNLIMITED)
-        val alice = createTestSession("Alice", aliceOut)
+        val aliceReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val alice = createTestSession("Alice", aliceReceived)
         sm.addSession("Alice", alice, username = "alice")
 
         tc.executeReply(alice, "hello")
 
-        val msgs = drainMessages(aliceOut)
+        val msgs = aliceReceived
         assertTrue(msgs.any { it is ServerMessage.SystemMessage && "No one has sent you" in (it as ServerMessage.SystemMessage).message })
     }
 
@@ -222,15 +200,15 @@ class TellCommandTest {
         val sm = SessionManager()
         val tc = TellCommand(sm)
 
-        val bobOut = Channel<Frame>(Channel.UNLIMITED)
+        val bobReceived = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
         val alice = createTestSession("Alice")
-        val bob = createTestSession("Bob", bobOut)
+        val bob = createTestSession("Bob", bobReceived)
         sm.addSession("Alice", alice, username = "alice")
         sm.addSession("Bob", bob, username = "bob")
 
         tc.executeTell(alice, "Bob hello world")
 
-        val bobMsgs = drainMessages(bobOut)
+        val bobMsgs = bobReceived
         val tell = bobMsgs.filterIsInstance<ServerMessage.TellReceived>().first()
         assertFalse(tell.message.contains(' '))
         assertEquals("helloworld", tell.message)

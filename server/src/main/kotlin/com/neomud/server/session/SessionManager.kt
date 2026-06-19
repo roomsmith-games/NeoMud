@@ -5,7 +5,6 @@ import com.neomud.shared.model.Direction
 import com.neomud.shared.model.PlayerInfo
 import com.neomud.shared.model.RoomId
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
 import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.concurrent.ConcurrentHashMap
@@ -92,9 +91,7 @@ class SessionManager {
         }
 
         try {
-            oldSession.webSocketSession.close(
-                CloseReason(CloseReason.Codes.NORMAL, "Session displaced by new login")
-            )
+            oldSession.transport.close("Session displaced by new login")
         } catch (_: Exception) {}
     }
 

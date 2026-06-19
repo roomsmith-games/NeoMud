@@ -13,13 +13,9 @@ import com.neomud.shared.model.Player
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.RoomInteractable
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -29,20 +25,12 @@ class InteractTreasureDropTest {
     private val testRoom = "test:room"
     private val testPlayerName = "Tester"
 
-    private fun newSession(): PlayerSession {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = Player(
             name = testPlayerName,
             characterClass = "WARRIOR",
@@ -54,17 +42,7 @@ class InteractTreasureDropTest {
         )
         session.playerName = testPlayerName
         session.currentRoomId = testRoom
-        return session
-    }
-
-    private fun drainMessages(session: PlayerSession): List<ServerMessage> {
-        val out = session.webSocketSession.outgoing as Channel<Frame>
-        val msgs = mutableListOf<ServerMessage>()
-        while (true) {
-            val f = out.tryReceive().getOrNull() ?: break
-            if (f is Frame.Text) msgs.add(MessageSerializer.decodeServerMessage(f.readText()))
-        }
-        return msgs
+        return session to received
     }
 
     private fun treasureInteractable(data: Map<String, String>) = RoomInteractable(
@@ -115,7 +93,7 @@ class InteractTreasureDropTest {
     fun `inline items are dropped to room floor`() = runBlocking {
         val roomItemManager = RoomItemManager()
         val (cmd, rim) = buildCommand(roomItemManager)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "chest_1")
 
@@ -129,7 +107,7 @@ class InteractTreasureDropTest {
     fun `inline coins are dropped to room floor`() = runBlocking {
         val roomItemManager = RoomItemManager()
         val (cmd, rim) = buildCommand(roomItemManager)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "chest_1")
 
@@ -141,11 +119,11 @@ class InteractTreasureDropTest {
     @Test
     fun `custom message is sent to player`() = runBlocking {
         val (cmd, _) = buildCommand()
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "chest_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val sysMsg = msgs.filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
         assertEquals("The chest creaks open, revealing its contents!", sysMsg?.message)
     }
@@ -166,11 +144,11 @@ class InteractTreasureDropTest {
         val lootService = LootService(itemCatalog)
         val lootTableCatalog = LootTableCatalog(emptyMap())
         val cmd = InteractCommand(worldGraph, sessionManager, npcManager, RoomItemManager(), lootService, lootTableCatalog)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "chest_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val sysMsg = msgs.filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
         assertEquals("Items clatter to the ground.", sysMsg?.message)
     }
@@ -191,11 +169,11 @@ class InteractTreasureDropTest {
         val lootService = LootService(itemCatalog)
         val lootTableCatalog = LootTableCatalog(emptyMap())
         val cmd = InteractCommand(worldGraph, sessionManager, npcManager, RoomItemManager(), lootService, lootTableCatalog)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "chest_1")
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val result = msgs.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertTrue(result != null, "Should send InteractResult")
         assertTrue(!result.success, "Should be failure when no items or coins")
@@ -222,7 +200,7 @@ class InteractTreasureDropTest {
         val lootService = LootService(itemCatalog)
         val lootTableCatalog = LootTableCatalog(emptyMap())
         val cmd = InteractCommand(worldGraph, sessionManager, npcManager, roomItemManager, lootService, lootTableCatalog)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "chest_1")
 
@@ -230,7 +208,7 @@ class InteractTreasureDropTest {
         assertEquals(10, coins.copper)
         assertEquals(1, coins.gold)
 
-        val msgs = drainMessages(session)
+        val msgs = received
         val sysMsg = msgs.filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
         assertEquals("Items clatter to the ground.", sysMsg?.message)
     }

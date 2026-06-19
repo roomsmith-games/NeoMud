@@ -17,13 +17,9 @@ import com.neomud.shared.model.Player
 import com.neomud.shared.model.Room
 import com.neomud.shared.model.RoomInteractable
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -59,20 +55,12 @@ class InteractRiddleTest {
         override suspend fun sendInventoryUpdate(session: PlayerSession) {}
     }
 
-    private fun newSession(): PlayerSession {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = Player(
             name = testPlayerName,
             characterClass = "WARRIOR",
@@ -84,17 +72,7 @@ class InteractRiddleTest {
         )
         session.playerName = testPlayerName
         session.currentRoomId = testRoom
-        return session
-    }
-
-    private fun drainMessages(session: PlayerSession): List<ServerMessage> {
-        val out = session.webSocketSession.outgoing as Channel<Frame>
-        val msgs = mutableListOf<ServerMessage>()
-        while (true) {
-            val f = out.tryReceive().getOrNull() ?: break
-            if (f is Frame.Text) msgs.add(MessageSerializer.decodeServerMessage(f.readText()))
-        }
-        return msgs
+        return session to received
     }
 
     private fun buildCommand(
@@ -157,11 +135,11 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.execute(session, "door_riddle")
 
-        val prompt = drainMessages(session).filterIsInstance<ServerMessage.RiddlePrompt>().firstOrNull()
+        val prompt = received.filterIsInstance<ServerMessage.RiddlePrompt>().firstOrNull()
         assertNotNull(prompt, "Tapping a RIDDLE_PROMPT should emit RiddlePrompt")
         assertEquals("door_riddle", prompt.featureId)
         assertEquals("What has keys but no locks?", prompt.question)
@@ -174,14 +152,14 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "piano")
 
         val northLock = wg.getRoom(testRoom)!!.lockedExits[Direction.NORTH]
         assertEquals(0, northLock ?: 0, "NORTH exit should be unlocked")
         assertTrue(wg.isInteractableUsed(testRoom, "door_riddle"), "Interactable should be marked used")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success)
         assertTrue(res.message.contains("shimmers"))
@@ -192,14 +170,14 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "guitar")
 
         val northLock = wg.getRoom(testRoom)!!.lockedExits[Direction.NORTH]
         assertEquals(99, northLock, "NORTH exit should remain locked")
         assertTrue(!wg.isInteractableUsed(testRoom, "door_riddle"), "Interactable should NOT be marked used")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
         assertTrue(res.message.contains("pulses red"))
@@ -210,11 +188,11 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "PIANO")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success, "Case-insensitive match should succeed")
     }
@@ -224,11 +202,11 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "a piano")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success, "Synonym should match")
     }
@@ -238,13 +216,13 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "piano")
-        drainMessages(session)
+        received.clear()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "piano")
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
         assertTrue(res.message.contains("already been answered"))
@@ -255,11 +233,11 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "   ")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertEquals(false, res.success)
     }
@@ -269,11 +247,11 @@ class InteractRiddleTest {
         val feat = riddleFeat()
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "door_riddle", "  piano  ")
 
-        val res = drainMessages(session).filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
+        val res = received.filterIsInstance<ServerMessage.InteractResult>().firstOrNull()
         assertNotNull(res)
         assertTrue(res.success, "Whitespace-trimmed answer should match")
     }
@@ -296,7 +274,7 @@ class InteractRiddleTest {
         )
         val wg = setupWorld(feat)
         val cmd = buildCommand(wg, flags = flags)
-        val session = newSession()
+        val (session, received) = newSession()
 
         cmd.handleRiddleAnswer(session, "gate_riddle", "man")
 

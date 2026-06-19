@@ -11,13 +11,9 @@ import com.neomud.server.world.WorldGraph
 import com.neomud.shared.model.Item
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
-import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.server.session.TransportSession
 import com.neomud.shared.protocol.ServerMessage
-import io.ktor.websocket.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -69,20 +65,12 @@ class DialogueCommandTest {
         }
     }
 
-    private fun newSession(): PlayerSession {
-        val outgoing = Channel<Frame>(Channel.UNLIMITED)
-        val ws = object : WebSocketSession {
-            override val coroutineContext: CoroutineContext get() = EmptyCoroutineContext
-            override val incoming: Channel<Frame> get() = Channel()
-            override val outgoing: Channel<Frame> get() = outgoing
-            override val extensions: List<WebSocketExtension<*>> get() = emptyList()
-            override var masking: Boolean = false
-            override var maxFrameSize: Long = Long.MAX_VALUE
-            override suspend fun flush() {}
-            @Deprecated("Use cancel instead", replaceWith = ReplaceWith("cancel()"))
-            override fun terminate() {}
-        }
-        val session = PlayerSession(ws)
+    private fun newSession(): Pair<PlayerSession, MutableList<com.neomud.shared.protocol.ServerMessage>> {
+        val received = mutableListOf<com.neomud.shared.protocol.ServerMessage>()
+        val session = PlayerSession(object : TransportSession {
+            override suspend fun sendMessage(message: com.neomud.shared.protocol.ServerMessage) { received.add(message) }
+            override suspend fun close(reason: String) {}
+        })
         session.player = Player(
             name = testPlayerName,
             characterClass = "WARRIOR",
@@ -99,20 +87,7 @@ class DialogueCommandTest {
         )
         session.playerName = testPlayerName
         session.currentRoomId = testRoomId
-        return session
-    }
-
-    private fun drainMessages(session: PlayerSession): List<ServerMessage> {
-        val ws = session.webSocketSession
-        val outgoing = ws.outgoing as Channel<Frame>
-        val messages = mutableListOf<ServerMessage>()
-        while (true) {
-            val frame = outgoing.tryReceive().getOrNull() ?: break
-            if (frame is Frame.Text) {
-                messages.add(MessageSerializer.decodeServerMessage(frame.readText()))
-            }
-        }
-        return messages
+        return session to received
     }
 
     private fun loadNpc(
@@ -154,11 +129,11 @@ class DialogueCommandTest {
         val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
         loadNpc(npcManager, dialogueScript = "Greetings, child.")
         val command = buildCommand(npcManager)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
-        val dialogue = drainMessages(session).filterIsInstance<ServerMessage.NpcDialogue>().firstOrNull()
+        val dialogue = received.filterIsInstance<ServerMessage.NpcDialogue>().firstOrNull()
         assertNotNull(dialogue, "Should send NpcDialogue")
         assertEquals("npc:test_lore", dialogue.npcId)
         assertEquals("Old Wren", dialogue.npcName)
@@ -170,11 +145,11 @@ class DialogueCommandTest {
         val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
         loadNpc(npcManager, dialogueScript = "")
         val command = buildCommand(npcManager)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
-        val sys = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
+        val sys = received.filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
         assertNotNull(sys)
         assertTrue(sys.message.contains("nothing to say"))
     }
@@ -196,11 +171,11 @@ class DialogueCommandTest {
             )
         )
         val command = buildCommand(npcManager)
-        val session = newSession()  // sits in town:square
+        val (session, received) = newSession()  // sits in town:square
 
         command.execute(session, "npc:other")
 
-        val sys = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
+        val sys = received.filterIsInstance<ServerMessage.SystemMessage>().firstOrNull()
         assertNotNull(sys)
         assertTrue(sys.message.contains("not here"))
     }
@@ -215,7 +190,7 @@ class DialogueCommandTest {
         val inv = FakeInventoryRepository()
         val invCmd = FakeInventoryCommand()
         val command = buildCommand(npcManager, flags, inv, invCmd)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
@@ -223,7 +198,7 @@ class DialogueCommandTest {
         assertEquals(testPlayerName to "item:warden_token", inv.addedItems[0])
         assertEquals("1", flags.getFlag(testPlayerName, "warden_token_received"))
         assertEquals(1, invCmd.sendCount, "InventoryUpdate should be sent")
-        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        val sysMessages = received.filterIsInstance<ServerMessage.SystemMessage>()
         assertTrue(sysMessages.any { it.message.contains("gives you") },
             "Grant notification should be sent")
     }
@@ -236,7 +211,7 @@ class DialogueCommandTest {
         val inv = FakeInventoryRepository()
         val invCmd = FakeInventoryCommand()
         val command = buildCommand(npcManager, flags, inv, invCmd)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
         command.execute(session, "npc:test_lore")
@@ -245,7 +220,7 @@ class DialogueCommandTest {
         assertEquals(1, inv.addedItems.size, "Item should be granted only once across multiple interactions")
 
         // Both interactions sent dialogue
-        val dialogues = drainMessages(session).filterIsInstance<ServerMessage.NpcDialogue>()
+        val dialogues = received.filterIsInstance<ServerMessage.NpcDialogue>()
         assertEquals(2, dialogues.size, "Both interactions should send dialogue")
     }
 
@@ -256,7 +231,7 @@ class DialogueCommandTest {
         val flags = FakePlayerFlagsRepository()
         val inv = FakeInventoryRepository(acceptItems = false)  // simulate inventory full
         val command = buildCommand(npcManager, flags, inv)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
@@ -265,7 +240,7 @@ class DialogueCommandTest {
             "Flag must NOT be set when inventory add fails")
         // System message warned the player. Wording is intentionally neutral so it covers both
         // inventory-full and content-author-typo-on-grantItemId — addItem returns false for either.
-        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        val sysMessages = received.filterIsInstance<ServerMessage.SystemMessage>()
         assertTrue(sysMessages.any { it.message.contains("slips away") || it.message.contains("no room") },
             "Player should see a 'gift could not be received' message")
     }
@@ -278,7 +253,7 @@ class DialogueCommandTest {
         val inv = FakeInventoryRepository()
         val invCmd = FakeInventoryCommand()
         val command = buildCommand(npcManager, flags, inv, invCmd)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
@@ -302,12 +277,12 @@ class DialogueCommandTest {
         val inv = FakeInventoryRepository()
         val invCmd = FakeInventoryCommand()
         val command = buildCommand(npcManager, flags, inv, invCmd)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
         command.execute(session, "npc:test_lore")
 
-        val dialogues = drainMessages(session).filterIsInstance<ServerMessage.NpcDialogue>()
+        val dialogues = received.filterIsInstance<ServerMessage.NpcDialogue>()
         assertEquals(2, dialogues.size)
         assertEquals("Take this.", dialogues[0].content)
         assertEquals("You already have the token.", dialogues[1].content)
@@ -327,12 +302,12 @@ class DialogueCommandTest {
         val inv = FakeInventoryRepository()
         val invCmd = FakeInventoryCommand()
         val command = buildCommand(npcManager, flags, inv, invCmd)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
         command.execute(session, "npc:test_lore")
 
-        val dialogues = drainMessages(session).filterIsInstance<ServerMessage.NpcDialogue>()
+        val dialogues = received.filterIsInstance<ServerMessage.NpcDialogue>()
         assertEquals(2, dialogues.size)
         assertEquals("Take this.", dialogues[0].content)
         assertEquals("Take this.", dialogues[1].content)
@@ -346,11 +321,11 @@ class DialogueCommandTest {
             Item(id = "item:warden_token", name = "Warden's Token", description = "A glowing token.", type = "quest")
         ))
         val command = buildCommand(npcManager, itemCatalog = catalog)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
-        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        val sysMessages = received.filterIsInstance<ServerMessage.SystemMessage>()
         assertTrue(sysMessages.any { it.message.contains("gives you Warden's Token") },
             "Grant notification should include the item's display name")
     }
@@ -360,11 +335,11 @@ class DialogueCommandTest {
         val npcManager = NpcManager(WorldGraph(), emptyMap(), emptyMap())
         loadNpc(npcManager, "Take this.", grantItemId = "item:unknown_thing", grantItemFlag = "unknown_received")
         val command = buildCommand(npcManager)
-        val session = newSession()
+        val (session, received) = newSession()
 
         command.execute(session, "npc:test_lore")
 
-        val sysMessages = drainMessages(session).filterIsInstance<ServerMessage.SystemMessage>()
+        val sysMessages = received.filterIsInstance<ServerMessage.SystemMessage>()
         assertTrue(sysMessages.any { it.message.contains("gives you item:unknown_thing") },
             "Grant notification should fall back to raw item ID when not in catalog")
     }
