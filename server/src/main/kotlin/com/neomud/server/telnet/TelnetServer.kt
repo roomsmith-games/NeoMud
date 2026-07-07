@@ -29,7 +29,28 @@ class TelnetServer(
 ) {
     private val logger = LoggerFactory.getLogger(TelnetServer::class.java)
     private val activeConnections = AtomicInteger(0)
-    private val perIpCount = ConcurrentHashMap<String, AtomicInteger>()
+    // Live connection count per remote IP. Reserve/release go through ConcurrentHashMap.compute so
+    // the cap check and the increment happen atomically — a plain get-then-increment (or
+    // decrement-then-remove) races between concurrent accepts on the same IP.
+    private val perIpCount = ConcurrentHashMap<String, Int>()
+
+    /** Atomically reserve a slot for [ip] if under [maxPerIp]. Returns true if admitted. */
+    private fun reserveIpSlot(ip: String): Boolean {
+        var admitted = false
+        perIpCount.compute(ip) { _, current ->
+            val c = current ?: 0
+            if (c >= maxPerIp) c else { admitted = true; c + 1 }
+        }
+        return admitted
+    }
+
+    /** Atomically release a slot for [ip], removing the entry when it reaches zero. */
+    private fun releaseIpSlot(ip: String) {
+        perIpCount.compute(ip) { _, current ->
+            val c = (current ?: 1) - 1
+            if (c <= 0) null else c
+        }
+    }
 
     suspend fun start() = coroutineScope {
         val selectorManager = SelectorManager(Dispatchers.IO)
@@ -40,7 +61,9 @@ class TelnetServer(
             val socket = serverSocket.accept()
             val remoteIp = (socket.remoteAddress as? InetSocketAddress)?.hostname ?: "unknown"
 
-            if (activeConnections.get() >= maxConnections) {
+            // Global cap: increment-then-check so two concurrent accepts can't both slip past.
+            if (activeConnections.incrementAndGet() > maxConnections) {
+                activeConnections.decrementAndGet()
                 logger.warn("Telnet: connection limit reached, rejecting $remoteIp")
                 try {
                     socket.openWriteChannel(autoFlush = true)
@@ -50,8 +73,8 @@ class TelnetServer(
                 continue
             }
 
-            val ipCount = perIpCount.getOrPut(remoteIp) { AtomicInteger(0) }
-            if (ipCount.get() >= maxPerIp) {
+            if (!reserveIpSlot(remoteIp)) {
+                activeConnections.decrementAndGet()
                 logger.warn("Telnet: per-IP limit reached for $remoteIp")
                 try {
                     socket.openWriteChannel(autoFlush = true)
@@ -60,9 +83,6 @@ class TelnetServer(
                 socket.close()
                 continue
             }
-
-            activeConnections.incrementAndGet()
-            ipCount.incrementAndGet()
 
             launch(Dispatchers.IO) {
                 try {
@@ -80,8 +100,7 @@ class TelnetServer(
                     logger.debug("Telnet handler error for $remoteIp: ${e.message}")
                 } finally {
                     activeConnections.decrementAndGet()
-                    val remaining = perIpCount[remoteIp]?.decrementAndGet() ?: 0
-                    if (remaining <= 0) perIpCount.remove(remoteIp)
+                    releaseIpSlot(remoteIp)
                     try { socket.close() } catch (_: Exception) {}
                 }
             }
