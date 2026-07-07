@@ -471,6 +471,13 @@ class TelnetConnectionHandler(
                 transport.redisplayPrompt()
                 continue
             }
+            // Same token bucket the WebSocket path uses — throttle command floods (one token per
+            // submitted line) before doing any parse/dispatch work.
+            if (!session.tryConsumeMessage()) {
+                transport.sendRaw("Too many commands, slow down.\r\n")
+                transport.redisplayPrompt()
+                continue
+            }
             when (val result = parser.parse(line, state)) {
                 is ParseResult.Send -> commandProcessor.process(session, result.message)
                 is ParseResult.Multi -> result.messages.forEach { commandProcessor.process(session, it) }

@@ -350,6 +350,40 @@ class TelnetIntegrationTest {
         }
     }
 
+    @Test
+    fun commandFlood_isRateLimited() = testApplication {
+        val port = findFreePort()
+        application {
+            module(
+                jdbcUrl = testDbUrl(),
+                telnetEnabled = true,
+                telnetPortOverride = port,
+                preAuthSecretOverride = preAuthSecret,
+                platformVerifierOverride = testVerifier(),
+            )
+        }
+        startApplication()
+
+        registerCharacter("user-flood", "FloodHero")
+
+        withContext(Dispatchers.IO) {
+            waitForPortBlocking(port)
+            Socket("127.0.0.1", port).use { socket ->
+                val raw = java.io.ByteArrayOutputStream()
+                loginViaPreAuth(socket, raw, "user-flood", "FloodHero")
+
+                // Burst capacity is 20 tokens (refilling 10/s); 40 lines sent at once blows past it,
+                // so the command loop must throttle with the same message the WebSocket path uses.
+                send(socket, buildString { repeat(40) { append("hp\r\n") } })
+                val out = pump(socket, raw, "Too many commands", 5000)
+                assertTrue(
+                    out.text.contains("Too many commands"),
+                    "expected rate-limit throttle, got tail: ${out.text.takeLast(160)}",
+                )
+            }
+        }
+    }
+
     /** Registers a platform character over WebSocket so telnet pre-auth can log in as it. */
     private suspend fun ApplicationTestBuilder.registerCharacter(userId: String, characterName: String) {
         val ws = createClient { install(WebSockets) }
