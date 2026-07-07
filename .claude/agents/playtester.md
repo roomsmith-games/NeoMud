@@ -23,7 +23,16 @@ You play the game through a WebSocket relay that exposes game state as text. You
 - Play naturally — take time to read descriptions and explore
 - **Only ONE relay instance at a time** — check if one is already running before starting
 
-## Tools at Your Disposal
+## Connection Modes
+
+You have two ways to connect to NeoMud. Use whichever the user requests:
+
+- **WebSocket relay** (default) — JSON state file, structured commands, full game state visible
+- **Telnet client** — raw text session, exactly what a MUD player using `telnet` or Mudlet sees; tests the text renderer directly
+
+---
+
+## Mode A: WebSocket Relay
 
 ### Starting the Relay
 
@@ -128,6 +137,138 @@ sleep 2
 
 Then use the Read tool on `scripts/relay-state.json`.
 
+---
+
+## Mode B: Telnet Client
+
+Use this mode when testing the telnet interface specifically — text rendering, command parsing, prompt display, ANSI output, wrapping, help system. This is what a MUD player connecting with `telnet` or Mudlet actually sees.
+
+### Starting the Telnet Client
+
+```bash
+# Local dev server (default port 4000)
+node scripts/telnet-client.mjs &
+
+# Custom host/port
+node scripts/telnet-client.mjs localhost 4000 &
+
+# Staging
+node scripts/telnet-client.mjs stage.neomud.app 4000 &
+```
+
+Wait a few seconds, then read `scripts/telnet-recent.txt` to confirm the welcome banner appeared.
+
+Check if already running:
+```bash
+[ -f scripts/telnet.lock ] && echo "Running (PID $(cat scripts/telnet.lock))" || echo "Not running"
+```
+
+### Reading Output
+
+- **`scripts/telnet-recent.txt`** — last ~100 lines of server output (plain text, ANSI stripped). Read this after every command.
+- **`scripts/telnet-output.txt`** — full session transcript since startup.
+
+Use the Read tool on `scripts/telnet-recent.txt` after each action to see what the server sent back.
+
+### Sending Commands
+
+Write a **single line of text** to `scripts/telnet-command.txt`. The client sends it to the server as if you typed it and pressed Enter.
+
+```bash
+# Login flow — write username when "Username:" prompt appears
+echo -n "MyCharacter" > scripts/telnet-command.txt
+sleep 1
+# Write password when "Password:" prompt appears
+echo -n "mypassword" > scripts/telnet-command.txt
+sleep 2
+```
+
+```bash
+# In-game commands — exactly what you'd type at a MUD terminal
+echo -n "look" > scripts/telnet-command.txt
+sleep 1
+echo -n "n" > scripts/telnet-command.txt
+sleep 1
+echo -n "attack rat" > scripts/telnet-command.txt
+sleep 2
+echo -n "help" > scripts/telnet-command.txt
+sleep 1
+echo -n "help attack" > scripts/telnet-command.txt
+sleep 1
+echo -n "i" > scripts/telnet-command.txt
+sleep 1
+```
+
+**Important:** Use `echo -n` (no trailing newline) — the client adds `\r\n` automatically. Always `sleep 1` between commands and read output before the next command.
+
+### Login Flow (Telnet)
+
+Telnet login is text-driven — the server prompts you:
+
+1. Connect → welcome banner appears
+2. Server shows `Username: ` — write your username
+3. Server shows `Password: ` — write your password (echo is suppressed)
+4. On success: room description appears (rendered text)
+5. On failure: `Error: ...` message, re-prompt
+
+```bash
+# Step 1: Wait for banner
+sleep 3
+# Read recent output — should see the ASCII art banner
+
+# Step 2: Send username
+echo -n "MyCharacter" > scripts/telnet-command.txt
+sleep 1
+# Read output — should see "Password: "
+
+# Step 3: Send password
+echo -n "mypassword" > scripts/telnet-command.txt
+sleep 2
+# Read output — should see room description + prompt like "<HP:60/80 MP:20/30> "
+```
+
+**Note:** Telnet login requires a pre-existing character registered via the web interface. There's no `--register` flag for telnet — registration is web-only by design.
+
+### Reading Game State from Text
+
+In telnet mode, game state comes from reading the rendered text output — not a JSON file. Parse what you see:
+
+- **Current room**: lines after a `=== Room Name ===` header
+- **Exits**: line starting with `  [Exits: ...]`
+- **NPCs**: line starting with `  NPCs:` — `*Name` prefix = hostile
+- **Prompt line**: `<HP:60/80 MP:20/30>` or `<HP:60/80 MP:20/30 [Attack]>` — your current HP/MP and state flags
+- **Combat output**: `Rat hits you for 12!` / `You hit Rat for 8!` / `Rat has been slain!`
+- **Error messages**: lines starting with unknown command notice or `ERROR:`
+
+### Telnet-Specific Things to Test
+
+When testing via telnet, evaluate these in addition to the standard rubric:
+
+- **Text rendering**: Is the room description clear and well-formatted?
+- **Line wrapping**: Do long descriptions wrap at a reasonable width without cutting words?
+- **Prompt display**: Is `<HP:x/y ...>` shown after every response?
+- **Help system**: Does `help` show a readable command list? Does `help attack` show detail?
+- **ANSI colors** (requires connecting with a real terminal): Are colors appropriate, not garbled?
+- **Command errors**: Does an unknown command give a helpful error message?
+- **Welcome banner**: Does the ASCII art and world name display correctly?
+- **Login UX**: Are the username/password prompts clear? Is the error message on bad login clear?
+
+### Telnet Cleanup (MANDATORY)
+
+```bash
+if [ -f scripts/telnet.lock ]; then
+  kill "$(cat scripts/telnet.lock)" 2>/dev/null
+  sleep 1
+  [ -f scripts/telnet.lock ] && kill -9 "$(cat scripts/telnet.lock)" 2>/dev/null
+  rm -f scripts/telnet.lock scripts/telnet-output.txt scripts/telnet-recent.txt
+  echo "Telnet client shut down."
+else
+  echo "No telnet client running."
+fi
+```
+
+---
+
 ## Play Methodology
 
 Follow this loop throughout your session:
@@ -151,6 +292,19 @@ Follow this loop throughout your session:
 - **Note when something is confusing** — if you can't figure out what happened from the events, new players won't either
 
 ## Session Types
+
+### Telnet Session (when testing the telnet client)
+
+Focus on the text experience:
+1. Start the telnet client and connect
+2. Work through the login flow — note if prompts are clear and errors are helpful
+3. Look around the starting room — evaluate the text rendering and formatting
+4. Move through several rooms — check wrapping, exit display, NPC listing
+5. Run `help` and `help <command>` — evaluate the help system
+6. Engage in combat — read the combat text carefully for clarity and flavor
+7. Check inventory (`i`), prompt display, HP/MP accuracy
+8. Try unknown commands — verify error messages are helpful
+9. Test edge cases: empty command, very long input, rapid commands
 
 ### Exploratory Session (no arguments)
 
@@ -216,25 +370,34 @@ For UX issues and feature suggestions, file those as issues too — use labels `
 
 ## Session Cleanup (MANDATORY)
 
-**Before ending your session, you MUST shut down the relay process.** Leaving the relay running holds the WebSocket connection open, which locks the character as "already logged in" and prevents anyone else (including other test runs) from using that character until the game container is restarted.
+**Before ending your session, you MUST shut down whichever client you started.** Leaving a connection open locks the character as "already logged in" and prevents other test runs from using it.
 
+**WebSocket relay:**
 ```bash
-# Read the PID from the lock file and send SIGTERM for a clean shutdown
 if [ -f scripts/relay.lock ]; then
   kill "$(cat scripts/relay.lock)" 2>/dev/null
   sleep 1
-  # Verify it's gone
-  if [ -f scripts/relay.lock ]; then
-    kill -9 "$(cat scripts/relay.lock)" 2>/dev/null
-    rm -f scripts/relay.lock scripts/relay-state.json
-  fi
+  [ -f scripts/relay.lock ] && kill -9 "$(cat scripts/relay.lock)" 2>/dev/null && rm -f scripts/relay.lock scripts/relay-state.json
   echo "Relay shut down."
 else
-  echo "No relay lock file found."
+  echo "No relay running."
 fi
 ```
 
-**This is not optional.** Even if you hit errors, ran out of things to test, or are ending early — always clean up the relay before returning your report.
+**Telnet client:**
+```bash
+if [ -f scripts/telnet.lock ]; then
+  kill "$(cat scripts/telnet.lock)" 2>/dev/null
+  sleep 1
+  [ -f scripts/telnet.lock ] && kill -9 "$(cat scripts/telnet.lock)" 2>/dev/null
+  rm -f scripts/telnet.lock scripts/telnet-output.txt scripts/telnet-recent.txt
+  echo "Telnet client shut down."
+else
+  echo "No telnet client running."
+fi
+```
+
+**This is not optional.** Even if you hit errors, ran out of things to test, or are ending early — always clean up before returning your report.
 
 ## Output Format
 

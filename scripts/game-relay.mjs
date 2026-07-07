@@ -11,6 +11,8 @@
  *        node scripts/game-relay.mjs --url wss://stage.neomud.app/worlds/{worldId}/game <username> <password>
  *        node scripts/game-relay.mjs --staging <worldSlug>              (platform JWT auth, existing character)
  *        node scripts/game-relay.mjs --staging <worldSlug> --register <charName> <class> [race] [gender]
+ *        node scripts/game-relay.mjs --interactive [--color] <username> <password>   (classic scrolling MUD text)
+ *        node scripts/game-relay.mjs --id <suffix> <username> <password>             (namespaced instance)
  *
  * Staging mode logs into the platform API, resolves the world's WS endpoint,
  * and connects with JWT auth. Credentials come from NEOMUD_PLATFORM_EMAIL /
@@ -25,12 +27,18 @@ import { WebSocket } from 'ws';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import readline from 'readline';
+import { renderMessage, renderPrompt, renderHelp, renderPartyState } from './mud-renderer.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // --id <suffix> enables multiple relay instances (separate state/command/lock files)
+// --interactive enables stdin readline mode with text rendering
+// --color enables ANSI color output for --interactive mode
 const idIdx = process.argv.indexOf('--id');
 const INSTANCE_ID = idIdx !== -1 && idIdx + 1 < process.argv.length ? process.argv[idIdx + 1] : null;
+let INTERACTIVE_MODE = false;
+let COLOR_MODE = false;
 const fileSuffix = INSTANCE_ID ? `-${INSTANCE_ID}` : '';
 
 const STATE_FILE = path.join(__dirname, `relay-state${fileSuffix}.json`);
@@ -76,6 +84,10 @@ for (let i = 0; i < rawArgs.length; i++) {
     characterOverride = rawArgs[++i];
   } else if (rawArgs[i] === '--id' && i + 1 < rawArgs.length) {
     i++; // already parsed above
+  } else if (rawArgs[i] === '--interactive') {
+    INTERACTIVE_MODE = true;
+  } else if (rawArgs[i] === '--color') {
+    COLOR_MODE = true;
   } else {
     args.push(rawArgs[i]);
   }
@@ -1118,9 +1130,429 @@ function formatCoinString(c) {
 }
 
 // ---------------------------------------------------------------------------
+// Interactive mode — output, local commands, command parser
+// ---------------------------------------------------------------------------
+function printOutput(lines) {
+  if (!lines || lines.length === 0) return;
+  if (rl) {
+    readline.clearLine(process.stdout, 0);
+    readline.cursorTo(process.stdout, 0);
+  }
+  for (const line of lines) {
+    process.stdout.write(line + '\n');
+  }
+  if (rl && state.loggedIn) {
+    rl.setPrompt(renderPrompt(state, COLOR_MODE));
+    rl.prompt(true);
+  }
+}
+
+function handleLocalCommand(cmd) {
+  switch (cmd) {
+    case 'help':
+      printOutput(renderHelp(COLOR_MODE));
+      break;
+    case 'party_info':
+      printOutput(renderPartyState(state.party, COLOR_MODE));
+      break;
+    case 'hp': {
+      const p = state.player;
+      if (p) {
+        const bar = p.maxHp > 0 ? ` [${'█'.repeat(Math.round(p.hp/p.maxHp*10))}${'░'.repeat(10-Math.round(p.hp/p.maxHp*10))}]` : '';
+        process.stdout.write(`HP: ${p.hp}/${p.maxHp}${bar}  MP: ${p.mp}/${p.maxMp}\n`);
+      }
+      break;
+    }
+    case 'effects':
+      if (state.activeEffects.length > 0) {
+        for (const e of state.activeEffects) {
+          process.stdout.write(`  ${e.name} (${e.remainingTicks} ticks)\n`);
+        }
+      } else {
+        process.stdout.write('No active effects.\n');
+      }
+      break;
+    case 'skills':
+      if (state.availableSkills.length > 0) {
+        process.stdout.write('Available skills:\n');
+        for (const s of state.availableSkills) {
+          if (!s.isPassive) process.stdout.write(`  ${s.id}: ${s.name} — ${s.description}\n`);
+        }
+      } else {
+        process.stdout.write('No active skills available.\n');
+      }
+      break;
+    case 'spells':
+      if (state.availableSpells.length > 0) {
+        process.stdout.write('Available spells:\n');
+        for (const s of state.availableSpells) {
+          process.stdout.write(`  ${s.id}: ${s.name} (${s.school}) — MP:${s.manaCost}\n`);
+        }
+      } else {
+        process.stdout.write('No spells available.\n');
+      }
+      break;
+    case 'cancel':
+      state.pendingPrompt = null;
+      process.stdout.write('Cancelled.\n');
+      scheduleStateWrite();
+      break;
+    case 'quit':
+      shutdownRelay(0);
+      break;
+  }
+}
+
+function resolveNpc(name, s) {
+  if (!name) return null;
+  const npcs = s.npcsInRoom || [];
+  const n = name.toLowerCase();
+  return npcs.find(x => x.name.toLowerCase() === n)
+    || npcs.find(x => x.name.toLowerCase().startsWith(n))
+    || npcs.find(x => x.name.toLowerCase().includes(n))
+    || null;
+}
+
+function resolveCurrentTarget(s) {
+  if (s.selectedTarget) {
+    const npc = (s.npcsInRoom || []).find(n => n.id === s.selectedTarget);
+    if (npc) return npc;
+  }
+  return (s.npcsInRoom || []).find(n => n.hostile) || null;
+}
+
+function resolveGroundItem(name, s) {
+  if (!name) return null;
+  const items = s.groundItems || [];
+  const n = name.toLowerCase();
+  return items.find(i => (i.name || i.itemId).toLowerCase() === n)
+    || items.find(i => (i.name || i.itemId).toLowerCase().startsWith(n))
+    || items.find(i => (i.name || i.itemId).toLowerCase().includes(n))
+    || null;
+}
+
+function resolveInventoryItem(name, s) {
+  if (!name) return null;
+  const items = s.inventory || [];
+  const n = name.toLowerCase();
+  return items.find(i => (i.name || i.itemId).toLowerCase() === n)
+    || items.find(i => (i.name || i.itemId).toLowerCase().startsWith(n))
+    || items.find(i => (i.name || i.itemId).toLowerCase().includes(n))
+    || null;
+}
+
+function resolveInteractable(name, s) {
+  if (!name) return null;
+  const features = (s.room?.interactables || []).filter(i => i.triggerType !== 'ON_ENTER');
+  const n = name.toLowerCase();
+  return features.find(f => f.label.toLowerCase() === n)
+    || features.find(f => f.label.toLowerCase().startsWith(n))
+    || features.find(f => f.label.toLowerCase().includes(n))
+    || null;
+}
+
+const DIR_MAP = {
+  n: 'NORTH', s: 'SOUTH', e: 'EAST', w: 'WEST', u: 'UP', d: 'DOWN',
+  north: 'NORTH', south: 'SOUTH', east: 'EAST', west: 'WEST', up: 'UP', down: 'DOWN',
+  ne: 'NORTHEAST', nw: 'NORTHWEST', se: 'SOUTHEAST', sw: 'SOUTHWEST',
+  northeast: 'NORTHEAST', northwest: 'NORTHWEST', southeast: 'SOUTHEAST', southwest: 'SOUTHWEST',
+};
+
+function parseInteractiveCommand(line) {
+  const parts = line.trim().split(/\s+/);
+  if (!parts[0]) return null;
+  const cmd = parts[0].toLowerCase();
+  const arg1 = parts[1] || '';
+  const rest = parts.slice(1).join(' ');
+
+  if (DIR_MAP[cmd]) return [{ type: 'move', direction: DIR_MAP[cmd] }];
+
+  switch (cmd) {
+    case 'look': case 'l':
+      return [{ type: 'look' }];
+
+    case 'say': {
+      if (!rest) return { error: 'Say what?' };
+      return [{ type: 'say', message: rest }];
+    }
+
+    // Slash commands routed through say (tell, who, reply, etc.)
+    case '/tell': case 'tell': case 't':
+      if (!arg1) return { error: 'Usage: tell <player> <message>' };
+      return [{ type: 'say', message: `/tell ${rest}` }];
+
+    case 'who':
+      return [{ type: 'say', message: '/who' }];
+
+    case 'reply': case 'r':
+      if (!rest) return { error: 'Usage: reply <message>' };
+      return [{ type: 'say', message: `/reply ${rest}` }];
+
+    case 'attack': case 'kill': case 'k': {
+      if (!arg1) {
+        if (state.attackMode) return [{ type: 'attack_toggle', enabled: false }];
+        return { error: 'Attack what? (attack <npc>)' };
+      }
+      const npc = resolveNpc(arg1, state);
+      if (!npc) return { error: `No NPC named '${arg1}' here.` };
+      state.selectedTarget = npc.id;
+      return [
+        { type: 'select_target', npcId: npc.id },
+        { type: 'attack_toggle', enabled: true },
+      ];
+    }
+
+    case 'stop': case 'flee':
+      return [
+        { type: 'attack_toggle', enabled: false },
+        { type: 'select_target', npcId: null },
+      ];
+
+    case 'select': case 'target': {
+      if (!arg1) {
+        state.selectedTarget = null;
+        return [{ type: 'select_target', npcId: null }];
+      }
+      const npc = resolveNpc(arg1, state);
+      if (!npc) return { error: `No NPC named '${arg1}' here.` };
+      state.selectedTarget = npc.id;
+      return [{ type: 'select_target', npcId: npc.id }];
+    }
+
+    case 'inv': case 'inventory': case 'i':
+      return [{ type: 'view_inventory' }];
+
+    case 'get': case 'take': case 'pickup': {
+      if (!arg1) return { error: 'Get what?' };
+      if (arg1.toLowerCase() === 'all') {
+        const msgs = [];
+        for (const item of (state.groundItems || [])) {
+          msgs.push({ type: 'pickup_item', itemId: item.itemId, quantity: item.quantity || 1 });
+        }
+        const coins = state.groundCoins || {};
+        if (coins.gold > 0) msgs.push({ type: 'pickup_coins', coinType: 'gold' });
+        if (coins.silver > 0) msgs.push({ type: 'pickup_coins', coinType: 'silver' });
+        if (coins.copper > 0) msgs.push({ type: 'pickup_coins', coinType: 'copper' });
+        return msgs.length > 0 ? msgs : { error: 'Nothing to pick up.' };
+      }
+      if (['gold', 'silver', 'copper'].includes(arg1.toLowerCase())) {
+        return [{ type: 'pickup_coins', coinType: arg1.toLowerCase() }];
+      }
+      const item = resolveGroundItem(arg1, state);
+      if (!item) return { error: `No item '${arg1}' on the ground.` };
+      const qty = parseInt(parts[2]) || item.quantity || 1;
+      return [{ type: 'pickup_item', itemId: item.itemId, quantity: qty }];
+    }
+
+    case 'drop': {
+      if (!arg1) return { error: 'Drop what?' };
+      const item = resolveInventoryItem(arg1, state);
+      if (!item) return { error: `No item '${arg1}' in inventory.` };
+      const qty = parseInt(parts[2]) || 1;
+      return [{ type: 'drop_item', itemId: item.itemId, quantity: qty }];
+    }
+
+    case 'use': {
+      if (!arg1) return { error: 'Use what?' };
+      const item = resolveInventoryItem(arg1, state);
+      if (!item) return { error: `No item '${arg1}' in inventory. (Did you mean 'interact <feature>'?)` };
+      return [{ type: 'use_item', itemId: item.itemId }];
+    }
+
+    case 'equip': case 'wear': case 'wield': {
+      if (!arg1) return { error: 'Equip what?' };
+      const item = resolveInventoryItem(arg1, state);
+      if (!item) return { error: `No item '${arg1}' in inventory.` };
+      return [{ type: 'equip_item', itemId: item.itemId, slot: '' }];
+    }
+
+    case 'unequip': case 'remove':
+      if (!arg1) return { error: 'Unequip what slot?' };
+      return [{ type: 'unequip_item', slot: arg1 }];
+
+    case 'sneak':
+      return [{ type: 'sneak_toggle', enabled: !state.isHidden }];
+    case 'hide':
+      return [{ type: 'sneak_toggle', enabled: true }];
+    case 'unhide': case 'reveal':
+      return [{ type: 'sneak_toggle', enabled: false }];
+
+    case 'bash': {
+      const npc = arg1 ? resolveNpc(arg1, state) : resolveCurrentTarget(state);
+      if (!npc) return { error: 'Bash what? (attack <npc> first to select a target)' };
+      return [{ type: 'use_skill', skillId: 'skill:bash', targetId: npc.id }];
+    }
+
+    case 'kick': {
+      const npc = arg1 ? resolveNpc(arg1, state) : resolveCurrentTarget(state);
+      if (!npc) return { error: 'Kick what? (attack <npc> first to select a target)' };
+      return [{ type: 'use_skill', skillId: 'skill:kick', targetId: npc.id }];
+    }
+
+    case 'meditate':
+      return [{ type: 'use_skill', skillId: 'skill:meditate' }];
+
+    case 'track': {
+      const npc = arg1 ? resolveNpc(arg1, state) : null;
+      return [{ type: 'use_skill', skillId: 'skill:track', targetId: npc?.id || null }];
+    }
+
+    case 'skill': {
+      if (!arg1) return { error: 'Which skill? (skill <skillId> [target])' };
+      const npc = parts[2] ? resolveNpc(parts[2], state) : null;
+      return [{ type: 'use_skill', skillId: arg1, targetId: npc?.id || null }];
+    }
+
+    case 'cast': {
+      if (!arg1) return { error: 'Cast which spell? (cast <spellId> [target])' };
+      const npc = parts[2] ? resolveNpc(parts[2], state) : null;
+      return [{ type: 'cast_spell', spellId: arg1, targetId: npc?.id || null }];
+    }
+
+    case 'ready':
+      return [{ type: 'ready_spell', spellId: arg1 || null }];
+
+    case 'train': case 'trainer':
+      if (arg1 === 'stat' && parts[2]) {
+        return [{ type: 'train_stat', stat: parts[2].toUpperCase(), points: parseInt(parts[3]) || 1 }];
+      }
+      return [{ type: 'interact_trainer' }];
+
+    case 'levelup':
+      return [{ type: 'train_level_up' }];
+
+    case 'shop': case 'vendor':
+      return [{ type: 'interact_vendor' }];
+
+    case 'buy': {
+      if (!arg1) return { error: 'Buy what?' };
+      const qty = parseInt(parts[2]) || 1;
+      return [{ type: 'buy_item', itemId: arg1, quantity: qty }];
+    }
+
+    case 'sell': {
+      if (!arg1) return { error: 'Sell what?' };
+      const item = resolveInventoryItem(arg1, state);
+      if (!item) return { error: `No item '${arg1}' in inventory.` };
+      const qty = parseInt(parts[2]) || 1;
+      return [{ type: 'sell_item', itemId: item.itemId, quantity: qty }];
+    }
+
+    case 'interact': case 'activate': {
+      const features = (state.room?.interactables || []).filter(i => i.triggerType !== 'ON_ENTER');
+      if (!arg1 && features.length === 1) {
+        return [{ type: 'interact_feature', featureId: features[0].id }];
+      }
+      if (!arg1) return { error: 'Interact with what?' };
+      const feature = resolveInteractable(arg1, state);
+      if (!feature) return { error: `No feature '${arg1}' here.` };
+      return [{ type: 'interact_feature', featureId: feature.id }];
+    }
+
+    case 'talk': case 'npc': {
+      if (!arg1) return { error: 'Talk to whom?' };
+      const npc = resolveNpc(arg1, state);
+      if (!npc) return { error: `No NPC named '${arg1}' here.` };
+      return [{ type: 'interact_npc', npc_id: npc.id }];
+    }
+
+    case 'answer': {
+      const prompt = state.pendingPrompt;
+      if (!prompt || prompt.type !== 'riddle') return { error: 'No riddle to answer.' };
+      if (!rest) return { error: 'Answer what?' };
+      return [{ type: 'answer_riddle', feature_id: prompt.featureId, answer: rest }];
+    }
+
+    case 'choose': {
+      const prompt = state.pendingPrompt;
+      if (!prompt || prompt.type !== 'choice') return { error: 'No choice active.' };
+      const n = parseInt(arg1);
+      if (isNaN(n) || n < 1 || n > (prompt.options || []).length) {
+        return { error: `Choose a number 1-${(prompt.options || []).length}.` };
+      }
+      return [{ type: 'make_choice', feature_id: prompt.featureId, choice_id: prompt.options[n - 1].id }];
+    }
+
+    case 'place': {
+      const prompt = state.pendingPrompt;
+      if (!prompt || prompt.type !== 'place_item') return { error: 'No item placement active.' };
+      if (!arg1) return { error: 'Place what item?' };
+      const item = resolveInventoryItem(arg1, state);
+      if (!item) return { error: `No item '${arg1}' in inventory.` };
+      return [{ type: 'place_item', feature_id: prompt.featureId, item_id: item.itemId }];
+    }
+
+    case 'cancel':
+      return { local: 'cancel' };
+
+    case 'crafting': case 'recipes':
+      return [{ type: 'interact_crafter' }];
+
+    case 'craft': {
+      if (!arg1) return [{ type: 'interact_crafter' }];
+      return [{ type: 'craft_item', recipeId: arg1 }];
+    }
+
+    case 'party': {
+      const sub = arg1.toLowerCase();
+      switch (sub) {
+        case 'invite': return parts[2] ? [{ type: 'party_invite', targetName: parts[2] }] : { error: 'Invite whom?' };
+        case 'accept': return parts[2] ? [{ type: 'party_accept', inviterName: parts[2] }] : { error: 'Accept whose invite?' };
+        case 'decline': return parts[2] ? [{ type: 'party_decline', inviterName: parts[2] }] : { error: 'Decline whose invite?' };
+        case 'leave': return [{ type: 'party_leave' }];
+        case 'kick': return parts[2] ? [{ type: 'party_kick', targetName: parts[2] }] : { error: 'Kick whom?' };
+        case 'say': return [{ type: 'party_say', message: parts.slice(2).join(' ') }];
+        case 'info': case '': case undefined: return { local: 'party_info' };
+        default: return { error: `Unknown party command '${sub}'. Try: invite, accept, decline, leave, kick, say, info` };
+      }
+    }
+
+    case 'ps': case ';':
+      if (!rest) return { error: 'Party say what?' };
+      return [{ type: 'party_say', message: rest }];
+
+    case 'follow': {
+      if (!arg1) return { error: 'Follow whom?' };
+      return [{ type: 'follow', targetName: arg1 }];
+    }
+
+    case 'unfollow': case 'stopfollow':
+      return [{ type: 'follow_stop' }];
+
+    case 'rally':
+      return [{ type: 'rally' }];
+
+    case 'atlas': case 'world':
+      return [{ type: 'request_atlas' }];
+
+    case 'help': case '?':
+      return { local: 'help' };
+
+    case 'hp': case 'health':
+      return { local: 'hp' };
+
+    case 'effects': case 'buffs':
+      return { local: 'effects' };
+
+    case 'skills':
+      return { local: 'skills' };
+
+    case 'spells':
+      return { local: 'spells' };
+
+    case 'quit': case 'exit': case 'q':
+      return { local: 'quit' };
+
+    default:
+      return { error: `Unknown command: '${cmd}'. Type 'help' for a list of commands.` };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // WebSocket connection
 // ---------------------------------------------------------------------------
 let ws = null;
+let rl = null;
 let pingTimer = null;
 let commandPollTimer = null;
 let serverShuttingDown = false;
@@ -1175,8 +1607,12 @@ function connect() {
       const handler = handlers[msg.type];
       if (handler) {
         handler(msg);
-      } else {
+      } else if (!INTERACTIVE_MODE) {
         console.log(`[relay] Unhandled message type: ${msg.type}`);
+      }
+      if (INTERACTIVE_MODE) {
+        const lines = renderMessage(msg, state, COLOR_MODE);
+        if (lines.length > 0) printOutput(lines);
       }
     } catch (err) {
       console.error('[relay] Failed to parse message:', err.message);
@@ -1339,6 +1775,7 @@ function releaseLock() {
 console.log('[relay] NeoMud Game Relay');
 const mode = guestMode ? 'guest' : registerMode ? 'register' : 'login';
 console.log(`[relay] User: ${guestMode ? guestOpts.charName : username}, Mode: ${mode}`);
+if (INTERACTIVE_MODE) console.log('[relay] Interactive mode ON. Type \'help\' for commands.');
 
 acquireLock();
 
@@ -1352,10 +1789,77 @@ try { fs.unlinkSync(PROCESSING_FILE); } catch {}
 writeStateFile();
 connect();
 
+// Set up readline for interactive mode
+if (INTERACTIVE_MODE) {
+  rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: true,
+  });
+
+  rl.setPrompt('(connecting...) ');
+  rl.prompt();
+
+  rl.on('line', (input) => {
+    lastCommandAt = Date.now();
+    const line = input.trim();
+
+    if (!line) {
+      if (state.loggedIn) {
+        rl.setPrompt(renderPrompt(state, COLOR_MODE));
+      }
+      rl.prompt();
+      return;
+    }
+
+    if (!state.loggedIn) {
+      process.stdout.write('Not connected yet. Please wait...\n');
+      rl.prompt();
+      return;
+    }
+
+    const result = parseInteractiveCommand(line);
+
+    if (!result) {
+      rl.prompt();
+      return;
+    }
+
+    if (result.error) {
+      process.stdout.write(result.error + '\n');
+      rl.setPrompt(renderPrompt(state, COLOR_MODE));
+      rl.prompt();
+      return;
+    }
+
+    if (result.local) {
+      handleLocalCommand(result.local);
+      rl.setPrompt(renderPrompt(state, COLOR_MODE));
+      rl.prompt();
+      return;
+    }
+
+    if (Array.isArray(result)) {
+      for (const msg of result) {
+        send(msg);
+      }
+    }
+
+    rl.setPrompt(renderPrompt(state, COLOR_MODE));
+    rl.prompt();
+  });
+
+  rl.on('close', () => {
+    console.log('\n[relay] Input closed. Shutting down...');
+    shutdownRelay(0);
+  });
+}
+
 // Graceful shutdown
 function shutdownRelay(exitCode = 0) {
   cleanup();
   if (ws) { try { ws.close(); } catch {} }
+  if (rl) { try { rl.close(); } catch {} rl = null; }
   try { fs.unlinkSync(STATE_FILE); } catch {}
   try { fs.unlinkSync(TEMP_STATE_FILE); } catch {}
   releaseLock();

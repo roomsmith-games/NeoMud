@@ -27,15 +27,58 @@ curl -s http://localhost:8080/health
 
 If the health check fails, inform the user that the game server needs to be running (`./gradlew :server:run`).
 
-Then check if a relay is already running by reading `scripts/relay-state.json`. If the relay is running and logged in, you can use the existing session.
+## Connection Mode
+
+Determine which connection mode to use:
+
+- **If testing the telnet client** (text rendering, command parsing, help system, prompt display): use **Telnet mode**
+- **For general gameplay testing** (combat, inventory, quests, balance): use **WebSocket relay mode**
+- **If the user specified "telnet"** in their arguments: use Telnet mode
+- **If unsure**: ask the user — "Should I connect via telnet (tests the text client) or via the WebSocket relay (JSON state, more visibility into game data)?"
+
+---
+
+### Telnet Mode
+
+Check if already running:
+```bash
+[ -f scripts/telnet.lock ] && echo "Already running" || echo "Not running"
+```
+
+If not running, ask the user for credentials (username + password for an existing character — no registration via telnet). Then start:
+
+```bash
+# Local server (default port 4000)
+node scripts/telnet-client.mjs &
+
+# Staging
+node scripts/telnet-client.mjs stage.neomud.app 4000 &
+```
+
+Wait a few seconds, then read `scripts/telnet-recent.txt` to confirm the welcome banner appeared.
+
+The login flow is text-driven — follow the prompts:
+```bash
+sleep 3
+# Read telnet-recent.txt — should see the welcome banner
+echo -n "<username>" > scripts/telnet-command.txt
+sleep 1
+# Read telnet-recent.txt — should see "Password: "
+echo -n "<password>" > scripts/telnet-command.txt
+sleep 2
+# Read telnet-recent.txt — should see room description and prompt
+```
+
+---
+
+### WebSocket Relay Mode
+
+Check if already running by reading `scripts/relay-state.json`. If running and logged in, you can use the existing session.
 
 If no relay is running, **ask the user** how they'd like to connect:
-
 1. **Login with existing account** — ask for username and password
 2. **Register a new character** — ask for username, password, character name, class, race, and gender
-3. **Use an existing relay-state.json** — if the user already has a relay running externally
-
-Start the relay accordingly:
+3. **Use staging** — connects to `stage.neomud.app`
 
 ```bash
 # Login (local server)
@@ -44,35 +87,21 @@ node scripts/game-relay.mjs <username> <password> &
 # Register (local server)
 node scripts/game-relay.mjs --register <username> <password> <charName> <class> [race] [gender] &
 
-# Login (staging — specify world by ID)
-node scripts/game-relay.mjs --url "wss://stage.neomud.app/worlds/<worldId>/game" <username> <password> &
+# Login (staging)
+node scripts/game-relay.mjs --staging default-world &
 
 # Register (staging)
-node scripts/game-relay.mjs --url "wss://stage.neomud.app/worlds/<worldId>/game" --register <username> <password> <charName> <class> [race] [gender] &
+node scripts/game-relay.mjs --staging default-world --register TestChar WARRIOR HUMAN male &
 ```
 
-**Staging world IDs** (look up current IDs via `curl -s https://stage-api.neomud.app/api/v1/worlds`):
-- Default World: `cmno7e7ha000216nwbzly1q8n`
-- Shattered Reach: `cmnqrhljj000016n1f15es4rl`
+Wait a few seconds, then read `scripts/relay-state.json` to confirm `connected` and `loggedIn` are true.
 
-Wait a few seconds for connection, then verify:
-
-```bash
-sleep 3
-```
-
-Read `scripts/relay-state.json` to confirm `connected` and `loggedIn` are true.
+---
 
 ## Session Flow
 
-1. Read the relay state to see the current game state
-2. Play the game following your methodology — read state, send commands, evaluate results
+1. Connect using the appropriate mode above
+2. Play the game following your methodology — read state/output, send commands, evaluate results
 3. Document bugs, UX issues, and impressions as you go
-4. **Shut down the relay** (MANDATORY — see "Session Cleanup" in the agent definition):
-   ```bash
-   if [ -f scripts/relay.lock ]; then
-     kill "$(cat scripts/relay.lock)" 2>/dev/null; sleep 1
-     [ -f scripts/relay.lock ] && kill -9 "$(cat scripts/relay.lock)" 2>/dev/null && rm -f scripts/relay.lock scripts/relay-state.json
-   fi
-   ```
+4. **Shut down the client** (MANDATORY — see "Session Cleanup" in the agent definition)
 5. End with a structured playtest report
