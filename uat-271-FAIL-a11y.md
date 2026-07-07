@@ -1,0 +1,69 @@
+- generic [ref=e13]:
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic: Guest Character
+            - generic:
+              - generic: ✓
+            - generic: Name
+            - generic:
+              - generic: ✓
+            - generic: Gender
+            - generic:
+              - generic: ✓
+            - generic: Race
+            - generic:
+              - generic: ✓
+            - generic: Class
+            - generic:
+              - generic: "5"
+            - generic: Stats
+            - generic:
+              - generic: "6"
+            - generic: Review
+            - generic: "Step 5: Allocate Stats"
+            - generic "CP used 59 of 60": "CP Used: 59 / 60"
+            - generic: Stat
+            - generic: Value
+            - generic: Cost
+            - generic: ✦
+            - generic:
+              - generic: Strength
+              - generic "Strength value 30": "30"
+              - button "-"
+              - generic:
+                - generic: +
+              - generic: 2cp
+              - generic: Agility
+              - generic "Agility value 21": "21"
+              - button "-"
+              - button "+"
+              - generic: 1cp
+              - generic: Intellect
+              - generic "Intellect value 18": "18"
+              - button "-"
+              - generic:
+                - generic: +
+              - generic: 2cp
+              - generic: Willpower
+              - generic "Willpower value 18": "18"
+              - button "-"
+              - generic:
+                - generic: +
+              - generic: 2cp
+              - generic: Health
+              - generic "Health value 30": "30"
+              - button "-"
+              - generic:
+                - generic: +
+              - generic: 2cp
+              - generic: Charm
+              - generic "Charm value 18": "18"
+              - button "-"
+              - generic:
+                - generic: +
+              - generic: 2cp
+            - button "Reset Stats"
+            - button "Back"
