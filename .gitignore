@@ -10,6 +10,10 @@ kotlin-js-store/
 # client/src/test/snapshots/ are tracked and unaffected)
 /*.png
 
+# Loose .nmd world exports in maker/ — large ZIP bundles, not for git
+# (the deployed default world is built to server/build/worlds/ instead)
+maker/*.nmd
+
 # IDE
 .idea/
 *.iml
