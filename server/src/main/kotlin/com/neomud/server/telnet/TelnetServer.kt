@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 class TelnetServer(
@@ -29,28 +28,7 @@ class TelnetServer(
 ) {
     private val logger = LoggerFactory.getLogger(TelnetServer::class.java)
     private val activeConnections = AtomicInteger(0)
-    // Live connection count per remote IP. Reserve/release go through ConcurrentHashMap.compute so
-    // the cap check and the increment happen atomically — a plain get-then-increment (or
-    // decrement-then-remove) races between concurrent accepts on the same IP.
-    private val perIpCount = ConcurrentHashMap<String, Int>()
-
-    /** Atomically reserve a slot for [ip] if under [maxPerIp]. Returns true if admitted. */
-    private fun reserveIpSlot(ip: String): Boolean {
-        var admitted = false
-        perIpCount.compute(ip) { _, current ->
-            val c = current ?: 0
-            if (c >= maxPerIp) c else { admitted = true; c + 1 }
-        }
-        return admitted
-    }
-
-    /** Atomically release a slot for [ip], removing the entry when it reaches zero. */
-    private fun releaseIpSlot(ip: String) {
-        perIpCount.compute(ip) { _, current ->
-            val c = (current ?: 1) - 1
-            if (c <= 0) null else c
-        }
-    }
+    private val ipLimiter = IpConnectionLimiter(maxPerIp)
 
     suspend fun start() = coroutineScope {
         val selectorManager = SelectorManager(Dispatchers.IO)
@@ -73,7 +51,7 @@ class TelnetServer(
                 continue
             }
 
-            if (!reserveIpSlot(remoteIp)) {
+            if (!ipLimiter.tryReserve(remoteIp)) {
                 activeConnections.decrementAndGet()
                 logger.warn("Telnet: per-IP limit reached for $remoteIp")
                 try {
@@ -100,7 +78,7 @@ class TelnetServer(
                     logger.debug("Telnet handler error for $remoteIp: ${e.message}")
                 } finally {
                     activeConnections.decrementAndGet()
-                    releaseIpSlot(remoteIp)
+                    ipLimiter.release(remoteIp)
                     try { socket.close() } catch (_: Exception) {}
                 }
             }
