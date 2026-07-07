@@ -2,8 +2,8 @@ package com.neomud.client.ui.components
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import com.neomud.client.testutil.PaparazziThemeWrapper
 import com.neomud.client.testutil.TestData
-import com.neomud.client.testutil.TestThemeWrapper
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,7 +21,7 @@ class SpellBarScreenshotTest {
     @Test
     fun mixedSlots() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 SpellBar(
                     spellSlots = listOf("fireball", "heal", null, null),
                     spellCatalog = catalog,
@@ -37,7 +37,7 @@ class SpellBarScreenshotTest {
     @Test
     fun readiedSpell() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 SpellBar(
                     spellSlots = listOf("fireball", "heal", null, null),
                     spellCatalog = catalog,

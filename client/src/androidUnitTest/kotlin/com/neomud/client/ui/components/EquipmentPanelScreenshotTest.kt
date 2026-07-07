@@ -8,8 +8,8 @@ import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import coil3.test.FakeImageLoaderEngine
 import coil3.test.default
+import com.neomud.client.testutil.PaparazziThemeWrapper
 import com.neomud.client.testutil.TestData
-import com.neomud.client.testutil.TestThemeWrapper
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,7 +44,7 @@ class EquipmentPanelScreenshotTest {
             "chest" to "chain_chest"
         )
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 EquipmentPanel(
                     inventory = listOf(
                         TestData.inventoryItem(itemId = "iron_sword", equipped = true, slot = "weapon"),
@@ -64,7 +64,7 @@ class EquipmentPanelScreenshotTest {
     @Test
     fun paperdollEmpty() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 EquipmentPanel(
                     inventory = emptyList(),
                     equipment = emptyMap(),

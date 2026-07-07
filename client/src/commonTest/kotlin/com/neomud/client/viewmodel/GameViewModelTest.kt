@@ -7,6 +7,7 @@ import com.neomud.shared.protocol.ServerMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -28,6 +29,7 @@ class GameViewModelTest {
         Dispatchers.setMain(testDispatcher)
         fakeConnection = FakeGameConnection()
         viewModel = GameViewModel(wsClient = fakeConnection)
+        viewModel.startCollecting()
     }
 
     @AfterTest
@@ -35,7 +37,8 @@ class GameViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private suspend fun loginAs(name: String, currentHp: Int = 80, maxHp: Int = 100) {
+    private suspend fun TestScope.loginAs(name: String, currentHp: Int = 80, maxHp: Int = 100) {
+        advanceUntilIdle() // let startCollecting()'s coroutine subscribe before we emit
         fakeConnection.receiveMessage(ServerMessage.LoginOk(player = TestData.player(name = name, currentHp = currentHp, maxHp = maxHp)))
     }
 

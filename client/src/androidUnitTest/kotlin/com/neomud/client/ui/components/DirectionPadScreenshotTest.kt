@@ -2,7 +2,7 @@ package com.neomud.client.ui.components
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
-import com.neomud.client.testutil.TestThemeWrapper
+import com.neomud.client.testutil.PaparazziThemeWrapper
 import com.neomud.shared.model.Direction
 import org.junit.Rule
 import org.junit.Test
@@ -17,7 +17,7 @@ class DirectionPadScreenshotTest {
     @Test
     fun allExits() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 DirectionPad(
                     availableExits = Direction.entries.toSet(),
                     onMove = {},
@@ -30,7 +30,7 @@ class DirectionPadScreenshotTest {
     @Test
     fun noExits() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 DirectionPad(
                     availableExits = emptySet(),
                     onMove = {},
@@ -43,7 +43,7 @@ class DirectionPadScreenshotTest {
     @Test
     fun cardinalOnly() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 DirectionPad(
                     availableExits = setOf(
                         Direction.NORTH, Direction.SOUTH,

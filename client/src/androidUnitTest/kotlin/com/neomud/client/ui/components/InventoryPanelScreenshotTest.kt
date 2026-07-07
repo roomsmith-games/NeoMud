@@ -8,8 +8,8 @@ import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import coil3.test.FakeImageLoaderEngine
 import coil3.test.default
+import com.neomud.client.testutil.PaparazziThemeWrapper
 import com.neomud.client.testutil.TestData
-import com.neomud.client.testutil.TestThemeWrapper
 import com.neomud.shared.model.Coins
 import org.junit.Before
 import org.junit.Rule
@@ -44,7 +44,7 @@ class InventoryPanelScreenshotTest {
             TestData.inventoryItem(itemId = "gold_ring", quantity = 1)
         )
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 InventoryPanel(
                     inventory = inventory,
                     itemCatalog = catalog,
@@ -59,7 +59,7 @@ class InventoryPanelScreenshotTest {
     @Test
     fun emptyBag() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 InventoryPanel(
                     inventory = emptyList(),
                     itemCatalog = catalog,
@@ -74,7 +74,7 @@ class InventoryPanelScreenshotTest {
     @Test
     fun withCoins() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 InventoryPanel(
                     inventory = emptyList(),
                     itemCatalog = catalog,

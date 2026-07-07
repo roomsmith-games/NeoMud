@@ -30,7 +30,7 @@ class LoginScreenTest : ComposeTestBase() {
                     authState = AuthState.Idle,
                     connectionError = null,
                     onConnect = { _, _ -> },
-                    onLogin = { _, _ -> },
+                    onLogin = { _ -> },
                     onNavigateToRegister = {},
                     onClearError = {}
                 )
@@ -57,7 +57,7 @@ class LoginScreenTest : ComposeTestBase() {
                         connectedHost = host
                         connectedPort = port
                     },
-                    onLogin = { _, _ -> },
+                    onLogin = { _ -> },
                     onNavigateToRegister = {},
                     onClearError = {}
                 )
@@ -79,7 +79,7 @@ class LoginScreenTest : ComposeTestBase() {
                     authState = AuthState.Idle,
                     connectionError = null,
                     onConnect = { _, _ -> },
-                    onLogin = { _, _ -> },
+                    onLogin = { _ -> },
                     onNavigateToRegister = {},
                     onClearError = {}
                 )
@@ -87,7 +87,7 @@ class LoginScreenTest : ComposeTestBase() {
         }
 
         // Should show auth fields when connected (Create Account link is unique to auth phase)
-        onNodeWithText("Create Account").assertIsDisplayed()
+        onNodeWithText("Create Character").assertIsDisplayed()
         // "Login" appears as both header and button — verify at least one exists
         onAllNodesWithText("Login").assertCountEquals(2)
     }
@@ -101,7 +101,7 @@ class LoginScreenTest : ComposeTestBase() {
                     authState = AuthState.Idle,
                     connectionError = null,
                     onConnect = { _, _ -> },
-                    onLogin = { _, _ -> },
+                    onLogin = { _ -> },
                     onNavigateToRegister = {},
                     onClearError = {}
                 )
@@ -120,7 +120,7 @@ class LoginScreenTest : ComposeTestBase() {
                     authState = AuthState.Idle,
                     connectionError = "Connection refused",
                     onConnect = { _, _ -> },
-                    onLogin = { _, _ -> },
+                    onLogin = { _ -> },
                     onNavigateToRegister = {},
                     onClearError = {}
                 )
@@ -139,13 +139,13 @@ class LoginScreenTest : ComposeTestBase() {
                     authState = AuthState.Error("Invalid credentials"),
                     connectionError = null,
                     onConnect = { _, _ -> },
-                    onLogin = { _, _ -> },
+                    onLogin = { _ -> },
                     onNavigateToRegister = {},
                     onClearError = {}
                 )
             }
         }
 
-        onNodeWithText("Invalid credentials").assertIsDisplayed()
+        onNodeWithText("Invalid credentials").assertExists()
     }
 }

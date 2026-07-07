@@ -2,8 +2,8 @@ package com.neomud.client.ui.components
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import com.neomud.client.testutil.PaparazziThemeWrapper
 import com.neomud.client.testutil.TestData
-import com.neomud.client.testutil.TestThemeWrapper
 import com.neomud.shared.model.EffectType
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +18,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun fullHp() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(currentHp = 100, maxHp = 100, currentMp = 50, maxMp = 50),
                     activeEffects = emptyList(),
@@ -31,7 +31,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun lowHp() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(currentHp = 15, maxHp = 100, currentMp = 5, maxMp = 50),
                     activeEffects = emptyList(),
@@ -44,7 +44,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun withEffects() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(),
                     activeEffects = listOf(
@@ -61,7 +61,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun hiddenState() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(),
                     activeEffects = emptyList(),
@@ -75,7 +75,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun compactFullHp() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(currentHp = 100, maxHp = 100, currentMp = 50, maxMp = 50),
                     activeEffects = emptyList(),
@@ -89,7 +89,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun compactLowHp() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(currentHp = 8, maxHp = 100, currentMp = 3, maxMp = 50),
                     activeEffects = emptyList(),
@@ -103,7 +103,7 @@ class PlayerStatusPanelScreenshotTest {
     @Test
     fun compactHiddenWithEffects() {
         paparazzi.snapshot {
-            TestThemeWrapper {
+            PaparazziThemeWrapper {
                 PlayerStatusPanel(
                     player = TestData.player(),
                     activeEffects = listOf(

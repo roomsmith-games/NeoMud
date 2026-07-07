@@ -79,26 +79,25 @@ class AuthViewModelTest {
 
     @Test
     fun login_sends_login_message() = runTest {
-        viewModel.login("testuser", "testpass")
+        viewModel.login("testuser")
         advanceUntilIdle()
 
         assertEquals(1, fakeConnection.sentMessages.size)
         val msg = fakeConnection.sentMessages.first()
         assertIs<ClientMessage.Login>(msg)
-        assertEquals("testuser", msg.username)
-        assertEquals("testpass", msg.password)
+        assertEquals("testuser", msg.characterName)
     }
 
     @Test
     fun login_sets_loading_state() = runTest {
-        viewModel.login("testuser", "testpass")
+        viewModel.login("testuser")
         assertEquals(AuthState.Loading, viewModel.authState.value)
     }
 
     @Test
     fun login_sets_error_when_send_fails() = runTest {
         fakeConnection.sendResult = false
-        viewModel.login("testuser", "testpass")
+        viewModel.login("testuser")
         advanceUntilIdle()
 
         assertIs<AuthState.Error>(viewModel.authState.value)

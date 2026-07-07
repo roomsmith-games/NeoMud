@@ -100,8 +100,8 @@ class DirectionPadTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u25B2 UP", substring = true).performClick()
-        onNodeWithText("\u25BC DN", substring = true).performClick()
+        onNodeWithText("UP", substring = true).performClick()
+        onNodeWithText("DN", substring = true).performClick()
         assertEquals(listOf(Direction.UP, Direction.DOWN), moves)
     }
 
@@ -173,8 +173,8 @@ class DirectionPadTest : ComposeTestBase() {
             }
         }
 
-        onNodeWithText("\u25B2 UP", substring = true).performClick()
-        onNodeWithText("\u25BC DN", substring = true).performClick()
+        onNodeWithText("UP", substring = true).performClick()
+        onNodeWithText("DN", substring = true).performClick()
         assertEquals(listOf(Direction.UP, Direction.DOWN), moves)
     }
 

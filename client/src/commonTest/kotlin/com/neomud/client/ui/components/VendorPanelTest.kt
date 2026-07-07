@@ -33,8 +33,8 @@ class VendorPanelTest : ComposeTestBase() {
                     vendorInfo = TestData.vendorInfo(vendorName = "Grimjaw's Weapons"),
                     playerLevel = 5,
                     itemCatalog = catalog,
-                    onBuy = {},
-                    onSell = {},
+                    onBuy = { _, _ -> },
+                    onSell = { _, _ -> },
                     onClose = {}
                 )
             }
@@ -64,8 +64,8 @@ class VendorPanelTest : ComposeTestBase() {
                     vendorInfo = TestData.vendorInfo(items = listOf(vendorItem)),
                     playerLevel = 5,
                     itemCatalog = catalog,
-                    onBuy = {},
-                    onSell = {},
+                    onBuy = { _, _ -> },
+                    onSell = { _, _ -> },
                     onClose = {}
                 )
             }
@@ -91,8 +91,8 @@ class VendorPanelTest : ComposeTestBase() {
                     ),
                     playerLevel = 10,
                     itemCatalog = catalog,
-                    onBuy = { boughtItem = it },
-                    onSell = {},
+                    onBuy = { itemId, _ -> boughtItem = itemId },
+                    onSell = { _, _ -> },
                     onClose = {}
                 )
             }
@@ -115,8 +115,8 @@ class VendorPanelTest : ComposeTestBase() {
                     vendorInfo = TestData.vendorInfo(playerInventory = inventory),
                     playerLevel = 5,
                     itemCatalog = catalog,
-                    onBuy = {},
-                    onSell = {},
+                    onBuy = { _, _ -> },
+                    onSell = { _, _ -> },
                     onClose = {}
                 )
             }
@@ -135,8 +135,8 @@ class VendorPanelTest : ComposeTestBase() {
                     vendorInfo = TestData.vendorInfo(),
                     playerLevel = 5,
                     itemCatalog = catalog,
-                    onBuy = {},
-                    onSell = {},
+                    onBuy = { _, _ -> },
+                    onSell = { _, _ -> },
                     onClose = { closed = true }
                 )
             }
@@ -154,8 +154,8 @@ class VendorPanelTest : ComposeTestBase() {
                     vendorInfo = TestData.vendorInfo(hasHaggle = true),
                     playerLevel = 5,
                     itemCatalog = catalog,
-                    onBuy = {},
-                    onSell = {},
+                    onBuy = { _, _ -> },
+                    onSell = { _, _ -> },
                     onClose = {}
                 )
             }
@@ -172,8 +172,8 @@ class VendorPanelTest : ComposeTestBase() {
                     vendorInfo = TestData.vendorInfo(hasHaggle = false),
                     playerLevel = 5,
                     itemCatalog = catalog,
-                    onBuy = {},
-                    onSell = {},
+                    onBuy = { _, _ -> },
+                    onSell = { _, _ -> },
                     onClose = {}
                 )
             }
@@ -199,7 +199,7 @@ class VendorPanelTest : ComposeTestBase() {
                     ),
                     playerLevel = 10,
                     itemCatalog = catalog + mapOf("old_chest" to equippedArmor, "new_chest" to vendorArmor),
-                    onBuy = {}, onSell = {}, onClose = {}
+                    onBuy = { _, _ -> }, onSell = { _, _ -> }, onClose = {}
                 )
             }
         }
@@ -224,7 +224,7 @@ class VendorPanelTest : ComposeTestBase() {
                     ),
                     playerLevel = 10,
                     itemCatalog = catalog + mapOf("great_sword" to equippedWeapon, "rusty_sword" to vendorWeapon),
-                    onBuy = {}, onSell = {}, onClose = {}
+                    onBuy = { _, _ -> }, onSell = { _, _ -> }, onClose = {}
                 )
             }
         }
@@ -249,7 +249,7 @@ class VendorPanelTest : ComposeTestBase() {
                     ),
                     playerLevel = 10,
                     itemCatalog = catalog + mapOf("armor_a" to equippedArmor, "armor_b" to vendorArmor),
-                    onBuy = {}, onSell = {}, onClose = {}
+                    onBuy = { _, _ -> }, onSell = { _, _ -> }, onClose = {}
                 )
             }
         }
@@ -272,7 +272,7 @@ class VendorPanelTest : ComposeTestBase() {
                     ),
                     playerLevel = 10,
                     itemCatalog = catalog + mapOf("new_helm" to vendorArmor),
-                    onBuy = {}, onSell = {}, onClose = {}
+                    onBuy = { _, _ -> }, onSell = { _, _ -> }, onClose = {}
                 )
             }
         }
@@ -294,7 +294,7 @@ class VendorPanelTest : ComposeTestBase() {
                     ),
                     playerLevel = 10,
                     itemCatalog = catalog + mapOf("mana_pot" to potion),
-                    onBuy = {}, onSell = {}, onClose = {}
+                    onBuy = { _, _ -> }, onSell = { _, _ -> }, onClose = {}
                 )
             }
         }
