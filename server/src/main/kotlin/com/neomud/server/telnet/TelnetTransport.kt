@@ -6,6 +6,8 @@ import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class TelnetTransport(
     socket: Socket,
@@ -17,12 +19,43 @@ class TelnetTransport(
     val writeChannel: ByteWriteChannel = socket.openWriteChannel(autoFlush = true)
     val readChannel: ByteReadChannel = socket.openReadChannel()
 
+    // Both the writer coroutine and the reader coroutine (telnet negotiation, login prompts) write
+    // to the socket. Ktor's ByteWriteChannel is not safe for concurrent writers — an unguarded
+    // overlap throws and kills the writer loop — so every write goes through this lock.
+    private val writeLock = Mutex()
+
+    private suspend fun writeBytes(bytes: ByteArray) = writeLock.withLock { writeChannel.writeFully(bytes) }
+    private suspend fun writeText(text: String) = writeLock.withLock { writeChannel.writeStringUtf8(text) }
+
     /** Set before login; completed when LoginOk / AuthError / SessionConflict arrives. */
     @Volatile
     var loginDeferred: CompletableDeferred<ServerMessage>? = null
 
+    // Out-of-band protocol negotiation. Set on the reader coroutine (handleNegotiation), read on
+    // the writer coroutine — hence @Volatile. The *snapshot* is flushed from the writer loop (not
+    // here) so it runs after the login burst has populated `state`, avoiding an empty snapshot.
+    @Volatile var gmcpEnabled = false
+    @Volatile var msdpEnabled = false
+    @Volatile private var gmcpSnapshotPending = false
+    @Volatile private var msdpSnapshotPending = false
+
     override suspend fun sendMessage(message: ServerMessage) {
         outChannel.send(message)
+    }
+
+    /** Answer `IAC DO GMCP`: turn on GMCP, send the handshake, and queue a state snapshot. */
+    suspend fun enableGmcp() {
+        gmcpEnabled = true
+        for (frame in Gmcp.handshakeFrames()) writeBytes(frame)
+        gmcpSnapshotPending = true
+        outChannel.send(ServerMessage.Pong)  // wake the writer loop to flush the snapshot
+    }
+
+    /** Answer `IAC DO MSDP`: turn on MSDP and queue a state snapshot. */
+    suspend fun enableMsdp() {
+        msdpEnabled = true
+        msdpSnapshotPending = true
+        outChannel.send(ServerMessage.Pong)
     }
 
     override suspend fun close(reason: String) {
@@ -30,14 +63,10 @@ class TelnetTransport(
     }
 
     /** Writes raw bytes directly to the socket (telnet negotiation frames, prompts). */
-    suspend fun sendBytes(bytes: ByteArray) {
-        writeChannel.writeFully(bytes)
-    }
+    suspend fun sendBytes(bytes: ByteArray) = writeBytes(bytes)
 
     /** Writes a raw string directly to the socket (welcome banner, prompts). */
-    suspend fun sendRaw(text: String) {
-        writeChannel.writeStringUtf8(text)
-    }
+    suspend fun sendRaw(text: String) = writeText(text)
 
     /**
      * Main writer coroutine. Reads ServerMessages from the channel, updates cached state,
@@ -63,17 +92,28 @@ class TelnetTransport(
             if (lines.isNotEmpty()) {
                 clearCurrentLine()
                 for (line in lines) {
-                    writeChannel.writeStringUtf8("$line\r\n")
+                    writeText("$line\r\n")
                 }
             }
 
             // Out-of-band protocol pushes are invisible to the terminal — emit after any
             // visible text but before re-showing the prompt.
-            if (state.gmcpEnabled) {
-                for (frame in Gmcp.framesFor(message, state)) writeChannel.writeFully(frame)
+            if (gmcpEnabled) {
+                for (frame in Gmcp.framesFor(message, state)) writeBytes(frame)
             }
-            if (state.msdpEnabled) {
-                for (frame in Msdp.framesFor(message, state)) writeChannel.writeFully(frame)
+            if (msdpEnabled) {
+                for (frame in Msdp.framesFor(message, state)) writeBytes(frame)
+            }
+
+            // A snapshot was requested (client negotiated GMCP/MSDP mid-stream). Flush it here,
+            // on the writer coroutine, now that `state` reflects the login/room burst.
+            if (gmcpEnabled && gmcpSnapshotPending && state.playerName != null) {
+                for (frame in Gmcp.snapshotFrames(state)) writeBytes(frame)
+                gmcpSnapshotPending = false
+            }
+            if (msdpEnabled && msdpSnapshotPending && state.playerName != null) {
+                for (frame in Msdp.snapshotFrames(state)) writeBytes(frame)
+                msdpSnapshotPending = false
             }
 
             if (lines.isNotEmpty()) redisplayPrompt()
@@ -83,11 +123,11 @@ class TelnetTransport(
     /** Overwrites the current input line before printing async output. */
     private suspend fun clearCurrentLine() {
         val spaces = " ".repeat(state.terminalWidth)
-        writeChannel.writeStringUtf8("\r$spaces\r")
+        writeText("\r$spaces\r")
     }
 
     /** Re-displays the prompt after async output so the player sees where to type. */
     internal suspend fun redisplayPrompt() {
-        writeChannel.writeStringUtf8(renderer.renderPrompt(state, useColor = true))
+        writeText(renderer.renderPrompt(state, useColor = true))
     }
 }

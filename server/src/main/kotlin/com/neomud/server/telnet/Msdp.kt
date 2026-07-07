@@ -28,6 +28,10 @@ object Msdp {
         else -> emptyList()
     }
 
+    /** Snapshot pushed the moment MSDP is enabled — see [Gmcp.snapshotFrames] for the rationale. */
+    fun snapshotFrames(state: TelnetSessionState): List<ByteArray> =
+        if (state.playerName != null) listOf(variablesFrame(state)) else emptyList()
+
     private fun variablesFrame(state: TelnetSessionState): ByteArray {
         val vars = linkedMapOf(
             "HEALTH" to state.currentHp.toString(),

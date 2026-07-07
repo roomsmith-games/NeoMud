@@ -875,8 +875,17 @@ LEVEL/ROOM_NAME/ROOM_EXITS) encoders, wired into `TelnetConnectionHandler.handle
 (`DO GMCP`/`DO MSDP` → `WILL …` + handshake) and the `TelnetTransport` writer loop (out-of-band
 push after each rendered message). `TelnetSessionState` now caches `playerStats` + room name/zone/
 exits and absorbs HP/MP from `ItemUsed`/`EffectTick`/`StatTrained` (also fixes stale prompt vitals
-after heals). Covered by `GmcpTest`, `MsdpTest`, and expanded `TelnetSessionStateUpdateTest`.
-Not yet exercised over a live socket end-to-end (see the still-missing Phase 4 `TelnetIntegrationTest`).
+after heals). Covered by `GmcpTest`, `MsdpTest`, expanded `TelnetSessionStateUpdateTest`, and the
+Phase 4 `TelnetIntegrationTest` (live GMCP handshake + snapshot over real TCP).
+
+**Snapshot-on-enable + write serialization (2026-07-07):** a client's `IAC DO GMCP` isn't processed
+until the command loop starts — after the login burst — so `gmcpEnabled` flips late and the initial
+LoginOk/RoomInfo would carry no GMCP. The transport now flushes a full snapshot
+(Char.Stats/Vitals/Room.Info/Items) the moment GMCP/MSDP is enabled, from the writer coroutine so
+`state` is already populated. Building the integration test surfaced a latent bug: telnet
+negotiation frames were written from the reader coroutine concurrently with the writer loop, and
+Ktor's `ByteWriteChannel` is not concurrency-safe — an overlap threw and killed the writer loop.
+All socket writes now serialize through a `Mutex`.
 
 GMCP enables Mudlet's built-in mapper, health bars, and inventory panel. It's a subnegotiation channel: `IAC SB GMCP "Package.Name" <json> IAC SE` runs alongside text output.
 

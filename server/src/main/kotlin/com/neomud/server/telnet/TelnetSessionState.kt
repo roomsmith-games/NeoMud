@@ -187,10 +187,7 @@ data class TelnetSessionState(
     var terminalWidth: Int = 80,
     var modalState: ModalState = ModalState.None,
     var worldName: String = "",
-    // Out-of-band protocol negotiation (GMCP for Mudlet, MSDP for TinTin++)
-    var gmcpEnabled: Boolean = false,
-    var msdpEnabled: Boolean = false,
-    // Cached fields feeding GMCP/MSDP packages
+    // Cached fields feeding GMCP/MSDP packages (negotiation flags live on TelnetTransport)
     var playerStats: Stats? = null,
     var currentRoomName: String? = null,
     var currentRoomZone: String? = null,

@@ -150,6 +150,25 @@ class GmcpTest {
         assertTrue(Gmcp.framesFor(ServerMessage.ItemCatalogSync(emptyList()), s).isEmpty())
     }
 
+    // ─── Snapshot on GMCP enable ──────────────────────────────────────────────
+
+    @Test fun snapshotAfterLoginAndRoomPushesVitalsStatsAndRoom() {
+        val s = state()
+        s.update(ServerMessage.LoginOk(testPlayer()))
+        s.update(ServerMessage.RoomInfo(
+            Room(id = "z:sq", name = "Square", description = "", exits = emptyMap(), zoneId = "z", x = 0, y = 0),
+            emptyList(), emptyList()))
+        val pkgs = Gmcp.snapshotFrames(s).map { decode(it).first }
+        assertTrue("Char.Stats" in pkgs)
+        assertTrue("Char.Vitals" in pkgs)
+        assertTrue("Room.Info" in pkgs)
+    }
+
+    @Test fun snapshotBeforeLoginIsEmpty() {
+        // Very early negotiation: nothing cached yet, so nothing to snapshot.
+        assertTrue(Gmcp.snapshotFrames(state()).isEmpty())
+    }
+
     // ─── Char.Stats re-emitted from cache after a stat train ──────────────────
 
     @Test fun statTrainedReEmitsUpdatedStatsFromCache() {

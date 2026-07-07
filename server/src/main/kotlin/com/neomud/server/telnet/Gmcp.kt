@@ -52,6 +52,23 @@ object Gmcp {
     )
 
     /**
+     * Full snapshot of the current cached state, pushed the moment GMCP is enabled.
+     *
+     * A client's `IAC DO GMCP` sent at connect isn't processed until the command loop starts —
+     * i.e. after the initial LoginOk/RoomInfo burst has already flowed by. Without this snapshot
+     * Mudlet's health bar and mapper stay blank until the player's first action. Empty when nothing
+     * is cached yet (very early negotiation), in which case the normal per-message path fills in.
+     */
+    fun snapshotFrames(state: TelnetSessionState): List<ByteArray> = buildList {
+        if (state.playerName != null) {
+            charStatsFromState(state)?.let { add(it) }
+            add(charVitals(state))
+        }
+        if (state.currentRoomName != null) add(roomInfo(state))
+        if (state.inventory.isNotEmpty()) add(charItems(state))
+    }
+
+    /**
      * GMCP packages triggered by an outgoing [message], sourced from the already-updated [state].
      * Returns an empty list for messages with no GMCP mapping.
      */
