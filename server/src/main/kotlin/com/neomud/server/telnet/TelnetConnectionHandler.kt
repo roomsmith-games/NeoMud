@@ -520,6 +520,16 @@ class TelnetConnectionHandler(
     private suspend fun handleNegotiation(cmd: Byte, option: Byte) {
         when {
             cmd == Telnet.WILL && option == Telnet.NAWS -> {}
+            // Rich-client out-of-band channels: accept and start pushing packages.
+            cmd == Telnet.DO && option == Telnet.GMCP -> {
+                sendNeg(Telnet.WILL, Telnet.GMCP)
+                state.gmcpEnabled = true
+                Gmcp.handshakeFrames().forEach { transport.sendBytes(it) }
+            }
+            cmd == Telnet.DO && option == Telnet.MSDP -> {
+                sendNeg(Telnet.WILL, Telnet.MSDP)
+                state.msdpEnabled = true
+            }
             cmd == Telnet.DO -> sendNeg(Telnet.WONT, option)
             cmd == Telnet.WILL -> sendNeg(Telnet.DONT, option)
             else -> {}

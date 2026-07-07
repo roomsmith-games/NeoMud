@@ -65,8 +65,18 @@ class TelnetTransport(
                 for (line in lines) {
                     writeChannel.writeStringUtf8("$line\r\n")
                 }
-                redisplayPrompt()
             }
+
+            // Out-of-band protocol pushes are invisible to the terminal — emit after any
+            // visible text but before re-showing the prompt.
+            if (state.gmcpEnabled) {
+                for (frame in Gmcp.framesFor(message, state)) writeChannel.writeFully(frame)
+            }
+            if (state.msdpEnabled) {
+                for (frame in Msdp.framesFor(message, state)) writeChannel.writeFully(frame)
+            }
+
+            if (lines.isNotEmpty()) redisplayPrompt()
         }
     }
 

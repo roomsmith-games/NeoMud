@@ -869,6 +869,15 @@ Mirror the WebSocket IP limit (`GameConfig.Security.MAX_CONNECTIONS_PER_IP`). Ma
 
 ## Phase 6: Protocol Extensions — GMCP (2–3 days)
 
+**Status: ✅ implemented (2026-07-07).** `Gmcp.kt` (Core.Hello, Core.Supports.Set, Char.Stats,
+Char.Vitals, Room.Info, Char.Items.List, Map.Info) and `Msdp.kt` (HEALTH/HEALTH_MAX/MANA/MANA_MAX/
+LEVEL/ROOM_NAME/ROOM_EXITS) encoders, wired into `TelnetConnectionHandler.handleNegotiation`
+(`DO GMCP`/`DO MSDP` → `WILL …` + handshake) and the `TelnetTransport` writer loop (out-of-band
+push after each rendered message). `TelnetSessionState` now caches `playerStats` + room name/zone/
+exits and absorbs HP/MP from `ItemUsed`/`EffectTick`/`StatTrained` (also fixes stale prompt vitals
+after heals). Covered by `GmcpTest`, `MsdpTest`, and expanded `TelnetSessionStateUpdateTest`.
+Not yet exercised over a live socket end-to-end (see the still-missing Phase 4 `TelnetIntegrationTest`).
+
 GMCP enables Mudlet's built-in mapper, health bars, and inventory panel. It's a subnegotiation channel: `IAC SB GMCP "Package.Name" <json> IAC SE` runs alongside text output.
 
 ### Negotiation

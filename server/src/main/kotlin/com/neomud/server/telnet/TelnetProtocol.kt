@@ -15,6 +15,10 @@ object Telnet {
     const val GMCP: Byte = 0xC9.toByte()
     const val MSDP: Byte = 0x45
 
+    // MSDP subnegotiation markers (RFC-less de-facto standard, per TinTin++ docs)
+    const val MSDP_VAR: Byte = 0x01
+    const val MSDP_VAL: Byte = 0x02
+
     fun negotiationFrame(command: Byte, option: Byte): ByteArray =
         byteArrayOf(IAC, command, option)
 

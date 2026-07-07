@@ -321,6 +321,62 @@ class TelnetSessionStateUpdateTest {
         assertEquals(35, s.maxMp)
     }
 
+    // ---- Vitals absorbed from heal/effect/train messages (feeds prompt + GMCP) ----
+
+    @Test fun itemUsedUpdatesHpAndMp() {
+        val s = state()
+        s.currentHp = 20; s.currentMp = 5
+        s.update(ServerMessage.ItemUsed("Health Potion", "You feel better.", newHp = 55, newMp = 12))
+        assertEquals(55, s.currentHp)
+        assertEquals(12, s.currentMp)
+    }
+
+    @Test fun effectTickUpdatesHpAndMpWhenProvided() {
+        val s = state()
+        s.currentHp = 40; s.currentMp = 30
+        s.update(ServerMessage.EffectTick("Regen", "You regenerate.", newHp = 48, newMp = 33))
+        assertEquals(48, s.currentHp)
+        assertEquals(33, s.currentMp)
+    }
+
+    @Test fun effectTickLeavesMpUntouchedWhenNegative() {
+        val s = state()
+        s.currentMp = 30
+        s.update(ServerMessage.EffectTick("Poison", "You take poison damage.", newHp = 35))  // newMp defaults -1
+        assertEquals(35, s.currentHp)
+        assertEquals(30, s.currentMp)  // unchanged
+    }
+
+    @Test fun statTrainedUpdatesVitalsAndCachedStat() {
+        val s = state()
+        s.playerStats = Stats(strength = 30)
+        s.update(ServerMessage.StatTrained("strength", newValue = 33, cpSpent = 3, remainingCp = 2,
+            currentHp = 62, maxHp = 82, currentMp = 21, maxMp = 31))
+        assertEquals(62, s.currentHp)
+        assertEquals(82, s.maxHp)
+        assertEquals(31, s.maxMp)
+        assertEquals(33, s.playerStats?.strength)
+    }
+
+    // ---- Cached fields for GMCP/MSDP ----
+
+    @Test fun loginOkCachesStats() {
+        val s = state()
+        s.update(ServerMessage.LoginOk(testPlayer()))
+        assertEquals(Stats(), s.playerStats)
+    }
+
+    @Test fun roomInfoCachesNameZoneAndExits() {
+        val s = state()
+        val r = Room(id = "millhaven:square", name = "Town Square", description = "",
+            exits = mapOf(Direction.NORTH to "millhaven:road", Direction.EAST to "millhaven:market"),
+            zoneId = "millhaven", x = 0, y = 0)
+        s.update(ServerMessage.RoomInfo(r, emptyList(), emptyList()))
+        assertEquals("Town Square", s.currentRoomName)
+        assertEquals("millhaven", s.currentRoomZone)
+        assertEquals(setOf(Direction.NORTH, Direction.EAST), s.currentRoomExits.toSet())
+    }
+
     // ---- Room presence ----
 
     @Test fun playerEnteredAddsToRoomPlayers() {

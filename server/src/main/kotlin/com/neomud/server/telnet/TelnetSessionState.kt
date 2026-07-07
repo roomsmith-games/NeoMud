@@ -15,6 +15,7 @@ fun TelnetSessionState.update(message: ServerMessage) {
             maxHp = p.maxHp
             currentMp = p.currentMp
             maxMp = p.maxMp
+            playerStats = p.stats
         }
         is ServerMessage.PlatformAuthOk -> {
             playerName = message.characterName
@@ -22,6 +23,9 @@ fun TelnetSessionState.update(message: ServerMessage) {
         is ServerMessage.RoomInfo -> {
             val r = message.room
             currentRoomId = r.id
+            currentRoomName = r.name
+            currentRoomZone = r.zoneId
+            currentRoomExits = r.exits.keys.toList()
             roomNpcs = message.npcs
             roomPlayers = message.players
             roomGroundItems = emptyList()
@@ -31,6 +35,9 @@ fun TelnetSessionState.update(message: ServerMessage) {
         is ServerMessage.MoveOk -> {
             val r = message.room
             currentRoomId = r.id
+            currentRoomName = r.name
+            currentRoomZone = r.zoneId
+            currentRoomExits = r.exits.keys.toList()
             roomNpcs = message.npcs
             roomPlayers = message.players
             roomGroundItems = emptyList()
@@ -99,6 +106,35 @@ fun TelnetSessionState.update(message: ServerMessage) {
             maxHp = message.newMaxHp
             maxMp = message.newMaxMp
         }
+        is ServerMessage.ItemUsed -> {
+            // Potions/food heal the player — keep vitals (and thus prompt + GMCP) in sync.
+            currentHp = message.newHp
+            currentMp = message.newMp
+        }
+        is ServerMessage.EffectTick -> {
+            currentHp = message.newHp
+            if (message.newMp >= 0) currentMp = message.newMp
+        }
+        is ServerMessage.StatTrained -> {
+            if (message.maxHp > 0) {
+                currentHp = message.currentHp
+                maxHp = message.maxHp
+                currentMp = message.currentMp
+                maxMp = message.maxMp
+            }
+            // Keep cached stats current so a re-emitted GMCP Char.Stats isn't stale.
+            playerStats = playerStats?.let { s ->
+                when (message.stat.lowercase()) {
+                    "strength" -> s.copy(strength = message.newValue)
+                    "agility" -> s.copy(agility = message.newValue)
+                    "intellect" -> s.copy(intellect = message.newValue)
+                    "willpower" -> s.copy(willpower = message.newValue)
+                    "health" -> s.copy(health = message.newValue)
+                    "charm" -> s.copy(charm = message.newValue)
+                    else -> s
+                }
+            }
+        }
         is ServerMessage.PlayerEntered -> {
             val existing = roomPlayers.none { it.name == message.playerName }
             if (existing) {
@@ -150,7 +186,15 @@ data class TelnetSessionState(
     var itemCatalog: Map<String, Item> = emptyMap(),
     var terminalWidth: Int = 80,
     var modalState: ModalState = ModalState.None,
-    var worldName: String = ""
+    var worldName: String = "",
+    // Out-of-band protocol negotiation (GMCP for Mudlet, MSDP for TinTin++)
+    var gmcpEnabled: Boolean = false,
+    var msdpEnabled: Boolean = false,
+    // Cached fields feeding GMCP/MSDP packages
+    var playerStats: Stats? = null,
+    var currentRoomName: String? = null,
+    var currentRoomZone: String? = null,
+    var currentRoomExits: List<Direction> = emptyList()
 )
 
 sealed class ModalState {
