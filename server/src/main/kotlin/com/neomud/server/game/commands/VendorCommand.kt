@@ -116,7 +116,17 @@ class VendorCommand(
         if (!added) {
             // Refund coins if item couldn't be added to inventory
             coinRepository.addCoins(playerName, totalCost)
-            session.send(ServerMessage.Error("Failed to add ${item.name} to your inventory."))
+            val errorMsg = if (item.stackable) {
+                val currentQty = inventoryRepository.getInventory(playerName)
+                    .find { it.itemId == itemId && !it.equipped }?.quantity ?: 0
+                if (currentQty >= item.maxStack)
+                    "You already have the maximum amount of ${item.name} (${item.maxStack})."
+                else
+                    "Failed to add ${item.name} to your inventory."
+            } else {
+                "Failed to add ${item.name} to your inventory."
+            }
+            session.send(ServerMessage.Error(errorMsg))
             return
         }
         logger.info("$playerName bought ${item.name} x$quantity for ${totalCost.displayString()}")

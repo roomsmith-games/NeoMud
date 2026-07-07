@@ -14,6 +14,7 @@ import com.neomud.server.world.SkillCatalog
 import com.neomud.server.world.WorldGraph
 import com.neomud.server.session.TransportSession
 import com.neomud.shared.model.CharacterClassDef
+import com.neomud.shared.model.Coins
 import com.neomud.shared.model.Item
 import com.neomud.shared.model.Player
 import com.neomud.shared.model.Stats
@@ -127,6 +128,33 @@ class VendorCommandTest {
         stats = Stats(strength = 15, agility = 10, intellect = 5, willpower = 5, health = 15, charm = 5)
     )
 
+
+    @Test
+    fun `buy at stack limit returns specific error message`() = runBlocking {
+        seedPlayer()
+        val inventoryRepo = InventoryRepository(itemCatalog)
+        val coinRepo = CoinRepository()
+        coinRepo.addCoins(testCharacterName, Coins(silver = 10))
+        val npcManager = buildNpcManager()
+        val command = buildCommand(npcManager, inventoryRepo, coinRepo)
+
+        inventoryRepo.addItem(testCharacterName, testItem.id, testItem.maxStack)
+
+        val (session, outgoing) = newSession(testPlayer())
+        command.handleBuy(session, testItem.id, quantity = 1)
+
+        val errors = outgoing.filterIsInstance<ServerMessage.Error>()
+        assertEquals(1, errors.size, "Should receive one Error message")
+        assertTrue(errors[0].message.contains("maximum amount"), "Error should mention stack limit")
+        assertTrue(errors[0].message.contains(testItem.name), "Error should name the item")
+        assertTrue(errors[0].message.contains(testItem.maxStack.toString()), "Error should include max stack count")
+
+        val qty = inventoryRepo.getInventory(testCharacterName).find { it.itemId == testItem.id }?.quantity
+        assertEquals(testItem.maxStack, qty, "Inventory should be unchanged")
+
+        val coins = coinRepo.getCoins(testCharacterName)
+        assertEquals(Coins(silver = 10).totalCopper(), coins.totalCopper(), "Coins should be refunded")
+    }
 
     @Test
     fun `sell single item from stack of 5`() = runBlocking {
