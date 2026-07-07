@@ -249,6 +249,8 @@ Test fixtures calling `Application.module(jdbcUrl = …)` continue to work witho
 
 **Every new feature or significant bugfix MUST include relevant tests — no exceptions, no need to ask.** If tests are forgotten, prompt the user before moving on.
 
+**If ANY tests fail, stop immediately — do not proceed, do not skip, do not stash and move on.** Find out why they fail and fix them before continuing. A red test suite is never acceptable background noise.
+
 ### Test Locations
 - **Shared**: `shared/src/commonTest/kotlin/com/neomud/shared/` — protocol serialization, model tests
 - **Server**: `server/src/test/kotlin/com/neomud/server/` — unit tests, integration tests, catalog tests, combat tests
