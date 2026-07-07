@@ -3,6 +3,13 @@
 build/
 !gradle/wrapper/gradle-wrapper.jar
 
+# Kotlin/JS build store (generated)
+kotlin-js-store/
+
+# Loose debug/playtest screenshots at repo root (Paparazzi snapshots under
+# client/src/test/snapshots/ are tracked and unaffected)
+/*.png
+
 # IDE
 .idea/
 *.iml
