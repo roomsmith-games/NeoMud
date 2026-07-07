@@ -501,7 +501,15 @@ class GameViewModel(
                     }
                 }
                 if (message.isPlayerDefender) {
-                    _player.value = _player.value?.copy(currentHp = message.defenderHp)
+                    if (message.defenderName == _player.value?.name) {
+                        _player.value = _player.value?.copy(currentHp = message.defenderHp)
+                    } else {
+                        _partyMembers.value = _partyMembers.value.map { m ->
+                            if (m.name == message.defenderName)
+                                m.copy(currentHp = message.defenderHp, maxHp = message.defenderMaxHp)
+                            else m
+                        }
+                    }
                 } else {
                     _roomEntities.value = _roomEntities.value.map { npc ->
                         if (npc.id == message.defenderId) {
