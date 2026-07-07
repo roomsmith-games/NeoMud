@@ -1,14 +1,29 @@
 package com.neomud.server.telnet
 
+import com.neomud.server.auth.PlatformTokenVerifier
 import com.neomud.server.module
+import com.neomud.shared.NeoMudVersion
+import com.neomud.shared.model.Stats
+import com.neomud.shared.protocol.ClientMessage
+import com.neomud.shared.protocol.MessageSerializer
+import com.neomud.shared.protocol.ServerMessage
+import com.nimbusds.jose.JWSAlgorithm
+import com.nimbusds.jose.JWSHeader
+import com.nimbusds.jose.crypto.MACSigner
+import com.nimbusds.jwt.JWTClaimsSet
+import com.nimbusds.jwt.SignedJWT
+import io.ktor.client.plugins.websocket.*
 import io.ktor.server.testing.*
+import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Date
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import kotlin.test.Test
 import kotlin.test.assertFalse
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 /**
@@ -25,6 +40,8 @@ import kotlin.test.assertTrue
 class TelnetPlatformAuthTest {
 
     private val preAuthSecret = "test-secret-32-bytes-of-entropy!"
+    private val devSecret = "test-platform-secret-minimum-thirty-two-chars"
+    private val warriorStats = Stats(strength = 30, agility = 22, intellect = 18, willpower = 18, health = 30, charm = 18)
 
     private fun testDbUrl(): String {
         val tmp = File.createTempFile("neomud_telnet_auth_test_", ".db")
@@ -40,10 +57,43 @@ class TelnetPlatformAuthTest {
         return mac.doFinal(data.toByteArray()).joinToString("") { "%02x".format(it) }
     }
 
+    private fun makeToken(userId: String): String {
+        val claims = JWTClaimsSet.Builder()
+            .issuer("neomud-platform")
+            .claim("userId", userId)
+            .claim("role", "USER")
+            .expirationTime(Date(System.currentTimeMillis() + 60_000))
+            .build()
+        val jwt = SignedJWT(JWSHeader(JWSAlgorithm.HS256), claims)
+        jwt.sign(MACSigner(devSecret.toByteArray()))
+        return jwt.serialize()
+    }
+
+    private fun testVerifier() = PlatformTokenVerifier(jwksUrl = null, devSecret = devSecret)
+
     private fun preAuthBytes(type: String, userId: String): ByteArray {
         val h = hmac("$type:$userId")
-        // Protocol: null-byte sentinel + "NEOMUD:type:userId:hmac\n" (raw ASCII, no IAC)
         return byteArrayOf(0x00) + "NEOMUD:$type:$userId:$h\n".toByteArray(Charsets.US_ASCII)
+    }
+
+    private fun preAuthBytesWithChar(userId: String, characterName: String): ByteArray {
+        val h = hmac("user:$userId:$characterName")
+        return byteArrayOf(0x00) + "NEOMUD:user:$userId:$characterName:$h\n".toByteArray(Charsets.US_ASCII)
+    }
+
+    private suspend fun DefaultClientWebSocketSession.receiveServerMessage(): ServerMessage {
+        val frame = incoming.receive()
+        assertTrue(frame is Frame.Text)
+        return MessageSerializer.decodeServerMessage(frame.readText())
+    }
+
+    private suspend fun DefaultClientWebSocketSession.consumeCatalogSync() {
+        assertIs<ServerMessage.ServerHello>(receiveServerMessage())
+        assertIs<ServerMessage.ClassCatalogSync>(receiveServerMessage())
+        assertIs<ServerMessage.ItemCatalogSync>(receiveServerMessage())
+        assertIs<ServerMessage.SkillCatalogSync>(receiveServerMessage())
+        assertIs<ServerMessage.RaceCatalogSync>(receiveServerMessage())
+        assertIs<ServerMessage.SpellCatalogSync>(receiveServerMessage())
     }
 
     /** Retry TCP connect until port accepts, up to [timeoutMs]. Must run on IO thread. */
@@ -181,6 +231,69 @@ class TelnetPlatformAuthTest {
                 assertTrue(
                     text.contains("Username:"),
                     "Expected immediate legacy prompt with no secret configured, got: $text",
+                )
+            }
+        }
+    }
+
+    @Test
+    fun preAuthWithCharacterName_logsInDirectlyWithoutAnyPrompts() = testApplication {
+        val jdbcUrl = testDbUrl()
+        val port = findFreePort()
+        application {
+            module(
+                jdbcUrl = jdbcUrl,
+                telnetEnabled = true,
+                telnetPortOverride = port,
+                preAuthSecretOverride = preAuthSecret,
+                platformVerifierOverride = testVerifier(),
+            )
+        }
+        startApplication()
+
+        val userId = "user-phase3-direct"
+        val characterName = "PhaseThreeHero"
+
+        // Register the character via WebSocket so it exists in the DB.
+        val wsClient = createClient { install(WebSockets) }
+        wsClient.webSocket("/game") {
+            consumeCatalogSync()
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.ClientHello(
+                    clientVersion = NeoMudVersion.ENGINE_VERSION,
+                    protocolVersion = NeoMudVersion.PROTOCOL_VERSION,
+                    platformToken = makeToken(userId),
+                )
+            )))
+            assertIs<ServerMessage.PlatformAuthOk>(receiveServerMessage())
+            send(Frame.Text(MessageSerializer.encodeClientMessage(
+                ClientMessage.PlatformRegister(
+                    characterName = characterName,
+                    characterClass = "WARRIOR",
+                    race = "HUMAN",
+                    gender = "male",
+                    allocatedStats = warriorStats,
+                )
+            )))
+            assertIs<ServerMessage.RegisterOk>(receiveServerMessage())
+            assertIs<ServerMessage.LoginOk>(receiveServerMessage())
+        }
+
+        // Connect via telnet with a pre-auth header that includes the character name.
+        // The game container must go straight to login — no "Character name:" prompt.
+        withContext(Dispatchers.IO) {
+            waitForPortBlocking(port)
+            java.net.Socket("127.0.0.1", port).use { socket ->
+                socket.getOutputStream().write(preAuthBytesWithChar(userId, characterName))
+                socket.getOutputStream().flush()
+                val text = readUntilBlocking(socket, "Logging in as $characterName")
+                assertTrue(
+                    text.contains("Logging in as $characterName"),
+                    "Expected direct login message, got: $text",
+                )
+                assertFalse(
+                    text.contains("Character name:"),
+                    "Character creation wizard must not appear when character is pre-selected, got: $text",
                 )
             }
         }

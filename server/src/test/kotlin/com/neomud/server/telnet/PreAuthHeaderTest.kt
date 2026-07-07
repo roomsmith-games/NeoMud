@@ -78,4 +78,38 @@ class PreAuthHeaderTest {
         assertNotNull(result)
         assertEquals(userId, result.userId)
     }
+
+    // ─── Phase 3: character name in header ───────────────────────────────────
+
+    private fun validHeaderWithChar(userId: String, characterName: String): String {
+        val hmac = hmac("user:$userId:$characterName")
+        return "NEOMUD:user:$userId:$characterName:$hmac"
+    }
+
+    @Test fun verifiesHeaderWithCharacterName() {
+        val result = PreAuthHeader.verify(validHeaderWithChar("user-abc123", "BobTheBarbarian"), secret)
+        assertNotNull(result)
+        assertEquals("user", result.type)
+        assertEquals("user-abc123", result.userId)
+        assertEquals("BobTheBarbarian", result.characterName)
+    }
+
+    @Test fun characterNameIsNullWhenAbsent() {
+        val result = PreAuthHeader.verify(validHeader("user", "user-abc123"), secret)
+        assertNotNull(result)
+        assertEquals(null, result.characterName)
+    }
+
+    @Test fun guestNeverHasCharacterName() {
+        val userId = "anon:0123456789abcdef"
+        val result = PreAuthHeader.verify(validHeader("guest", userId), secret)
+        assertNotNull(result)
+        assertEquals(null, result.characterName)
+    }
+
+    @Test fun tamperedCharacterNameFails() {
+        val header = validHeaderWithChar("user-abc123", "BobTheBarbarian")
+        val tampered = header.replace("BobTheBarbarian", "ShadowArcher")
+        assertNull(PreAuthHeader.verify(tampered, secret))
+    }
 }

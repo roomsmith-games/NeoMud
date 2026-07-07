@@ -107,6 +107,37 @@ fun Application.configureRouting(
             call.respondText(json, ContentType.Application.Json)
         }
 
+        // Character summary for telnet router world menu (Phase 2 personalized menu).
+        // No auth — only reachable over the internal Docker network. Returns the
+        // highest-level character linked to this platformUserId, or null if none.
+        get("/internal/character-summary") {
+            val platformUserId = call.request.queryParameters["platformUserId"]
+            if (platformUserId.isNullOrBlank()) {
+                call.respondText("""{"error":"platformUserId required"}""", ContentType.Application.Json, HttpStatusCode.BadRequest)
+                return@get
+            }
+            val best = playerRepository.findAllByPlatformUserId(platformUserId).maxByOrNull { it.level }
+            if (best == null) {
+                call.respondText("""{"characterName":null}""", ContentType.Application.Json)
+            } else {
+                call.respondText("""{"characterName":${quoteJson(best.name)},"level":${best.level}}""", ContentType.Application.Json)
+            }
+        }
+
+        get("/internal/characters") {
+            val platformUserId = call.request.queryParameters["platformUserId"]
+            if (platformUserId.isNullOrBlank()) {
+                call.respondText("""{"error":"platformUserId required"}""", ContentType.Application.Json, HttpStatusCode.BadRequest)
+                return@get
+            }
+            val chars = playerRepository.findAllByPlatformUserId(platformUserId)
+                .sortedByDescending { it.level }
+            val json = chars.joinToString(",", "[", "]") { c ->
+                """{"name":${quoteJson(c.name)},"level":${c.level},"characterClass":${quoteJson(c.characterClass)}}"""
+            }
+            call.respondText(json, ContentType.Application.Json)
+        }
+
         get("/api/character") {
             // Auth: verify shared secret from Platform
             val secret = call.request.headers["X-Platform-Secret"]

@@ -4,16 +4,17 @@ import java.security.MessageDigest
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-data class PreAuthResult(val type: String, val userId: String)
+data class PreAuthResult(val type: String, val userId: String, val characterName: String? = null)
 
 /**
  * Parses and HMAC-verifies the pre-auth header sent by the telnet router.
  *
- * Expected line content (after the leading \x00 null byte is consumed):
- *   NEOMUD:<type>:<userId>:<hmac>
+ * Without character name:   NEOMUD:<type>:<userId>:<hmac>
+ * With character name:      NEOMUD:user:<userId>:<characterName>:<hmac>
  *
- * The HMAC is SHA-256 of "<type>:<userId>" keyed by TELNET_PRE_AUTH_SECRET.
- * Constant-time comparison prevents timing attacks on the HMAC.
+ * The HMAC covers everything before the last colon: "<type>:<userId>" or
+ * "<type>:<userId>:<characterName>". `lastIndexOf(':')` always finds the hmac
+ * boundary regardless of how many fields are present.
  */
 object PreAuthHeader {
     private const val PREFIX = "NEOMUD:"
@@ -22,26 +23,43 @@ object PreAuthHeader {
         if (!line.startsWith(PREFIX)) return null
         val body = line.removePrefix(PREFIX)
 
-        // body = "<type>:<userId>:<hmac>"
-        // userId may not contain ':', so split at most into 3 parts from the left,
-        // then treat the last segment as the hmac.
         val lastColon = body.lastIndexOf(':')
         if (lastColon < 0) return null
-        val payloadPart = body.substring(0, lastColon)  // "<type>:<userId>"
+        val payloadPart = body.substring(0, lastColon)
         val receivedHmac = body.substring(lastColon + 1)
 
         val expectedHmac = hmacSha256(payloadPart, secret)
         if (!MessageDigest.isEqual(expectedHmac.toByteArray(), receivedHmac.toByteArray())) return null
 
+        // payloadPart = "<type>:<userId>" or "<type>:<userId>:<characterName>"
         val firstColon = payloadPart.indexOf(':')
         if (firstColon < 0) return null
         val type = payloadPart.substring(0, firstColon)
-        val userId = payloadPart.substring(firstColon + 1)
+        val rest = payloadPart.substring(firstColon + 1)
 
         if (type != "user" && type != "guest") return null
+
+        // Guests never have characters — treat the entire rest as userId.
+        // Users may have an optional characterName appended after the userId.
+        val userId: String
+        val characterName: String?
+        if (type == "user") {
+            val secondColon = rest.indexOf(':')
+            if (secondColon < 0) {
+                userId = rest
+                characterName = null
+            } else {
+                userId = rest.substring(0, secondColon)
+                characterName = rest.substring(secondColon + 1).takeIf { it.isNotBlank() }
+            }
+        } else {
+            userId = rest
+            characterName = null
+        }
+
         if (userId.isBlank()) return null
 
-        return PreAuthResult(type = type, userId = userId)
+        return PreAuthResult(type = type, userId = userId, characterName = characterName)
     }
 
     private fun hmacSha256(data: String, secret: String): String {

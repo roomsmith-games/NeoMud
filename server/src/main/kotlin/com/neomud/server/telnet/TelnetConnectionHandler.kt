@@ -120,7 +120,7 @@ class TelnetConnectionHandler(
 
         return when (preAuth.type) {
             "guest" -> runGuestFlow(session)
-            "user" -> runPlatformUserFlow(session, preAuth.userId)
+            "user" -> runPlatformUserFlow(session, preAuth.userId, preAuth.characterName)
             else -> null
         }
     }
@@ -149,7 +149,36 @@ class TelnetConnectionHandler(
         }
     }
 
-    private suspend fun runPlatformUserFlow(session: PlayerSession, userId: String): PlayerSession? {
+    private suspend fun runPlatformUserFlow(
+        session: PlayerSession,
+        userId: String,
+        preSelectedCharacter: String? = null,
+    ): PlayerSession? {
+        // Router pre-selected the character — go straight to login, no prompts.
+        if (preSelectedCharacter != null) {
+            transport.sendRaw("\r\n  World: ${worldName ?: "NeoMud"}\r\n\r\nLogging in as $preSelectedCharacter...\r\n")
+            val deferred = CompletableDeferred<ServerMessage>()
+            transport.loginDeferred = deferred
+            commandProcessor.process(session, ClientMessage.PlatformLogin(characterName = preSelectedCharacter))
+            return when (val result = deferred.await()) {
+                is ServerMessage.LoginOk -> { transport.loginDeferred = null; session }
+                is ServerMessage.SessionConflict -> {
+                    transport.loginDeferred = null
+                    transport.sendRaw("\r\n$preSelectedCharacter is already logged in. Kick? (y/n): ")
+                    val answer = readLine()?.trim()?.lowercase()
+                    if (answer == "y" || answer == "yes") {
+                        val forceDeferred = CompletableDeferred<ServerMessage>()
+                        transport.loginDeferred = forceDeferred
+                        commandProcessor.process(session, ClientMessage.PlatformLogin(characterName = preSelectedCharacter, force = true))
+                        val forceResult = forceDeferred.await()
+                        transport.loginDeferred = null
+                        if (forceResult is ServerMessage.LoginOk) session else null
+                    } else null
+                }
+                else -> { transport.loginDeferred = null; null }
+            }
+        }
+
         val characters = playerRepository.findAllByPlatformUserId(userId)
         return when {
             characters.isEmpty() -> runCharacterCreation(session)
