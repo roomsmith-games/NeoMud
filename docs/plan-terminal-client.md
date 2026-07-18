@@ -887,6 +887,21 @@ negotiation frames were written from the reader coroutine concurrently with the 
 Ktor's `ByteWriteChannel` is not concurrency-safe — an overlap threw and killed the writer loop.
 All socket writes now serialize through a `Mutex`.
 
+**Loose ends closed + deployed (2026-07-07):**
+- **Command-loop rate limiting** — the command loop now consumes the same `PlayerSession`
+  token bucket the WebSocket path uses (`tryConsumeMessage`, 10 msg/s, burst 20), replying
+  "Too many commands, slow down." Covered by `TelnetIntegrationTest.commandFlood_isRateLimited`.
+- **Per-IP connection cap made atomic** — extracted into `IpConnectionLimiter` (reserve/release via
+  `ConcurrentHashMap.compute`); covered deterministically by `IpConnectionLimiterTest` (incl. a
+  100-thread contention test). The earlier live-socket per-IP test was dropped — real accept timing
+  and loopback hostname resolution flaked under CI.
+- **Session isolation** — `TelnetIntegrationTest.concurrentSessions_keepIsolatedState` asserts two
+  telnet sessions get their own GMCP `Char.Stats` (no cross-talk).
+- Shipped to staging as world **v1.2.3** (game-server deploy verified ONLINE 2026-07-07).
+
+**Not implemented:** nothing outstanding for this plan. (The split-pane TUI in
+`terminal-client-vision.md` remains a separate, unstarted track.)
+
 GMCP enables Mudlet's built-in mapper, health bars, and inventory panel. It's a subnegotiation channel: `IAC SB GMCP "Package.Name" <json> IAC SE` runs alongside text output.
 
 ### Negotiation
