@@ -62,7 +62,7 @@ compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-pre
 compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-multiplatform" }
 compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "compose-multiplatform" }
 compose-ui-test-junit4 = { module = "org.jetbrains.compose.ui:ui-test-junit4", version.ref = "compose-multiplatform" }
-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version = "1.10.4" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version = "1.10.6" }
 
 # Android (AndroidX-specific deps)
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
