@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.2",
-    "@prisma/client": "^7.4.2",
+    "@prisma/client": "^7.7.0",
     "@types/multer": "^2.1.0",
     "adm-zip": "^0.5.16",
     "cors": "^2.8.6",
